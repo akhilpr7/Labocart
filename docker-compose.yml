@@ -1,5 +1,15 @@
 version: '3.3'
 services:
+  db:
+      image: postgres
+      hostname: db
+      volumes:
+        # - ./sql/django.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+        - ./data/db:/var/lib/postgresql/data
+      environment:
+        - POSTGRES_DB=labocart
+        - POSTGRES_USER=labouser
+        - POSTGRES_PASSWORD=123
   web:
     image: prj-image
     container_name: prj-container
@@ -10,3 +20,8 @@ services:
       - ./django:/code
     ports:
       - "8001:8000"
+  adminer:
+    image: adminer:4.8.1-standalone
+    restart: always
+    ports:
+      - 8080:8080
