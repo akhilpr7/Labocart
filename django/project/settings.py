@@ -33,11 +33,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets') 
-
 
 # Application definition
-
+ 
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ecommerce',
+    
 ]
 
 MIDDLEWARE = [
@@ -83,28 +83,19 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 
-# DATABASES = {
-#       'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'labocart', 
-#         'USER': 'labouser',
-#         'PASSWORD':123,
-#         'HOST': 'db', 
-#         'PORT': '5432',
-#    }
-# }
+DATABASES = {   
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'labocart', 
+        'USER': 'labouser', 
+        'PASSWORD': '123',
+        'HOST': 'db',
+        'PORT': 5432,
+    }
+}
 
-
-
-# For creating a new model with djangos auth user model
-# AUTH_USER_MODEL='mlmPart.NewUserModel'
-
-ROOT_URLCONF = 'project.urls'
-LOGIN_REDIRECT_URL = "home"  # Route defined in home/urls.py
-LOGOUT_REDIRECT_URL = "home"  # Route defined in home/urls.py
 
 # Password validation
-# https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -137,6 +128,10 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATICFILES_DIRS = [
