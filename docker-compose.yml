@@ -1,0 +1,12 @@
+version: '3.3'
+services:
+  web:
+    image: prj-image
+    container_name: prj-container
+    build: 
+      context: ./django
+      dockerfile: Dockerfile
+    volumes:
+      - ./django:/code
+    ports:
+      - "8001:8000"
