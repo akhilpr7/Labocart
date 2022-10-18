@@ -2,3 +2,12 @@
 */__pycache__/*
 data/
 */migrations/*
+django/ecommerce/__pycache__
+django/ecommerce/migrations
+django/ecommerce/migrations/__pycache__
+django/apps/ authentication/__pycache__
+django/apps/ authentication/migrations/__pycache__
+django/apps/ authentication/migrations
+django/apps/ home/__pycache__
+django/apps/ home/migrations/__pycache__
+django/apps/ home/migrations
