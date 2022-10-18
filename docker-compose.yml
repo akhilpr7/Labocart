@@ -18,6 +18,7 @@ services:
     build: 
       context: ./django
       dockerfile: Dockerfile
+    restart: always
     volumes:
       - ./django:/code
     ports:

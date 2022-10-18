@@ -11,3 +11,4 @@ class LoginViews(View):
 class RegisterViews(View):
     def get(self, request, *args, **kwargs):
         return render(request, "accounts/register.html")
+
