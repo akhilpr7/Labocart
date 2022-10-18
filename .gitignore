@@ -13,3 +13,4 @@ django/apps/ home/migrations/__pycache__
 django/apps/ home/migrations
 django/project/__pycache__
 __pycache__/
+migrations/
