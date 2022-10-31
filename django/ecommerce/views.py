@@ -27,7 +27,19 @@ class Home(View):
 @method_decorator(login_required,name='dispatch')
 class Shop(View):
 	def get(self, request, *args, **kwargs):
-		product = ProductsModel.objects.all()
+		print("aaaaaaaaaaaaaaaaaaaa",request)
+		print("bbbbbbbbbbbbbbbbbbbbbbb",request.GET.get('orderby'))
+		if request.GET.get('orderby') is not None and request.GET.get('orderby') != '':
+			if request.GET.get('orderby') == 'atoz':
+				product = ProductsModel.objects.all().order_by("Product_name")
+			elif request.GET.get('orderby') == 'ztoa':
+				product = ProductsModel.objects.all().order_by("-Product_name")
+			elif request.GET.get('orderby') == 'latest':
+				product = ProductsModel.objects.all().order_by("id")
+			elif request.GET.get('orderby') == 'oldest':
+				product = ProductsModel.objects.all().order_by("-id")
+		else:
+			product = ProductsModel.objects.all()
 		cart = CartModel.objects.all().filter(username=request.user.username).values_list("Product_name",flat=True)
 		data = {
 		"product":product,
