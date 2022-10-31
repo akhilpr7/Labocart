@@ -1,0 +1,138 @@
+{% extends 'index.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<body style="background-color:#f5eee7" >
+<div class="container-fluid py-4 ">
+
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3">Stock table</h6>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+        <div class="table-responsive  p-0" style="max-height: 33rem;">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Product Name</th>
+                <th class=" text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-2">Price</th>
+                <th class=" text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-2">Quantity</th>
+                <th class=" text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-4">Image</th>
+                <th class=" text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-2"></th>
+                <th class=" text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-2"> </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for data in stockData %}
+              <!-- Modal -->
+              <div class="modal fade" id="stockModal{{data.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">DELETE</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p class="h4 text-center">Are you sure to delete.....?<br>
+                        <span class="material-icons text-danger text-center" style="font-size: 5rem;">
+                          warning
+                        </span>
+                      </p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                      <a href="{% url 'deletestock' data.id%}" class="btn btn-primary">Delete</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              
+              
+          </td>
+          
+        </tr>
+        
+        
+        {% endfor %}
+
+
+
+
+
+        {% for i in table %}
+        <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+              <form method="POST">
+                  <div class="form-group">
+                      {% comment %} <label for="bonus-id" class="col-form-label" style="hidden"></label> {% endcomment %}
+                      {% csrf_token %}
+                      {% render_field badgeconfig_form.badgeid value=i.id %}
+                      amount
+                      {% render_field badgeconfig_form.badgeamount value=i.badgeamount %} <br>
+                      
+                      bonus
+                      {% render_field badgeconfig_form.sponsorbonus value=i.sponsorbonus %} <br>
+                    </div>
+                    
+                    {% comment %} <div class="form-group">
+                      <label for="message-text" class="col-form-label">Message:</label>
+                      <textarea class="form-control" id="message-text"></textarea>
+                    </div> {% endcomment %}
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-dark " data-bs-dismiss="modal">Close</button>
+                      <input type="submit" class="btn btn-primary" value="Save">
+              </form>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+              
+              {% for data in prod %}
+              <tr>
+                <td>
+                  <h6 class="mb-0 text-sm ms-3">{{forloop.counter0|add:1}}</h6>
+                </td>
+                <td>
+                  <p class="text-xs font-weight-bold mb-0">{{data.Product_name}}</p>
+                </td>
+                <td>
+                  <p class="text-xs font-weight-bold mb-0">{{data.Price}}</p>
+                </td>
+                <td>
+                  <p class="text-xs font-weight-bold mb-0">{{data.Quantity}}</p>
+                </td>
+                <td>
+                    <div style=" height:10rem; display: flex; align-items: center;">
+                        <img src="{{data.Image}}" style="height:10rem;" alt="">
+                    </div>
+                </td>
+                <td>
+                  <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{data.id}}">EDIT</a> 
+              </td>
+                <td>
+                    <a data-bs-toggle="modal" data-bs-target="#stockModal{{data.id}}" class="btn btn-primary">DELETE</a>
+                </td>
+        
+              {% endfor %}
+
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </body>    
+{% endblock content %}

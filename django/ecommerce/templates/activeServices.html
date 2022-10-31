@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'index.html' %}
+{% block content%}
+<head>
+    <meta charset="utf-8">
+    {% block title %}{% endblock %} 
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="../../../static/img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="../../../static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="../../../static/css/style.css" rel="stylesheet">
+</head>
+
+<body style="background-color:#f5eee7" >
+    {% if messages %}
+    {% for message in messages %}
+        <p class="d-none" id="messagetag">{{message.tags}}</p>
+        <p class="d-none " id="messagecontent">{{message}}</p>
+    {% endfor %}
+    {% endif %}
+    <!-- Navbar Start -->
+    <div class="container-fluid">
+        <div class="row border-top px-xl-5">
+            <div class="col-lg-3 d-none d-lg-block">
+                <a class="btn shadow-none d-flex align-items-center justify-content-between w-100 bg-gray-800 text-white" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
+                    <h5 class="m-0">Categories</h5>
+                    <i class="fa fa-angle-down text-white"></i>
+                </a>
+                <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
+                    <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link" data-toggle="dropdown">products<i class="fa fa-angle-down float-right mt-1"></i></a>
+                            <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
+                                <a href="" class="dropdown-item">products1</a>
+                            </div>
+                        </div>
+                        <a href="" class="nav-item nav-link">Shirts</a>
+                        <a href="" class="nav-item nav-link">Jeans</a>
+                    </div>
+                </nav>
+            </div>
+            <div class="col-lg-7 p-3">
+                <div class=" col-6 text-right">
+                    <form action="">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for products">
+                            <div class="input-group-append">
+                                <span class="input-group-text bg-transparent text-primary">
+                                    <i class="fa fa-search text-black"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-2 p-3">
+                <div class="dropdown ml-4">
+                    <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">Filter by</button>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
+                        <a class="dropdown-item" href="#">Name</a>
+                        <a class="dropdown-item" href="#">category</a>
+                        <a class="dropdown-item" href="#">Rating</a>
+                        <a class="dropdown-item" href="#">Location</a>
+
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Shop Product Start -->
+    <div class="col-12 col-md-12">
+        <div class="row pb-3">
+            {% for i in data %}
+            <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+                <div class="card product-item border-0 mb-4">
+                    <div class="card" style="border-radius: 15px; background-color: rgba(255, 255, 255, 0.993);">
+                        <div class="card-body p-4 text-black">
+                            <div>
+                                <h6 class="mb-4">{{i.job_title}}</h6>
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    {%if i.work_type == True%}
+                                    <p class="small mb-0"><i class="far fa-clock me-2"></i>Half day</p>
+                                    {%else%}
+                                    <p class="small mb-0"><i class="far fa-clock me-2"></i>Full day</p>
+                                    {%endif%}
+                                    <p class="fw-bold mb-0">${{i.rate}}</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-4 " >
+                                <div class="flex-shrink-0 " >
+                                    <img src="{{i.image_link}}"
+                                    alt="" class="img-fluid rounded-circle border border-dark border-3"
+                                    style="width: 75px; height: 75px;">
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <div class="d-flex flex-row align-items-center mb-2">
+                                        <p class="mb-0 me-2">@{{i.username}}</p>
+                                        <ul class="mb-0 list-unstyled d-flex flex-row" style="color: #e4a804;">
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li> 
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li> 
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        {% comment %} <button type="button" class="btn btn-outline-dark btn-rounded btn-sm"
+                                        data-mdb-ripple-color="dark">+ Follow</button> {% endcomment %}
+                                        <button type="button" class="btn btn-outline-dark btn-rounded btn-sm"
+                                        data-mdb-ripple-color="dark">See profile</button>
+                                            {% comment %} <button type="button" class="btn btn-outline-dark btn-floating btn-sm"
+                                            data-mdb-ripple-color="dark"><i class="fas fa-comment"></i></button> {% endcomment %}
+                                    </div>             
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            {% if i.status == 0 %}
+                                <a href="{%url 'togglestatus' i.id %}" class=" btn btn-danger">Inactive</a>
+                            {% elif i.status == 1 %}
+                                <a href="{%url 'togglestatus' i.id %}" class="btn btn-success">Active</a>
+                            {% elif i.status == 2 %}
+                                <i class="btn btn-dark">Pending</i>
+                                <a href="{%url 'togglestatus' i.id %}" class="btn btn-danger">Cancel</a>
+                            {% endif %}
+                            <!-- <button type="button" class="btn-gray-800 btn-block btn-lg btn-rounded rounded-3 text-white"></i>Active</button>                                 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+             {% endfor %}
+        </div>
+    </div>
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Template Javascript -->
+</body>
+
+{% endblock content %}
+</html>

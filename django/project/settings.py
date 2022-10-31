@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
-import os
-import environ
+import os,environ
+
+from django.contrib import messages 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -44,7 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ecommerce',
-    
+    'apps.home',
+    'authentication',
+    'widget_tweaks',
+    'mathfilters',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +64,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'project.urls'
 TEMPLATE_DIR = os.path.join(BASE_DIR, "apps/templates")  # ROOT dir for templates
 
+AUTH_USER_MODEL='authentication.NewUserModel'
+    
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -96,6 +102,8 @@ DATABASES = {
 
 
 # Password validation
+
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -137,3 +145,21 @@ STATICFILES_DIRS = [
 
 
 STATIC_URL = '/static/'
+
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGIN_URL = 'login'
+
+MESSAGE_TAGS = {
+
+    messages.DEBUG: 'alert-secondary',
+
+    messages.INFO: 'alert-info',
+
+    messages.SUCCESS: 'alert-success',
+
+    messages.WARNING: 'alert-warning',
+
+    messages.ERROR: 'alert-danger',
+
+}
+

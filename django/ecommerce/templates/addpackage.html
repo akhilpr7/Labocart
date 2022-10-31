@@ -1,0 +1,94 @@
+{% extends 'index.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<!-- Navbar -->
+{% if messages %}
+    {% for message in messages %}
+        <p class="d-none" id="messagetag">{{message.tags}}</p>
+        <p class="d-none " id="messagecontent">{{message}}</p>
+    {% endfor %}
+    {% endif %}
+    <body style="background-color:#f5eee7" >
+  <!-- End Navbar -->
+  <div class="container-fluid py-4">
+  <div class="admin-add-main ">
+    <form class='admin-add-user shadow-sm px-5 pt-4' method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+          <p class="m-1">
+            {{ field.label_tag }}<br>
+            {{ field }}
+          </p>
+        {% endfor %}
+        <br>
+        <button type="submit" class="btn bg-gray-800 btn-rounded rounded-2 text-white">Add</button> <br>
+    </form>
+    {% if messages %}
+    <div class="add-msg bg-success text-white alert shadow">
+            
+            <ul class="messages">
+                {% for message in messages %}
+                <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+                {% endfor %}
+            </ul>
+            <p id="close"><span class="material-icons">
+              close
+              </span></p>
+        
+            
+    </div>
+    {% endif %}
+  </div>
+</body>
+<style>
+    .admin-add-main{
+        position: relative;
+        display:flex;
+        justify-content:center;
+    }
+    .add-msg{
+        position:absolute;
+        top:0;
+        width:40rem;
+        height:5rem;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        border-radius:.5rem;
+    }
+    .add-msg p{
+        padding:0rem 2rem 0 0;
+        font-size:2rem;
+        cursor: pointer;
+
+    }
+    .add-msg ul{
+        padding:0 0 0 1rem;
+        font-size:1rem;
+        list-style: none;
+    }
+    .admin-add-user{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+    }
+    .admin-add-user input{
+
+        width: 25rem;
+    }
+
+</style>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript">
+    $('#close').on('click', function(e) { 
+        $(this).parent('.alert').remove(); 
+        
+     });
+     $('.alert').ready( function() {
+        $('.alert').delay(1000).fadeOut("fast");
+      });
+</script>
+
+    
+{% endblock content %}

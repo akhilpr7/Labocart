@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+{% extends 'index.html' %}
+{% load widget_tweaks %}
+{% load mathfilters %}
+
+
+{% block content%}
+
+<head>
+    <meta charset="utf-8">
+    <title>Invoice</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+
+    <!-- Customized Bootstrap Stylesheet -->
+</head>
+
+<body>
+    {% if messages %}
+    {% for message in messages %}
+    <p class="d-none" id="messagetag">{{message.tags}}</p>
+    <p class="d-none " id="messagecontent">{{message}}</p>
+    {% endfor %}
+    {% endif %}
+    <!-- Topbar Start -->
+    <div class="container-fluid mt-2">
+        <div class="row d-flex justify-content-center " style="height: 100vh ;">
+            <div class="col-md-11 bg-gray-200 mb-4">
+                <div class="row p-5">
+                    <div class="col-md-6 ">
+                        <h1 class=""> LaboCart </h1>
+                    </div>
+                    <div class="col-md-6 d-flex flex-row justify-content-end align-items-center">
+                        <h3 class="me-2 "> Order ID : </h3>
+                        <h3>#{{request.session.order}}</h3>
+                    </div>
+
+                </div>
+                <div class="row py-3 px-5">
+                    <div class="col-md-12">
+                        <h4 class="text-primary">Bill To :</h4>
+                        <p>{{request.session.Building}}</p>
+                        <p>{{request.session.Street}}</p>
+                        <p>{{request.session.Locality}}</p>
+
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center mt-3 ">
+                    <div class="col-10 ">
+                        <div class="row   ">
+                            <div class="col-md-4 p-0 border-end">
+
+                                <h3 class="bg-warning p-3"> Product Name</h3>
+
+                                <div class="px-3 bg-gray-300" >
+                                    {%for i in products%}
+
+                                    {%for j in i%}
+
+                                    <p class="border-bottom m-0 py-2">{{j}}</p>
+
+                                    {%endfor%}
+
+                                    {%endfor%}
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-4 p-0 border-end">
+
+                                <h3 class="bg-warning p-3">Quantity</h3>
+
+                                <div class="px-3 bg-gray-300">
+
+                                    {%for i in quantity%}
+
+                                    {%for j in i%}
+
+                                    <p class="border-bottom m-0 py-2">{{j}}</p>
+
+                                    {%endfor%}
+
+                                    {%endfor%}
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-4 p-0">
+
+                                <h3 class="bg-warning p-3">Price</h3>
+
+                                <div class="px-3 bg-gray-300">
+
+                                    {%for i in prices%}
+
+                                    {%for j in i%}
+
+                                    <p class="border-bottom m-0 py-2">${{j}}</p>
+
+                                    {%endfor%}
+
+                                    {%endfor%}
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-10 bg-gray-300 p-3 d-flex justify-content-between align-items-center">
+                        <p>Thank you for your Business</p>
+                        <h4 class="me-3">Total : {{total}}</h4>
+                    </div>
+                    <button class="w-25 p-3 btn btn-warning mt-5 " ><span style="font-weight: bolder; font-size:20px;" class="">Print</span></button>
+                </div>
+            
+        </div>
+    </div>
+    </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Back to Top -->
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+</body>
+{% endblock content %}
+
+</html>

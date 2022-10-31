@@ -25,7 +25,13 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body style="background-color:#f5eee7" >
+    {% if messages %}
+    {% for message in messages %}
+        <p class="d-none" id="messagetag">{{message.tags}}</p>
+        <p class="d-none " id="messagecontent">{{message}}</p>
+    {% endfor %}
+    {% endif %}
     <!-- Topbar Start -->
     <div class="container-fluid">
         <div class="row bg-secondary py-2 px-xl-5">

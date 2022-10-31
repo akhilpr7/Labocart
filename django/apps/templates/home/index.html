@@ -67,6 +67,12 @@
 
 </head>
 <body>
+    {% if messages %}
+    {% for message in messages %}
+        <p class="d-none" id="messagetag">{{message.tags}}</p>
+        <p class="d-none " id="messagecontent">{{message}}</p>
+    {% endfor %}
+    {% endif %}
 
     <header class="header-global">
         <nav id="navbar-main" aria-label="Primary navigation" class="navbar navbar-main navbar-expand-lg navbar-theme-primary pt-4 navbar-dark">

@@ -22,11 +22,13 @@
                                 </h1>
                                 <br />
                                 <p>
-                                    {% if msg %}
-                                        <span class="text-danger">
-                                            {{ msg | safe }}
-                                        </span>                                        
-                                    {% else %}
+                                    {% if messages %}
+                                    {% for message in messages %}
+                                        <p class="d-none" id="messagetag">{{message.tags}}</p>
+                                        <p class="d-none " id="messagecontent">{{message}}</p>
+                                    {% endfor %}
+                                    {% else%}
+                        
                                         Add your credentials
                                     {% endif %}                                     
                                 </p> 

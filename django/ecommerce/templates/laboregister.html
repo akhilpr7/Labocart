@@ -1,0 +1,118 @@
+{% extends "index.html" %} 
+
+{% load widget_tweaks %} 
+
+{% block title %} Sign UP {%endblock title %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+ {% block content %}
+ {% if messages %}
+ {% for message in messages %}
+     <p class="d-none" id="messagetag">{{message.tags}}</p>
+     <p class="d-none " id="messagecontent">{{message}}</p>
+ {% endfor %}
+ {% endif %}
+<main>
+    <body style="background-color:#f5eee7" >
+    <section class="py-5 mt-5 mt-lg-0 bg-soft d-flex align-items-center">
+        <div class="container">
+            <div class="row justify-content-center pb-3 form-bg-image"
+                data-background-lg="/static/assets/img/illustrations/signin.svg">
+                <div class="col-12 d-flex align-items-center justify-content-center">
+                    <div class="bg-white shadow border-0 rounded border-light p-4 p-lg-5 w-100 fmxw-500">
+                        <div class="text-center text-md-center mb-4 mt-md-0">
+                            <h1 class="mb-0 h3">Enter JOB Details</h1>
+                            <br />
+                            {% if messages %} {% for message in messages %}
+                            <p class="d-none" id="messagetag">{{message.tags}}</p>
+                            <p class="d-none" id="messagecontent">{{message}}</p>
+                            {% endfor %} {% endif %}
+                        </div>
+
+                        {% if success %}
+
+                        <div class="d-grid">
+                            <a href="{% url 'laboshop' %}" class="btn btn-gray-800">Sign IN</a>
+                        </div>
+
+                        {% else %}
+
+                        <form method="post" action="" class="mt-4">
+                            {% csrf_token %}
+
+                            <div class="row">
+                                <div class="form-group mb-4 col-md-12">
+                                    <label for="Image">Image_Link</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <span class="fas fa-user-circle"></span>
+                                        </span>
+                                        {{ form.image_link }}
+                                    </div>
+                                    <span class="text-danger">{{ form.image_link.errors }}</span>
+                                </div>
+
+                                <!-- Form -->
+                                <div class="form-group mb-4 col-md-12">
+                                    <label for="job_title">job_title</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <span class="fas fa-user-circle"></span>
+                                        </span>
+                                        {{ form.job_title }}
+                                    </div>
+                                    {% comment %} <span class="text-danger">{{ form.job_title.errors }}</span> {% endcomment %}
+                                </div>
+
+                                <div class="form-group mb-4 col-md-12">
+                                    <label for="rate">Rate</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <span class="fas fa-envelope"></span>
+                                        </span>
+                                        {{ form.rate }}
+                                    </div>
+                                    <span class="text-danger">{{ form.rate.errors }}</span>
+                                </div>
+             
+                                <div class="form-group mb-4 col-md-12">
+                                    <label for="worktype">Work Hours</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon2">
+                                            <span class="fas fa-phone"></span>
+                                        </span>
+                                        {{ form.work_type }}
+                                    </div>
+                                    <span class="text-danger">{{ form.work_type.errors }}</span>
+                                </div>
+
+          
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" name="register" class="btn btn-gray-800">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                        <br />
+                        <!-- <div class="d-flex justify-content-center align-items-center mt-4">
+                                    <span >Sign UP<class="fw-normal">
+                                        Already have an account? 
+                                        <a href="{% url 'login' %}" class="fw-bold">Sign IN</a>
+                                    </span>
+                                </div> -->
+
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <body>
+</main>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

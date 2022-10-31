@@ -13,12 +13,12 @@ services:
       - POSTGRES_PASSWORD=123
 
   web:
+    restart: always
     image: prj-image
     container_name: prj-container2
     build: 
       context: ./django
       dockerfile: Dockerfile
-    restart: always
     volumes:
       - ./django:/code
     ports:

@@ -5,6 +5,54 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+<!-- <div class="row  px-3 ">
+     <div class="card"> -->
+<body style="background-color:#f5eee7" >
+<div class="container-fluid py-4">
+
+    <div class="row">
+        <div class="col-6 p-2">
+        {% if messages %}
+            {% for message in messages %}
+                <p class="d-none" id="messagetag">{{message.tags}}</p>
+                <p class="d-none " id="messagecontent">{{message}}</p>
+            {% endfor %}
+        {% endif %}
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <!-- <div class="card-header"> -->
+                        <div class="card-title px-3 w-100 d-flex justify-content-between">
+                            <h3>DEPOSIT FUND</h3>
+                            <h5>Wallet Balance:{{request.user.wallet}}</h5>
+                        </div>
+                    </div>
+                    <div class="card-body" style="text-align:center;padding-block-end: 5% !important;">
+                        {% if messages %}
+                        {% for message in messages %}
+                            <p class="d-none" id="messagetag">{{message.tags}}</p>
+                            <p class="d-none " id="messagecontent">{{message}}</p>
+                        {% endfor %}
+                        {% endif %}
+                        <form method="post">
+                            {% csrf_token %} 
+                        <div class="mt-5" style="width:60%;margin-left: 20%;">
+                            <h5>Enter the amount:</h5>
+                            {{form.amount}}
+
+                            <span class="text-danger alert p-0">{{ form.amount.errors }}</span>
+
+                        </div>
+                        <div>
+                            <button type="submit" class="btn bg-gray-800 btn-rounded rounded-2 text-white" style="float:right">Add</button> 
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- </div> -->
+</body>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
