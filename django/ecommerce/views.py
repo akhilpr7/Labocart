@@ -27,7 +27,19 @@ class Home(View):
 @method_decorator(login_required,name='dispatch')
 class Shop(View):
 	def get(self, request, *args, **kwargs):
-		product = ProductsModel.objects.all()
+		print("aaaaaaaaaaaaaaaaaaaa",request)
+		print("bbbbbbbbbbbbbbbbbbbbbbb",request.GET.get('orderby'))
+		if request.GET.get('orderby') is not None and request.GET.get('orderby') != '':
+			if request.GET.get('orderby') == 'atoz':
+				product = ProductsModel.objects.all().order_by("Product_name")
+			elif request.GET.get('orderby') == 'ztoa':
+				product = ProductsModel.objects.all().order_by("-Product_name")
+			elif request.GET.get('orderby') == 'latest':
+				product = ProductsModel.objects.all().order_by("id")
+			elif request.GET.get('orderby') == 'oldest':
+				product = ProductsModel.objects.all().order_by("-id")
+		else:
+			product = ProductsModel.objects.all()
 		cart = CartModel.objects.all().filter(username=request.user.username).values_list("Product_name",flat=True)
 		data = {
 		"product":product,
@@ -481,12 +493,34 @@ class Subscribe(View):
 		print(is_sub,"***************************")
 		print(wallet_balance,"***************************")
 		packagecost = PackageModel.objects.filter(id=id).values_list("cost")[0][0]
+		packagename = PackageModel.objects.filter(id=id).values_list("package_name")[0][0]
 		print(packagecost,"packageeeeee coostssss")
 		if wallet_balance>= packagecost:
 			if is_sub:
 				messages.error(request,"Already Subscribed")
 				return redirect ("laboshop")
 			elif is_sub == False:
+
+				n = random.randint(0,99999)
+				data = PurchaseModel(	
+					phone=request.user.phone_no,
+					Total=packagecost,
+					Prices=[packagecost],
+					Quantity=[1],
+					Product_name=[packagename],
+					username=request.user.username,
+					first_name=request.user.first_name,
+					last_name=request.user.last_name,
+					email=request.user.email,
+					street="",
+					building="",
+					locality="",
+					postal=676122,
+					order_id=n,
+					status=0,
+					date = datetime.datetime.now().date()
+				)
+				data.save()
 				NewUserModel.objects.filter(username=request.user.username).update(is_sub=True,wallet=wallet_balance-packagecost,subscribed_at=datetime.datetime.now().date(),package=id)	
 				messages.success(request,"Succesfully Subscribed")
 				return redirect ("laboshop")
