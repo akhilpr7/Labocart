@@ -385,7 +385,7 @@ class Labocategories(View):
 		data = Category.objects.all()
 		context = {	
 			"data" : data,
-			'current_path':"Apply Services" 
+			'current_path':"Register Services" 
 		}
 		total_work = labourmodels.objects.filter(Q(username=request.user.username)&((Q(status=1)|Q(status=2)|Q(status=3)))).count()
 		print(total_work,"totttttttttttttttttttaaaaaaal workkkkkkkkkkkkk")
@@ -517,7 +517,7 @@ class Subscribe(View):
 					locality="",
 					postal=676122,
 					order_id=n,
-					status=3,
+					status=0,
 					date = datetime.datetime.now().date()
 				)
 				data.save()

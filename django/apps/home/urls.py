@@ -23,5 +23,11 @@ urlpatterns = [
     path('manageuser/', views.ManageUser.as_view(), name="manageuser"),
     path('updateuser/<int:id>/', views.UpdateUser.as_view(),name="updateuser"),
     path('jobpost',views.JobPostingView.as_view(),name="job-posting"),
+    path('manageservices/', views.ManageServices.as_view(), name="manageservices"),
+    path('updateservices/<int:id>/', views.UpdateServices.as_view(),name="updateservices"),
+
+
+
+
 
 ]

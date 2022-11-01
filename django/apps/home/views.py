@@ -9,7 +9,7 @@ from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm
 from .models import Category    
 from django.contrib import messages
 from django.urls import reverse
-from authentication.models import jobmodel,NewUserModel
+from authentication.models import jobmodel,NewUserModel,labourmodels
 from django.views.generic import ListView
 
 
@@ -172,7 +172,6 @@ class Addjobsview(View):
         form = AddJobForm()
         context = {
 			"form" : form,
-			'current_path':"Apply Services" 
 		}
 		# if not request.user.is_superuser:
         return render(request, self.template,context)
@@ -223,9 +222,34 @@ class UpdateUser(View):
         # print(users)
         return redirect('manageuser')
 
-
-
 class JobPostingView(View):
     template_name = 'home/job-posting.html'
     def get(self, request, *args, **kwargs):
         return render(request,self.template_name)
+        
+@method_decorator(login_required,name='dispatch')	
+class ManageServices(View):
+    def get(self, request, *args,**kwargs):
+        details = labourmodels.objects.all().order_by('id')
+        context = {
+            'details': details ,
+            'current_path':"Manage Services",
+            }
+        return render(request, "home/manage_services.html",context)
+
+@method_decorator(login_required,name='dispatch')	
+class UpdateServices(View):
+    def get(self, request,id, *args, **kwargs):
+        status=labourmodels.objects.filter(id=id).values_list("status")[0][0]
+        if status == 0:
+            labourmodels.objects.filter(id=id).update(status=1)
+            messages.success(request,"Success !")
+            return redirect("manageservices")
+        elif status == 1:
+            labourmodels.objects.filter(id=id).update(status=0)
+            messages.success(request,"Success !")
+            return redirect("manageservices")
+        else:
+            labourmodels.objects.filter(id=id).update(status=0)
+            messages.success(request,"Success !")
+            return redirect("manageservices")
