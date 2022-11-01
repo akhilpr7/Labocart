@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from ecommerce.models import HireModel, PurchaseModel
 from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm
-from .models import Category, JobPostingModel    
+from .models import Category,JobPostingModel   
 from django.contrib import messages
 from django.urls import reverse
 from authentication.models import jobmodel,NewUserModel
@@ -72,6 +72,16 @@ class Workerservices(View):
             'current_path' : "Worker Services"
         }
         return render(request, "home/worker-services.html", context)
+
+
+class LookForJobs(View):
+    def get(self, request,*args, **kwargs):
+        look = JobPostingModel.objects.filter(status = 0).values()
+        context = {
+            'look' : look
+        }
+        return render(request, "home/lookforjobs.html", context)
+
 
 @method_decorator(login_required,name='dispatch')
 class CompletedService(View):
@@ -239,7 +249,6 @@ class JobPostingView(View):
         "jobs" : jobs,
         'current_path':"Apply Services" 
         }
-        # if not request.user.is_superuser:
         return render(request, self.template_name,context)
 
     def post(self, request, *args, **kwargs):
@@ -249,8 +258,7 @@ class JobPostingView(View):
                 obj = JobPostingModel.objects.create(
                     hirer=request.user.username,
                     place=request.POST['place'],
-                    job_title=request.POST['job_title']
-                    ,rate=request.POST['rate'],
+                    job_title=request.POST['job_title'],
                     work_type=request.POST['work_type'],
                     phone=request.POST['phone'],
                     name=request.POST['name'])
@@ -261,9 +269,34 @@ class JobPostingView(View):
                 return redirect('shop')
 
 
+            else:
+                print("not valid")    
+                return redirect('shop')
 
+class ManageServices(View):
+    def get(self, request, *args,**kwargs):
+        details = labourmodels.objects.all().order_by('id')
+        context = {
+            'details': details ,
+            'current_path':"Manage Services",
+            }
+        return render(request, "home/manage_services.html",context)
 
-
+class UpdateServices(View):
+    def get(self, request,id, *args, **kwargs):
+        status=labourmodels.objects.filter(id=id).values_list("status")[0][0]
+        if status == 0:
+            labourmodels.objects.filter(id=id).update(status=1)
+            messages.success(request,"Success !")
+            return redirect("manageservices")
+        elif status == 1:
+            labourmodels.objects.filter(id=id).update(status=0)
+            messages.success(request,"Success !")
+            return redirect("manageservices")
+        else:
+            labourmodels.objects.filter(id=id).update(status=0)
+            messages.success(request,"Success !")
+            return redirect("manageservices")
 
 @method_decorator(login_required,name='dispatch')
 class Labocategories2(View):
