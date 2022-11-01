@@ -9,7 +9,7 @@ from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm
 from .models import Category,JobPostingModel   
 from django.contrib import messages
 from django.urls import reverse
-from authentication.models import jobmodel,NewUserModel
+from authentication.models import jobmodel,NewUserModel,labourmodels
 from django.views.generic import ListView
 from django.db.models import Q
 
