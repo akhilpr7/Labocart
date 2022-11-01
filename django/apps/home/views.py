@@ -259,15 +259,13 @@ class JobPostingView(View):
             print("2",request.POST['hirer'])
             print("3",request.POST['phone'])
             print("4",request.POST['work_type'])
-            print("5",request.POST['rate'])
             print("6",request.POST['job_title'])
             print("7",request.POST['name'])
             try:
                 obj = JobPostingModel.objects.create(
                     hirer=request.user.username,
                     place=request.POST['place'],
-                    job_title=request.POST['job_title']
-                    ,rate=request.POST['rate'],
+                    job_title=request.POST['job_title'],
                     work_type=request.POST['work_type'],
                     phone=request.POST['phone'],
                     name=request.POST['name'])
