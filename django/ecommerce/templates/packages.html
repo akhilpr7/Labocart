@@ -33,41 +33,24 @@
         <p class="d-none " id="messagecontent">{{message}}</p>
     {% endfor %}
     {% endif %}
-    <div class="row border-top pt-5 px-xl-5">
-            <table class="table table-striped">
-                {% comment %} <thead>
-                  <tr>
-                    <th scope="col">Package Name</th>
-                    <th scope="col">Validity (days)</th>
-                    <th scope="col">Cost</th>
-                    <th scope="col">Image</th>
-                    <!-- <th scope="col">Image</th> -->
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead> {% endcomment %}
+    <div class="card card-body border-0 shadow table-wrapper table-responsive">
+      <table class="table table-hover">
                 <thead>
-                    <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Package Name</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Validity (Days)</th>
-                      <th class=" text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-2">Cost</th>
-                      {% comment %} <th class=" text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-2">Quantity</th> {% endcomment %}
-                      <th class=" text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Image</th>
-                      {% comment %} <th class=" text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-2"></th> {% endcomment %}
-                      <th class=" text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-2">Action</th>
-                    </tr>
-                  </thead>
+                  <tr>
+                    <th class="border-gray-200">Package Name</th>
+                    <th class="border-gray-200">Validity (days)</th>
+                    <th class="border-gray-200">Cost</th>
+                    <th class="border-gray-200">Image</th>
+                    <!-- <th class="border-gray-200">Image</th> -->
+                    <th class="border-gray-200">Action</th>
+                  </tr>
+                </thead>
                 <tbody>
                   {% for data in package %}
-              <tr>
-                <td>
-                  <h6 class="mb-0 text-sm ms-3">{{data.package_name}}</h6>
-                </td>
-                <td>
-                  <p class="text-xs font-weight-bold mb-0">{{data.validity}}</p>
-                </td>
-                <td>
-                  <p class="text-xs font-weight-bold mb-0">{{data.cost}}</p>
-                </td>
+                <tr>
+                  <td><p>{{data.package_name}}</p></td>
+                  <td><p>{{data.validity}}</p></td>
+                  <td><p>{{data.cost}}</p></td>
                 {% comment %} <td>
                   <img src="{{data.image}}" class="mb-0 "></img>
                 </td> {% endcomment %}
@@ -108,7 +91,6 @@
 
 {% endblock content %}
 </html>
-
 
 
 

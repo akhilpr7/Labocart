@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 	<link href="../../../../static/homepage/css/bootstrap.min.css" rel="stylesheet">
 	<link href="../../../../static/homepage/css/style.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 	<script src="../../../../static/homepage/js/jquery.min.js"></script>			
 	<script src="../../../../static/homepage/js/bootstrap.min.js"></script>
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-48RQ5YEQNB"></script>
@@ -35,56 +36,14 @@
 			<div class="col-lg-9" align="right">
 				<ul>
 					<li><a href="#">Home</a></li>					
-					<li>
-						<div class="dropdown">
-							 <button class="dropbtn">Solutions</button>
-							  <div class="dropdown-content">
-								<a href="#">Dark Stores</a>
-								<a href="#">Manpower</a>
-								<a href="#">Compliance</a>								
-								<a href="#">BTS (Built-to-suit)</a>
-								<a href="#">Retail distribution</a>
-								<a href="#">Full stack logistics</a>								
-								<a href="#">Warehousing space</a>								
-								<a href="#">Warehouse operations</a>
-								<a href="#">Inventory management</a>
-								<a href="#">E-commerce fulfillment</a>
-							  </div>
-						</div>
-					</li>
-					<li>
-						<div class="dropdown">
-							 <button class="dropbtn">Industries</button>
-							  <div class="dropdown-content">
-								<a href="#">FMCG</a>
-								<a href="#">3PL</a>
-								<a href="#">Furniture</a>								
-								<a href="#">Chemical</a>
-								<a href="#">Electronics</a>
-								<a href="#">Automobile</a>								
-								<a href="#">E-commerce</a>								
-								<a href="#">White goods</a>								
-								<a href="#">Pharmaceutical</a>
-							  </div>
-						</div>
-					</li>
-					<li>
-						<div class="dropdown">
-							 <button class="dropbtn">Company</button>
-							  <div class="dropdown-content">
-							  	<a href="#">Blogs</a>
-								<a href="#">About us</a>
-								<a href="#">Contact us</a>
-								<a href="#">Support FAQ's</a>																
-							  </div>
-						</div>
-					</li>															
-					<li class="contactLink"><a href="#">Contact Us</a></li>
+					<li><a href="{%url 'dashboard'%}">Dashboard</a></li>
+					<li><a href="{%url 'laboshop'%}">Laboshop</a></li>
+					<li><a href="{% url 'login' %}">Login</a></li>
 				</ul>
 			</div>
 		</div>
 	</div>	
-	<div class="row mobileMenu">
+	<!-- <div class="row mobileMenu">
 			<div class="container">
 				<div class="col-lg-12 pd_lft_rt">
 					<div class="row menu_div">
@@ -149,7 +108,7 @@
 					</div>
 				</div>
 			</div>
-		</div>		
+		</div>		 -->
 	<div class="row">
 		<div class="col-lg-12 mob_left_ryt">
 			<div class="container">
@@ -158,7 +117,7 @@
 						<div class="col-lg-5 mob_left_ryt">
 							<p>Manpower Services for Flexible & Business Growth</p>
 							<p>We provide On-Demand Industry specific trained manpower with no minimum period</p>
-							<a href="{%url 'laboshop'%}"><button class="btn btnBanner">Labo Shop</button></a>
+							<a href="{% url 'shop' %}"><button class="btn btnBanner">Shop Now</button></a>
 						</div>
 						<div class="col-lg-7">
 							<img src="../../../../static/homepage/img/manpower/manpower_BG.svg" class="img-fluid" alt="manpower">
@@ -299,7 +258,7 @@
 							</div>
 						</div>
 						<div class="col-lg-12 logistic_operations_div">
-							<a href="{%url 'laboshop'%}"><button class="btn btnBanner">Labo Shop</button></a>
+							<a href="{%url 'laboshop' %}"><button class="btn btnBanner">Laboshop</button></a>
 						</div>
 					</div>
 				</div>
