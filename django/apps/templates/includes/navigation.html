@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+
+
 <nav class="navbar bg-primary mt-2 mb-3 navbar-dark bg-dark navbar-top navbar-expand navbar-dashboard  ps-0 pe-2 pb-0">
               <div class="container-fluid px-0">
                 <div class="d-flex justify-content-between w-100" id="navbarSupportedContent">
@@ -13,10 +16,14 @@
                     </ol>
                     </nav>
                   </div>
+                
                   <!-- Navbar links -->
                   <ul class="navbar-nav align-items-center">
-
-                    <li class="nav-item dropdown ms-lg-3">
+                      <div class="col-lg-6">
+                        <a href="{%url 'laboshop'%}" class="btn bg-transparent text-white"><span class=" align-bottom material-symbols-outlined">shopping_bag</span>Laboshop</a>
+                        <!-- <a href="{%url 'dashboard'%}">Laboshop</a> -->
+                        </div>
+                        <li class="nav-item dropdown ms-lg-3">
                       <a class="nav-link dropdown-toggle pt-1 px-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="media d-flex align-items-center">
                           <img class="avatar rounded-circle" alt="" src="{{request.user.image}}">
