@@ -517,7 +517,7 @@ class Subscribe(View):
 					locality="",
 					postal=676122,
 					order_id=n,
-					status=0,
+					status=3,
 					date = datetime.datetime.now().date()
 				)
 				data.save()

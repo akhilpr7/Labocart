@@ -1,6 +1,6 @@
 from django import forms
-from .models import Category
-from authentication.models import NewUserModel, jobmodel
+from .models import Category, JobPostingModel
+from authentication.models import NewUserModel
 
 class AddFundForm(forms.Form):
     
@@ -37,3 +37,18 @@ class CategoryForm(forms.ModelForm):
 class AddJobForm(forms.Form):
     job_name = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Job Name"}))
     category = forms.ModelChoiceField(queryset=Category.objects.all().values_list("category_name",flat=True))
+
+
+class JobPostingForm( forms.ModelForm ):
+  name = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Name"}))
+  place = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
+  phone = forms.CharField(max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Phone"}))
+  work_mode = forms.CharField(max_length=5, required=True, widget=forms.Select(attrs={'class': 'form-control'}))
+#   worker_name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"worker name ", 'readonly':'readonly'}))
+  hirer = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Hire name", 'readonly':'readonly'}))
+  job_title = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Job title", 'readonly':'readonly'}))
+  
+
+  class Meta:
+    model = JobPostingModel
+    fields = ('name','place','phone','work_mode', 'hirer','job_title')    

@@ -1,13 +1,13 @@
 from multiprocessing import context
+from tempfile import template
 from django.shortcuts import render,redirect
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from ecommerce.models import HireModel, PurchaseModel
-from .forms import AddJobForm, CategoryForm 
-from .models import Category
+from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm
+from .models import Category    
 from django.contrib import messages
-from .forms import AddFundForm
 from django.urls import reverse
 from authentication.models import jobmodel,NewUserModel
 from django.views.generic import ListView
@@ -51,7 +51,6 @@ class TransactionView(ListView):
         def get_queryset(self):
             new_context = PurchaseModel.objects.filter(status=0)
             return new_context
-
 
 @method_decorator(login_required,name='dispatch')
 class Userservices(View):
@@ -226,4 +225,7 @@ class UpdateUser(View):
 
 
 
-
+class JobPostingView(View):
+    template_name = 'home/job-posting.html'
+    def get(self, request, *args, **kwargs):
+        return render(request,self.template_name)
