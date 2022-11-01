@@ -31,9 +31,15 @@ services:
       - POSTGRES_PORT=5432
     depends_on:
       - db     
-      
   adminer:
     image: adminer:4.8.1-standalone
     restart: always
     ports:
       - 8050:8080     
+  go:
+    build:
+      context: ./go
+      dockerfile: Dockerfile
+    # command: ./go
+    volumes:
+      - ./go:/code

@@ -27,16 +27,17 @@ class Home(View):
 @method_decorator(login_required,name='dispatch')
 class Shop(View):
 	def get(self, request, *args, **kwargs):
-		print("aaaaaaaaaaaaaaaaaaaa",request)
-		print("bbbbbbbbbbbbbbbbbbbbbbb",request.GET.get('orderby'))
+		# print("aaaaaaaaaaaaaaaaaaaa",request)
+		# print("bbbbbbbbbbbbbbbbbbbbbbb",request.GET.get('orderby'))
+		sort=request.GET.get('orderby')
 		if request.GET.get('orderby') is not None and request.GET.get('orderby') != '':
-			if request.GET.get('orderby') == 'atoz':
+			if sort == 'atoz':
 				product = ProductsModel.objects.all().order_by("Product_name")
-			elif request.GET.get('orderby') == 'ztoa':
+			elif sort == 'ztoa':
 				product = ProductsModel.objects.all().order_by("-Product_name")
-			elif request.GET.get('orderby') == 'latest':
+			elif sort == 'latest':
 				product = ProductsModel.objects.all().order_by("id")
-			elif request.GET.get('orderby') == 'oldest':
+			elif sort == 'oldest':
 				product = ProductsModel.objects.all().order_by("-id")
 		else:
 			product = ProductsModel.objects.all()
@@ -171,6 +172,7 @@ class CheckoutView(View):
 
 					product_name = list(CartModel.objects.filter(username=request.user.username).values_list('Product_name',flat=True))
 					totalPrice = CartModel.objects.aggregate(Sum('Total'))
+					print("entering")
 					data = PurchaseModel(	
 						phone=request.POST['phone'],
 						Total=totalPrice["Total__sum"],
@@ -554,6 +556,7 @@ class ConfirmPay(View):
 				quant = ProductsModel.objects.filter(id=i[0]).values_list("Quantity")[0][0]
 				ProductsModel.objects.filter(id=i[0]).update(Quantity=quant-quantity)
 			obj.delete()
+
 			return redirect("shop")
 		else:
 			messages.error(request,"Not enough balance in wallet!!")
@@ -575,9 +578,15 @@ class Packages(View):
 class Deletepackage(View):
 	def get(self, request, id):
 		packageData = PackageModel.objects.get(id=id)
-		packageData.delete()
-		messages.success(request,"Success !")
-		return redirect('packages')
+		userwpackage = NewUserModel.objects.filter(package=id).count()
+		# print(userwpackage,"existing package of users!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+		if userwpackage!=0:
+			messages.error(request,"There are users with that package  !")
+			return redirect('packages')
+		else:
+			packageData.delete()
+			messages.success(request,"Success !")
+			return redirect('packages')
 
 @method_decorator(login_required,name='dispatch')
 class UpdatePackage(View): 

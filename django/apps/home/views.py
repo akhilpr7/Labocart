@@ -49,7 +49,7 @@ class TransactionView(ListView):
         context_object_name = 'datas'
         template_name = 'home/transactions.html'
         def get_queryset(self):
-            new_context = PurchaseModel.objects.filter(status=0)
+            new_context = PurchaseModel.objects.filter(status=3)
             return new_context
 
 
