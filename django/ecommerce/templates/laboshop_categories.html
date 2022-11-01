@@ -26,6 +26,8 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../../../static/shop/css/style.css" rel="stylesheet">
+    <!-- CSS only -->
+
 </head>
 
 <body style="background-color:#f5eee7" >
@@ -38,13 +40,13 @@
     <div class="container-fluid">
         {%for i in data%}
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle w-25 p-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               {{i.category_name}}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               {%for j in datajob%}
               {%if i.category_name in j.category%}
-                <a class="dropdown-item" href="{%url 'laboshop' j.id%}">{{j.job_title}}</a>
+                <a class="dropdown-item w-50" href="{%url 'laboshop' j.id%}">{{j.job_title}}</a>
            
                 {%endif%}
                 {%endfor%}
@@ -54,6 +56,8 @@
         <div class="row border-top pt-3 px-xl-5  d-flex justify-content-between">
             <div class="col-lg-3 "> 
         
+    </div>
+    </div>
     </div>
     <div>
     <p>.</p>
@@ -91,7 +95,56 @@
     <!-- Template Javascript -->
     <script src="../../static/shop/js/main.js"></script>
 </body>
+<style>
 
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+</style>
 {% endblock content %}
 
 </html>
