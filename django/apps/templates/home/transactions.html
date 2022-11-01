@@ -17,6 +17,7 @@
                     <th class="border-gray-200">ID</th>
                     <th class="border-gray-200">Username</th>
                     <th class="border-gray-200">Product Name</th>
+                    <th class="border-gray-200">Price</th>
                     <th class="border-gray-200">Total Price</th>
                     <th class="border-gray-200">Date</th>
                     <th class="border-gray-200">Quantity</th>
@@ -32,23 +33,33 @@
                     <td>{{data.order_id}}</td>
                     <td>{{data.username}}</td>
                     <td>{% for Product_name in data.Product_name %}
-                        {{Product_name}}
-                        {% if forloop.last %}
+                        <p>{{Product_name}}</p>
+                        {% comment %} {% if forloop.last %}
                         {{" "}}
                         {% else %}
-                        ,
-                        {% endif %}
+                        
+                        {% endif %} {% endcomment %}
                         {% endfor %}
                     </td>
+                    <td>{% for price in data.Prices %}
+                        <p>{{price}}</p>
+                        {% comment %} {% if forloop.last %}
+                        {{" "}}
+                        {% else %}
+                        
+                        {% endif %} {% endcomment %}
+                        {% endfor %}
+                    </td>
+
                     <td>{{data.Total}}</td>
                     <td>{{data.date}}</td>
                     <td>{% for quantity in data.Quantity %}
-                        {{quantity}}
-                        {% if forloop.last %}
+                        <p>{{quantity}}</p>
+                        {% comment %} {% if forloop.last %}
                         {{" "}}
                         {% else %}
                         ,
-                        {% endif %}
+                        {% endif %} {% endcomment %}
                         {% endfor %}
                     </td>
 

@@ -25,9 +25,7 @@ urlpatterns = [
     path('jobpost',views.JobPostingView.as_view(),name="job-posting"),
     path('manageservices/', views.ManageServices.as_view(), name="manageservices"),
     path('updateservices/<int:id>/', views.UpdateServices.as_view(),name="updateservices"),
-
-
-
-
+    path('jobpost/<str:id>',views.JobPostingView.as_view(),name="job-posting"),
+	path("labocategory2/",views.Labocategories2.as_view(), name="labocategory2"),
 
 ]
