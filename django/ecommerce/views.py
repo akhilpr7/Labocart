@@ -17,6 +17,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 import random,datetime
+from apps.home.models import Category
 
 @method_decorator(login_required,name='dispatch')
 class Home(View):
@@ -229,8 +230,10 @@ class Invoice(View):
 
 @method_decorator(login_required,name='dispatch')
 class LaboShop(View):
-	def get(self, request, *args, **kwargs):
-		data = labourmodels.objects.filter(Q(status=1) | Q(status=2) | Q(status=3))
+	def get(self, request,id, *args, **kwargs):
+		job=jobmodel.objects.filter(id=id).values_list("job_title")[0][0]
+		# if request.GET.get('jobtitle') is not None and request.GET.get('job') != '':
+		data = labourmodels.objects.filter((Q(job_title=job))&(Q(status=1) | Q(status=2) | Q(status=3)))
 		fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
 		print("fffffffffffffffffffffffffffffffffffffffffffffff",fund)
 		context = {
@@ -246,6 +249,16 @@ class LaboShop(View):
 			messages.error(request,"Membership Required !")
 			return redirect("membership")
 
+@method_decorator(login_required,name='dispatch')
+class LaboShopCategory(View):
+	def get(self,request, *args, **kwargs):
+		data=Category.objects.values()
+		datajob = jobmodel.objects.values()
+		context={ 
+			"data":data,
+			"datajob":datajob,
+		}
+		return render(request,'laboshop_categories.html',context)
 
 @method_decorator(login_required,name='dispatch')
 class Addproduct(View):
@@ -461,6 +474,7 @@ class Acceptservice(View):
 class Togglestatus(View):
 	def get(self, request,id, *args, **kwargs):
 		status = labourmodels.objects.filter(id=id).values_list("status")[0][0]
+
 		print(status,":::::::::::::::::::::::")
 		if status == 0:
 			total_work = labourmodels.objects.filter(Q(username=request.user.username)&((Q(status=1)|Q(status=2)|Q(status=3)))).count()
