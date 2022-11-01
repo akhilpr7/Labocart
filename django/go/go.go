@@ -101,28 +101,18 @@ func fetchsub(db *sql.DB) {
 func rating(db *sql.DB){
 
 	var rating float64
-	// var rating
 	var worker_name string 
-	// var username string
-
-	// fetchsub(db)
-	
 	row,_ := db.Query(
 		`SELECT  avg(rating),worker_name FROM ecommerce_hiremodel group by worker_name;`  )
 		defer row.Close()
 
 
 for row.Next() {
-    // row.Scan(&rating)
     row.Scan(&rating,&worker_name)
-	
-
 	rate := int(math.Round(rating))
-
 	_,err := db.Exec(`UPDATE authentication_newusermodel SET rating = $1 WHERE username = $2;`,rate,worker_name )
 	if err != nil {
 		fmt.Println("err")
-
 		fmt.Println(err)
 	}
 
