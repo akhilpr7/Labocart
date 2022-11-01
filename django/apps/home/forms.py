@@ -39,43 +39,18 @@ class AddJobForm(forms.Form):
     category = forms.ModelChoiceField(queryset=Category.objects.all().values_list("category_name",flat=True))
 
 
-class JobPostingForm( forms.ModelForm ):
+class JobPostingForm( forms.Form ):
   name = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Name"}))
   place = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
   phone = forms.CharField(max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Phone"}))
-  work_mode = forms.CharField(max_length=5, required=True, widget=forms.Select(attrs={'class': 'form-control'}))
-#   worker_name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"worker name ", 'readonly':'readonly'}))
-  hirer = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Hire name", 'readonly':'readonly'}))
-  job_title = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Job title", 'readonly':'readonly'}))
   rate = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
+  CHOICES = (('True','Half day'),('False','Full day'))
+  work_type = forms.ChoiceField(choices = CHOICES)
 
-
-  class Meta:
-    model = JobPostingModel
-    fields = ('name','place','phone','work_mode', 'hirer','job_title','rate')    
   def __init__(self,*args,**kwargs):
-    print(kwargs,"88888888888888888888888888")
     self.category = kwargs.pop('initial',[])
-    print(kwargs,"88888888888888888888888888",self.category)
+    self.user = kwargs.pop('user',[])
+    print(self.user,"sdfaghsdhj")
     super(JobPostingForm, self).__init__(*args,**kwargs)
-    # choice =jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True)
     self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True))
-  #   category = self.category
-  #   return category
-  # def __init__(self, *args, **kwargs) :
-    # print("hhhhhhhhhhh",self.__dict__)
-    # self.category = kwargs.pop("category",None)
-    # print("dfdfdgdgdgdgd",kwargs)
-
-    # datas =list(jobmodel.objects.filter(category=self.category).values_list('job_title'))
-    # choices = datas
-    # for data in datas:
-    #   print(data,"gggggggggggggggggggggggggggggggggggg",)
-  #   # self.fields['job_title'] = forms.ChoiceField(choices=choices) 
-  #   # job_title = forms.ChoiceField(choices=choices) 
-  #   super(Laboregisterform, self).__init__(*args, **kwargs)
-  #   # self.fields['job_title'] = forms.ChoiceField(data) 
-
-  # username = forms.CharField(widget=forms.HiddenInput(attrs={'class': 'form-control border ps-2'}))
-    print(self.category,"-----------------------------------------")
-    cat = self.category  
+    self.fields['hirer']=forms.CharField(max_length=20, required=True, widget=forms.HiddenInput() , initial=self.user)
