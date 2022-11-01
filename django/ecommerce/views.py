@@ -203,12 +203,12 @@ class CheckoutView(View):
 class Invoice(View):
 	template_name = 'invoice.html'
 	def get(self, request):
-		products = PurchaseModel.objects.filter(username=request.user.username, status = 1).values_list('Product_name')[0]
+		products = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Product_name')[0]
 		print(products, "Prodduuuuuucts")
-		prices = PurchaseModel.objects.filter(username=request.user.username, status = 1).values_list('Prices')[0]
-		quantity = PurchaseModel.objects.filter(username=request.user.username, status = 1).values_list('Quantity')[0]
+		prices = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Prices')[0]
+		quantity = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Quantity')[0]
 		print(prices, "priceeeeeeeeeeeeeeeees")
-		total = PurchaseModel.objects.filter(username=request.user.username, status = 1).values_list('Total')[0][0]
+		total = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Total')[0][0]
 		print(total, "total")
 
 		context = {
@@ -570,7 +570,7 @@ class ConfirmPay(View):
 				quant = ProductsModel.objects.filter(id=i[0]).values_list("Quantity")[0][0]
 				ProductsModel.objects.filter(id=i[0]).update(Quantity=quant-quantity)
 			obj.delete()
-			return redirect("shop")
+			return redirect("invoice")
 		else:
 			messages.error(request,"Not enough balance in wallet!!")
 			PurchaseModel.objects.filter(id=id).update(status=2)
@@ -663,3 +663,6 @@ class membership(View):
 			"data": data,
 		}
 		return render(request,template,context)
+class Workerview(View):
+	def get(self, request, *args, **kwargs):
+		return render(request,'index1.html',{})
