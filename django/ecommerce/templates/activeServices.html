@@ -91,7 +91,7 @@
     <div class="col-12 col-md-12">
         <div class="row pb-3">
             {% for i in data %}
-            <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+            <div class="col-lg-4 col-md-6 col-sm-12 pb-1 p-3">
                 <div class="card product-item border-0 mb-4">
                     <div class="card" style="border-radius: 15px; background-color: rgba(255, 255, 255, 0.993);">
                         <div class="card-body p-4 text-black">
@@ -146,9 +146,9 @@
                         </div>
                         <div class="card-footer">
                             {% if i.status == 0 %}
-                                <a href="{%url 'togglestatus' i.id %}" class=" btn btn-danger">Inactive</a>
+                                <a href="{%url 'togglestatus' i.id %}" class=" btn rounded-2 btn-danger">Inactive</a>
                             {% elif i.status == 1 %}
-                                <a href="{%url 'togglestatus' i.id %}" class="btn btn-success">Active</a>
+                                <a href="{%url 'togglestatus' i.id %}" class="btn rounded-2 btn-success">Active</a>
                             {% elif i.status == 2 %}
                                 <i class="btn btn-dark">Pending</i>
                                 <a href="{%url 'togglestatus' i.id %}" class="btn btn-danger">Cancel</a>
