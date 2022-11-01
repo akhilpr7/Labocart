@@ -357,7 +357,6 @@ class LaboRegister(View):
 			job_title = request.POST.get("job_title")
 			rate = request.POST.get("rate")
 			work_type = request.POST.get("work_type")
-			
 			obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 1)
 			messages.success(request,"Success !")
 			print(obj,"55555555555555")

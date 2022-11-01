@@ -69,7 +69,7 @@ func fetchsub(db *sql.DB) {
   for row.Next(){
     row.Scan(&username)
     row1 := db.QueryRow(
-     `SELECT subscribed_at FROM authentication_newusermodel WHERE username = $1` ,username)
+     `SELECT subscribed_at,package FROM authentication_newusermodel WHERE username = $1` ,username)
     row1.Scan(&subscribed_at)
     row2 := db.QueryRow(
      `SELECT package FROM authentication_newusermodel WHERE username = $1` ,username)

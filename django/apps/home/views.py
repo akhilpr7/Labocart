@@ -245,13 +245,6 @@ class JobPostingView(View):
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             form = JobPostingForm(request.POST)
-            print("1",request.POST['place'])
-            print("2",request.POST['hirer'])
-            print("3",request.POST['phone'])
-            print("4",request.POST['work_type'])
-            print("5",request.POST['rate'])
-            print("6",request.POST['job_title'])
-            print("7",request.POST['name'])
             try:
                 obj = JobPostingModel.objects.create(
                     hirer=request.user.username,
@@ -265,11 +258,6 @@ class JobPostingView(View):
                 return redirect('laboshop')
 
             except Exception :
-                return redirect('shop')
-
-
-            else:
-                print("not valid")    
                 return redirect('shop')
 
 
