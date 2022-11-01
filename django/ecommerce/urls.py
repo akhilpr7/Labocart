@@ -35,5 +35,5 @@ urlpatterns = [
 	path('updatePackage/<int:id>/', views.UpdatePackage.as_view(), name="updatePackage"),
 	path("addpackage/",views.Addpackage.as_view(),name="addpackage"),
 	path("membership/",views.membership.as_view(), name="membership"),
-
+	# path("workerview/",views.Workerview.as_view(), name="workerview"),
 ]

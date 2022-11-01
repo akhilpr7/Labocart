@@ -16,6 +16,7 @@ urlpatterns = [
     path('delete_job/<int:id>/', views.Deletejob.as_view(), name="delete_job"),
     path('userservices/', views.Userservices.as_view(),name="userservices"),
     path('workerservices/', views.Workerservices.as_view(),name="workerservices"),
+    path('lookforjobs/', views.LookForJobs.as_view(),name="lookforjobs"),
     path('completedservices/<int:id>/', views.CompletedService.as_view(), name="completedservices"),
     path('usercompletedservices/<int:id>/', views.UserCompletedService.as_view(), name="usercompletedservices"),
     path('rating/<int:id>/', views.RatingView.as_view(),name="rating"),

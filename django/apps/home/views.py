@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from ecommerce.models import HireModel, PurchaseModel
 from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm
-from .models import Category    
+from .models import Category,JobPostingModel   
 from django.contrib import messages
 from django.urls import reverse
 from authentication.models import jobmodel,NewUserModel
@@ -71,6 +71,16 @@ class Workerservices(View):
             'current_path' : "Worker Services"
         }
         return render(request, "home/worker-services.html", context)
+
+
+class LookForJobs(View):
+    def get(self, request,*args, **kwargs):
+        look = JobPostingModel.objects.filter(status = 0).values()
+        context = {
+            'look' : look
+        }
+        return render(request, "home/lookforjobs.html", context)
+
 
 @method_decorator(login_required,name='dispatch')
 class CompletedService(View):
