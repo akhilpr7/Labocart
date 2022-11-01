@@ -26,12 +26,12 @@
             </div>
             <div class="back" style=" height:calc(100vh - 8rem );">
               <div class="inner">
-                <p>Subscription of Labocart services</p>
+                <h4 class="text-white">{{i.package_name }}</h4>
                 <div>
                  
                 <p>{{i.validity}} Days</p>
                
-                <button style="width: auto;background-color: dodgerblue;color:whitesmoke;border-radius: 10px;"><a href= "{% url 'subscribe' i.id%}">${{i.cost}}</a></button>
+                <button class="py-2 px-4" style="width: auto; background-color: dodgerblue;color:whitesmoke;border-radius: 10px;"><a href= "{% url 'subscribe' i.id%}">$ {{i.cost}}</a></button>
               </div>
               </div>
             </div>
