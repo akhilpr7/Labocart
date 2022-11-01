@@ -26,18 +26,6 @@ class labourmodels(models.Model):
     status = models.IntegerField(blank = False,default=0)
 
 
-# class Categorymodel(models.Model):
-#     category_name = models.CharField(max_length=30, blank=False)
-
-
-# class Subcategorymodel(models.Model):
-#     job = models.CharField(max_length=50,blank=False)
-#     category = models.ForeignKey(Categorymodel, blank=False,on_delete=models.DO_NOTHING)
-
-# class Workersmodel:
-#     username = models.ForeignKey(NewUserModel, blank=False,on_delete=models.DO_NOTHING)
-#     work_type = models.IntegerField(blank=False)
-#     rate = models.FloatField(max_length=10,default = 1)
 class jobmodel(models.Model):
     job_title = models.CharField(max_length=255, blank=False)
     category = models.CharField(max_length=255,blank=False)
@@ -46,7 +34,4 @@ class jobmodel(models.Model):
 class requests(models.Model):
     username = models.CharField(max_length=255, blank=False)
     worker_username = models.CharField(max_length=255, blank=False)
-    #status codes
-    #true = active(worker able to see the request)
-    #false = inactive(the request is not active)
     status = models.BooleanField(default=False)

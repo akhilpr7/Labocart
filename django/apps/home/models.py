@@ -26,3 +26,4 @@ class JobPostingModel(models.Model):
     phone = models.BigIntegerField()
     status = models.IntegerField(default=0, blank=False)
     job_title = models.CharField(max_length=20, blank=False,default='none')
+    rate = models.FloatField(max_length=10,default=1)

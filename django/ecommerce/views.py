@@ -357,12 +357,6 @@ class LaboRegister(View):
 			work_type = request.POST.get("work_type")
 			
 			obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 1)
-				# usename = request.user.username,
-				# image_link = form.cleaned_data["image_link"],
-				# job_title = form.cleaned_data["job_title"],
-				# rate = form.cleaned_data["rate"],
-				# work_type = form.cleaned_data["work_type"]
-			# form.save()
 			messages.success(request,"Success !")
 			print(obj,"55555555555555")
 			return redirect('shop')
