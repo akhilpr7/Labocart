@@ -2,7 +2,7 @@ version: '3.3'
 services:
   db:
     image: postgres:14
-    container_name: psql-con2
+    container_name: psql-con
     volumes: 
       - ./sql/django.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
       - ./data/db:/var/lib/postgresql/data 
@@ -15,7 +15,7 @@ services:
   web:
     restart: always
     image: prj-image
-    container_name: prj-container2
+    container_name: prj-container
     build: 
       context: ./django
       dockerfile: Dockerfile
@@ -31,9 +31,15 @@ services:
       - POSTGRES_PORT=5432
     depends_on:
       - db     
-      
   adminer:
     image: adminer:4.8.1-standalone
     restart: always
     ports:
       - 8050:8080     
+  go:
+    build:
+      context: ./go
+      dockerfile: Dockerfile
+    # command: ./go
+    volumes:
+      - ./go:/code

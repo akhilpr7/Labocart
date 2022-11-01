@@ -27,16 +27,17 @@ class Home(View):
 @method_decorator(login_required,name='dispatch')
 class Shop(View):
 	def get(self, request, *args, **kwargs):
-		print("aaaaaaaaaaaaaaaaaaaa",request)
-		print("bbbbbbbbbbbbbbbbbbbbbbb",request.GET.get('orderby'))
+		# print("aaaaaaaaaaaaaaaaaaaa",request)
+		# print("bbbbbbbbbbbbbbbbbbbbbbb",request.GET.get('orderby'))
+		sort=request.GET.get('orderby')
 		if request.GET.get('orderby') is not None and request.GET.get('orderby') != '':
-			if request.GET.get('orderby') == 'atoz':
+			if sort == 'atoz':
 				product = ProductsModel.objects.all().order_by("Product_name")
-			elif request.GET.get('orderby') == 'ztoa':
+			elif sort == 'ztoa':
 				product = ProductsModel.objects.all().order_by("-Product_name")
-			elif request.GET.get('orderby') == 'latest':
+			elif sort == 'latest':
 				product = ProductsModel.objects.all().order_by("id")
-			elif request.GET.get('orderby') == 'oldest':
+			elif sort == 'oldest':
 				product = ProductsModel.objects.all().order_by("-id")
 		else:
 			product = ProductsModel.objects.all()
@@ -171,6 +172,7 @@ class CheckoutView(View):
 
 					product_name = list(CartModel.objects.filter(username=request.user.username).values_list('Product_name',flat=True))
 					totalPrice = CartModel.objects.aggregate(Sum('Total'))
+					print("entering")
 					data = PurchaseModel(	
 						phone=request.POST['phone'],
 						Total=totalPrice["Total__sum"],
@@ -203,12 +205,12 @@ class CheckoutView(View):
 class Invoice(View):
 	template_name = 'invoice.html'
 	def get(self, request):
-		products = PurchaseModel.objects.filter(username=request.user.username, status = 1).values_list('Product_name')[0]
+		products = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Product_name')[0]
 		print(products, "Prodduuuuuucts")
-		prices = PurchaseModel.objects.filter(username=request.user.username, status = 1).values_list('Prices')[0]
-		quantity = PurchaseModel.objects.filter(username=request.user.username, status = 1).values_list('Quantity')[0]
+		prices = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Prices')[0]
+		quantity = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Quantity')[0]
 		print(prices, "priceeeeeeeeeeeeeeeees")
-		total = PurchaseModel.objects.filter(username=request.user.username, status = 1).values_list('Total')[0][0]
+		total = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Total')[0][0]
 		print(total, "total")
 
 		context = {
@@ -357,12 +359,6 @@ class LaboRegister(View):
 			work_type = request.POST.get("work_type")
 			
 			obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 1)
-				# usename = request.user.username,
-				# image_link = form.cleaned_data["image_link"],
-				# job_title = form.cleaned_data["job_title"],
-				# rate = form.cleaned_data["rate"],
-				# work_type = form.cleaned_data["work_type"]
-			# form.save()
 			messages.success(request,"Success !")
 			print(obj,"55555555555555")
 			return redirect('shop')
@@ -493,12 +489,34 @@ class Subscribe(View):
 		print(is_sub,"***************************")
 		print(wallet_balance,"***************************")
 		packagecost = PackageModel.objects.filter(id=id).values_list("cost")[0][0]
+		packagename = PackageModel.objects.filter(id=id).values_list("package_name")[0][0]
 		print(packagecost,"packageeeeee coostssss")
 		if wallet_balance>= packagecost:
 			if is_sub:
 				messages.error(request,"Already Subscribed")
 				return redirect ("laboshop")
 			elif is_sub == False:
+
+				n = random.randint(0,99999)
+				data = PurchaseModel(	
+					phone=request.user.phone_no,
+					Total=packagecost,
+					Prices=[packagecost],
+					Quantity=[1],
+					Product_name=[packagename],
+					username=request.user.username,
+					first_name=request.user.first_name,
+					last_name=request.user.last_name,
+					email=request.user.email,
+					street="",
+					building="",
+					locality="",
+					postal=676122,
+					order_id=n,
+					status=3,
+					date = datetime.datetime.now().date()
+				)
+				data.save()
 				NewUserModel.objects.filter(username=request.user.username).update(is_sub=True,wallet=wallet_balance-packagecost,subscribed_at=datetime.datetime.now().date(),package=id)	
 				messages.success(request,"Succesfully Subscribed")
 				return redirect ("laboshop")
@@ -554,7 +572,7 @@ class ConfirmPay(View):
 				quant = ProductsModel.objects.filter(id=i[0]).values_list("Quantity")[0][0]
 				ProductsModel.objects.filter(id=i[0]).update(Quantity=quant-quantity)
 			obj.delete()
-			return redirect("shop")
+			return redirect("invoice")
 		else:
 			messages.error(request,"Not enough balance in wallet!!")
 			PurchaseModel.objects.filter(id=id).update(status=2)
@@ -575,9 +593,15 @@ class Packages(View):
 class Deletepackage(View):
 	def get(self, request, id):
 		packageData = PackageModel.objects.get(id=id)
-		packageData.delete()
-		messages.success(request,"Success !")
-		return redirect('packages')
+		userwpackage = NewUserModel.objects.filter(package=id).count()
+		# print(userwpackage,"existing package of users!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+		if userwpackage!=0:
+			messages.error(request,"There are users with that package  !")
+			return redirect('packages')
+		else:
+			packageData.delete()
+			messages.success(request,"Success !")
+			return redirect('packages')
 
 @method_decorator(login_required,name='dispatch')
 class UpdatePackage(View): 
@@ -647,3 +671,6 @@ class membership(View):
 			"data": data,
 		}
 		return render(request,template,context)
+class Workerview(View):
+	def get(self, request, *args, **kwargs):
+		return render(request,'index1.html',{})
