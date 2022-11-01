@@ -6,11 +6,12 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from ecommerce.models import HireModel, PurchaseModel
 from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm
-from .models import Category    
+from .models import Category, JobPostingModel    
 from django.contrib import messages
 from django.urls import reverse
 from authentication.models import jobmodel,NewUserModel
 from django.views.generic import ListView
+from django.db.models import Q
 
 
 # Create your views here.
@@ -227,5 +228,31 @@ class UpdateUser(View):
 
 class JobPostingView(View):
     template_name = 'home/job-posting.html'
-    def get(self, request, *args, **kwargs):
-        return render(request,self.template_name)
+    def get(self, request,id, *args, **kwargs):
+        category = Category.objects.filter(id=id).values_list('category_name')[0][0]
+        jobs = jobmodel.objects.filter(category=category).values()
+        # print("----",jobs,"6666666666666666666666666666666")
+        form = JobPostingForm(initial=category)
+        context = {
+        "form" : form,
+        "jobs" : jobs,
+        'current_path':"Apply Services" 
+        }
+        # if not request.user.is_superuser:
+        return render(request, self.template,context)
+@method_decorator(login_required,name='dispatch')
+class Labocategories2(View):
+	template = 'labo_categories.html'
+	def get(self, request, *args, **kwargs):
+		data = Category.objects.all()
+		context = {	
+			"data" : data,
+			'current_path':"Provide Jobs" 
+		}
+		total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username)&((Q(status=1)|Q(status=2)|Q(status=3)))).count()
+		print(total_work,"totttttttttttttttttttaaaaaaal workkkkkkkkkkkkk")
+		if total_work < 5 :
+			return render(request, self.template,context)
+		else:
+			messages.error(request,"Job Applying Limit Reached !!")
+			return redirect("laboshop")
