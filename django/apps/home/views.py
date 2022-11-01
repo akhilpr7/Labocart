@@ -216,7 +216,7 @@ class Access_denied(View):
 
 class ManageUser(View):
     def get(self, request, *args,**kwargs):
-        details = NewUserModel.objects.all().order_by('id')
+        details = NewUserModel.objects.all().order_by('id').exclude(username='admin')
         context = {
             'details': details ,
             'current_path':"Manage User",

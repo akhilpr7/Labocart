@@ -43,10 +43,10 @@
             <button class="btn btn-secondary dropdown-toggle w-25 p-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               {{i.category_name}}
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu w-25" aria-labelledby="dropdownMenuButton">
               {%for j in datajob%}
               {%if i.category_name in j.category%}
-                <a class="dropdown-item w-50" href="{%url 'laboshop' j.id%}">{{j.job_title}}</a>
+                <a class="dropdown-item" href="{%url 'laboshop' j.id%}">{{j.job_title}}</a>
            
                 {%endif%}
                 {%endfor%}
