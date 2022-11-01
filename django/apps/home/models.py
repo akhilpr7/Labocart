@@ -14,16 +14,13 @@ class Transaction(models.Model):
     quantity = models.IntegerField(blank=False,null=False)
     Status = models.CharField(max_length=100, null=False)
 
-WORK_MODE = (
-    ('full','Full Day'),
-    ('half', 'Half Day'),
-)
+
 class JobPostingModel(models.Model):
     hirer = models.TextField(max_length=255, blank=False)
     name = models.TextField(max_length=255, blank=False)
     place = models.TextField(max_length=255, blank=False)
-    work_mode = models.CharField(max_length=6, choices=WORK_MODE, default='full')
+    work_type = models.BooleanField(default=False)
     phone = models.BigIntegerField()
-    status = models.IntegerField(default=0, blank=False)
+    status =  models.IntegerField(blank=False,null=True,default=1)
     job_title = models.CharField(max_length=20, blank=False,default='none')
-    rate = models.FloatField(max_length=10,default=1)
+    rate = models.FloatField(max_length=10,default=0)

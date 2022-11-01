@@ -28,31 +28,9 @@ class Laboregisterform(forms.Form):
     self.category = kwargs.pop('initial',[])
     print(kwargs,"88888888888888888888888888",self.category)
     super(Laboregisterform, self).__init__(*args,**kwargs)
-    # choice =jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True)
     self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True))
-  #   category = self.category
-  #   return category
-  # def __init__(self, *args, **kwargs) :
-    # print("hhhhhhhhhhh",self.__dict__)
-    # self.category = kwargs.pop("category",None)
-    # print("dfdfdgdgdgdgd",kwargs)
 
-    # datas =list(jobmodel.objects.filter(category=self.category).values_list('job_title'))
-    # choices = datas
-    # for data in datas:
-    #   print(data,"gggggggggggggggggggggggggggggggggggg",)
-  #   # self.fields['job_title'] = forms.ChoiceField(choices=choices) 
-  #   # job_title = forms.ChoiceField(choices=choices) 
-  #   super(Laboregisterform, self).__init__(*args, **kwargs)
-  #   # self.fields['job_title'] = forms.ChoiceField(data) 
-
-  # username = forms.CharField(widget=forms.HiddenInput(attrs={'class': 'form-control border ps-2'}))
-    print(self.category,"-----------------------------------------")
-    cat = self.category
-  # category1 = self.category
   image_link = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
-  # job_title = forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title"))
-  # job_title = forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=cat).values_list("job_title"))
   rate = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
   CHOICES = (('True','Half day'),('False','Full day'))
   work_type = forms.ChoiceField(choices = CHOICES)

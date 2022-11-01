@@ -135,6 +135,7 @@ class CategoryView(View):
             }
         return render(request, "home/category.html",context)
 
+
 @method_decorator(login_required,name='dispatch')
 class AddCategoryView(View):
     def get(self, request, *args, **kwargs):
@@ -232,17 +233,53 @@ class JobPostingView(View):
         category = Category.objects.filter(id=id).values_list('category_name')[0][0]
         jobs = jobmodel.objects.filter(category=category).values()
         # print("----",jobs,"6666666666666666666666666666666")
-        form = JobPostingForm(initial=category)
+        form = JobPostingForm(initial=category,user=request.user.username)
         context = {
         "form" : form,
         "jobs" : jobs,
         'current_path':"Apply Services" 
         }
         # if not request.user.is_superuser:
-        return render(request, self.template,context)
+        return render(request, self.template_name,context)
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            form = JobPostingForm(request.POST)
+            print("1",request.POST['place'])
+            print("2",request.POST['hirer'])
+            print("3",request.POST['phone'])
+            print("4",request.POST['work_type'])
+            print("5",request.POST['rate'])
+            print("6",request.POST['job_title'])
+            print("7",request.POST['name'])
+            try:
+                obj = JobPostingModel.objects.create(
+                    hirer=request.user.username,
+                    place=request.POST['place'],
+                    job_title=request.POST['job_title']
+                    ,rate=request.POST['rate'],
+                    work_type=request.POST['work_type'],
+                    phone=request.POST['phone'],
+                    name=request.POST['name'])
+                obj.save()
+                return redirect('laboshop')
+
+            except Exception :
+                return redirect('shop')
+
+
+            else:
+                print("not valid")    
+                return redirect('shop')
+
+
+
+
+
+
 @method_decorator(login_required,name='dispatch')
 class Labocategories2(View):
-	template = 'labo_categories.html'
+	template = 'home/labo-category2.html'
 	def get(self, request, *args, **kwargs):
 		data = Category.objects.all()
 		context = {	
