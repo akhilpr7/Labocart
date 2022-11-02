@@ -364,7 +364,7 @@ class LaboRegister(View):
 		return render(request, self.template,context)
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
-			form = Laboregisterform(request.POST)
+			form = Laboregisterform(request.POST,request.FILES)
 			print(request.POST.get("image_link"),"image linkkkkkkkkkkkkkk")
 			print(request.POST.get("job_title"),"image linkkkkkkkkkkkkkk")
 			print(request.POST.get("rate"),"image linkkkkkkkkkkkkkk")
@@ -376,11 +376,14 @@ class LaboRegister(View):
 			form.fields['job_title'].choices = [(job_title, job_title)]
 			# if form.is_valid():
 				# print(form.cleaned_data,"ffffffffffffffffffffffffffff")
-			image_link = request.POST.get("image_link")
+			# image_link = request.POST.get("image_link")
+			image_link = form.cleaned_data.get("image_link")
+			credential = form.cleaned_data.get("credential")
 			job_title = request.POST.get("job_title")
 			rate = request.POST.get("rate")
 			work_type = request.POST.get("work_type")
-			obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 1)
+			obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 3,job_certificate=credential)
+			# obj.save()
 			messages.success(request,"Success !")
 			print(obj,"55555555555555")
 			return redirect('shop')
