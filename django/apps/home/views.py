@@ -5,13 +5,14 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from ecommerce.models import HireModel, PurchaseModel
-from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm
+from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm,ApplyForm
 from .models import Category,JobPostingModel   
 from django.contrib import messages
 from django.urls import reverse
 from authentication.models import jobmodel,NewUserModel,labourmodels
 from django.views.generic import ListView
 from django.db.models import Q
+import pdb
 
 
 # Create your views here.
@@ -82,6 +83,39 @@ class LookForJobs(View):
         }
         return render(request, "home/lookforjobs.html", context)
 
+
+class ApplyFormView(View):
+    def get(self, request,*args, **kwargs):
+       
+        id = kwargs.get('id')
+        maindata = JobPostingModel.objects.filter(id=id).first()
+        hire = JobPostingModel.objects.filter(id=id).values_list('hirer')[0][0]
+        print(hire,"jggggggggggggggggggggggggggggggg")
+        data = {
+            'name': maindata.name,
+            'hirer': hire,
+            'place': maindata.place,
+            'work_type': maindata.work_type,
+            'phone': maindata.phone,
+            'status': maindata.status,
+            'job_title': maindata.job_title,
+            'worker_name': request.user.username,
+            'worker_phone': request.user.phone_no
+        }
+        form = ApplyForm(data)
+        return render(request, "home/applyform.html", {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            form = ApplyForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request,"Success")
+                return redirect('shop')
+            else:
+                messages.error(request,"error")
+                return redirect('shop') 
+        return redirect(request, 'shop') 
 
 @method_decorator(login_required,name='dispatch')
 class CompletedService(View):
@@ -275,7 +309,7 @@ class JobPostingView(View):
 
 class ManageServices(View):
     def get(self, request, *args,**kwargs):
-        details = labourmodels.objects.all().order_by('id')
+        details = labourmodels.objects.all().exclude(status=3).order_by('id')
         context = {
             'details': details ,
             'current_path':"Manage Services",
@@ -308,9 +342,36 @@ class Labocategories2(View):
 			'current_path':"Provide Jobs" 
 		}
 		total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username)&((Q(status=1)|Q(status=2)|Q(status=3)))).count()
-		print(total_work,"totttttttttttttttttttaaaaaaal workkkkkkkkkkkkk")
+
 		if total_work < 5 :
 			return render(request, self.template,context)
 		else:
 			messages.error(request,"Job Applying Limit Reached !!")
 			return redirect("laboshop")
+
+
+@method_decorator(login_required,name='dispatch')
+class ServiceRequests(View):
+    def get(self, request,*args, **kwargs):
+        details = labourmodels.objects.filter(status=3).order_by('id')
+        context = {
+            'details': details ,
+            }
+        return render(request, "home/service_requests.html",context)
+
+class AcceptServices(View):
+    def get(self, request,id, *args, **kwargs):
+        status=labourmodels.objects.filter(id=id).values_list("status")[0][0]
+        labourmodels.objects.filter(id=id).update(status=1)
+        messages.success(request,"Success !")
+        return redirect("servicerequests")
+
+class RejectServices(View):
+    def get(self, request, id):
+        data = labourmodels.objects.get(id=id)
+        data.delete()
+        messages.success(request,"Cancelled")
+        return redirect('servicerequests')
+    
+       
+
