@@ -15,3 +15,6 @@ django/project/__pycache__
 __pycache__/
 migrations/*
 migrations/
+*/media/*
+media/*
+media/

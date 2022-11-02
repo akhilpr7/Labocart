@@ -1,3 +1,4 @@
+from email.mime import image
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import NewUserModel
@@ -12,8 +13,6 @@ class RegisterForm(UserCreationForm):
     first_name = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Firstname",'class': 'form-control','minlength':'3'}))
 
     # wallet = forms.CharField(max_length = 30 , widget=forms.NumberInput(attrs={"placeholder": "Amount",'class': 'form-control','min':'1'}))
-
-
     last_name = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Lastname",'class': 'form-control','minlength':'3','min':'0'}))
 
     email = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Email",'type':'email', 'class': 'form-control'}))
@@ -22,11 +21,15 @@ class RegisterForm(UserCreationForm):
 
     password2 = forms.CharField(max_length=30, widget = forms.PasswordInput(attrs={"placeholder": "Password check",'class': 'form-control','minlength':'8','pattern':'[A-Za-z0-9@._-$]' }))
 
+    image = forms.ImageField(widget=forms.FileInput(attrs={ 'class': 'form-control'}))
+
+    kyc = forms.ImageField(widget=forms.FileInput(attrs={ 'class': 'form-control'}))
+
     class Meta(UserCreationForm.Meta):
 
         model = NewUserModel
 
-        fields = UserCreationForm.Meta.fields + ('first_name', 'last_name', 'email','phone_no' )
+        fields = UserCreationForm.Meta.fields + ('first_name', 'last_name', 'email','phone_no','kyc','image' )
 
     def clean(self):
 
@@ -61,4 +64,4 @@ class UpdateProfileForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
 
         model = NewUserModel
-        fields = ('first_name','last_name','phone_no','email','image')
+        fields = ('first_name','last_name','phone_no','email','image',)

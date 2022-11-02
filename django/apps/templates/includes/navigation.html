@@ -22,17 +22,18 @@
                       <ul class="navbar-nav align-items-center   col-md-6">
                           
                             <div class="col-md-6 flex-row">
-                              <a href="{%url 'laboshopcategory'%}" class="btn bg-transparent text-white"><span class=" align-bottom material-symbols-outlined">shopping_bag</span>Laboshop</a>
+                              <a href="{%url 'laboshopcategory' %}" class="btn bg-transparent text-white"><span class=" align-bottom material-symbols-outlined">shopping_bag</span>Laboshop</a>
                               <!-- <a href="{%url 'dashboard'%}">Laboshop</a> -->
                             </div>
                             <li class="nav-item dropdown ms-lg-3 col-md-6">
                               <a class="nav-link dropdown-toggle pt-1 px-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <div class="media d-flex align-items-center">
-                            <img class="avatar rounded-circle" alt="" src="{{request.user.image}}">
+                                  
+                            <img class="avatar rounded-circle" alt="" src="/static/media/{{request.user.image}}">
                             <div class="media-body ms-2 text-light align-items-center d-none d-lg-block">
                               <span class="mb-0 font-small fw-bold text-light-900">
                                 Current User: <strong>{{request.user}}</strong>
-                              </span>
+                              </span> 
                             </div>
                           </div>
                         </a>

@@ -8,6 +8,9 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm,UpdateProfileForm
 from .models import NewUserModel
+from django.conf import settings  
+
+
 
 
 
@@ -16,7 +19,7 @@ from .models import NewUserModel
 
 class LoginViews(LoginView):
     template_name = 'accounts/login.html'
-
+    print(settings.NEW_VAR)
     def get(self, request, *args, **kwargs):
         context = {}
         context['form'] = LoginForm()
@@ -28,8 +31,12 @@ class LoginViews(LoginView):
         user = authenticate(
             request, username=request.POST['username'], password=request.POST['password'])
         if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse('dashboard'))
+            if user.kyc_approved :
+                login(request, user)
+                return HttpResponseRedirect(reverse('dashboard'))
+            else:
+                messages.error(request, "Your KYC details haven't been approved yet!. Please try again later.")
+                return redirect(reverse('login'))
         else:
             messages.error(request, 'Incorrect username or password')
             return redirect(reverse('login'))
@@ -45,7 +52,7 @@ class RegisterViews(View):
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
-            form = RegisterForm(request.POST)
+            form = RegisterForm(request.POST,request.FILES)
             print(request.POST['username'])
             if form.is_valid():
                 print("valid")

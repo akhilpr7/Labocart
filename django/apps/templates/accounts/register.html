@@ -40,7 +40,7 @@
 
                             {% else %}
 
-                                <form method="post" action="" class="mt-4">
+                                <form method="post" action="" class="mt-4" enctype="multipart/form-data">
                                     
                                     {% csrf_token %}
 
@@ -106,6 +106,30 @@
                                             </div>  
                                             <span class="text-danger">{{ form.phone_no.errors }}</span>
                                         </div>
+
+                                        <div class="form-group mb-4">
+                                            <label for="kyc">Your image </label>
+                                            <div class="input-group     ">
+                                                <span class="input-group-text" id="basic-addon2">
+                                                    <span class="fas fa-image"></span>
+                                                </span>
+                                                {{ form.image }}
+
+                                            </div>  
+                                            <span class="text-danger">{{ form.kyc.errors }}</span>
+                                        </div>
+
+                                        <div class="form-group mb-4">
+                                            <label for="kyc">Your Aadhar </label>
+                                            <div class="input-group     ">
+                                                <span class="input-group-text" id="basic-addon2">
+                                                    <span class="fas fa-file"></span>
+                                                </span>
+                                                {{ form.kyc }}
+
+                                            </div>  
+                                            <span class="text-danger">{{ form.kyc.errors }}</span>
+                                        </div>
                                         
                                         <!-- Form -->
                       
@@ -158,8 +182,15 @@
         </section>
     </main>
 
-  
+
+    <style>
+        .errorlist {
+    list-style: none;
+    padding-left: 0;
+}
+    </style>
 {% endblock content %}
+
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}{% endblock javascripts %}

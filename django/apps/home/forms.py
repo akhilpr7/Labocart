@@ -44,12 +44,13 @@ class JobPostingForm( forms.Form ):
   place = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
   phone = forms.CharField(max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Phone"}))
   CHOICES = (('True','Half day'),('False','Full day'))
-  work_type = forms.ChoiceField(choices = CHOICES)
+  work_type = forms.ChoiceField(choices = CHOICES,widget=forms.Select(attrs={'class':'form-select'}))
 
   def __init__(self,*args,**kwargs):
     self.category = kwargs.pop('initial',[])
     self.user = kwargs.pop('user',[])
     print(self.user,"sdfaghsdhj")
     super(JobPostingForm, self).__init__(*args,**kwargs)
-    self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True))
+    self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True),
+                              widget=forms.Select(attrs={'class':'form-select'}))
     self.fields['hirer']=forms.CharField(max_length=20, required=True, widget=forms.HiddenInput() , initial=self.user)
