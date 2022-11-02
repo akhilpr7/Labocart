@@ -44,14 +44,20 @@
                     {% endif %}
                 </span></td> 
                 <td><span>{{data.rate}}</span></td>
-                <td><span>{{data.work_type}}</span></td>
+                <td><span>
+                    {% if data.work_type == 1 %}
+                    <span>Full Day</span>
+                    {% else %}
+                    <span>Half Day</span>
+                    {% endif %}
+                  </span></td>
                 <td><span>
                 {% if data.status == 0 %}
-                    <a href="{%url 'updateservices' data.id %}" class="btn rounded-2 btn-danger">Inactive</a>
+                    <a href="{%url 'updateservices' data.id %}" class="btn rounded-2 text-danger">Inactive</a>
                 {% elif data.status == 1 %}
-                    <a href="{%url 'updateservices' data.id %}" class="btn rounded-2 btn-success text-white">Active</a>
+                    <a href="{%url 'updateservices' data.id %}" class="btn rounded-2 text-success">Active</a>
                 {% elif data.status == 2 %}
-                    <a href="{%url 'updateservices' data.id %}" class="btn btn-danger">Cancel</a>
+                    <a href="{%url 'updateservices' data.id %}" class="btn text-danger">Cancel</a>
                 {% endif %}
                 </span></td>
               </tr>

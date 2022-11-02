@@ -309,7 +309,7 @@ class JobPostingView(View):
 
 class ManageServices(View):
     def get(self, request, *args,**kwargs):
-        details = labourmodels.objects.all().order_by('id')
+        details = labourmodels.objects.all().exclude(status=3).order_by('id')
         context = {
             'details': details ,
             'current_path':"Manage Services",
@@ -348,3 +348,30 @@ class Labocategories2(View):
 		else:
 			messages.error(request,"Job Applying Limit Reached !!")
 			return redirect("laboshop")
+
+
+@method_decorator(login_required,name='dispatch')
+class ServiceRequests(View):
+    def get(self, request,*args, **kwargs):
+        details = labourmodels.objects.filter(status=3).order_by('id')
+        context = {
+            'details': details ,
+            }
+        return render(request, "home/service_requests.html",context)
+
+class AcceptServices(View):
+    def get(self, request,id, *args, **kwargs):
+        status=labourmodels.objects.filter(id=id).values_list("status")[0][0]
+        labourmodels.objects.filter(id=id).update(status=1)
+        messages.success(request,"Success !")
+        return redirect("servicerequests")
+
+class RejectServices(View):
+    def get(self, request, id):
+        data = labourmodels.objects.get(id=id)
+        data.delete()
+        messages.success(request,"Cancelled")
+        return redirect('servicerequests')
+    
+       
+

@@ -1,0 +1,58 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Transactions {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<body style="background-color:#f5eee7" >
+ <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+      <div class="d-block mb-4 mb-md-0">
+          <h2 class="h4">Service Requests</h2>
+      </div>
+
+  </div>
+  
+
+  <div class="card card-body border-0 shadow table-wrapper table-responsive">
+      <table class="table table-hover">
+          <thead>
+              <tr>
+                  <th class="border-gray-200">User ID</th>
+                  <th class="border-gray-200">Username</th>
+                  <th class="border-gray-200">Job Title</th>
+                  <th class="border-gray-200">Rate</th>
+                  <th class="border-gray-200">Work Type</th>
+                  <th class="border-gray-200">Options</th>
+              </tr>
+          </thead>
+          <tbody>
+            {% for data in details %}
+              <tr>
+                <td><span>{{data.id}}</span></td>
+                <td><span>{{data.username}}</span></td>
+                <td><span>{{data.job_title}}</span></td>
+                <td><span>{{data.rate}}</span></td>
+                <td><span>
+                  {% if data.work_type == 1 %}
+                  <span>Full Day</span>
+                  {% else %}
+                  <span>Half Day</span>
+                  {% endif %}
+                </span></td>
+                <td><span>
+                  <a href="{% url 'acceptservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
+                  <a href="{% url 'rejectservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-danger">close</span></a>
+                </span>
+                  </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+      </table>
+  </div> 
+</body>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
