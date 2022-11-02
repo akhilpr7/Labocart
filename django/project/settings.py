@@ -69,7 +69,7 @@ AUTH_USER_MODEL='authentication.NewUserModel'
 # MEDIA_URL = '/static/media/'  
   
 # Path where media is stored  
-NEW_VAR = '/static/media/'
+NEW_URL = '/static/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media/') 
 
@@ -141,8 +141,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+
 # Static files (CSS, JavaScript, Images)
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
