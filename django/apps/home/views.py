@@ -89,11 +89,9 @@ class ApplyFormView(View):
        
         id = kwargs.get('id')
         maindata = JobPostingModel.objects.filter(id=id).first()
-        hire = JobPostingModel.objects.filter(id=id).values_list('hirer')[0][0]
-        print(hire,"jggggggggggggggggggggggggggggggg")
         data = {
             'name': maindata.name,
-            'hirer': hire,
+            'hirer': maindata.hirer,
             'place': maindata.place,
             'work_type': maindata.work_type,
             'phone': maindata.phone,
