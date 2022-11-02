@@ -36,14 +36,15 @@
 			<div class="col-lg-9" align="right">
 				<ul>
 					<li><a href="#">Home</a></li>					
-					<li><a href="{% url 'dashboard'%}">Dashboard</a></li>
+					<li><a href="{%url 'dashboard'%}">Dashboard</a></li>
+					<li><a href="{%url 'laboshopcategory'%}">Laboshop</a></li>
 					<li><a href="{% url 'login' %}">Login</a></li>
 					<li><a href="{% url 'register' %}">Sign Up</a></li>
 				</ul>
 			</div>
 		</div>
 	</div>	
-	<!-- <div class="row mobileMenu">
+	<div class="row mobileMenu">
 			<div class="container">
 				<div class="col-lg-12 pd_lft_rt">
 					<div class="row menu_div">
@@ -108,7 +109,7 @@
 					</div>
 				</div>
 			</div>
-		</div>		 -->
+		</div>		
 	<div class="row">
 		<div class="col-lg-12 mob_left_ryt">
 			<div class="container">
@@ -258,7 +259,7 @@
 							</div>
 						</div>
 						<div class="col-lg-12 logistic_operations_div">
-							{% comment %} <a href="{%url 'laboshop' %}"><button class="btn btnBanner">Laboshop</button></a> {% endcomment %}
+							<a href="{%url 'laboshopcategory' %}"><button class="btn btnBanner">Laboshop</button></a>
 						</div>
 					</div>
 				</div>

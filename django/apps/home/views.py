@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from ecommerce.models import HireModel, PurchaseModel
 from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm
-from .models import Category, JobPostingModel    
+from .models import Category,JobPostingModel   
 from django.contrib import messages
 from django.urls import reverse
 from authentication.models import jobmodel,NewUserModel,labourmodels
@@ -72,6 +72,16 @@ class Workerservices(View):
             'current_path' : "Worker Services"
         }
         return render(request, "home/worker-services.html", context)
+
+
+class LookForJobs(View):
+    def get(self, request,*args, **kwargs):
+        look = JobPostingModel.objects.filter(status = 0).values()
+        context = {
+            'look' : look
+        }
+        return render(request, "home/lookforjobs.html", context)
+
 
 @method_decorator(login_required,name='dispatch')
 class CompletedService(View):
@@ -206,7 +216,7 @@ class Access_denied(View):
 
 class ManageUser(View):
     def get(self, request, *args,**kwargs):
-        details = NewUserModel.objects.all().order_by('id')
+        details = NewUserModel.objects.all().order_by('id').exclude(username='admin')
         context = {
             'details': details ,
             'current_path':"Manage User",
@@ -244,19 +254,11 @@ class JobPostingView(View):
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             form = JobPostingForm(request.POST)
-            print("1",request.POST['place'])
-            print("2",request.POST['hirer'])
-            print("3",request.POST['phone'])
-            print("4",request.POST['work_type'])
-            print("5",request.POST['rate'])
-            print("6",request.POST['job_title'])
-            print("7",request.POST['name'])
             try:
                 obj = JobPostingModel.objects.create(
                     hirer=request.user.username,
                     place=request.POST['place'],
-                    job_title=request.POST['job_title']
-                    ,rate=request.POST['rate'],
+                    job_title=request.POST['job_title'],
                     work_type=request.POST['work_type'],
                     phone=request.POST['phone'],
                     name=request.POST['name'])
@@ -273,7 +275,7 @@ class JobPostingView(View):
 
 class ManageServices(View):
     def get(self, request, *args,**kwargs):
-        details = labourmodels.objects.all().order_by('id')
+        details = labourmodels.objects.all().exclude(status=3).order_by('id')
         context = {
             'details': details ,
             'current_path':"Manage Services",
@@ -312,3 +314,30 @@ class Labocategories2(View):
 		else:
 			messages.error(request,"Job Applying Limit Reached !!")
 			return redirect("laboshop")
+
+
+@method_decorator(login_required,name='dispatch')
+class ServiceRequests(View):
+    def get(self, request,*args, **kwargs):
+        details = labourmodels.objects.filter(status=3).order_by('id')
+        context = {
+            'details': details ,
+            }
+        return render(request, "home/service_requests.html",context)
+
+class AcceptServices(View):
+    def get(self, request,id, *args, **kwargs):
+        status=labourmodels.objects.filter(id=id).values_list("status")[0][0]
+        labourmodels.objects.filter(id=id).update(status=1)
+        messages.success(request,"Success !")
+        return redirect("servicerequests")
+
+class RejectServices(View):
+    def get(self, request, id):
+        data = labourmodels.objects.get(id=id)
+        data.delete()
+        messages.success(request,"Cancelled")
+        return redirect('servicerequests')
+    
+       
+

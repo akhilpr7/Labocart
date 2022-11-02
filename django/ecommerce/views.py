@@ -233,13 +233,17 @@ class LaboShop(View):
 	def get(self, request,id, *args, **kwargs):
 		job=jobmodel.objects.filter(id=id).values_list("job_title")[0][0]
 		# if request.GET.get('jobtitle') is not None and request.GET.get('job') != '':
+		datacategory=Category.objects.values()
+		datajob = jobmodel.objects.values()
 		data = labourmodels.objects.filter((Q(job_title=job))&(Q(status=1) | Q(status=2) | Q(status=3)))
 		fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
 		print("fffffffffffffffffffffffffffffffffffffffffffffff",fund)
 		context = {
 			'data': data,
 			'current_path':"Request services",
-			'fund': fund
+			'fund': fund,
+			"datacategory":datacategory,
+			"datajob":datajob,
 		}
 		is_sub = NewUserModel.objects.filter(username=request.user.username).values_list('is_sub')[0][0]
 		# print(is_sub,"sdddddddddddddddddddd")
@@ -370,7 +374,6 @@ class LaboRegister(View):
 			job_title = request.POST.get("job_title")
 			rate = request.POST.get("rate")
 			work_type = request.POST.get("work_type")
-			
 			obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 1)
 			messages.success(request,"Success !")
 			print(obj,"55555555555555")
