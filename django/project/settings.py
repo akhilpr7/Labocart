@@ -66,6 +66,13 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, "apps/templates")  # ROOT dir for template
 
 AUTH_USER_MODEL='authentication.NewUserModel'
     
+MEDIA_URL = '/media/'  
+  
+# Path where media is stored  
+NEW_VAR = '/static/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media/') 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -134,8 +141,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+
 # Static files (CSS, JavaScript, Images)
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),

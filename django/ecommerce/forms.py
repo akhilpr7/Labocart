@@ -28,7 +28,8 @@ class Laboregisterform(forms.Form):
     self.category = kwargs.pop('initial',[])
     print(kwargs,"88888888888888888888888888",self.category)
     super(Laboregisterform, self).__init__(*args,**kwargs)
-    self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True))
+    self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True),
+                              widget=forms.Select(attrs={'class':'form-select'}))
 
   image_link = forms.ImageField()
   rate = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
@@ -36,9 +37,6 @@ class Laboregisterform(forms.Form):
   work_type = forms.ChoiceField(choices = CHOICES)
   credential = forms.ImageField()
 
-  # class Meta:
-  #   model = labourmodels
-  #   fields = ('username','image_link','job_title','rate','work_type',)
 
 class AddToCartForm( forms.ModelForm ):
 
