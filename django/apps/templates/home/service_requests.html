@@ -14,7 +14,7 @@
 
   </div>
   
-
+  <div id="lightbox"></div>
   <div class="card card-body border-0 shadow table-wrapper table-responsive">
       <table class="table table-hover">
           <thead>
@@ -24,6 +24,7 @@
                   <th class="border-gray-200">Job Title</th>
                   <th class="border-gray-200">Rate</th>
                   <th class="border-gray-200">Work Type</th>
+                  <th class="border-gray-200">Certificate</th>
                   <th class="border-gray-200">Options</th>
               </tr>
           </thead>
@@ -41,6 +42,7 @@
                   <span>Half Day</span>
                   {% endif %}
                 </span></td>
+                <td><span><img src="{{data.job_certificate.url}}" class="zoomD"></img></span></td>
                 <td><span>
                   <a href="{% url 'acceptservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
                   <a href="{% url 'rejectservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-danger">close</span></a>
@@ -51,8 +53,72 @@
           </tbody>
       </table>
   </div> 
+
 </body>
+
+
+<style>
+#lightbox {
+ 
+  position: fixed; z-index: 999;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+
+  background: rgba(0, 0, 0, 0.5);
+ 
+  display: flex;
+  align-items: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity ease 0.4s;
+}
+ 
+
+#lightbox.show {
+  visibility: visible;
+  opacity: 1;
+}
+ 
+
+#lightbox img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+ 
+
+#lightbox img {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+}
+</style>
+<script>
+  window.onload = () => {
+    let all = document.getElementsByClassName("zoomD"),
+        lightbox = document.getElementById("lightbox");
+   
+    if (all.length>0) { for (let i of all) {
+      i.onclick = () => {
+        let clone = i.cloneNode();
+        clone.className = "";
+        lightbox.innerHTML = "";
+        lightbox.appendChild(clone);
+        lightbox.className = "show";
+      };
+    }}
+   
+  
+    lightbox.onclick = () => {
+      lightbox.className = "";
+    };
+  };
+  </script>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+
+
+{% endblock javascripts %}

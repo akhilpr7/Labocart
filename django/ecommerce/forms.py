@@ -34,6 +34,7 @@ class Laboregisterform(forms.Form):
   rate = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
   CHOICES = (('True','Half day'),('False','Full day'))
   work_type = forms.ChoiceField(choices = CHOICES)
+  credential = forms.ImageField()
 
   # class Meta:
   #   model = labourmodels

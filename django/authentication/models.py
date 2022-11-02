@@ -24,6 +24,7 @@ class labourmodels(models.Model):
     rate = models.FloatField(max_length=10,default=1)
     work_type = models.BooleanField(default=False)
     status = models.IntegerField(blank = False,default=0)
+    job_certificate = models.ImageField(upload_to='credentials',blank=False,null=False)
 
 
 class jobmodel(models.Model):
