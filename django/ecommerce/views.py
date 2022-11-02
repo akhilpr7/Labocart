@@ -674,7 +674,13 @@ class Addpackage(View):
 		return render(request,self.template,context)
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
-			form = AddPackageForm(request.POST)
+			form = AddPackageForm(request.POST,request.FILES)
+			print(request.FILES)
+			print("--------------------------")
+			print(request.POST.get('package_name'))
+			print(request.POST.get('validity'))
+			print(request.POST.get('cost'))
+			print(request.POST.get('image'))
 			if form.is_valid():
 				form.save()
 				messages.success(request,"Successfully Added !")

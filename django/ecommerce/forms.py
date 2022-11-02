@@ -147,6 +147,7 @@ class AddPackageForm( forms.ModelForm ):
   validity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
   cost = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
   image = forms.ImageField()
+  
   class Meta:
     model = PackageModel
-    fields = ('package_name','validity','cost','image',)
+    fields = '__all__'
