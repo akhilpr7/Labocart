@@ -19,7 +19,7 @@ from django.conf import settings
 
 class LoginViews(LoginView):
     template_name = 'accounts/login.html'
-    print(settings.NEW_VAR)
+    # print(settings.NEW_VAR)
     def get(self, request, *args, **kwargs):
         context = {}
         context['form'] = LoginForm()
@@ -117,7 +117,7 @@ class UpdateProfileView(View):
             updateprofile.last_name = request.POST['last_name']
             updateprofile.phone_no = request.POST['phone_no']
             updateprofile.email = request.POST['email']
-            updateprofile.image = request.POST['image']
+            updateprofile.image = request.FILE['image']
             updateprofile.save()
             return redirect('profile')
         else:

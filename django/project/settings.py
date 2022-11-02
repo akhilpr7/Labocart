@@ -66,10 +66,10 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, "apps/templates")  # ROOT dir for template
 
 AUTH_USER_MODEL='authentication.NewUserModel'
     
-# MEDIA_URL = '/static/media/'  
+MEDIA_URL = '/media/'  
   
 # Path where media is stored  
-NEW_URL = '/static/media/'
+NEW_VAR = '/static/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media/') 
 

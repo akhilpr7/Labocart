@@ -60,7 +60,7 @@ class UpdateProfileForm(UserCreationForm):
     first_name = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Firstname",'class': 'form-control','minlength':'3'}))
     last_name = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Lastname",'class': 'form-control','minlength':'3','min':'0'}))
     email = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Email",'type':'email', 'class': 'form-control'}))
-    image = forms.ImageField()
+    image = forms.ImageField(widget=forms.FileInput(attrs={ 'class': 'form-control'}))
     class Meta(UserCreationForm.Meta):
 
         model = NewUserModel

@@ -11,7 +11,7 @@ class NewUserModel(AbstractUser):
     subscribed_at = models.DateField(null=True,blank=True)
     package = models.IntegerField(null=False, default=0)
     image = models.FileField(upload_to='profile/')
-    kyc = models.FileField(upload_to='kyc/')
+    kyc = models.FileField(upload_to='kyc/',blank=True, null=True)
     kyc_approved  = models.BooleanField(default=False)
     USERNAME_FIELD = 'username'
     def __str__(self):
