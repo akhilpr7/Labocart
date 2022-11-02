@@ -230,7 +230,7 @@ class Access_denied(View):
 
 class ManageUser(View):
     def get(self, request, *args,**kwargs):
-        details = NewUserModel.objects.all().order_by('id')
+        details = NewUserModel.objects.all().order_by('id').exclude(username='admin')
         context = {
             'details': details ,
             'current_path':"Manage User",
@@ -268,12 +268,6 @@ class JobPostingView(View):
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             form = JobPostingForm(request.POST)
-            print("1",request.POST['place'])
-            print("2",request.POST['hirer'])
-            print("3",request.POST['phone'])
-            print("4",request.POST['work_type'])
-            print("6",request.POST['job_title'])
-            print("7",request.POST['name'])
             try:
                 obj = JobPostingModel.objects.create(
                     hirer=request.user.username,
