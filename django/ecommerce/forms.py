@@ -15,7 +15,7 @@ class AddStockForm( forms.ModelForm ):
   Product_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
   Price = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
   Quantity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2' ,'min':'1'}))
-  Image = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
+  Image = forms.ImageField()
   class Meta:
     model = ProductsModel
     fields = ('Product_name','Price','Quantity','Image',)
@@ -31,7 +31,7 @@ class Laboregisterform(forms.Form):
     self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True),
                               widget=forms.Select(attrs={'class':'form-select'}))
 
-  image_link = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
+  image_link = forms.ImageField()
   rate = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
   CHOICES = (('True','Half day'),('False','Full day'))
   work_type = forms.ChoiceField(choices = CHOICES,widget=forms.Select(attrs={'class':'form-select'}))
@@ -55,7 +55,7 @@ class UpdateStockForm( forms.ModelForm ):
   Product_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
   Price = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
   Quantity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
-  Image = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
+  Image = forms.ImageField()
   class Meta():
     model = ProductsModel
     fields = '__all__'
@@ -133,7 +133,7 @@ class UpdatePackageForm( forms.ModelForm ):
   package_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
   validity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
   cost = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
-  image = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
+  image = forms.ImageField()
   class Meta():
     model = PackageModel
     fields = '__all__'
@@ -145,7 +145,8 @@ class AddPackageForm( forms.ModelForm ):
   package_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
   validity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
   cost = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
-  image = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
+  image = forms.ImageField()
+  
   class Meta:
     model = PackageModel
-    fields = ('package_name','validity','cost','image',)
+    fields = '__all__'

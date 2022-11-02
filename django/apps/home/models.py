@@ -23,4 +23,15 @@ class JobPostingModel(models.Model):
     phone = models.BigIntegerField()
     status =  models.IntegerField(blank=False,null=True,default=1)
     job_title = models.CharField(max_length=20, blank=False,default='none')
-    
+
+class AppliedJobs(models.Model):
+    hirer = models.TextField(max_length=25, blank=False)
+    name = models.TextField(max_length=25, blank=False)
+    place = models.TextField(max_length=25, blank=False)
+    work_type = models.BooleanField(default=False)
+    phone = models.BigIntegerField()
+    status =  models.IntegerField(blank=False,null=True,default=0)
+    job_title = models.CharField(max_length=20, blank=False,default='none')
+    rate = models.IntegerField(default=500)
+    worker_name = models.TextField(max_length=25, blank=False)
+    worker_phone = models.BigIntegerField()

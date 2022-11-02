@@ -21,7 +21,7 @@ class NewUserModel(AbstractUser):
 
 class labourmodels(models.Model):
     username = models.CharField(max_length=25, blank=False)
-    image_link= models.CharField(max_length=10000,blank=False)
+    image_link= models.ImageField(upload_to='labour',blank=False)
     job_title = models.CharField(max_length=50, blank=False)
     rate = models.FloatField(max_length=10,default=1)
     work_type = models.BooleanField(default=False)

@@ -18,7 +18,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 import random,datetime
 from apps.home.models import Category
-
+from django.conf import settings
+from django.conf.urls.static import static
 @method_decorator(login_required,name='dispatch')
 class Home(View):
 	def get(self, request, *args, **kwargs):
@@ -43,11 +44,13 @@ class Shop(View):
 		else:
 			product = ProductsModel.objects.all()
 		cart = CartModel.objects.all().filter(username=request.user.username).values_list("Product_name",flat=True)
+		print(settings.MEDIA_ROOT,"media roooooooooooot")
 		data = {
 		"product":product,
 		'form':PurchaseForm(),
 		'current_path':"Shop",
 		'cart' : cart,
+		'MEDIA_ROOT':settings.MEDIA_ROOT,
 
 		}
 
@@ -233,13 +236,17 @@ class LaboShop(View):
 	def get(self, request,id, *args, **kwargs):
 		job=jobmodel.objects.filter(id=id).values_list("job_title")[0][0]
 		# if request.GET.get('jobtitle') is not None and request.GET.get('job') != '':
+		datacategory=Category.objects.values()
+		datajob = jobmodel.objects.values()
 		data = labourmodels.objects.filter((Q(job_title=job))&(Q(status=1) | Q(status=2) | Q(status=3)))
 		fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
 		print("fffffffffffffffffffffffffffffffffffffffffffffff",fund)
 		context = {
 			'data': data,
 			'current_path':"Request services",
-			'fund': fund
+			'fund': fund,
+			"datacategory":datacategory,
+			"datajob":datajob,
 		}
 		is_sub = NewUserModel.objects.filter(username=request.user.username).values_list('is_sub')[0][0]
 		# print(is_sub,"sdddddddddddddddddddd")
@@ -274,8 +281,11 @@ class Addproduct(View):
 		return render(request,self.template,context)
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
-			form = AddStockForm(request.POST)
+			
+			form = AddStockForm(request.POST,request.FILES)
+			print(request.FILES,"dfddjfdfjdfhjkhfdjkhfjkhdfkjdhjfhjkdf")
 			if form.is_valid():
+				print("55555555555555555555555555555555")
 				form.save()
 				messages.success(request,"Successfully Added !")
 				return redirect('stocklist')
@@ -291,7 +301,7 @@ class Deleteproduct(View):
 	def get(self, request, id):
 		productData = ProductsModel.objects.get(id=id)
 		productData.delete()
-		messages.succes(request,"Success !")
+		messages.success(request,"Success !")
 		return redirect('stocklist')
 @method_decorator(login_required,name='dispatch')
 class UpdateProduct(View): 
@@ -507,7 +517,7 @@ class Subscribe(View):
 		if wallet_balance>= packagecost:
 			if is_sub:
 				messages.error(request,"Already Subscribed")
-				return redirect ("laboshop")
+				return redirect ("laboshopcategory")
 			elif is_sub == False:
 
 				n = random.randint(0,99999)
@@ -532,13 +542,13 @@ class Subscribe(View):
 				data.save()
 				NewUserModel.objects.filter(username=request.user.username).update(is_sub=True,wallet=wallet_balance-packagecost,subscribed_at=datetime.datetime.now().date(),package=id)	
 				messages.success(request,"Succesfully Subscribed")
-				return redirect ("laboshop")
+				return redirect ("laboshopcategory")
 			else:
 				messages.error(request,"Error")
-				return redirect ("laboshop")
+				return redirect ("laboshopcategory")
 		else:
 			messages.error(request,"Not enough balance in wallet!")
-			return redirect ("laboshop")
+			return redirect ("laboshopcategory")
 		
 class HomePage(View):
 	def get(self, request, *args, **kwargs):
@@ -664,7 +674,13 @@ class Addpackage(View):
 		return render(request,self.template,context)
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
-			form = AddPackageForm(request.POST)
+			form = AddPackageForm(request.POST,request.FILES)
+			print(request.FILES)
+			print("--------------------------")
+			print(request.POST.get('package_name'))
+			print(request.POST.get('validity'))
+			print(request.POST.get('cost'))
+			print(request.POST.get('image'))
 			if form.is_valid():
 				form.save()
 				messages.success(request,"Successfully Added !")
@@ -687,3 +703,8 @@ class membership(View):
 class Workerview(View):
 	def get(self, request, *args, **kwargs):
 		return render(request,'index1.html',{})
+
+class Individual(View):
+	template = 'individualprofile.html'
+	def get(self, request, *args, **kwargs):
+		return render(request,self.template,{})
