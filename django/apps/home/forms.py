@@ -53,3 +53,16 @@ class JobPostingForm( forms.Form ):
     super(JobPostingForm, self).__init__(*args,**kwargs)
     self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True))
     self.fields['hirer']=forms.CharField(max_length=20, required=True, widget=forms.HiddenInput() , initial=self.user)
+
+class ApplyForm(forms.ModelForm):
+    name = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Name"}))
+    hirer = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Hirer"}))
+    status = forms.IntegerField(required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Status"}))
+    place = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Place"}))
+    work_type = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Work type"}))
+    phone = forms.CharField(max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Phone number"}))
+    job_title = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Job title"}))
+    rate = forms.IntegerField(required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Rate"}))
+    class Meta:
+        model = JobPostingModel
+        fields = '__all__'

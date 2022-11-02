@@ -5,11 +5,11 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from ecommerce.models import HireModel, PurchaseModel
-from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm
+from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm,ApplyForm
 from .models import Category,JobPostingModel   
 from django.contrib import messages
 from django.urls import reverse
-from authentication.models import jobmodel,NewUserModel
+from authentication.models import jobmodel,NewUserModel,labourmodels
 from django.views.generic import ListView
 from django.db.models import Q
 
@@ -81,6 +81,20 @@ class LookForJobs(View):
             'look' : look
         }
         return render(request, "home/lookforjobs.html", context)
+
+
+class ApplyFormView(View):
+    def get(self, request,*args, **kwargs):
+        job = kwargs.get('name')
+        print("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",job)
+        form = ApplyForm(job)
+        context = {
+            'form' : form
+        }
+        return render(request, "home/applyform.html", context)
+
+
+
 
 
 @method_decorator(login_required,name='dispatch')

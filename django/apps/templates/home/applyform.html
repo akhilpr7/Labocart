@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+{%extends 'index.html'%}
+{% block content%}
+<head>
+    <meta charset="utf-8">
+    <title>EShopper - Bootstrap Shop Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="../../../static/shop/img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="../../../static/shop/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="../../../static/shop/css/style.css" rel="stylesheet">
+</head>
+
+<body style="background-color:#f5eee7" >>
+  {% if messages %}
+  {% for message in messages %}
+      <p class="d-none" id="messagetag">{{message.tags}}</p>
+      <p class="d-none " id="messagecontent">{{message}}</p>
+  {% endfor %}
+  {% endif %}
+    <div class="container-fluid py-4">
+        <div class="row">
+          <div class="col-lg-6 mb-lg-0 mb-4">
+            <div class="card">
+              <div class="card-body p-6">
+                  <h3 class="font-weight-bolder">Add category</h3><br>
+                  <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-8"> 
+                            <h1>{{request.POST}}</h1>
+                            {{form.hirer}}
+                        </div>
+                        <div class="col-lg-8"> 
+                            {{form.name}}
+                        </div>
+                        <div class="col-lg-8"> 
+                            {{form.place}}
+                        </div>
+                        <div class="col-lg-8"> 
+                            {{form.work_type}}
+                        </div>
+                        <div class="col-lg-8"> 
+                            {{form.phone}}
+                        </div>
+                        <div class="col-lg-8"> 
+                            {{form.job_title}}
+                        </div>
+                        <div class="col-lg-8"> 
+                            {{form.status}}
+                        </div>
+                        <div class="col-lg-8"> 
+                            <label for="rate">Rate :</label>
+                            {{form.rate}}
+                        </div>
+                        
+                    <div class="col-lg-4 pl-2">
+                      <button type="submit" class="btn bg-gray-800 btn-rounded rounded-2 text-white" style="float:right">Add</button> 
+                    </div>
+                    </div>
+                  </form> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="../../static/shop/lib/easing/easing.min.js"></script>
+    <script src="../../static/shop/lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="../../static/shop/mail/jqBootstrapValidation.min.js"></script>
+    <script src="../../static/shop/mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="../../static/shop/js/main.js"></script>
+</body>
+
+{% endblock content %}
+</html>
