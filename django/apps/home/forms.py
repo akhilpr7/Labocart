@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category, JobPostingModel
+from .models import AppliedJobs, Category, JobPostingModel
 from authentication.models import NewUserModel,jobmodel
 
 class AddFundForm(forms.Form):
@@ -55,14 +55,16 @@ class JobPostingForm( forms.Form ):
     self.fields['hirer']=forms.CharField(max_length=20, required=True, widget=forms.HiddenInput() , initial=self.user)
 
 class ApplyForm(forms.ModelForm):
-    name = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Name"}))
-    hirer = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Hirer"}))
-    status = forms.IntegerField(required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Status"}))
-    place = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Place"}))
-    work_type = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Work type"}))
-    phone = forms.CharField(max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Phone number"}))
-    job_title = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Job title"}))
-    rate = forms.IntegerField(required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Rate"}))
+    name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Name",'readonly':'True'}))
+    hirer = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Hirer",'readonly':'True'}))
+    status = forms.IntegerField(required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Status" ,'readonly':'True'}))
+    place = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Place",'readonly':'True'}))
+    work_type = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Work type",'readonly':'True'}))
+    phone = forms.CharField(max_length=10, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Phone number",'readonly':'True'}))
+    job_title = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Job title",'readonly':'True'}))
+    rate = forms.IntegerField(required=True, widget=forms.TextInput(attrs={'class':'form-control','placeholder':"Rate"}))
+    worker_name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Worker name",'readonly':'True'}))
+    worker_phone = forms.CharField(max_length=10, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Worker Phone",'readonly':'True'}))
     class Meta:
-        model = JobPostingModel
+        model = AppliedJobs
         fields = '__all__'

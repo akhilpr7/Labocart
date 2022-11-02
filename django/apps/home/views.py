@@ -12,6 +12,7 @@ from django.urls import reverse
 from authentication.models import jobmodel,NewUserModel,labourmodels
 from django.views.generic import ListView
 from django.db.models import Q
+import pdb
 
 
 # Create your views here.
@@ -85,17 +86,36 @@ class LookForJobs(View):
 
 class ApplyFormView(View):
     def get(self, request,*args, **kwargs):
-        job = kwargs.get('name')
-        print("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",job)
-        form = ApplyForm(job)
-        context = {
-            'form' : form
+       
+        id = kwargs.get('id')
+        maindata = JobPostingModel.objects.filter(id=id).first()
+        hire = JobPostingModel.objects.filter(id=id).values_list('hirer')[0][0]
+        print(hire,"jggggggggggggggggggggggggggggggg")
+        data = {
+            'name': maindata.name,
+            'hirer': hire,
+            'place': maindata.place,
+            'work_type': maindata.work_type,
+            'phone': maindata.phone,
+            'status': maindata.status,
+            'job_title': maindata.job_title,
+            'worker_name': request.user.username,
+            'worker_phone': request.user.phone_no
         }
-        return render(request, "home/applyform.html", context)
+        form = ApplyForm(data)
+        return render(request, "home/applyform.html", {'form': form})
 
-
-
-
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            form = ApplyForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request,"Success")
+                return redirect('shop')
+            else:
+                messages.error(request,"error")
+                return redirect('shop') 
+        return redirect(request, 'shop') 
 
 @method_decorator(login_required,name='dispatch')
 class CompletedService(View):
@@ -322,7 +342,7 @@ class Labocategories2(View):
 			'current_path':"Provide Jobs" 
 		}
 		total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username)&((Q(status=1)|Q(status=2)|Q(status=3)))).count()
-		print(total_work,"totttttttttttttttttttaaaaaaal workkkkkkkkkkkkk")
+
 		if total_work < 5 :
 			return render(request, self.template,context)
 		else:

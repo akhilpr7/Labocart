@@ -42,13 +42,13 @@
                   <form method="post">
                     {% csrf_token %}
                     <div class="row">
+                       
                         <div class="col-lg-8"> 
-                            <h1>{{request.POST}}</h1>
-                            {{form.hirer}}
+                          {{form.name}}
                         </div>
                         <div class="col-lg-8"> 
-                            {{form.name}}
-                        </div>
+                          {{form.hirer}}
+                      </div>
                         <div class="col-lg-8"> 
                             {{form.place}}
                         </div>
@@ -56,19 +56,24 @@
                             {{form.work_type}}
                         </div>
                         <div class="col-lg-8"> 
+                          {{form.status}}
+                      </div>
+                        <div class="col-lg-8"> 
                             {{form.phone}}
                         </div>
                         <div class="col-lg-8"> 
                             {{form.job_title}}
                         </div>
                         <div class="col-lg-8"> 
-                            {{form.status}}
-                        </div>
-                        <div class="col-lg-8"> 
-                            <label for="rate">Rate :</label>
-                            {{form.rate}}
-                        </div>
-                        
+                          {{form.worker_name}}
+                      </div>
+                      <div class="col-lg-8">
+                        {{form.worker_phone}} 
+                    </div>
+                    <div class="col-lg-8"> 
+                      <label for="rate">Rate :</label>
+                      {{form.rate}}
+                  </div>
                     <div class="col-lg-4 pl-2">
                       <button type="submit" class="btn bg-gray-800 btn-rounded rounded-2 text-white" style="float:right">Add</button> 
                     </div>
