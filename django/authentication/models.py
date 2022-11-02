@@ -10,7 +10,7 @@ class NewUserModel(AbstractUser):
     wallet  = models.FloatField(default=0.0, blank=False)
     subscribed_at = models.DateField(null=True,blank=True)
     package = models.IntegerField(null=False, default=0)
-    image = models.CharField(max_length=3000 ,null=True,default='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png')
+    image = models.ImageField(upload_to='user',null=True,default='')
     USERNAME_FIELD = 'username'
     def __str__(self):
         return self.username
@@ -19,7 +19,7 @@ class NewUserModel(AbstractUser):
 
 class labourmodels(models.Model):
     username = models.CharField(max_length=25, blank=False)
-    image_link= models.CharField(max_length=10000,blank=False)
+    image_link= models.ImageField(upload_to='labour',blank=False)
     job_title = models.CharField(max_length=50, blank=False)
     rate = models.FloatField(max_length=10,default=1)
     work_type = models.BooleanField(default=False)

@@ -7,7 +7,7 @@ class ProductsModel(models.Model):
     Product_name = models.TextField(max_length=100,null=False, blank=False)
     Price = models.FloatField(max_length=20,null=False, blank=False)
     Quantity = models.IntegerField(null=False,blank=False,)
-    Image = models.TextField(max_length=100,null=False, blank=False)
+    Image = models.ImageField(upload_to='product',blank=False,null=False)
     def __str__(self):
         return self.Product_name
 
@@ -17,7 +17,7 @@ class CartModel(models.Model):
     Price = models.FloatField(max_length=20,null=False, blank=False)
     Total = models.FloatField(max_length=20, blank=False,null=False)
     Quantity = models.IntegerField(blank=False,null=False)
-    Image = models.TextField(max_length=100, blank=False,null=False)
+    Image = models.ImageField(upload_to='cart', blank=False,null=False)
     username = models.CharField(max_length=255, blank=False,null=False)
     cartnumber = models.IntegerField(blank=False,null=False, default=0)
     def __str__(self):
