@@ -120,10 +120,50 @@
                     href="#!">{{j.date_joined}}</a></p>
                 <p class="text-muted mb-4">Phone Number :<span class="mx-2">|</span> <a
                     href="#!">{{j.phone_no}}</a></p>
+              
+
+                    {% comment %} {% with tot=0 %}
+                    {% for k in work %}
+                    {% if j.username in k.worker_name %}
+                    {{k.worker_name}}
+                    {% tot|add:1 %}
+                    {% endif %}
+                    {% endfor %}
+                    {{tot}}
+                    {% endwith %} {% endcomment %}
+                </a></p>
                 <p class="text-muted mb-4">Rating :<span class="mx-2">|</span> <a
-                    href="#!">{{j.rating}}</a></p>
+                    href="#!">
+                    {%if j.rating == 0%}
+                    {%elif j.rating == 1%}
+                    <span class="fa fa-star checked"></span>
+                    {%elif j.rating == 2%}
+                    <span class="fa fa-star checked"></span>
+
+                    <span class="fa fa-star checked"></span>
+
+                    {%elif j.rating == 3%}
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+
+                    {%elif j.rating == 4%}
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+
+                    {%elif j.rating == 5%}
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    
+                    {%endif%}
+                </a></p>
                    
-                <div class="mb-4 pb-2">
+                <!-- <div class="mb-4 pb-2">
                   <button type="button" class="btn btn-outline-primary btn-floating">
                     <i class="fab fa-facebook-f fa-lg"></i>
                   </button>
@@ -133,11 +173,11 @@
                   <button type="button" class="btn btn-outline-primary btn-floating">
                     <i class="fab fa-skype fa-lg"></i>
                   </button>
-                </div>
-                <button type="button" class="btn btn-primary btn-rounded btn-lg">
+                </div> -->
+                <!-- <button type="button" class="btn btn-primary btn-rounded btn-lg">
                   Message now
-                </button>
-                <div class="d-flex justify-content-between text-center mt-5 mb-2">
+                </button> -->
+                <!-- <div class="d-flex justify-content-between text-center mt-5 mb-2">
                   <div>
                     <p class="mb-2 h5">8471</p>
                     <p class="text-muted mb-0">Wallets Balance</p>
@@ -150,7 +190,7 @@
                     <p class="mb-2 h5">4751</p>
                     <p class="text-muted mb-0">Total Transactions</p>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
            
@@ -192,21 +232,69 @@
                                     <div class="d-flex flex-row align-items-center mb-2">
                                         <p class="mb-0 me-2">@{{i.username}}</p>
                                         <ul class="mb-0 list-unstyled d-flex flex-row" style="color: #e4a804;">
+                                        {%for t in user%}
+                                            {%if i.username in t.username%}
+                                            {%if t.rating == 0%}
+
+                                            {%elif t.rating == 1%}
                                             <li>
                                                 <i class="fas fa-star fa-xs"></i>
                                             </li> 
+                                            {%elif t.rating == 2%}
+
                                             <li>
                                                 <i class="fas fa-star fa-xs"></i>
                                             </li>
                                             <li>
                                                 <i class="fas fa-star fa-xs"></i>
                                             </li> 
+                                            {%elif t.rating == 3%}
+
                                             <li>
                                                 <i class="fas fa-star fa-xs"></i>
                                             </li>
                                             <li>
                                                 <i class="fas fa-star fa-xs"></i>
                                             </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            {%elif t.rating == 4%}
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            {%elif t.rating == 5%}
+
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                           
+                                            {%endif%}
+                                            {%endif%}
+                                            
+                                        {%endfor%}
+
                                         </ul>
                                     </div>
                                     <div>

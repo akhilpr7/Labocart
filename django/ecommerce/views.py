@@ -242,8 +242,10 @@ class LaboShop(View):
 		datacategory=Category.objects.values()
 		datajob = jobmodel.objects.values()
 		data = labourmodels.objects.filter((Q(job_title=job))&(Q(status=1)))
-		userprofile=NewUserModel.objects.all()
 		fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
+		users=NewUserModel.objects.all()
+		work = HireModel.objects.all()
+		
 		print("fffffffffffffffffffffffffffffffffffffffffffffff",fund)
 		context = {
 			'data': data,
@@ -251,7 +253,8 @@ class LaboShop(View):
 			'fund': fund,
 			"datacategory":datacategory,
 			"datajob":datajob,
-			"user":userprofile,
+			"user":users,
+			"work":work,
 		}
 		is_sub = NewUserModel.objects.filter(username=request.user.username).values_list('is_sub')[0][0]
 		# print(is_sub,"sdddddddddddddddddddd")
