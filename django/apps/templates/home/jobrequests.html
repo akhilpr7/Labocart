@@ -1,0 +1,71 @@
+{% extends "index.html" %}
+{% block title %} Requested Services {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <p class="d-none" id="messagetag">{{message.tags}}</p>
+        <p class="d-none " id="messagecontent">{{message}}</p>
+    {% endfor %}
+    {% endif %}
+    <body style="background-color:#f5eee7" >
+<!-- <div class="col-12 col-md-12"> -->
+    <div class="row pb-3 flex-md">
+    {%for request in requests%} 
+       
+        <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+            
+            <div class="card product-item border-0 mb-4">
+               
+                <div class="card" style="border-radius: 15px; background-color: rgba(255, 255, 255, 0.993);">   
+                                 
+                    <div class="card-body p-4 text-black">
+                        <div>
+                            <h6 class="mb-4">Job Title :{{request.job_title}}</h6>
+                            <h6 class="mb-4">Name : {{request.worker_name}}</h6>
+                        <div class="d-flex align-items-center mb-4 " >
+                            <div class="flex-shrink-0">
+                                <img src="{{i.image_link}}"
+                                alt="" class="img-fluid rounded-circle border border-dark border-3"
+                                style="width: 75px; height: 75px;">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <div class="d-flex flex-row align-items-center mb-2">
+                                    <h6 class="mb-4">Location {{request.place}}</h6>
+                                    <h6 class="mb-4">Phone {{request.worker_phone}}</h6>
+                                    <h6 class="mb-4">Wage {{request.rate}}</h6>
+                                </div>
+                                {% comment %} <div class="d-flex flex-row align-items-center mb-2">
+                                   
+                                </div> {% endcomment %}
+                            </div>
+                        </div>
+                    </div>
+                    {%if request.status == 1%}
+                        <div class="card-footer">
+                            <a href="" type = "button" class="btn-slack text-center text-decoration-none btn-gray-800 btn-block btn-lg btn-rounded rounded-3 text-white"><i class="far fa-clock me-2 text-white"></i>Request accepted ✔</a>     
+                        </div>
+                    {%else%}
+                        <div class="card-footer">
+                            <a href="{% url 'jobrequestupdate' request.id %}" type = "button" class="text-center text-decoration-none btn-gray-800 btn-block btn-lg btn-rounded rounded-3 text-white"><i class="far fa-clock me-2 text-white"></i>Accept Request</a>     
+                        </div>
+                   {%endif%}
+                    </div>
+                
+            </div>
+        </div>
+      
+       
+    </div>
+    {% endfor %}
+</div>
+<!-- </div> -->
+</body>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

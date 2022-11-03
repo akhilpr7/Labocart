@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from ecommerce.models import HireModel, PurchaseModel
 from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm,ApplyForm
-from .models import Category,JobPostingModel   
+from .models import Category,JobPostingModel,AppliedJobs   
 from django.contrib import messages
 from django.urls import reverse
 from authentication.models import jobmodel,NewUserModel,labourmodels
@@ -386,5 +386,18 @@ class RejectServices(View):
         messages.success(request,"Cancelled")
         return redirect('servicerequests')
     
-       
+class JobRequests(View):
+    def get(self, request,*args, **kwargs):
+        requests = AppliedJobs.objects.filter(hirer = request.user.username).exclude(status =2)
+        return render(request, "home/jobrequests.html",{'requests':requests})
+
+
+class JobRequestUpdate(View):
+    def get(self, request,*args, **kwargs):
+        id = kwargs.get('id')
+        req = AppliedJobs.objects.filter(id=id)
+        req.update(status=1)
+        reject = AppliedJobs.objects.all().exclude(status=1)
+        reject.update(status=2)
+        return redirect('jobrequests')
 

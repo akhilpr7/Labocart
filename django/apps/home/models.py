@@ -30,7 +30,7 @@ class AppliedJobs(models.Model):
     place = models.TextField(max_length=25, blank=False)
     work_type = models.BooleanField(default=False)
     phone = models.BigIntegerField()
-    status =  models.IntegerField(blank=False,null=True,default=0)
+    status =  models.IntegerField(default = 0)
     job_title = models.CharField(max_length=20, blank=False,default='none')
     rate = models.IntegerField(default=500)
     worker_name = models.TextField(max_length=25, blank=False)
