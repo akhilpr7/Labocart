@@ -24,6 +24,7 @@ urlpatterns = [
     path('manageuser/', views.ManageUser.as_view(), name="manageuser"),
     path('updateuser/<int:id>/', views.UpdateUser.as_view(),name="updateuser"),
     path('jobpost',views.JobPostingView.as_view(),name="job-posting"),
+    path('applyform/<int:id>/',views.ApplyFormView.as_view(),name="applyform"),
     path('manageservices/', views.ManageServices.as_view(), name="manageservices"),
     path('updateservices/<int:id>/', views.UpdateServices.as_view(),name="updateservices"),
     path('jobpost/<str:id>',views.JobPostingView.as_view(),name="job-posting"),
@@ -31,6 +32,7 @@ urlpatterns = [
     path("servicerequests",views.ServiceRequests.as_view(),name="servicerequests"),
     path('acceptservices/<int:id>/', views.AcceptServices.as_view(), name="acceptservices"),
     path('rejectservices/<int:id>/', views.RejectServices.as_view(), name="rejectservices"),
+    path("pendingkyc",views.PendingKYC.as_view(),name="pendingkyc"),
 
 
 

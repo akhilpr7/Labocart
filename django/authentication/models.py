@@ -10,7 +10,9 @@ class NewUserModel(AbstractUser):
     wallet  = models.FloatField(default=0.0, blank=False)
     subscribed_at = models.DateField(null=True,blank=True)
     package = models.IntegerField(null=False, default=0)
-    image = models.ImageField(upload_to='user',null=True,default='')
+    image = models.FileField(upload_to='profile/')
+    kyc = models.FileField(upload_to='kyc/',blank=True, null=True)
+    kyc_approved  = models.BooleanField(default=False)
     USERNAME_FIELD = 'username'
     def __str__(self):
         return self.username
@@ -24,6 +26,7 @@ class labourmodels(models.Model):
     rate = models.FloatField(max_length=10,default=1)
     work_type = models.BooleanField(default=False)
     status = models.IntegerField(blank = False,default=0)
+    job_certificate = models.ImageField(upload_to='credentials',blank=False,null=False,default=0)
 
 
 class jobmodel(models.Model):

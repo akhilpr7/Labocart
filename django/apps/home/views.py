@@ -4,14 +4,16 @@ from django.shortcuts import render,redirect
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from ecommerce.models import HireModel, PurchaseModel
-from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm
+from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm,ApplyForm
 from .models import Category,JobPostingModel   
 from django.contrib import messages
 from django.urls import reverse
 from authentication.models import jobmodel,NewUserModel,labourmodels
 from django.views.generic import ListView
 from django.db.models import Q
+import pdb
 
 
 # Create your views here.
@@ -82,6 +84,39 @@ class LookForJobs(View):
         }
         return render(request, "home/lookforjobs.html", context)
 
+
+class ApplyFormView(View):
+    def get(self, request,*args, **kwargs):
+       
+        id = kwargs.get('id')
+        maindata = JobPostingModel.objects.filter(id=id).first()
+        hire = JobPostingModel.objects.filter(id=id).values_list('hirer')[0][0]
+        print(hire,"jggggggggggggggggggggggggggggggg")
+        data = {
+            'name': maindata.name,
+            'hirer': hire,
+            'place': maindata.place,
+            'work_type': maindata.work_type,
+            'phone': maindata.phone,
+            'status': maindata.status,
+            'job_title': maindata.job_title,
+            'worker_name': request.user.username,
+            'worker_phone': request.user.phone_no
+        }
+        form = ApplyForm(data)
+        return render(request, "home/applyform.html", {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            form = ApplyForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request,"Success")
+                return redirect('shop')
+            else:
+                messages.error(request,"error")
+                return redirect('shop') 
+        return redirect(request, 'shop') 
 
 @method_decorator(login_required,name='dispatch')
 class CompletedService(View):
@@ -308,7 +343,7 @@ class Labocategories2(View):
 			'current_path':"Provide Jobs" 
 		}
 		total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username)&((Q(status=1)|Q(status=2)|Q(status=3)))).count()
-		print(total_work,"totttttttttttttttttttaaaaaaal workkkkkkkkkkkkk")
+
 		if total_work < 5 :
 			return render(request, self.template,context)
 		else:
@@ -324,6 +359,20 @@ class ServiceRequests(View):
             'details': details ,
             }
         return render(request, "home/service_requests.html",context)
+
+@method_decorator(login_required,name='dispatch')
+class PendingKYC(View):
+    template_name = 'home/pending-registration-requests.html'
+    def get(self, request,*args, **kwargs):
+        datas = NewUserModel.objects.filter(kyc_approved=1).order_by('id')
+        context = {
+            'media_url':settings.NEW_VAR,
+            'datas': datas ,
+             'current_path':"Pending KYC ",
+            }
+        return render(request, self.template_name,context)
+
+
 
 class AcceptServices(View):
     def get(self, request,id, *args, **kwargs):
