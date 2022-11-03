@@ -34,7 +34,7 @@
             <div class="card">
               <div class="card-body p-6">
                   <h3 class="font-weight-bolder">Update Profile</h3><br>
-                  <form method="post">
+                  <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-lg-8"> 
@@ -58,7 +58,7 @@
                           <br>
                         </div>
                         <div class="col-lg-8"> 
-                          <label for="firstname">Image Url :</label>
+                          <label for="firstname">Image :</label>
                           {{form.image}}
                           <br>
                         </div>

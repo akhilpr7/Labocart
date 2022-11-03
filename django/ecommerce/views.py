@@ -335,7 +335,7 @@ class UpdateProduct(View):
 			updatedRecord. Product_name = request.POST['Product_name']
 			updatedRecord. Price = request.POST['Price']
 			updatedRecord. Quantity = request.POST['Quantity']
-			updatedRecord. Image = request.POST['Image']
+			updatedRecord. Image = request.FILES['Image']
 			updatedRecord.save()
 			messages.success(request,"Success!")
 			return redirect('stocklist')

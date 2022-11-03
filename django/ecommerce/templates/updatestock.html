@@ -11,7 +11,7 @@
 <body style="background-color:#f5eee7" >
   <div class="container-fluid py-4">
   <div class="admin-add-main ">
-    <form class='admin-add-user shadow-sm px-5 pt-4' method="POST">
+    <form class='admin-add-user shadow-sm px-5 pt-4' method="POST" enctype="multipart/form-data">
         <h4>Update Stock</h4><br>
         {% csrf_token %}
         {% for field in form %}
