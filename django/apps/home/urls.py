@@ -32,7 +32,9 @@ urlpatterns = [
     path("servicerequests",views.ServiceRequests.as_view(),name="servicerequests"),
     path('acceptservices/<int:id>/', views.AcceptServices.as_view(), name="acceptservices"),
     path('rejectservices/<int:id>/', views.RejectServices.as_view(), name="rejectservices"),
-
+    path("pendingkyc",views.PendingKYC.as_view(),name="pendingkyc"),
+    path("approveuser/<int:id>",views.ApproveUser.as_view(),name="approveuser"),
+    
 
 
 ]

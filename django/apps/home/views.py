@@ -4,6 +4,7 @@ from django.shortcuts import render,redirect
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from ecommerce.models import HireModel, PurchaseModel
 from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm,ApplyForm
 from .models import Category,JobPostingModel   
@@ -359,6 +360,20 @@ class ServiceRequests(View):
             }
         return render(request, "home/service_requests.html",context)
 
+@method_decorator(login_required,name='dispatch')
+class PendingKYC(View):
+    template_name = 'home/pending-registration-requests.html'
+    def get(self, request,*args, **kwargs):
+        datas = NewUserModel.objects.filter(kyc_approved=0).order_by('id')
+        context = {
+            'media_url':settings.NEW_VAR,
+            'datas': datas ,
+             'current_path':"Pending KYC  ",
+            }
+        return render(request, self.template_name,context)
+
+
+
 class AcceptServices(View):
     def get(self, request,id, *args, **kwargs):
         status=labourmodels.objects.filter(id=id).values_list("status")[0][0]
@@ -374,4 +389,13 @@ class RejectServices(View):
         return redirect('servicerequests')
     
        
-
+class ApproveUser(View):
+    def get(self, request,  id):
+       try:
+        user = NewUserModel.objects.get(id=id)
+        user.kyc_approved=True
+        user.save()
+        messages.success(request ,"Approved User.") 
+        return redirect('pendingkyc')
+       except Exception as e :
+        messages.error(request ,"An error occured during the approval.") 

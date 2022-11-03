@@ -61,6 +61,7 @@
 
 <link type="text/css" href="/static/assets/vendor/notyf/notyf.min.css" rel="stylesheet">
 <link type="text/css" href="/static/assets/css/volt.css" rel="stylesheet">
+<link type="text/css" href="/static/assets/css/kyc-modal.css" rel="stylesheet">
 
 <!-- Specific Page JS goes HERE  -->    
 {% block stylesheets %}{% endblock stylesheets %}
@@ -89,7 +90,10 @@
 
 
     </main>
+  
+  {% include 'includes/kyc-approval-prompt.html' %}
 
+  {% include 'includes/logout-prompt.html' %}
 
   {% include 'includes/scripts.html' %}
     

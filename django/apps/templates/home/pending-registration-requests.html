@@ -1,0 +1,89 @@
+{% extends "layouts/base.html" %} {% block title %} Pending KYC approval {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<body style="background-color: #f5eee7">
+    {% if messages %}
+    {% for message in messages %}
+        <p class="d-none" id="messagetag">{{message.tags}}</p>
+        <p class="d-none " id="messagecontent">{{message}}</p>
+    {% endfor %}
+  {% endif %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div class="d-block mb-4 mb-md-0">
+            <h2 class="h4">Pending KYC approval</h2>
+        </div>
+    </div>
+
+    <div class="card card-body border-0 shadow table-wrapper table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="border-gray-200">Username</th>
+                    <th class="border-gray-200">First Name</th>
+                    <th class="border-gray-200">Last Name</th>
+                    <th class="border-gray-200">Email</th>
+                    <th class="border-gray-200">Phone No</th>
+                    <th class="border-gray-200">Image</th>
+                    <th class="border-gray-200">KYC</th>
+                    <th class="border-gray-200">APPROVE</th>
+                    {% comment %}
+                    <th class="border-gray-200">Status</th>
+                    {% endcomment %}
+                </tr>
+            </thead>
+            <tbody >
+                <!-- Item -->
+                {% for data in datas %}
+                <tr class="" > 
+                    <td class="align-middle">{{data.username}}</td>
+                    <td class="align-middle" >{{data.first_name}}</td>
+                    <td class="align-middle" >{{data.last_name}}</td>
+                    <td class="align-middle" >{{data.email}}</td>
+                    <td class="align-middle">{{data.phone_no}}</td>
+                    <td class="align-middle"><img  class="rounded" style="width:200px ; height:auto;" src="{{media_url}}{{data.image}}" alt="{{data.username}}'s Image"></td>
+                    <td class="align-middle"><img id="myImg" class="rounded" style="width:200px ; height:auto;" src="{{media_url}}{{data.kyc}}" alt="{{data.username}}'s Aadhar"></td>
+                    <td class="align-middle"><a href="{% url 'approveuser' data.id %}"
+                        
+                       class="btn btn-success">APPROVE</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+            <div id="myModal" class="modal">
+                <span class="close">&times;</span>
+                <img class="modal-content" id="img01">
+                <div id="caption"></div>
+            </div>
+
+    </div>
+</body>
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+    
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    var img = document.getElementById("myImg");
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+    img.onclick = function(){
+      modal.style.display = "block";
+      modalImg.src = this.src;
+      captionText.innerHTML = this.alt;
+    }
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() { 
+      modal.style.display = "none";
+    }
+    </script>
+    
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
