@@ -47,12 +47,13 @@ class FundView(View):
             return render(request, self.template, {'form': form})
 
 @method_decorator(login_required,name='dispatch')
-class TransactionView(ListView):
+class TransactionView(ListView , View):
         model =  PurchaseModel
         context_object_name = 'datas'
         template_name = 'home/transactions.html'
-        def get_queryset(self):
-            new_context = PurchaseModel.objects.filter(status=3)
+        # user= request.user.username
+        def get_queryset(self,request):
+            new_context = PurchaseModel.objects.filter(status=3 ,username=request.user.username)
             return new_context
 
 @method_decorator(login_required,name='dispatch')
