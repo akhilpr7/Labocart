@@ -19,7 +19,10 @@ from django.http import HttpResponseRedirect
 import random,datetime
 from apps.home.models import Category
 from django.conf import settings
+from django.views.decorators.cache import cache_control
 from django.conf.urls.static import static
+from django.views.decorators.cache import never_cache
+
 @method_decorator(login_required,name='dispatch')
 class Home(View):
 	def get(self, request, *args, **kwargs):
@@ -157,6 +160,7 @@ class CheckoutView(View):
 		'totalPrice': totalPrice["Total__sum"],
 		}	
 		return render(request, self.template, context)
+	@cache_control( no_cache=True, must_revalidate=True, no_store=True )
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
 			form = PurchaseForm(request.POST)
@@ -583,8 +587,9 @@ class Payment(View):
 
 		}
 		return render(request,template,context)
-
 class ConfirmPay(View):
+	
+	@cache_control( no_cache=True, must_revalidate=True, no_store=True )
 	def get(self, request,id, *args, **kwargs):
 		wallet_balance = NewUserModel.objects.filter(username=request.user.username).values_list("wallet")[0][0]
 		total_price=PurchaseModel.objects.filter(id=id).values_list("Total")[0][0]

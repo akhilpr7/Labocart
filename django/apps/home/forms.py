@@ -42,7 +42,7 @@ class AddJobForm(forms.Form):
 class JobPostingForm( forms.Form ):
   name = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Name"}))
   place = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
-  image = forms.ImageField()
+  image = forms.ImageField(widget=forms.FileInput(attrs={ 'class': 'form-control'}))
   phone = forms.CharField(max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Phone"}))
   CHOICES = (('True','Half day'),('False','Full day'))
   work_type = forms.ChoiceField(choices = CHOICES,widget=forms.Select(attrs={'class':'form-select'}))
