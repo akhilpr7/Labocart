@@ -358,7 +358,7 @@ class Labocategories2(View):
 @method_decorator(login_required,name='dispatch')
 class ServiceRequests(View):
     def get(self, request,*args, **kwargs):
-        details = labourmodels.objects.filter(status=3).order_by('id')
+        details = labourmodels.objects.filter(status=2).order_by('id')
         context = {
             'details': details ,
             }

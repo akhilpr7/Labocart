@@ -8,115 +8,93 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
-
-    <!-- Favicon -->
-    <link href="../../../static/img/favicon.ico" rel="icon">
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="../../../static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="../../../static/css/style.css" rel="stylesheet">
 </head>
 
 <body>
-    <section style="background-color: #eee;">
-        <div class="container py-5">
-         
-          <div class="row">
-            
-            <div class="col-lg-12">
-             
-              <div class="card mb-4">
-                
-                <div class="card-body text-center">
-                  <img  src="{{details.image.url}}" alt="avatar"
-                    class="rounded img-fluid" style="width: 150px;">
-                  <h5 class="my-3"></h5>
-                  <p class="text-muted mb-1">{{details.username}}</p>
+    <section style="background-color: #f5eee7;" class="pb-6 pt-5" >
+      <div class="container pt-5">
+        <div class="main-body">
+              <div class="row gutters-sm">
+                <div class="col-md-4 mb-3">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex flex-column align-items-center text-center">
+                        <img src="{{details.image}}" class="rounded-circle" width="150">
+                        <div class="mt-3 text-uppercase">
+                          <h5>{{details.username}}</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card mt-3">
+                    <div class="card-body p-3">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="d-flex flex-column h-100">
+                              <h4 class="text-lg mb-1 pt-2">Your Wallet</h4><br>
+                              <h5 class="font-weight-bolder text-gray-800">Available Balance : ${{ details.wallet}}</h5>
+                              <!-- <h5 class="mb-5 font-weight-bold float-end align-self-sm-end text-black">${{ details.wallet}}</h5> -->
+                            </div>
+                          </div>
+                          <div class="col-lg-5 ms-auto text-center mt-5 mt-lg-0">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <div class="card mb-3">
+                    <div class="card-body p-5" style="padding: 40px;text-align: center">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Full Name</h6>
+                        </div>
+                        <div class="col-sm-9 ">{{details.first_name}} {{details.last_name}}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Email</h6>
+                        </div>
+                        <div class="col-sm-9">
+                          {{details.email}}                        
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Phone</h6>
+                        </div>
+                        <div class="col-sm-9">
+                          {{details.phone_no}} 
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Rating</h6>
+                        </div>
+                        <div class="col-sm-9">
+                          {{details.rating}} 
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <a class="btn btn-2 rounded-2 text-success float-end" href="{% url 'update_profile' %}">Edit Profile</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
+    
             </div>
-            <div class="col-lg-12">
-              <div class="card mb-4">
-                <div class="card-body" style="padding: 40px;text-align: center;">
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <p class="mb-0">Name</p>
-                    </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{details.first_name}}{{details.last_name}}</p>
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <p class="mb-0">Email</p>
-                    </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{details.email}}</p>
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <p class="mb-0">Phone</p>
-                    </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{details.phone_no}}</p>
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <p class="mb-0">Rating</p>
-                    </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{details.rating}}</p>
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <p class="mb-0">Wallet Balance</p>
-                    </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{details.wallet}}</p>
-                    </div>
-                  </div>
-                  <hr>
-                </div>
-              </div>
-            </div>
-          </div>
-          <a class="btn btn-primary rounded-2 float-right col btn-dark" href="{% url 'update_profile' %}" role="button">Update Profile</a>
         </div>
-        
       </section>
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
 </body>
 
 {% endblock content %}
