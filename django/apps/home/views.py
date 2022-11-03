@@ -4,6 +4,7 @@ from django.shortcuts import render,redirect
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from ecommerce.models import HireModel, PurchaseModel
 from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm,ApplyForm
 from .models import Category,JobPostingModel   
@@ -356,6 +357,20 @@ class ServiceRequests(View):
             'details': details ,
             }
         return render(request, "home/service_requests.html",context)
+
+@method_decorator(login_required,name='dispatch')
+class PendingKYC(View):
+    template_name = 'home/pending-registration-requests.html'
+    def get(self, request,*args, **kwargs):
+        datas = NewUserModel.objects.filter(kyc_approved=1).order_by('id')
+        context = {
+            'media_url':settings.NEW_VAR,
+            'datas': datas ,
+             'current_path':"Pending KYC ",
+            }
+        return render(request, self.template_name,context)
+
+
 
 class AcceptServices(View):
     def get(self, request,id, *args, **kwargs):
