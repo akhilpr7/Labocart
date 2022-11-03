@@ -239,7 +239,6 @@ class Invoice(View):
 class LaboShop(View):
 	def get(self, request,id, *args, **kwargs):
 		job=jobmodel.objects.filter(id=id).values_list("job_title")[0][0]
-		# if request.GET.get('jobtitle') is not None and request.GET.get('job') != '':
 		datacategory=Category.objects.values()
 		datajob = jobmodel.objects.values()
 		data = labourmodels.objects.filter((Q(job_title=job))&(Q(status=1)))
@@ -441,10 +440,9 @@ class HireNowView(View):
 		data = {
 			"worker_name" :username,
 			"Hire_name" : request.user,
-			"job_title" : job_title
+			"job_title" : job_title,
 		}
 		form = HireNowForm(data)
-        # print("eeeeeeeeeeeeeeeeeeeeeeeeee",username)
 		context = {'form': form}
 		return render(request, "hireNowForm.html",context)
 	def post(self, request, *args, **kwargs):
