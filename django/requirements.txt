@@ -6,3 +6,4 @@ django-widget-tweaks==1.4.12
 django-environ
 Pillow
 django-mathfilters
+django-image-cropping
