@@ -47,7 +47,7 @@ func workStatus(db *sql.DB){
   fetch_id.Scan(&id)
   sqlStatement := `
   UPDATE ecommerce_hiremodel
-  SET status=3
+  SET status=4
   WHERE id = $1;`
   _, err := db.Exec(sqlStatement, id)
   if err != nil {
