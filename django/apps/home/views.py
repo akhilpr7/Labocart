@@ -145,7 +145,7 @@ class UserCompletedService(View):
 @method_decorator(login_required,name='dispatch')
 class ServiceView(View):
     def get(self, request, *args, **kwargs):
-        data = HireModel.objects.filter (Hire_name = request.user)
+        data = HireModel.objects.filter(Q(Hire_name = request.user)&(~Q(status=4)))
         context = {'data': data ,'current_path':"Requested Services" }
         return render(request, "home/requested-services.html",context)
 
@@ -154,14 +154,15 @@ class RatingView(View):
         details = HireModel.objects.get(id=id)
         context = {
 			'details': details,
+            'id':id,
 		}
         return render(request, "home/rating.html",context)
 
 
 class Ratings(View):
-    def get(self, request, *args, id, **kwargs):
+    def get(self, request, *args, id,id1, **kwargs):
         star = id
-        data = HireModel.objects.get(Hire_name = request.user)
+        data = HireModel.objects.get(id = id1)
         data.rating = star
         data.worker_status = True
         data.save()
