@@ -14,7 +14,7 @@ from authentication.models import jobmodel,NewUserModel,labourmodels
 from django.views.generic import ListView
 from django.db.models import Q
 import pdb
-
+from django.views.decorators.cache import cache_control
 
 # Create your views here.
 @method_decorator(login_required,name='dispatch')
@@ -78,9 +78,11 @@ class Workerservices(View):
 
 class LookForJobs(View):
     def get(self, request,*args, **kwargs):
-        look = JobPostingModel.objects.filter(status = 0).values()
+        jobs = JobPostingModel.objects.filter(status = 1).values()
         context = {
-            'look' : look
+            'media_url':settings.NEW_VAR,
+
+            'jobs' : jobs
         }
         return render(request, "home/lookforjobs.html", context)
 
@@ -101,7 +103,9 @@ class ApplyFormView(View):
             'status': maindata.status,
             'job_title': maindata.job_title,
             'worker_name': request.user.username,
-            'worker_phone': request.user.phone_no
+            'worker_phone': request.user.phone_no,
+            'current_path' : "Apply for job"
+
         }
         form = ApplyForm(data)
         return render(request, "home/applyform.html", {'form': form})
@@ -277,7 +281,6 @@ class JobPostingView(View):
     def get(self, request,id, *args, **kwargs):
         category = Category.objects.filter(id=id).values_list('category_name')[0][0]
         jobs = jobmodel.objects.filter(category=category).values()
-        # print("----",jobs,"6666666666666666666666666666666")
         form = JobPostingForm(initial=category,user=request.user.username)
         context = {
         "form" : form,
@@ -288,11 +291,12 @@ class JobPostingView(View):
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
-            form = JobPostingForm(request.POST)
+            form = JobPostingForm(request.POST,request.FILE)
             try:
                 obj = JobPostingModel.objects.create(
                     hirer=request.user.username,
                     place=request.POST['place'],
+                    image=request.FILE['image'],
                     job_title=request.POST['job_title'],
                     work_type=request.POST['work_type'],
                     phone=request.POST['phone'],

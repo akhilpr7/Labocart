@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm,UpdateProfileForm
 from .models import NewUserModel
 from django.conf import settings  
+from django.views.decorators.cache import cache_control
 
 
 
