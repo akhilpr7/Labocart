@@ -354,7 +354,7 @@ class Labocategories2(View):
 @method_decorator(login_required,name='dispatch')
 class ServiceRequests(View):
     def get(self, request,*args, **kwargs):
-        details = labourmodels.objects.filter(status=3).order_by('id')
+        details = labourmodels.objects.filter(status=2).order_by('id')
         context = {
             'details': details ,
             }
@@ -364,11 +364,11 @@ class ServiceRequests(View):
 class PendingKYC(View):
     template_name = 'home/pending-registration-requests.html'
     def get(self, request,*args, **kwargs):
-        datas = NewUserModel.objects.filter(kyc_approved=1).order_by('id')
+        datas = NewUserModel.objects.filter(kyc_approved=0).order_by('id')
         context = {
             'media_url':settings.NEW_VAR,
             'datas': datas ,
-             'current_path':"Pending KYC ",
+             'current_path':"Pending KYC  ",
             }
         return render(request, self.template_name,context)
 
@@ -389,4 +389,13 @@ class RejectServices(View):
         return redirect('servicerequests')
     
        
-
+class ApproveUser(View):
+    def get(self, request,  id):
+       try:
+        user = NewUserModel.objects.get(id=id)
+        user.kyc_approved=True
+        user.save()
+        messages.success(request ,"Approved User.") 
+        return redirect('pendingkyc')
+       except Exception as e :
+        messages.error(request ,"An error occured during the approval.") 
