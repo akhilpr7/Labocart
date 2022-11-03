@@ -14,7 +14,7 @@ from authentication.models import jobmodel,NewUserModel,labourmodels
 from django.views.generic import ListView
 from django.db.models import Q
 import pdb
-
+from django.views.decorators.cache import cache_control
 
 # Create your views here.
 @method_decorator(login_required,name='dispatch')
@@ -78,9 +78,11 @@ class Workerservices(View):
 
 class LookForJobs(View):
     def get(self, request,*args, **kwargs):
-        look = JobPostingModel.objects.filter(status = 0).values()
+        jobs = JobPostingModel.objects.filter(status = 1).values()
         context = {
-            'look' : look
+            'media_url':settings.NEW_VAR,
+
+            'jobs' : jobs
         }
         return render(request, "home/lookforjobs.html", context)
 
@@ -99,7 +101,9 @@ class ApplyFormView(View):
             'status': maindata.status,
             'job_title': maindata.job_title,
             'worker_name': request.user.username,
-            'worker_phone': request.user.phone_no
+            'worker_phone': request.user.phone_no,
+            'current_path' : "Apply for job"
+
         }
         form = ApplyForm(data)
         return render(request, "home/applyform.html", {'form': form})
@@ -275,7 +279,6 @@ class JobPostingView(View):
     def get(self, request,id, *args, **kwargs):
         category = Category.objects.filter(id=id).values_list('category_name')[0][0]
         jobs = jobmodel.objects.filter(category=category).values()
-        # print("----",jobs,"6666666666666666666666666666666")
         form = JobPostingForm(initial=category,user=request.user.username)
         context = {
         "form" : form,
@@ -286,11 +289,12 @@ class JobPostingView(View):
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
-            form = JobPostingForm(request.POST)
+            form = JobPostingForm(request.POST,request.FILE)
             try:
                 obj = JobPostingModel.objects.create(
                     hirer=request.user.username,
                     place=request.POST['place'],
+                    image=request.FILE['image'],
                     job_title=request.POST['job_title'],
                     work_type=request.POST['work_type'],
                     phone=request.POST['phone'],
@@ -352,7 +356,7 @@ class Labocategories2(View):
 @method_decorator(login_required,name='dispatch')
 class ServiceRequests(View):
     def get(self, request,*args, **kwargs):
-        details = labourmodels.objects.filter(status=3).order_by('id')
+        details = labourmodels.objects.filter(status=2).order_by('id')
         context = {
             'details': details ,
             }
@@ -362,11 +366,11 @@ class ServiceRequests(View):
 class PendingKYC(View):
     template_name = 'home/pending-registration-requests.html'
     def get(self, request,*args, **kwargs):
-        datas = NewUserModel.objects.filter(kyc_approved=1).order_by('id')
+        datas = NewUserModel.objects.filter(kyc_approved=0).order_by('id')
         context = {
             'media_url':settings.NEW_VAR,
             'datas': datas ,
-             'current_path':"Pending KYC ",
+             'current_path':"Pending KYC  ",
             }
         return render(request, self.template_name,context)
 
@@ -391,7 +395,16 @@ class JobRequests(View):
         requests = AppliedJobs.objects.filter(hirer = request.user.username).exclude(status =2)
         return render(request, "home/jobrequests.html",{'requests':requests})
 
-
+class ApproveUser(View):
+    def get(self, request,  id):
+       try:
+        user = NewUserModel.objects.get(id=id)
+        user.kyc_approved=True
+        user.save()
+        messages.success(request ,"Approved User.") 
+        return redirect('pendingkyc')
+       except Exception as e :
+        messages.error(request ,"An error occured during the approval.") 
 class JobRequestUpdate(View):
     def get(self, request,*args, **kwargs):
         id = kwargs.get('id')

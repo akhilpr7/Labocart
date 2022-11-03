@@ -20,6 +20,7 @@ class JobPostingModel(models.Model):
     name = models.TextField(max_length=255, blank=False)
     place = models.TextField(max_length=255, blank=False)
     work_type = models.BooleanField(default=False)
+    image = models.FileField(upload_to='jobImages/')
     phone = models.BigIntegerField()
     status =  models.IntegerField(blank=False,null=True,default=1)
     job_title = models.CharField(max_length=20, blank=False,default='none')

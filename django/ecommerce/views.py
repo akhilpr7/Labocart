@@ -19,7 +19,10 @@ from django.http import HttpResponseRedirect
 import random,datetime
 from apps.home.models import Category
 from django.conf import settings
+from django.views.decorators.cache import cache_control
 from django.conf.urls.static import static
+from django.views.decorators.cache import never_cache
+
 @method_decorator(login_required,name='dispatch')
 class Home(View):
 	def get(self, request, *args, **kwargs):
@@ -157,6 +160,7 @@ class CheckoutView(View):
 		'totalPrice': totalPrice["Total__sum"],
 		}	
 		return render(request, self.template, context)
+	@cache_control( no_cache=True, must_revalidate=True, no_store=True )
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
 			form = PurchaseForm(request.POST)
@@ -238,8 +242,11 @@ class LaboShop(View):
 		# if request.GET.get('jobtitle') is not None and request.GET.get('job') != '':
 		datacategory=Category.objects.values()
 		datajob = jobmodel.objects.values()
-		data = labourmodels.objects.filter((Q(job_title=job))&(Q(status=1) | Q(status=2) | Q(status=3)))
+		data = labourmodels.objects.filter((Q(job_title=job))&(Q(status=1)))
 		fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
+		users=NewUserModel.objects.all()
+		work = HireModel.objects.all()
+		
 		print("fffffffffffffffffffffffffffffffffffffffffffffff",fund)
 		context = {
 			'data': data,
@@ -247,6 +254,8 @@ class LaboShop(View):
 			'fund': fund,
 			"datacategory":datacategory,
 			"datajob":datajob,
+			"user":users,
+			"work":work,
 		}
 		is_sub = NewUserModel.objects.filter(username=request.user.username).values_list('is_sub')[0][0]
 		# print(is_sub,"sdddddddddddddddddddd")
@@ -382,7 +391,7 @@ class LaboRegister(View):
 			job_title = request.POST.get("job_title")
 			rate = request.POST.get("rate")
 			work_type = request.POST.get("work_type")
-			obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 3,job_certificate=credential)
+			obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential)
 			# obj.save()
 			messages.success(request,"Success !")
 			print(obj,"55555555555555")
@@ -414,7 +423,7 @@ class Labocategories(View):
 			return render(request, self.template,context)
 		else:
 			messages.error(request,"Job Applying Limit Reached !!")
-			return redirect("laboshop")
+			return redirect("laboshopcategory")
 
 
 @method_decorator(login_required,name='dispatch')
@@ -479,7 +488,7 @@ class Acceptservice(View):
 			HireModel.objects.filter(id=id).update(status=3)
 			return redirect('assigned')
 		elif status ==1:
-			return redirect('laboshop')
+			return redirect('laboshopcategory')
 		else:
 			return redirect('labocategory')
 @method_decorator(login_required,name='dispatch')	
@@ -505,6 +514,7 @@ class Togglestatus(View):
 			labourmodels.objects.filter(id=id).update(status=0)
 			messages.success(request,"Success !")
 			return redirect("active_service")
+		
 		else:
 			return redirect("active_service")
 @method_decorator(login_required,name='dispatch')
@@ -577,8 +587,9 @@ class Payment(View):
 
 		}
 		return render(request,template,context)
-
 class ConfirmPay(View):
+	
+	@cache_control( no_cache=True, must_revalidate=True, no_store=True )
 	def get(self, request,id, *args, **kwargs):
 		wallet_balance = NewUserModel.objects.filter(username=request.user.username).values_list("wallet")[0][0]
 		total_price=PurchaseModel.objects.filter(id=id).values_list("Total")[0][0]
@@ -708,6 +719,6 @@ class Workerview(View):
 		return render(request,'index1.html',{})
 
 class Individual(View):
-	template = 'individualprofile.html'
 	def get(self, request, *args, **kwargs):
-		return render(request,self.template,{})
+		template = 'individualprofile.html'
+		return render(request,template,{})

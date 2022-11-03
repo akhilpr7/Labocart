@@ -31,11 +31,11 @@ class Laboregisterform(forms.Form):
     self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True),
                               widget=forms.Select(attrs={'class':'form-select'}))
 
-  image_link = forms.ImageField()
+  image_link = forms.ImageField(widget=forms.FileInput(attrs={'class':'form-control'}))
   rate = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
   CHOICES = (('True','Half day'),('False','Full day'))
-  work_type = forms.ChoiceField(choices = CHOICES)
-  credential = forms.ImageField()
+  work_type = forms.ChoiceField(choices = CHOICES,widget=forms.Select(attrs={'class':'form-select'}))
+  credential = forms.ImageField(widget=forms.FileInput(attrs={'class':'form-control'}))
 
 
 class AddToCartForm( forms.ModelForm ):

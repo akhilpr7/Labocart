@@ -131,6 +131,117 @@
     </div>
     <!-- Navbar End -->
 
+
+
+
+{%for j in user%}
+<div>
+    <!-- <button data-target="#profile-dialog" data-toggle="modal" class="btn pmd-ripple-effect btn-primary " type="button" >Profile Modal</button> -->
+    <div tabindex="-1" class="modal pmd-modal fade pmd-profile-modal" id="profile-dialog{{j.username}}" style="display: none;" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="width:80%;">
+          <div class="modal-body">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body text-center">
+                <div class="mt-3 mb-4">
+                  <img src="{{j.image.url}}"
+                    class="rounded-circle img-fluid" style="width: 100px;" />
+                </div>
+                <h4 class="mb-2">{{j.first_name}}. {{j.last_name}}</h4>
+                <p class="text-muted mb-4">@{{j.username}} <span class="mx-2">|</span> <a
+                    href="#!">{{j.email}}</a></p>
+                <p class="text-muted mb-4">Date Joined :<span class="mx-2">|</span> <a
+                    href="#!">{{j.date_joined}}</a></p>
+                <p class="text-muted mb-4">Phone Number :<span class="mx-2">|</span> <a
+                    href="#!">{{j.phone_no}}</a></p>
+              
+
+                    {% comment %} {% with tot=0 %}
+                    {% for k in work %}
+                    {% if j.username in k.worker_name %}
+                    {{k.worker_name}}
+                    {% tot|add:1 %}
+                    {% endif %}
+                    {% endfor %}
+                    {{tot}}
+                    {% endwith %} {% endcomment %}
+                </a></p>
+                <p class="text-muted mb-4">Rating :<span class="mx-2">|</span> <a
+                    href="#!">
+                    {%if j.rating == 0%}
+                    {%elif j.rating == 1%}
+                    <span class="fa fa-star checked"></span>
+                    {%elif j.rating == 2%}
+                    <span class="fa fa-star checked"></span>
+
+                    <span class="fa fa-star checked"></span>
+
+                    {%elif j.rating == 3%}
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+
+                    {%elif j.rating == 4%}
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+
+                    {%elif j.rating == 5%}
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    
+                    {%endif%}
+                </a></p>
+                   
+                <!-- <div class="mb-4 pb-2">
+                  <button type="button" class="btn btn-outline-primary btn-floating">
+                    <i class="fab fa-facebook-f fa-lg"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-primary btn-floating">
+                    <i class="fab fa-twitter fa-lg"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-primary btn-floating">
+                    <i class="fab fa-skype fa-lg"></i>
+                  </button>
+                </div> -->
+                <!-- <button type="button" class="btn btn-primary btn-rounded btn-lg">
+                  Message now
+                </button> -->
+                <!-- <div class="d-flex justify-content-between text-center mt-5 mb-2">
+                  <div>
+                    <p class="mb-2 h5">8471</p>
+                    <p class="text-muted mb-0">Wallets Balance</p>
+                  </div>
+                  <div class="px-3">
+                    <p class="mb-2 h5">8512</p>
+                    <p class="text-muted mb-0">Income amounts</p>
+                  </div>
+                  <div>
+                    <p class="mb-2 h5">4751</p>
+                    <p class="text-muted mb-0">Total Transactions</p>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{%endfor%}
+
+
+
+
+
+
+
+
     <!-- Shop Product Start -->
     <div class="col-12 col-md-12">
         <div class="row pb-3">
@@ -160,29 +271,76 @@
                                     <div class="d-flex flex-row align-items-center mb-2">
                                         <p class="mb-0 me-2">@{{i.username}}</p>
                                         <ul class="mb-0 list-unstyled d-flex flex-row" style="color: #e4a804;">
+                                        {%for t in user%}
+                                            {%if i.username in t.username%}
+                                            {%if t.rating == 0%}
+
+                                            {%elif t.rating == 1%}
                                             <li>
                                                 <i class="fas fa-star fa-xs"></i>
                                             </li> 
+                                            {%elif t.rating == 2%}
+
                                             <li>
                                                 <i class="fas fa-star fa-xs"></i>
                                             </li>
                                             <li>
                                                 <i class="fas fa-star fa-xs"></i>
                                             </li> 
+                                            {%elif t.rating == 3%}
+
                                             <li>
                                                 <i class="fas fa-star fa-xs"></i>
                                             </li>
                                             <li>
                                                 <i class="fas fa-star fa-xs"></i>
                                             </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            {%elif t.rating == 4%}
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            {%elif t.rating == 5%}
+
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-xs"></i>
+                                            </li>
+                                           
+                                            {%endif%}
+                                            {%endif%}
+                                            
+                                        {%endfor%}
+
                                         </ul>
                                     </div>
                                     <div>
                                         {% comment %} <button type="button" class="btn btn-outline-dark btn-rounded btn-sm"
                                         data-mdb-ripple-color="dark">+ Follow</button> {% endcomment %}
-                                        <button type="button" class="btn btn-outline-dark btn-rounded btn-sm"
-                                        data-mdb-ripple-color="dark">See profile</button>
-                                            {% comment %} <button type="button" class="btn btn-outline-dark btn-floating btn-sm"
+                                        <button type="button" data-target="#profile-dialog{{i.username}}" data-toggle="modal" class="btn pmd-ripple-effect btn-primary " type="button" >See profile</button>
+                                            {% comment %} <button  class="btn btn-outline-dark btn-floating btn-sm"
                                             data-mdb-ripple-color="dark"><i class="fas fa-comment"></i></button> {% endcomment %}
                                     </div>             
                                 </div>
