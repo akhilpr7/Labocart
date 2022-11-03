@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from ecommerce.models import HireModel, PurchaseModel
 from .forms import AddJobForm, CategoryForm ,JobPostingForm ,AddFundForm,ApplyForm
-from .models import Category,JobPostingModel   
+from .models import Category,JobPostingModel,AppliedJobs   
 from django.contrib import messages
 from django.urls import reverse
 from authentication.models import jobmodel,NewUserModel,labourmodels
@@ -92,11 +92,9 @@ class ApplyFormView(View):
        
         id = kwargs.get('id')
         maindata = JobPostingModel.objects.filter(id=id).first()
-        hire = JobPostingModel.objects.filter(id=id).values_list('hirer')[0][0]
-        print(hire,"jggggggggggggggggggggggggggggggg")
         data = {
             'name': maindata.name,
-            'hirer': hire,
+            'hirer': maindata.hirer,
             'place': maindata.place,
             'work_type': maindata.work_type,
             'phone': maindata.phone,
@@ -392,7 +390,11 @@ class RejectServices(View):
         messages.success(request,"Cancelled")
         return redirect('servicerequests')
     
-       
+class JobRequests(View):
+    def get(self, request,*args, **kwargs):
+        requests = AppliedJobs.objects.filter(hirer = request.user.username).exclude(status =2)
+        return render(request, "home/jobrequests.html",{'requests':requests})
+
 class ApproveUser(View):
     def get(self, request,  id):
        try:
@@ -403,3 +405,12 @@ class ApproveUser(View):
         return redirect('pendingkyc')
        except Exception as e :
         messages.error(request ,"An error occured during the approval.") 
+class JobRequestUpdate(View):
+    def get(self, request,*args, **kwargs):
+        id = kwargs.get('id')
+        req = AppliedJobs.objects.filter(id=id)
+        req.update(status=1)
+        reject = AppliedJobs.objects.all().exclude(status=1)
+        reject.update(status=2)
+        return redirect('jobrequests')
+
