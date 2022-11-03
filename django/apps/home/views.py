@@ -289,7 +289,7 @@ class JobPostingView(View):
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
-            form = JobPostingForm(request.POST,request.FILE)
+            form = JobPostingForm(request.POST,request.FILES)
             try:
                 obj = JobPostingModel.objects.create(
                     hirer=request.user.username,
