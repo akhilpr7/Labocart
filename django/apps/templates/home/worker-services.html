@@ -65,14 +65,18 @@
               <td>{{data.Phone}}</td>
               <td>{{data.job_title}}</td>
               <td>
-                {% if data.user_status %}
+                {% if data.status == 4 %}
+                <a href="{% url 'usercompletedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
+                {% elif data.user_status %}
                 <a href="{% url 'usercompletedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
                 {% else %}
                 <a href="{% url 'usercompletedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-black">done</span></a>
                 {% endif %}
               </td>
               <td>
-                {% if data.worker_status %}
+                {% if data.status == 4 %}
+                <button disabled href="{% url 'completedservices' data.id %}" class=" btn border rounded-lg"><span class="material-symbols-outlined text-success">done</span></button>
+                {% elif data.worker_status %}
                 <button disabled href="{% url 'completedservices' data.id %}" class=" btn border rounded-lg"><span class="material-symbols-outlined text-success">done</span></button>
                 {% else %}
                 <button disabled href="{% url 'completedservices' data.id %}"  class=" btn border rounded-lg"><span class="material-symbols-outlined text-black">done</span></button>
