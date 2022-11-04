@@ -78,7 +78,7 @@ class Workerservices(View):
 
 class LookForJobs(View):
     def get(self, request,*args, **kwargs):
-        jobs = JobPostingModel.objects.filter(status = 1).values()
+        jobs = JobPostingModel.objects.filter(status = 0).values()
         context = {
             'media_url':settings.NEW_VAR,
 
@@ -111,6 +111,15 @@ class ApplyFormView(View):
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             form = ApplyForm(request.POST)
+            print(request.POST['name'])
+            print(request.POST['hirer'])
+            print(request.POST['place'])
+            print(request.POST['work_type'])
+            print(request.POST['phone'])
+            print(request.POST['status'])
+            print(request.POST['job_title'])
+            print(request.POST['worker_name'])
+            print(request.POST['worker_phone'])
             if form.is_valid():
                 form.save()
                 messages.success(request,"Success")
@@ -118,7 +127,10 @@ class ApplyFormView(View):
             else:
                 messages.error(request,"error")
                 return redirect('shop') 
-        return redirect(request, 'shop') 
+        else:
+                messages.error(request,"error")
+                # return redirect('shop') 
+                return redirect(request, 'shop') 
 
 @method_decorator(login_required,name='dispatch')
 class CompletedService(View):
@@ -149,7 +161,7 @@ class UserCompletedService(View):
 @method_decorator(login_required,name='dispatch')
 class ServiceView(View):
     def get(self, request, *args, **kwargs):
-        data = HireModel.objects.filter(Q(Hire_name = request.user)&(~Q(status=4)))
+        data = HireModel.objects.filter(Hire_name = request.user).exclude(status = 4).exclude(status = 3)
         context = {'data': data ,'current_path':"Requested Services" }
         return render(request, "home/requested-services.html",context)
 
@@ -295,25 +307,33 @@ class JobPostingView(View):
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             form = JobPostingForm(request.POST,request.FILES)
+            print(request.user.username)
+            print(request.POST['place'])
+            print(request.FILES['image'])
+            print(request.POST['job_title'])
+            print(request.POST['work_type'])
+            print(request.POST['phone'])
+            print(request.POST['name'])
             try:
                 obj = JobPostingModel.objects.create(
                     hirer=request.user.username,
                     place=request.POST['place'],
-                    image=request.FILE['image'],
+                    image=request.FILES['image'],
                     job_title=request.POST['job_title'],
                     work_type=request.POST['work_type'],
                     phone=request.POST['phone'],
                     name=request.POST['name'])
                 obj.save()
-                return redirect('laboshop')
+                return redirect('shop')
 
             except Exception :
+                print(Exception,"fffffffffffffuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu")
                 return redirect('shop')
 
 
-            else:
-                print("not valid")    
-                return redirect('shop')
+        else:
+            print("not valid")    
+            return redirect('labocategory')
 
 class ManageServices(View):
     def get(self, request, *args,**kwargs):

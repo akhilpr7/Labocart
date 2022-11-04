@@ -22,7 +22,7 @@ class JobPostingModel(models.Model):
     work_type = models.BooleanField(default=False)
     image = models.FileField(upload_to='jobImages/')
     phone = models.BigIntegerField()
-    status =  models.IntegerField(blank=False,null=True,default=1)
+    status =  models.IntegerField(blank=False,null=True,default=0)
     job_title = models.CharField(max_length=20, blank=False,default='none')
 
 class AppliedJobs(models.Model):
