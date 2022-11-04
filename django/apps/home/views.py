@@ -98,7 +98,7 @@ class ApplyFormView(View):
             'place': maindata.place,
             'work_type': maindata.work_type,
             'phone': maindata.phone,
-            'status': maindata.status,
+            'status': 0,
             'job_title': maindata.job_title,
             'worker_name': request.user.username,
             'worker_phone': request.user.phone_no,
@@ -397,7 +397,7 @@ class RejectServices(View):
     
 class JobRequests(View):
     def get(self, request,*args, **kwargs):
-        requests = AppliedJobs.objects.filter(hirer = request.user.username).exclude(status =2)
+        requests = AppliedJobs.objects.filter(hirer = request.user.username).exclude(status = 2)
         return render(request, "home/jobrequests.html",{'requests':requests})
 
 class ApproveUser(View):
