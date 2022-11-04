@@ -149,7 +149,7 @@ class UserCompletedService(View):
 @method_decorator(login_required,name='dispatch')
 class ServiceView(View):
     def get(self, request, *args, **kwargs):
-        data = HireModel.objects.filter(Q(Hire_name = request.user)&(~Q(status=4)))
+        data = HireModel.objects.filter(Hire_name = request.user).exclude(status = 4).exclude(status = 3)
         context = {'data': data ,'current_path':"Requested Services" }
         return render(request, "home/requested-services.html",context)
 
