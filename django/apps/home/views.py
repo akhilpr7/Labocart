@@ -419,3 +419,6 @@ class JobRequestUpdate(View):
         reject.update(status=2)
         return redirect('jobrequests')
 
+
+
+
