@@ -1,4 +1,4 @@
-!DOCTYPE html>
+
 <html lang="en">
 
 <head> 
@@ -56,7 +56,7 @@
     <main class="content">
 
       {% include 'includes/navigation.html' %}
-
+{% comment %} 
 
       <div id="overlayer" ></div>
       <div class="d-flex justify-content-center align-content-center">
@@ -67,7 +67,7 @@
       </div>
       <p > Loading...</p>
         </div>
-    </div>
+    </div> {% endcomment %}
 
       {% block content %}{% endblock content %} 
 
