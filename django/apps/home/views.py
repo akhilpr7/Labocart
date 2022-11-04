@@ -124,7 +124,9 @@ class ApplyFormView(View):
 class CompletedService(View):
     def get(self, request, *args, id , **kwargs):
         user= HireModel.objects.get(id=id)
-        if user.worker_status:
+        if user.status == 4:
+            user.save()
+        elif user.worker_status:
             user.save()
         else:
             user.worker_status = True
@@ -135,7 +137,9 @@ class CompletedService(View):
 class UserCompletedService(View):
      def get(self, request, *args, id , **kwargs):
         data= HireModel.objects.get(id=id)
-        if data.user_status:
+        if data.status == 4:
+            data.save()
+        elif data.user_status:
             data.save()
         else:
             data.user_status = True

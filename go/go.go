@@ -42,11 +42,11 @@ func main() {
 func workStatus(db *sql.DB){
   var id int
   // fetchsub(db)
-  fetch_id := db.QueryRow(`SELECT id FROM ecommerce_hiremodel WHERE user_status=1 AND worker_status=1 `)
+  fetch_id := db.QueryRow(`SELECT id FROM ecommerce_hiremodel WHERE user_status=true AND worker_status=true `)
   fetch_id.Scan(&id)
   sqlStatement := `
   UPDATE ecommerce_hiremodel
-  SET status=4, worker_status=0, user_status=0 
+  SET status=4, worker_status=false, user_status=false 
   WHERE id = $1;`
   _, err := db.Exec(sqlStatement, id)
   if err != nil {
