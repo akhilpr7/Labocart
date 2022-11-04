@@ -34,8 +34,9 @@ func main() {
 
   fmt.Println("Successfully connected!")
   gocron.Every(2).Second().Do(workStatus, db)
-  gocron.Every(1).Second().Do(fetchsub, db)
+  gocron.Every(100).Second().Do(fetchsub, db)
   gocron.Every(60).Second().Do(rating, db)
+  gocron.Every(5).Second().Do(copytohire, db)
 	<-gocron.Start()
 }
 
@@ -79,7 +80,7 @@ func fetchsub(db *sql.DB) {
     current_date := time.Now()
     difference := current_date.Sub(subscribed_at)
     diff := difference.Hours()/24
-    fmt.Println(diff)
+    // fmt.Println(diff)
     if diff > validity {
       fmt.Println("Oho")
       sqlStatement := `
@@ -126,4 +127,47 @@ for row.Next() {
 
 }
 
+}
+
+func copytohire(db *sql.DB){
+  var hirer string
+  var name string
+  var place string
+  var work_type bool
+  var phone int64
+  var status int
+  var job_title string
+  var rate float64
+  var worker_name string
+  var worker_phone string
+  var id int
+
+  // fetchsub(db)
+  fetch,err3 := db.Query(`SELECT id,hirer,name,place,work_type,phone,status,job_title,rate,worker_name,worker_phone FROM home_appliedjobs WHERE status= 1 `)
+  if(err3 != nil){
+    panic(err3)
+  }
+  defer fetch.Close()
+  for fetch.Next() {
+    fetch.Scan(&id,&hirer,&name,&place,&work_type,&phone,&status,&job_title,&rate,&worker_name,&worker_phone)
+  }
+  fmt.Println(hirer,name,place,work_type,phone,status,job_title,rate,worker_name,worker_phone)
+  if(id != 0){
+  sqlStatement := `
+  INSERT INTO ecommerce_hiremodel("worker_name","Hire_name","Name","Place","Work_mode","Phone","status","job_title","user_status","worker_status","rating")  VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) ;`
+  _, err := db.Exec(sqlStatement,worker_name,hirer,name,place,work_type,phone,3,job_title,"false","false","0")
+  if err != nil {
+    panic(err)
+  }
+  sqlStatement1 :=`
+  UPDATE home_appliedjobs
+  SET status = 2
+  WHERE id = $1;`
+  _, err1 := db.Exec(sqlStatement1,id)
+  if err1 != nil {
+    panic(err)
+  }
+  fmt.Println(rate)
+  fmt.Println(worker_phone)
+}
 }
