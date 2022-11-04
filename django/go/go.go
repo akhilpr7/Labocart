@@ -41,8 +41,6 @@ func main() {
 
 func workStatus(db *sql.DB){
   var id int
-  fmt.Println("hooooo")
-  // fetchsub(db)
   fetch_id := db.QueryRow(`SELECT id FROM ecommerce_hiremodel WHERE user_status=true AND worker_status=true `)
   fetch_id.Scan(&id)
   sqlStatement := `
@@ -57,7 +55,6 @@ func workStatus(db *sql.DB){
 }
 
 func fetchsub(db *sql.DB) {
-	// var usernames []string
   fmt.Println("fuvvvvvvvv")
   var username string
 	var subscribed_at time.Time
@@ -82,9 +79,7 @@ func fetchsub(db *sql.DB) {
     current_date := time.Now()
     difference := current_date.Sub(subscribed_at)
     diff := difference.Hours()/24
-    fmt.Println(diff)
     if diff > validity {
-      fmt.Println("Oho")
       sqlStatement := `
       UPDATE authentication_newusermodel
       SET is_sub = false
