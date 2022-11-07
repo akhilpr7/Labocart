@@ -36,7 +36,9 @@ urlpatterns = [
     path('rejectservices/<int:id>/', views.RejectServices.as_view(), name="rejectservices"),
     path("pendingkyc",views.PendingKYC.as_view(),name="pendingkyc"),
     path("approveuser/<int:id>",views.ApproveUser.as_view(),name="approveuser"),
-    
+    path('enlistedjobs/', views.ProvidedJobs.as_view(),name="enlistedjobs"),
+    path('enlistedjobstatus/<int:id>/', views.UpdateEnlistedJobStatus.as_view(),name="enlistedjobstatus"),
+
 
 
 ]

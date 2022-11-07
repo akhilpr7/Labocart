@@ -80,6 +80,7 @@ class Userservices(View):
         }
         return render(request, "home/user-services.html", context)
 
+@method_decorator(login_required, name='dispatch')
 
 @method_decorator(login_required, name='dispatch')
 class Workerservices(View):
@@ -93,16 +94,7 @@ class Workerservices(View):
         return render(request, "home/worker-services.html", context)
 
 
-class LookForJobs(View):
-    def get(self, request, *args, **kwargs):
-        jobs = JobPostingModel.objects.filter(status=0).values()
-        context = {
-            'media_url': settings.NEW_VAR,
-
-            'jobs': jobs
-        }
-        return render(request, "home/lookforjobs.html", context)
-
+@method_decorator(login_required, name='dispatch')
 
 class ApplyFormView(View):
     def get(self, request, *args, **kwargs):
@@ -186,7 +178,7 @@ class ServiceView(View):
         context = {'data': data, 'current_path': "Requested Services"}
         return render(request, "home/requested-services.html", context)
 
-
+@method_decorator(login_required, name='dispatch')
 class RatingView(View):
     def get(self, request, *args, id, **kwargs):
         details = HireModel.objects.get(id=id)
@@ -196,7 +188,7 @@ class RatingView(View):
         }
         return render(request, "home/rating.html", context)
 
-
+@method_decorator(login_required, name='dispatch')
 class Ratings(View):
     def get(self, request, *args, id, id1, **kwargs):
         star = id
@@ -247,7 +239,6 @@ class DeleteCategoryView(View):
         messages.success(request, "Category Deleted")
         return redirect('category')
 
-
 @method_decorator(login_required, name='dispatch')
 class Addjobsview(View):
     template = 'home/addjob.html'
@@ -278,7 +269,6 @@ class Addjobsview(View):
         # else:
         #     return render(request, self.template, {'form': form})
 
-
 @method_decorator(login_required, name='dispatch')
 class Deletejob(View):
     def get(self, request, id):
@@ -294,7 +284,7 @@ class Access_denied(View):
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
 
-
+@method_decorator(login_required, name='dispatch')
 class ManageUser(View):
     def get(self, request, *args, **kwargs):
         details = NewUserModel.objects.all().order_by('id').exclude(username='admin')
@@ -304,7 +294,7 @@ class ManageUser(View):
         }
         return render(request, "home/manage-user.html", context)
 
-
+@method_decorator(login_required, name='dispatch')
 class UpdateUser(View):
     def get(self, request, id, *args, **kwargs):
         user = NewUserModel.objects.get(id=id)
@@ -317,7 +307,7 @@ class UpdateUser(View):
         # print(users)
         return redirect('manageuser')
 
-
+@method_decorator(login_required, name='dispatch')
 class JobPostingView(View):
     template_name = 'home/job-posting.html'
 
@@ -364,7 +354,7 @@ class JobPostingView(View):
             print("not valid")
             return redirect('labocategory')
 
-
+@method_decorator(login_required, name='dispatch')
 class ManageServices(View):
     def get(self, request, *args, **kwargs):
         details = labourmodels.objects.all().exclude(status=3).order_by('id')
@@ -374,7 +364,7 @@ class ManageServices(View):
         }
         return render(request, "home/manage_services.html", context)
 
-
+@method_decorator(login_required, name='dispatch')
 class UpdateServices(View):
     def get(self, request, id, *args, **kwargs):
         status = labourmodels.objects.filter(id=id).values_list("status")[0][0]
@@ -435,7 +425,7 @@ class PendingKYC(View):
         }
         return render(request, self.template_name, context)
 
-
+@method_decorator(login_required, name='dispatch')
 class AcceptServices(View):
     def get(self, request, id, *args, **kwargs):
         status = labourmodels.objects.filter(id=id).values_list("status")[0][0]
@@ -443,7 +433,7 @@ class AcceptServices(View):
         messages.success(request, "Success !")
         return redirect("servicerequests")
 
-
+@method_decorator(login_required, name='dispatch')
 class RejectServices(View):
     def get(self, request, id):
         data = labourmodels.objects.get(id=id)
@@ -451,14 +441,14 @@ class RejectServices(View):
         messages.success(request, "Cancelled")
         return redirect('servicerequests')
 
-
+@method_decorator(login_required, name='dispatch')
 class JobRequests(View):
     def get(self, request, *args, **kwargs):
         requests = AppliedJobs.objects.filter(
             hirer=request.user.username).exclude(status=2)
         return render(request, "home/jobrequests.html", {'requests': requests})
 
-
+@method_decorator(login_required, name='dispatch')
 class ApproveUser(View):
     def get(self, request,  id):
         try:
@@ -470,7 +460,7 @@ class ApproveUser(View):
         except Exception as e:
             messages.error(request, "An error occured during the approval.")
 
-
+@method_decorator(login_required, name='dispatch')
 class JobRequestUpdate(View):
     def get(self, request, *args, **kwargs):
         id = kwargs.get('id')
@@ -480,3 +470,36 @@ class JobRequestUpdate(View):
         reject.update(status=2)
         return redirect('jobrequests')
 
+
+@method_decorator(login_required, name='dispatch')
+class ProvidedJobs(View):
+    template_name = "home/provided-jobs-list.html"
+    def get(self, request, *args, **kwargs):
+        jobs = JobPostingModel.objects.filter(
+            hirer=request.user.username)
+        context = {'jobs': jobs,
+                    'current_path': "Provided Jobs"}
+    
+        return render(request,self.template_name , context)
+@method_decorator(login_required, name='dispatch')
+class LookForJobs(View):
+    def get(self, request, *args, **kwargs):
+        jobs = JobPostingModel.objects.filter(status=0).values()
+        context = {
+            'media_url': settings.NEW_VAR,
+
+            'jobs': jobs,
+            'current_path': "Available Jobs"
+        }
+        return render(request, "home/lookforjobs.html", context)
+@method_decorator(login_required, name='dispatch')
+class  UpdateEnlistedJobStatus(View):
+    def get(self, request,id, *args, **kwargs):
+        job = JobPostingModel.objects.get(id=id)
+        if job.is_active:
+            job.is_active = False
+            job.save()
+        else:
+            job.is_active = True
+            job.save()
+        return redirect('enlistedjobs')
