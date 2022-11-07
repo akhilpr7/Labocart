@@ -455,10 +455,9 @@ class HireNowView(View):
 		data = {
 			"worker_name" :username,
 			"Hire_name" : request.user,
-			"job_title" : job_title
+			"job_title" : job_title,
 		}
 		form = HireNowForm(data)
-        # print("eeeeeeeeeeeeeeeeeeeeeeeeee",username)
 		context = {'form': form}
 		return render(request, "hireNowForm.html",context)
 	def post(self, request, *args, **kwargs):

@@ -40,44 +40,12 @@
 
 
 
-
-
-                
-                <!-- <a class="btn shadow-none d-flex align-items-center justify-content-between w-100 bg-gray-800 text-white" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
-                    <h5 class="m-0">Categories</h5>
-                    <i class="fa fa-angle-down text-white"></i>
-                </a>
-                <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
-                    <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
-                      
-                        {%for i in datacategory%}
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              {{i.category}}
-                              </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                {%for j in datajob%}
-                                {%if i.category_name in j.category%}
-                                <a href="" class="dropdown-item">{{j.job_title}}</a>
-                                {%endif%}
-                                {%endfor%}
-                              </div>
-
-                        </div>
-                        {%endfor%}
-                        
-                    </div>
-                </nav> -->
-
-
                 <div class="dropdown">
                     <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary btn shadow-none d-flex align-items-center justify-content-between w-100 bg-gray-800 text-white" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;" data-target="#" href="/page.html">
                         <h5>Categories </h5><span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu multi-level  w-100" role="menu" aria-labelledby="dropdownMenu">
-                      <!-- <li><a href="#">Some action</a></li>
-                      <li><a href="#">Some other action</a></li> -->
-                      <!-- <li class="divider"></li> -->
+        
                       {%for i in datacategory %}
                       <li class="divider"></li>
                       <li class="dropdown-submenu">
@@ -95,8 +63,6 @@
                     </ul>
                     
                 </div>
-
-                
 
             </div>
             <div class="col-lg-7 p-3">
@@ -235,11 +201,6 @@
     </div>
   </div>
 {%endfor%}
-
-
-
-
-
 
 
 
