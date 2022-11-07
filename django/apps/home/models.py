@@ -36,3 +36,5 @@ class AppliedJobs(models.Model):
     rate = models.IntegerField(default=500)
     worker_name = models.TextField(max_length=25, blank=False)
     worker_phone = models.BigIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+

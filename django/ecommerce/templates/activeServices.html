@@ -150,8 +150,8 @@
                             {% elif i.status == 1 %}
                                 <a href="{%url 'togglestatus' i.id %}" class="btn rounded-2 btn-success">Active</a>
                             {% elif i.status == 2 %}
-                                <i class="btn btn-dark">Pending</i>
-                                <a href="{%url 'togglestatus' i.id %}" class="btn btn-danger">Cancel</a>
+                                <i class="btn btn-dark rounded-2">Pending</i>
+                                <a href="{%url 'togglestatus' i.id %}" class="btn btn-danger rounded-2">Delete</a>
                             {% endif %}
                             <!-- <button type="button" class="btn-gray-800 btn-block btn-lg btn-rounded rounded-3 text-white"></i>Active</button>                                 -->
                         </div>

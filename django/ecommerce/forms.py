@@ -106,19 +106,21 @@ class PurchaseForm(forms.Form):
 
 
 
-class HireNowForm( forms.ModelForm ):
+class HireNowForm( forms.Form ):
+
   Name = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Name"}))
+  id = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Your Name"}))
   Place = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
   Phone = forms.CharField(max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Phone"}))
   # Work_mode = forms.CharField(max_length=5, required=True, widget=forms.Select(attrs={'class': 'form-control'}))
-  worker_name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"worker name ", 'readonly':'readonly'}))
-  Hire_name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Hire name", 'readonly':'readonly'}))
-  job_title = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Job title", 'readonly':'readonly'}))
+  # worker_name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"worker name ", 'readonly':'readonly'}))
+  # Hire_name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Hire name", 'readonly':'readonly'}))
+  # job_title = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Job title", 'readonly':'readonly'}))
   
 
-  class Meta:
-    model = HireModel
-    fields = ('Name','Place','Phone','Work_mode', 'Hire_name','worker_name','job_title')
+  # class Meta:
+  #   model = HireModel
+  #   fields = ('Name','Place','Phone','Work_mode', 'Hire_name','worker_name','job_title')
 
 class CheckoutForm(forms.Form):
   Quantity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ','style':'width:50px;','min':'1'}))

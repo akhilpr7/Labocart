@@ -39,10 +39,14 @@
           <div class="col-lg-6 mb-lg-0 mb-4">
             <div class="card">
               <div class="card-body p-6">
-                  <h3 class="font-weight-bolder">Enter your Details</h3><br>
+                  <h3 class="font-weight-bolder">Enter your Details </h3><br>
                   <form method="post">
                     {% csrf_token %}
                     <div class="row">
+                        <div class="col-lg-8"> 
+                            {{form.id}}
+                            <br>
+                        </div>
                         <div class="col-lg-8"> 
                             <label for="Name">Name :</label>
                             {{form.Name}}
@@ -65,19 +69,19 @@
                         </div>
                         <div class="col-lg-8"> 
                             {% comment %} <label for="Name">Worker Name :</label> {% endcomment %}
-                            {{form.worker_name}}
+                            {% comment %} {{form.worker_name}} {% endcomment %}
                             <br>
                         </div>
                         <br>
                         <div class="col-lg-8"> 
                             {% comment %} <label for="Name">Hire name :</label> {% endcomment %}
-                            {{form.Hire_name}}
+                            {% comment %} {{form.Hire_name}} {% endcomment %}
                             <br>
                         </div>
                         <br>
                         <div class="col-lg-8"> 
                             {% comment %} <label for="Name">Hire name :</label> {% endcomment %}
-                            {{form.job_title}}
+                            {% comment %} {{form.job_title}} {% endcomment %}
                             <br>
                         </div>
                         <br>

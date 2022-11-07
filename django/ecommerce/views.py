@@ -449,24 +449,44 @@ class ActiveServices(View):
 
 @method_decorator(login_required,name='dispatch')
 class HireNowView(View):
-	def get(self, request, *args, **kwargs):
-		username = kwargs.get('username')
-		job_title = kwargs.get('job_title')
+	def get(self, request,id, *args, **kwargs):
+		# username = kwargs.get('username')
+		# job_title = kwargs.get('job_title')
 		data = {
-			"worker_name" :username,
-			"Hire_name" : request.user,
-			"job_title" : job_title,
+			# "worker_name" :username,
+			# "Hire_name" : request.user,
+			# "job_title" : job_title,
+			"id":id,
 		}
 		form = HireNowForm(data)
 		context = {'form': form}
 		return render(request, "hireNowForm.html",context)
 	def post(self, request, *args, **kwargs):
+		print()
 		if request.method == 'POST':
 			form = HireNowForm(request.POST)
+			id = request.POST.get("id")
+			name = request.POST.get("Name")
+			place = request.POST.get("Place")
+			phone = request.POST.get("Phone")
+			worker_name = labourmodels.objects.filter(id=id).values_list("username")[0][0]
+			job_title = labourmodels.objects.filter(id=id).values_list("job_title")[0][0]
+			rate = labourmodels.objects.filter(id=id).values_list("rate")[0][0]
+			print(id,"shjlshjdsjhdjshjdhsjdsjhdjkshjkdhsjkdhsjkdjk")
+			print(name,"shjlshjdsjhdjshjdhsjdsjhdjkshjkdhsjkdhsjkdjk")
+			print(place,"shjlshjdsjhdjshjdhsjdsjhdjkshjkdhsjkdhsjkdjk")
+			print(phone,"shjlshjdsjhdjshjdhsjdsjhdjkshjkdhsjkdhsjkdjk")
 			if form.is_valid():
-				form.save()
+				n = random.randint(0,99999)
+				obj = HireModel.objects.create(id=n,worker_name=worker_name,Hire_name=request.user.username,Name=name,Place=place,Phone=phone,status=2,job_title=job_title)
+				# wallet_bal = request.user.wallet
+				# if wallet_bal >= rate:
+
 				messages.success(request,'Your request Succesfully created')
-				return redirect('requested')
+				return render(request,'userpayment.html',{"id":n,"rate":rate})
+
+				# obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential)
+				# form.save()
 			else:
 				messages.error(request,'Unsuccesfull')
 				return redirect('dashboard')
@@ -521,7 +541,7 @@ class Togglestatus(View):
 			messages.success(request,"Success !")
 			return redirect("active_service")
 		elif status ==2:
-			labourmodels.objects.filter(id=id).update(status=0)
+			labourmodels.objects.filter(id=id).delete()
 			messages.success(request,"Success !")
 			return redirect("active_service")
 		
