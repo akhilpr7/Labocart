@@ -85,7 +85,8 @@
                         <ul class="dropdown-menu">
                         {% for j in datajob %}
                         {% if i.category_name in j.category %}
-                          <li><a href="{%url 'laboshop' j.id%}">{{j.job_title}}</a></li>
+                          {% comment %} <li><a href="{%url 'laboshop1'?filter=j.id%}">{{j.job_title}}</a></li> {% endcomment %}
+                          <li><a href="/laboshop?filter={{j.id}}">{{j.job_title}}</a></li>
                         {%endif%}
                         {%endfor%}
                         </ul>

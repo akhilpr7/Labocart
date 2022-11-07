@@ -237,21 +237,34 @@ class Invoice(View):
 
 @method_decorator(login_required,name='dispatch')
 class LaboShop(View):
-	def get(self, request,id, *args, **kwargs):
-		job=jobmodel.objects.filter(id=id).values_list("job_title")[0][0]
+	def get(self, request, *args, **kwargs):
+		filter=request.GET.get('filter')
+		if request.GET.get('filter') is not None and request.GET.get('filter') != '':
+			print(filter,"fgldjfdjkfjdfjdjfhjkdfkjdfhjkhd")
+			job=jobmodel.objects.filter(id=filter).values_list("job_title")[0][0]
+			datajob = jobmodel.objects.values()
+			data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1))
+			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
+			users=NewUserModel.objects.all()
+			work = HireModel.objects.all()
+			datacategory=Category.objects.values()
+		else:
+			# job=jobmodel.objects.filter().values_list("job_title")[0][0]
+			
 		# if request.GET.get('jobtitle') is not None and request.GET.get('job') != '':
-		datacategory=Category.objects.values()
-		datajob = jobmodel.objects.values()
-		data = labourmodels.objects.filter((Q(job_title=job))&(Q(status=1)))
-		fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
-		users=NewUserModel.objects.all()
-		work = HireModel.objects.all()
+		# datacategory=Category.objects.values()
+			datajob = jobmodel.objects.values()
+			data = labourmodels.objects.filter(status=1)
+			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
+			users=NewUserModel.objects.all()
+			work = HireModel.objects.all()
+			datacategory=Category.objects.values()
 		
 		context = {
 			'data': data,
 			'current_path':"Request services",
 			'fund': fund,
-			"datacategory":datacategory,
+			 "datacategory":datacategory,
 			"datajob":datajob,
 			"user":users,
 			"work":work,

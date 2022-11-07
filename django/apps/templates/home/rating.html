@@ -40,9 +40,11 @@
             <h4 class="font-weight-bolder">Review</h4><br>
             <div>
               {% csrf_token %}
+              <form method='post'>
               <textarea class="textarea" placeholder="Write a review" cols = "40" rows="5"></textarea>
+              {{form.comment}}
+            </div>
           </div>
-        </div>
       </div>
     </div>
   </div>
@@ -55,20 +57,21 @@
               <div class="card-body p-4">
                 <h4 class="font-weight-bolder">Rating</h4><br>
                 <div class="rating rating2">
-                  {% csrf_token %}
                   
-                  <a href="{% url 'ratings' 5 id %}" title="Give 5 stars" data-value="5">★</a>
-                  <a href="{% url 'ratings' 4 id %}" title="Give 4 stars" data-value="4">★</a>
-                  <a href="{% url 'ratings' 3 id %}" title="Give 3 stars" data-value="3">★</a>
-                  <a href="{% url 'ratings' 2 id %}" title="Give 2 stars" data-value="2">★</a>
-                  <a href="{% url 'ratings' 1 id %}" title="Give 1 star" data-value="1">★</a>
-              </div>
+                  <a href="{% url 'ratings' 5 id %}" title="Give 5 stars" data-value="5" type="submit">★</a>
+                  <a href="{% url 'ratings' 4 id %}" title="Give 4 stars" data-value="4" type="submit">★</a>
+                  <a href="{% url 'ratings' 3 id %}" title="Give 3 stars" data-value="3" type="submit">★</a>
+                  <a href="{% url 'ratings' 2 id %}" title="Give 2 stars" data-value="2" type="submit">★</a>
+                  <a href="{% url 'ratings' 1 id %}" title="Give 1 star" data-value="1" type="submit">★</a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-  
+    </form>
+    
+    
 
       {% comment %} styles for Rating {% endcomment %}
       <style>
