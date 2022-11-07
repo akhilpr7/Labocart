@@ -76,7 +76,7 @@
       {% include 'includes/navigation.html' %}
 
 
-      <div id="overlayer" ></div>
+      {% comment %} <div id="overlayer" ></div>
       <div class="d-flex justify-content-center align-content-center">
 
         <div class="preloader ">
@@ -85,7 +85,7 @@
       </div>
       <p > Loading...</p>
         </div>
-    </div>
+    </div> {% endcomment %}
       {% block content %}{% endblock content %} 
 
 

@@ -79,7 +79,7 @@ class Workerservices(View):
 
 class LookForJobs(View):
     def get(self, request,*args, **kwargs):
-        jobs = JobPostingModel.objects.filter(status = 1).values()
+        jobs = JobPostingModel.objects.filter(status = 0).values()
         context = {
             'media_url':settings.NEW_VAR,
 
@@ -99,7 +99,7 @@ class ApplyFormView(View):
             'place': maindata.place,
             'work_type': maindata.work_type,
             'phone': maindata.phone,
-            'status': maindata.status,
+            'status': 0,
             'job_title': maindata.job_title,
             'worker_name': request.user.username,
             'worker_phone': request.user.phone_no,
@@ -112,6 +112,15 @@ class ApplyFormView(View):
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             form = ApplyForm(request.POST)
+            print(request.POST['name'])
+            print(request.POST['hirer'])
+            print(request.POST['place'])
+            print(request.POST['work_type'])
+            print(request.POST['phone'])
+            print(request.POST['status'])
+            print(request.POST['job_title'])
+            print(request.POST['worker_name'])
+            print(request.POST['worker_phone'])
             if form.is_valid():
                 form.save()
                 messages.success(request,"Success")
@@ -119,13 +128,18 @@ class ApplyFormView(View):
             else:
                 messages.error(request,"error")
                 return redirect('shop') 
-        return redirect(request, 'shop') 
+        else:
+                messages.error(request,"error")
+                # return redirect('shop') 
+                return redirect(request, 'shop') 
 
 @method_decorator(login_required,name='dispatch')
 class CompletedService(View):
     def get(self, request, *args, id , **kwargs):
         user= HireModel.objects.get(id=id)
-        if user.worker_status:
+        if user.status == 4:
+            user.save()
+        elif user.worker_status:
             user.save()
         else:
             user.worker_status = True
@@ -136,7 +150,9 @@ class CompletedService(View):
 class UserCompletedService(View):
      def get(self, request, *args, id , **kwargs):
         data= HireModel.objects.get(id=id)
-        if data.user_status:
+        if data.status == 4:
+            data.save()
+        elif data.user_status:
             data.save()
         else:
             data.user_status = True
@@ -146,7 +162,7 @@ class UserCompletedService(View):
 @method_decorator(login_required,name='dispatch')
 class ServiceView(View):
     def get(self, request, *args, **kwargs):
-        data = HireModel.objects.filter (Hire_name = request.user)
+        data = HireModel.objects.filter(Hire_name = request.user).exclude(status = 4).exclude(status = 3)
         context = {'data': data ,'current_path':"Requested Services" }
         return render(request, "home/requested-services.html",context)
 
@@ -155,14 +171,15 @@ class RatingView(View):
         details = HireModel.objects.get(id=id)
         context = {
 			'details': details,
+            'id':id,
 		}
         return render(request, "home/rating.html",context)
 
 
 class Ratings(View):
-    def get(self, request, *args, id, **kwargs):
+    def get(self, request, *args, id,id1, **kwargs):
         star = id
-        data = HireModel.objects.get(Hire_name = request.user)
+        data = HireModel.objects.get(id = id1)
         data.rating = star
         data.worker_status = True
         data.save()
@@ -291,25 +308,33 @@ class JobPostingView(View):
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             form = JobPostingForm(request.POST,request.FILES)
+            print(request.user.username)
+            print(request.POST['place'])
+            print(request.FILES['image'])
+            print(request.POST['job_title'])
+            print(request.POST['work_type'])
+            print(request.POST['phone'])
+            print(request.POST['name'])
             try:
                 obj = JobPostingModel.objects.create(
                     hirer=request.user.username,
                     place=request.POST['place'],
-                    image=request.FILE['image'],
+                    image=request.FILES['image'],
                     job_title=request.POST['job_title'],
                     work_type=request.POST['work_type'],
                     phone=request.POST['phone'],
                     name=request.POST['name'])
                 obj.save()
-                return redirect('laboshop')
+                return redirect('shop')
 
             except Exception :
+                print(Exception,"fffffffffffffuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu")
                 return redirect('shop')
 
 
-            else:
-                print("not valid")    
-                return redirect('shop')
+        else:
+            print("not valid")    
+            return redirect('labocategory')
 
 class ManageServices(View):
     def get(self, request, *args,**kwargs):
@@ -393,7 +418,7 @@ class RejectServices(View):
     
 class JobRequests(View):
     def get(self, request,*args, **kwargs):
-        requests = AppliedJobs.objects.filter(hirer = request.user.username).exclude(status =2)
+        requests = AppliedJobs.objects.filter(hirer = request.user.username).exclude(status = 2)
         return render(request, "home/jobrequests.html",{'requests':requests})
 
 class ApproveUser(View):
@@ -414,4 +439,7 @@ class JobRequestUpdate(View):
         reject = AppliedJobs.objects.all().exclude(status=1)
         reject.update(status=2)
         return redirect('jobrequests')
+
+
+
 

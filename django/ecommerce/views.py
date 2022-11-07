@@ -246,7 +246,6 @@ class LaboShop(View):
 		users=NewUserModel.objects.all()
 		work = HireModel.objects.all()
 		
-		print("fffffffffffffffffffffffffffffffffffffffffffffff",fund)
 		context = {
 			'data': data,
 			'current_path':"Request services",
@@ -257,7 +256,6 @@ class LaboShop(View):
 			"work":work,
 		}
 		is_sub = NewUserModel.objects.filter(username=request.user.username).values_list('is_sub')[0][0]
-		# print(is_sub,"sdddddddddddddddddddd")
 		if is_sub:
 			return render(request, 'labo-shop.html', context)
 		else:

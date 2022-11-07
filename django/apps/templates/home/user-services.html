@@ -63,7 +63,9 @@
               <td>{{data.Phone}}</td>
               <td>{{data.job_title}}</td>
               <td>
-                {% if data.worker_status %}
+                {% if data.status == 4 %}
+                <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
+                {% elif data.worker_status %}
                 <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
                 {% else %}
                 <a href="{% url 'rating' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-black">done</span></a>
