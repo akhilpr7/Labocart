@@ -4,7 +4,7 @@ services:
     image: postgres:14
     container_name: psql-con
     volumes: 
-      - ./sql/django.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+      # - ./sql/django.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
       - ./data/db:/var/lib/postgresql/data 
     hostname: db
     environment:

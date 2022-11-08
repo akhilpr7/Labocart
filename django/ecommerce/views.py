@@ -9,7 +9,7 @@ from ecommerce.models import HireModel, ProductsModel, CartModel
 from .forms import AddStockForm, HireNowForm,Laboregisterform,PurchaseForm,AddPackageForm
 from apps.home.models import Category
 from .forms import UpdateStockForm,CheckoutForm,UpdatePackageForm
-from .models import HireModel, PackageModel, PurchaseModel
+from .models import HireModel, PackageModel, PurchaseModel, LabopaymentModel
 import datetime
 from datetime import date, datetime
 from django.db.models import Sum
@@ -450,19 +450,13 @@ class ActiveServices(View):
 @method_decorator(login_required,name='dispatch')
 class HireNowView(View):
 	def get(self, request,id, *args, **kwargs):
-		# username = kwargs.get('username')
-		# job_title = kwargs.get('job_title')
 		data = {
-			# "worker_name" :username,
-			# "Hire_name" : request.user,
-			# "job_title" : job_title,
 			"id":id,
 		}
 		form = HireNowForm(data)
 		context = {'form': form}
 		return render(request, "hireNowForm.html",context)
 	def post(self, request, *args, **kwargs):
-		print()
 		if request.method == 'POST':
 			form = HireNowForm(request.POST)
 			id = request.POST.get("id")
@@ -478,19 +472,28 @@ class HireNowView(View):
 			print(phone,"shjlshjdsjhdjshjdhsjdsjhdjkshjkdhsjkdhsjkdjk")
 			if form.is_valid():
 				n = random.randint(0,99999)
+				print(n,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
 				obj = HireModel.objects.create(id=n,worker_name=worker_name,Hire_name=request.user.username,Name=name,Place=place,Phone=phone,status=2,job_title=job_title)
-				# wallet_bal = request.user.wallet
-				# if wallet_bal >= rate:
-
-				messages.success(request,'Your request Succesfully created')
-				
-				return render(request,'userpayment.html',{"id":n,"rate":rate})
-
-				# obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential)
-				# form.save()
+				pay = LabopaymentModel.objects.create(work_id=obj,rate=rate,status=0,amount=0)				
+				return render(request,'user_payments.html',{"id":n,"rate":rate})
 			else:
 				messages.error(request,'Unsuccesfull')
 				return redirect('dashboard')
+class Userpayments(View):
+	def get(self, request,id, *args, **kwargs):
+		wallet_balance =request.user.wallet
+		user_id=id
+		print(wallet_balance,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
+		print(user_id,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
+		rate = LabopaymentModel.objects.filter(work_id=id).values_list("rate")[0][0]
+		if wallet_balance >= rate:
+			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)
+			LabopaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
+			messages.success(request,'Payment Successful')
+			return redirect('dashboard')
+		else:
+			messages.success(request,'Payment Failed')
+			return redirect('laboshop')
 @method_decorator(login_required,name='dispatch')
 class CancelRequest(View):
 	def get(self, request,id):
