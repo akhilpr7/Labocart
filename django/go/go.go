@@ -55,7 +55,6 @@ func workStatus(db *sql.DB){
 }
 
 func fetchsub(db *sql.DB) {
-  fmt.Println("fuvvvvvvvv")
   var username string
 	var subscribed_at time.Time
 	var packagenum int
