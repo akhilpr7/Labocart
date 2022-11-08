@@ -450,9 +450,10 @@ class ApproveUser(View):
 class JobRequestUpdate(View):
     def get(self, request, *args, **kwargs):
         id = kwargs.get('id')
-        req = AppliedJobs.objects.filter(id=id)
+        req = AppliedJobs.objects.filter(id=id).values()
+        job = AppliedJobs.objects.filter(id=id).values_list("job_title")[0][0]
         req.update(status=1)
-        reject = AppliedJobs.objects.all().exclude(status=1)
+        reject = AppliedJobs.objects.filter(job_title = job).exclude(status=1)
         reject.update(status=2)
         return redirect('jobrequests')
 
