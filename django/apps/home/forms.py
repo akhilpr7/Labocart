@@ -66,6 +66,7 @@ class ApplyForm(forms.ModelForm):
     job_title = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Job title",'readonly':'True'}))
     rate = forms.IntegerField(required=True, widget=forms.TextInput(attrs={'class':'form-control','placeholder':"Rate", 'label':'rrrrrrrrrrrrrrrrrrrrrr'}))
     worker_name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Worker name",'readonly':'True' }))
+    worker_uname = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Worker name",'readonly':'True' }))
     worker_phone = forms.CharField(max_length=10, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Worker Phone",'readonly':'True'}))
     class Meta:
         model = AppliedJobs

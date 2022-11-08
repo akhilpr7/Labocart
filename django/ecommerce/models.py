@@ -44,6 +44,21 @@ class HireModel(models.Model):
     worker_status = models.BooleanField(default=False)
     rating = models.IntegerField(default=0, blank=False)
     comment = models.CharField(default="",max_length=255,null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class RequestsModel(models.Model):
+    hirer = models.TextField(max_length=25, blank=False)
+    name = models.TextField(max_length=25, blank=False)
+    place = models.TextField(max_length=25, blank=False)
+    work_type = models.BooleanField(default=False)
+    phone = models.BigIntegerField()
+    status =  models.IntegerField(default = 0)
+    job_title = models.CharField(max_length=20, blank=False,default='none')
+    rate = models.IntegerField(default=500)
+    worker_name = models.TextField(max_length=25, blank=False)
+    worker_phone = models.BigIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class CheckoutModel(models.Model):
