@@ -5,7 +5,7 @@ from django.views import View
 from authentication.models import NewUserModel, labourmodels
 from django.db.models import Q
 from django.urls import reverse
-from ecommerce.models import HireModel, ProductsModel, CartModel
+from ecommerce.models import HireModel, ProductsModel, CartModel,RequestsModel
 from .forms import AddStockForm, HireNowForm,Laboregisterform,PurchaseForm,AddPackageForm
 from apps.home.models import Category
 from .forms import UpdateStockForm,CheckoutForm,UpdatePackageForm
@@ -402,7 +402,9 @@ class LaboRegister(View):
 			job_title = request.POST.get("job_title")
 			rate = request.POST.get("rate")
 			work_type = request.POST.get("work_type")
-			obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential)
+			phone = request.POST.get("phone")
+
+			obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential,phone=phone)
 			# obj.save()
 			messages.success(request,"Success !")
 			print(obj,"55555555555555")
@@ -453,9 +455,6 @@ class HireNowView(View):
 		# username = kwargs.get('username')
 		# job_title = kwargs.get('job_title')
 		data = {
-			# "worker_name" :username,
-			# "Hire_name" : request.user,
-			# "job_title" : job_title,
 			"id":id,
 		}
 		form = HireNowForm(data)
@@ -469,24 +468,29 @@ class HireNowView(View):
 			name = request.POST.get("Name")
 			place = request.POST.get("Place")
 			phone = request.POST.get("Phone")
+			work_type = request.POST.get("Work_mode")
+			worker_phone = labourmodels.objects.filter(id=id).values_list("phone")[0][0]
 			worker_name = labourmodels.objects.filter(id=id).values_list("username")[0][0]
 			job_title = labourmodels.objects.filter(id=id).values_list("job_title")[0][0]
 			rate = labourmodels.objects.filter(id=id).values_list("rate")[0][0]
-			print(id,"shjlshjdsjhdjshjdhsjdsjhdjkshjkdhsjkdhsjkdjk")
-			print(name,"shjlshjdsjhdjshjdhsjdsjhdjkshjkdhsjkdhsjkdjk")
-			print(place,"shjlshjdsjhdjshjdhsjdsjhdjkshjkdhsjkdhsjkdjk")
-			print(phone,"shjlshjdsjhdjshjdhsjdsjhdjkshjkdhsjkdhsjkdjk")
+
 			if form.is_valid():
 				n = random.randint(0,99999)
-				obj = HireModel.objects.create(id=n,worker_name=worker_name,Hire_name=request.user.username,Name=name,Place=place,Phone=phone,status=2,job_title=job_title)
-				# wallet_bal = request.user.wallet
-				# if wallet_bal >= rate:
+				obj = RequestsModel.objects.create(
+				id=n,
+				hirer=request.user.username,
+				name=name,
+				place=place,
+				phone=phone,
+				work_type =work_type ,
+				rate=rate,
+				status=0,
+				job_title=job_title,
+				worker_name=worker_name,
+				worker_phone=worker_phone,)
 
 				messages.success(request,'Your request Succesfully created')
 				return render(request,'userpayment.html',{"id":n,"rate":rate})
-
-				# obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential)
-				# form.save()
 			else:
 				messages.error(request,'Unsuccesfull')
 				return redirect('dashboard')
@@ -499,15 +503,14 @@ class CancelRequest(View):
 		return redirect('requested')
 @method_decorator(login_required,name='dispatch')
 class Assignedworks(View):
+	template_name = 'assigned_works.html'
 	def get(self, request, *args, **kwargs):
-		template = 'assigned_works.html'
-		services = HireModel.objects.filter(Q(worker_name = request.user.username) &( Q(status=0)| Q(status=1)))
-		print(services,"--------------------------------------------")
+		services = RequestsModel.objects.filter(worker_name = request.user.username ).exclude(status=2)
 		context = {
 			"data": services,
 			'current_path':"Assigned Services"
 		}
-		return render(request,template,context)
+		return render(request,self.template_name,context)
 @method_decorator(login_required,name='dispatch')
 class Acceptservice(View):
 	def get(self,request,id, *args, **kwargs):

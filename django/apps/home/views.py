@@ -5,7 +5,7 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from ecommerce.models import HireModel, PurchaseModel
+from ecommerce.models import HireModel, PurchaseModel,RequestsModel
 from .forms import AddJobForm, CategoryForm, JobPostingForm, AddFundForm, ApplyForm
 from .models import Category, JobPostingModel, AppliedJobs
 from django.contrib import messages
@@ -109,7 +109,8 @@ class ApplyFormView(View):
             'phone': maindata.phone,
             'status': 0,
             'job_title': maindata.job_title,
-            'worker_name': request.user.username,
+            'worker_uname': request.user.username,
+            'worker_name': request.user.first_name+ " " + request.user.last_name,
             'worker_phone': request.user.phone_no,
             'current_path': "Apply for job"
 
@@ -172,11 +173,12 @@ class UserCompletedService(View):
 
 @method_decorator(login_required, name='dispatch')
 class ServiceView(View):
+    template_name = "home/requested-services.html"
     def get(self, request, *args, **kwargs):
-        data = HireModel.objects.filter(
-            Hire_name=request.user).exclude(status=4).exclude(status=3)
+        data = RequestsModel.objects.filter(
+            hirer   =request.user).exclude(status=1).exclude(status=2)
         context = {'data': data, 'current_path': "Requested Services"}
-        return render(request, "home/requested-services.html", context)
+        return render(request, self.template_name, context)
 
 @method_decorator(login_required, name='dispatch')
 class RatingView(View):
@@ -443,10 +445,15 @@ class RejectServices(View):
 
 @method_decorator(login_required, name='dispatch')
 class JobRequests(View):
+    template_name = 'home/jobrequests.html'
     def get(self, request, *args, **kwargs):
         requests = AppliedJobs.objects.filter(
-            hirer=request.user.username).exclude(status=2)
-        return render(request, "home/jobrequests.html", {'requests': requests})
+        hirer=request.user.username).exclude(status=2)
+        context = {
+        "requests": requests,
+        'current_path':"Job Requests"
+        }
+        return render(request,self.template_name,context)
 
 @method_decorator(login_required, name='dispatch')
 class ApproveUser(View):

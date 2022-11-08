@@ -39,6 +39,7 @@ class AppliedJobs(models.Model):
     job_title = models.CharField(max_length=20, blank=False,default='none')
     rate = models.IntegerField(default=500)
     worker_name = models.TextField(max_length=25, blank=False)
+    worker_uname = models.TextField(max_length=25, blank=False)
     worker_phone = models.BigIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 

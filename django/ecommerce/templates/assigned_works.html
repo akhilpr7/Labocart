@@ -98,13 +98,13 @@
                             <div>
                                 {% comment %} <h6 class="mb-4">{{i.Worker_name}}</h6> {% endcomment %}
                                 {% comment %} <h6 class="mb-4"> {{i.Hire_name}}</h6> {% endcomment %}
-                                <h6 class="mb-4"> Requestd user : {{i.Name}}</h6>
-                                <h6 class="mb-4">Place : {{i.Place}}</h6>
-                                <h6 class="mb-4">Work mode :{{i.Work_mode}}</h6>
-                                <h6 class="mb-4">Phone Number : {{i.Phone}}</h6>
-                                {%if i.Status == 0%}
+                                <h6 class="mb-4"> Requested user : {{i.name}}</h6>
+                                <h6 class="mb-4">Place : {{i.place}}</h6>
+                                <h6 class="mb-4">Work mode :{{i.work_type}}</h6>
+                                <h6 class="mb-4">Phone Number : {{i.phone}}</h6>
+                                {%if i.status == 0%}
                                 <h6 class="mb-4">Status : Active</h6>
-                                {%elif i.Status == 1%}
+                                {%elif i.status == 1%}
                                 <h6 class="mb-4">Status : Inactive</h6>
                                 {%endif%}
                                 

@@ -36,6 +36,8 @@ func main() {
   gocron.Every(2).Second().Do(workStatus, db)
   gocron.Every(100).Second().Do(fetchsub, db)
   gocron.Every(60).Second().Do(rating, db)
+  gocron.Every(5).Second().Do(expiry2, db)
+
   gocron.Every(5).Second().Do(copytohire, db)
 	<-gocron.Start()
 }
@@ -171,3 +173,57 @@ func copytohire(db *sql.DB){
   fmt.Println(worker_phone)
 }
 }
+
+
+func expiry2(db *sql.DB){
+
+  fmt.Println("Expiry")
+  
+  var id int
+  
+  
+  var created_at time.Time
+  
+  validity := 2.0
+  
+  current_date := time.Now()
+  
+  fetch_id,_ := db.Query(`SELECT id,created_at FROM ecommerce_hiremodel WHERE status=2 `)
+  
+  defer fetch_id.Close()
+  
+  for fetch_id.Next(){
+  
+  fetch_id.Scan(&id,&created_at)
+  
+  // current_date := time.Now()
+  fmt.Println("done",created_at)
+  diff := current_date.Sub(created_at)
+  
+  fmt.Print(diff.Hours(),"--sdf---")
+  
+  difference := diff.Hours()/24
+  
+  if difference > validity {
+  
+  sqlStatement := `
+  
+  UPDATE ecommerce_hiremodel set rating=1 WHERE id = $1;`
+  
+  _, err1 := db.Exec(sqlStatement,id)
+  
+  fmt.Println("Deleted......")
+  
+  if err1 != nil {
+  
+  panic(err1)
+  
+  }
+  
+  
+  }
+  
+  
+  }
+  
+  }
