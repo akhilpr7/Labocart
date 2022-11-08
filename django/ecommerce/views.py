@@ -394,6 +394,7 @@ class LaboRegister(View):
 			# labourmodels['username']=request.user.username
 			job_title = request.POST.get('job_title')
 			category = request.session['category']
+			phone = request.POST.get("phone")
 			form.fields['job_title'].choices = [(job_title, job_title)]
 			# if form.is_valid():
 				# print(form.cleaned_data,"ffffffffffffffffffffffffffff")
@@ -414,7 +415,10 @@ class LaboRegister(View):
 
 			else:
 				print("illa-----------------------0")
-				obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential)
+				# obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential)
+				
+
+				obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential,phone=phone)
 				# obj.save()
 				messages.success(request,"Success !")
 			# print(obj,"55555555555555")
@@ -452,8 +456,10 @@ class Labocategories(View):
 class ActiveServices(View):
 	def get(self, request, *args, **kwargs):
 		data = labourmodels.objects.filter(Q(username = self.request.user.username) & (Q(status=0) | Q(status=1) | Q(status=2)))
+		user = NewUserModel.objects.all()
 		context = {
 			"data" : data,
+			"user" : user,
 			'current_path':"ActiveServices"
 		}
 		return render(request,'activeServices.html',context)

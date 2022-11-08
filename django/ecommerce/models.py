@@ -43,8 +43,9 @@ class HireModel(models.Model):
     user_status = models.BooleanField(default=False)
     worker_status = models.BooleanField(default=False)
     rating = models.IntegerField(default=0, blank=False)
-    comment = models.CharField(default="",max_length=255,null=True,blank=True)
+    # comment = models.CharField(default="",max_length=255,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
 
 
 class RequestsModel(models.Model):
@@ -118,3 +119,10 @@ class LabopaymentModel(models.Model):
     rate = models.FloatField(max_length=20, blank=False,null=False,default=0)
     status = models.IntegerField(blank=False,null=True,default=0)
     amount = models.FloatField(max_length=20, blank=False,null=False,default=0)
+
+
+
+
+class productcategory(models.Model):
+    category = models.CharField(max_length=255, blank=False)
+    
