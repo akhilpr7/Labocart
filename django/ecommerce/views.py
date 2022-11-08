@@ -771,7 +771,7 @@ class membership(View):
 		return render(request,template,context)
 class Workerview(View):
 	def get(self, request, *args, **kwargs):
-		return render(request,'index1.html',{})
+		return render(request,'home/dashboard1.html',{})
 
 class Individual(View):
 	def get(self, request, *args, **kwargs):

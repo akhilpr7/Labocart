@@ -62,12 +62,18 @@ class TransactionView(View):
             if request.user.is_superuser:
                 new_context = PurchaseModel.objects.filter(
                 status=3).exclude(username=request.user.username)
-                context={'datas' : new_context} 
+                context={
+                    'datas' : new_context,
+                    'current_path': "Transactions"
+                    } 
                 return render(request , self.template_name , context)
             else:
                 new_context = PurchaseModel.objects.filter(
                 status=3,username=request.user.username)
-                context={'datas' : new_context} 
+                context={
+                    'datas' : new_context,
+                    'current_path': "Transactions"
+                    } 
                 return render(request , self.template_name , context)   
 @method_decorator(login_required, name='dispatch')
 class Userservices(View):
@@ -465,7 +471,7 @@ class ProvidedJobs(View):
         jobs = JobPostingModel.objects.filter(
             hirer=request.user.username)
         context = {'jobs': jobs,
-                    'current_path': "Provided Jobs"}
+                    'current_path': "Enlisted Jobs"}
     
         return render(request,self.template_name , context)
 @method_decorator(login_required, name='dispatch')
