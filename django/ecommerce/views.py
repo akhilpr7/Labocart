@@ -429,7 +429,6 @@ class Labocategories(View):
 			'current_path':"Register Services" 
 		}
 		total_work = labourmodels.objects.filter(Q(username=request.user.username)&((Q(status=1)|Q(status=2)|Q(status=3)))).count()
-		print(total_work,"totttttttttttttttttttaaaaaaal workkkkkkkkkkkkk")
 		if total_work < 5 :
 			return render(request, self.template,context)
 		else:

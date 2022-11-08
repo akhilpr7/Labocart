@@ -423,8 +423,7 @@ class RejectServices(View):
 @method_decorator(login_required, name='dispatch')
 class JobRequests(View):
     def get(self, request, *args, **kwargs):
-        requests = AppliedJobs.objects.filter(
-            hirer=request.user.username).exclude(status=2)
+        requests = AppliedJobs.objects.filter(hirer=request.user.username).exclude(status=2)
         return render(request, "home/jobrequests.html", {'requests': requests})
 
 @method_decorator(login_required, name='dispatch')
@@ -443,9 +442,10 @@ class ApproveUser(View):
 class JobRequestUpdate(View):
     def get(self, request, *args, **kwargs):
         id = kwargs.get('id')
-        req = AppliedJobs.objects.filter(id=id)
+        req = AppliedJobs.objects.filter(id=id).values()
+        job = AppliedJobs.objects.filter(id=id).values_list("job_title")[0][0]
         req.update(status=1)
-        reject = AppliedJobs.objects.all().exclude(status=1)
+        reject = AppliedJobs.objects.filter(job_title = job).exclude(status=1)
         reject.update(status=2)
         return redirect('jobrequests')
 
