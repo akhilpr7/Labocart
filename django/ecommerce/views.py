@@ -406,21 +406,18 @@ class LaboRegister(View):
 				return render(request, self.template, {'form': form})
 			else:
 
-			# if form.is_valid():
-				# print(form.cleaned_data,"ffffffffffffffffffffffffffff")
-			# image_link = request.POST.get("image_link")
-			image_link = form.cleaned_data.get("image_link")
-			credential = form.cleaned_data.get("credential")
-			job_title = request.POST.get("job_title")
-			rate = request.POST.get("rate")
-			work_type = request.POST.get("work_type")
-			phone = request.POST.get("phone")
+				image_link = form.cleaned_data.get("image_link")
+				credential = form.cleaned_data.get("credential")
+				job_title = request.POST.get("job_title")
+				rate = request.POST.get("rate")
+				work_type = request.POST.get("work_type")
+				phone = request.POST.get("phone")
 
-			obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential,phone=phone)
-			# obj.save()
-			messages.success(request,"Success !")
-			print(obj,"55555555555555")
-			return redirect('shop')
+				obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential,phone=phone)
+				# obj.save()
+				messages.success(request,"Success !")
+				print(obj,"55555555555555")
+				return redirect('shop')
 			# else:
 			# 	print(form.errors)    
 			# 	return render(request, self.template, {'form': form})
