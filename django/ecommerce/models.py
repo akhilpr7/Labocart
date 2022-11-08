@@ -43,7 +43,7 @@ class HireModel(models.Model):
     user_status = models.BooleanField(default=False)
     worker_status = models.BooleanField(default=False)
     rating = models.IntegerField(default=0, blank=False)
-    comment = models.CharField(default="",max_length=255,null=True,blank=True)
+    # comment = models.CharField(default="",max_length=255,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
