@@ -386,40 +386,40 @@ class LaboRegister(View):
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
 			form = Laboregisterform(request.POST,request.FILES)
-			# print(request.POST.get("image_link"),"image linkkkkkkkkkkkkkk")
-			# print(request.POST.get("job_title"),"image linkkkkkkkkkkkkkk")
-			# print(request.POST.get("rate"),"image linkkkkkkkkkkkkkk")
-			# print(request.POST.get("work_type"),"image linkkkkkkkkkkkkkk")
-			# print(form.errors,"errrrororororororoor")
+			print(request.POST.get("image_link"),"image linkkkkkkkkkkkkkk")
+			print(request.POST.get("job_title"),"image linkkkkkkkkkkkkkk")
+			print(request.POST.get("rate"),"image linkkkkkkkkkkkkkk")
+			print(request.POST.get("work_type"),"image linkkkkkkkkkkkkkk")
+			print(form.errors,"errrrororororororoor")
 			# labourmodels['username']=request.user.username
 			job_title = request.POST.get('job_title')
-			
+			category = request.session['category']
 			form.fields['job_title'].choices = [(job_title, job_title)]
-			
-			jobs = labourmodels.objects.filter(username=request.user.username).values_list('job_title').first()
-			if job_title in jobs :
-				# print(jobs,"------------------------")
-				# print("Eroooooooooooooooooooooor")
-				messages.error(request,"That job is already registered by user !!!")
-				category = request.session['category']
-				form = Laboregisterform(initial=category)
-				return render(request, self.template, {'form': form})
-			else:
-
 			# if form.is_valid():
 				# print(form.cleaned_data,"ffffffffffffffffffffffffffff")
 			# image_link = request.POST.get("image_link")
-				image_link = form.cleaned_data.get("image_link")
-				credential = form.cleaned_data.get("credential")
-				job_title = request.POST.get("job_title")
-				rate = request.POST.get("rate")
-				work_type = request.POST.get("work_type")
+			image_link = form.cleaned_data.get("image_link")
+			credential = form.cleaned_data.get("credential")
+			job_title = request.POST.get("job_title")
+			rate = request.POST.get("rate")
+			work_type = request.POST.get("work_type")
+			userjob= labourmodels.objects.filter(username=request.user).values_list('job_title',flat=True)
+			print(userjob,"----------------")
+			print(type(userjob),"----------------")
+			if job_title in userjob:
+				print("ind-----------------------0")
+				messages.error(request,"You have already applied for this job !!")
+				form = Laboregisterform(initial=category)
+				return render(request, self.template, {'form': form})
+
+			else:
+				print("illa-----------------------0")
 				obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential)
 				# obj.save()
 				messages.success(request,"Success !")
-				print(obj,"55555555555555")
+			# print(obj,"55555555555555")
 				return redirect('shop')
-				# else:
+			# else:
 			# 	print(form.errors)    
 			# 	return render(request, self.template, {'form': form})
 
