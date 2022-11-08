@@ -20,10 +20,14 @@ class JobPostingModel(models.Model):
     name = models.TextField(max_length=255, blank=False)
     place = models.TextField(max_length=255, blank=False)
     work_type = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     image = models.FileField(upload_to='jobImages/')
     phone = models.BigIntegerField()
     status =  models.IntegerField(blank=False,null=True,default=0)
     job_title = models.CharField(max_length=20, blank=False,default='none')
+
+    class Meta:
+        ordering = ['id']
 
 class AppliedJobs(models.Model):
     hirer = models.TextField(max_length=25, blank=False)
@@ -36,3 +40,5 @@ class AppliedJobs(models.Model):
     rate = models.IntegerField(default=500)
     worker_name = models.TextField(max_length=25, blank=False)
     worker_phone = models.BigIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+

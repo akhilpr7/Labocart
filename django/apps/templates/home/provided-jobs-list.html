@@ -1,0 +1,72 @@
+{% extends "index.html" %}
+{% block title %} Enlisted Jobs {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <p class="d-none" id="messagetag">{{message.tags}}</p>
+        <p class="d-none " id="messagecontent">{{message}}</p>
+    {% endfor %}
+    {% endif %}
+    <body style="background-color:#f5eee7" >
+<!-- <div class="col-12 col-md-12"> -->
+    <div class="row pb-3 flex-md">
+    {%for look in jobs%} 
+       
+        <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+            
+            <div class="card product-item border-0 mb-4">
+               
+                <div class="card" style="border-radius: 15px; background-color: rgba(255, 255, 255, 0.993);">   
+                                 
+                    <div class="card-body p-4 text-black">
+                        <div>
+                            <h6 class="mb-4 text-uppercase">Job  : {{look.job_title}}</h6>
+                            <h6 class="mb-4 text-capitalize">Hirer Name : {{look.name}}</h6>
+                        <div class="d-flex align-items-start mb-4 " >
+                            <div class="flex-shrink-0 me-2">
+                                <img src="{{media_url}}{{look.image}}"
+                                alt="" class="img-fluid rounded border border-dark border-3"
+                                style="width: 75px; height: 75px;">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <div class="row">
+                                    <h6 class="mb-4 ">Location 👇<br>{{look.place}}</h6><br>
+                                    <h6 class="mb-4">Phone No 👇<br>{{look.phone}}</h6><br>
+                                </div>
+                        
+                            </div>
+                        </div>
+                    </div>
+                   
+                  
+                    <div class="card-footer text-center">
+
+                       {% if look.is_active %}
+
+                        <a href="{%url 'enlistedjobstatus' look.id%}" type = "button" class="text-center text-decoration-none btn-gray-800 btn-block btn-lg btn-rounded rounded-3 text-white"><i class="far fa-clock me-2 text-white"></i>Deactivate</a>
+                       {% else %}
+                       <a href="{%url 'enlistedjobstatus' look.id%}" type = "button" class="text-center text-decoration-none btn-gray-800 btn-block btn-lg btn-rounded rounded-3 text-white"><i class="far fa-clock me-2 text-white"></i>Activate</a>
+                        {% endif %}
+                    </div>
+                   
+                </div>
+                
+            </div>
+        </div>
+      
+       
+    </div>
+    {% endfor %}
+</div>
+<!-- </div> -->
+</body>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
+

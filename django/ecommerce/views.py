@@ -58,7 +58,7 @@ class Shop(View):
 		}
 
 		return render(request, 'shop.html', data)
-		
+
 
 @method_decorator(login_required,name='dispatch')
 class CartView(View):
@@ -237,21 +237,34 @@ class Invoice(View):
 
 @method_decorator(login_required,name='dispatch')
 class LaboShop(View):
-	def get(self, request,id, *args, **kwargs):
-		job=jobmodel.objects.filter(id=id).values_list("job_title")[0][0]
+	def get(self, request, *args, **kwargs):
+		filter=request.GET.get('filter')
+		if request.GET.get('filter') is not None and request.GET.get('filter') != '':
+			print(filter,"fgldjfdjkfjdfjdjfhjkdfkjdfhjkhd")
+			job=jobmodel.objects.filter(id=filter).values_list("job_title")[0][0]
+			datajob = jobmodel.objects.values()
+			data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1))
+			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
+			users=NewUserModel.objects.all()
+			work = HireModel.objects.all()
+			datacategory=Category.objects.values()
+		else:
+			# job=jobmodel.objects.filter().values_list("job_title")[0][0]
+			
 		# if request.GET.get('jobtitle') is not None and request.GET.get('job') != '':
-		datacategory=Category.objects.values()
-		datajob = jobmodel.objects.values()
-		data = labourmodels.objects.filter((Q(job_title=job))&(Q(status=1)))
-		fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
-		users=NewUserModel.objects.all()
-		work = HireModel.objects.all()
+		# datacategory=Category.objects.values()
+			datajob = jobmodel.objects.values()
+			data = labourmodels.objects.filter(status=1)
+			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
+			users=NewUserModel.objects.all()
+			work = HireModel.objects.all()
+			datacategory=Category.objects.values()
 		
 		context = {
 			'data': data,
 			'current_path':"Request services",
 			'fund': fund,
-			"datacategory":datacategory,
+			 "datacategory":datacategory,
 			"datajob":datajob,
 			"user":users,
 			"work":work,
@@ -421,7 +434,7 @@ class Labocategories(View):
 			return render(request, self.template,context)
 		else:
 			messages.error(request,"Job Applying Limit Reached !!")
-			return redirect("laboshopcategory")
+			return redirect("laboshop")
 
 
 @method_decorator(login_required,name='dispatch')
@@ -436,25 +449,45 @@ class ActiveServices(View):
 
 @method_decorator(login_required,name='dispatch')
 class HireNowView(View):
-	def get(self, request, *args, **kwargs):
-		username = kwargs.get('username')
-		job_title = kwargs.get('job_title')
+	def get(self, request,id, *args, **kwargs):
+		# username = kwargs.get('username')
+		# job_title = kwargs.get('job_title')
 		data = {
-			"worker_name" :username,
-			"Hire_name" : request.user,
-			"job_title" : job_title
+			# "worker_name" :username,
+			# "Hire_name" : request.user,
+			# "job_title" : job_title,
+			"id":id,
 		}
 		form = HireNowForm(data)
-        # print("eeeeeeeeeeeeeeeeeeeeeeeeee",username)
 		context = {'form': form}
 		return render(request, "hireNowForm.html",context)
 	def post(self, request, *args, **kwargs):
+		print()
 		if request.method == 'POST':
 			form = HireNowForm(request.POST)
+			id = request.POST.get("id")
+			name = request.POST.get("Name")
+			place = request.POST.get("Place")
+			phone = request.POST.get("Phone")
+			worker_name = labourmodels.objects.filter(id=id).values_list("username")[0][0]
+			job_title = labourmodels.objects.filter(id=id).values_list("job_title")[0][0]
+			rate = labourmodels.objects.filter(id=id).values_list("rate")[0][0]
+			print(id,"shjlshjdsjhdjshjdhsjdsjhdjkshjkdhsjkdhsjkdjk")
+			print(name,"shjlshjdsjhdjshjdhsjdsjhdjkshjkdhsjkdhsjkdjk")
+			print(place,"shjlshjdsjhdjshjdhsjdsjhdjkshjkdhsjkdhsjkdjk")
+			print(phone,"shjlshjdsjhdjshjdhsjdsjhdjkshjkdhsjkdhsjkdjk")
 			if form.is_valid():
-				form.save()
+				n = random.randint(0,99999)
+				obj = HireModel.objects.create(id=n,worker_name=worker_name,Hire_name=request.user.username,Name=name,Place=place,Phone=phone,status=2,job_title=job_title)
+				# wallet_bal = request.user.wallet
+				# if wallet_bal >= rate:
+
 				messages.success(request,'Your request Succesfully created')
-				return redirect('requested')
+				
+				return render(request,'userpayment.html',{"id":n,"rate":rate})
+
+				# obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential)
+				# form.save()
 			else:
 				messages.error(request,'Unsuccesfull')
 				return redirect('dashboard')
@@ -486,7 +519,7 @@ class Acceptservice(View):
 			HireModel.objects.filter(id=id).update(status=3)
 			return redirect('assigned')
 		elif status ==1:
-			return redirect('laboshopcategory')
+			return redirect('laboshop')
 		else:
 			return redirect('labocategory')
 @method_decorator(login_required,name='dispatch')	
@@ -509,7 +542,7 @@ class Togglestatus(View):
 			messages.success(request,"Success !")
 			return redirect("active_service")
 		elif status ==2:
-			labourmodels.objects.filter(id=id).update(status=0)
+			labourmodels.objects.filter(id=id).delete()
 			messages.success(request,"Success !")
 			return redirect("active_service")
 		
@@ -528,7 +561,7 @@ class Subscribe(View):
 		if wallet_balance>= packagecost:
 			if is_sub:
 				messages.error(request,"Already Subscribed")
-				return redirect ("laboshopcategory")
+				return redirect ("laboshop")
 			elif is_sub == False:
 
 				n = random.randint(0,99999)
@@ -553,13 +586,13 @@ class Subscribe(View):
 				data.save()
 				NewUserModel.objects.filter(username=request.user.username).update(is_sub=True,wallet=wallet_balance-packagecost,subscribed_at=datetime.datetime.now().date(),package=id)	
 				messages.success(request,"Succesfully Subscribed")
-				return redirect ("laboshopcategory")
+				return redirect ("laboshop")
 			else:
 				messages.error(request,"Error")
-				return redirect ("laboshopcategory")
+				return redirect ("laboshop")
 		else:
 			messages.error(request,"Not enough balance in wallet!")
-			return redirect ("laboshopcategory")
+			return redirect ("laboshop")
 		
 class HomePage(View):
 	def get(self, request, *args, **kwargs):
