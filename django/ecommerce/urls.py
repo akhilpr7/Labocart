@@ -39,5 +39,7 @@ urlpatterns = [
 	path("membership/",views.membership.as_view(), name="membership"),
 	path("workerview/",views.Workerview.as_view(), name="workerview"),
 	path("userprofile/",views.Individual.as_view(), name="userprofile"),
+	path('userpayments/<int:id>/',views.Userpayments.as_view(), name="userpayments"),
+
 ]
 

@@ -31,14 +31,15 @@ urlpatterns = [
     path('updateservices/<int:id>/', views.UpdateServices.as_view(),name="updateservices"),
     path('jobpost/<str:id>',views.JobPostingView.as_view(),name="job-posting"),
 	path("labocategory2/",views.Labocategories2.as_view(), name="labocategory2"),
-    path("servicerequests",views.ServiceRequests.as_view(),name="servicerequests"),
+    path("servicerequests/",views.ServiceRequests.as_view(),name="servicerequests"),
     path('acceptservices/<int:id>/', views.AcceptServices.as_view(), name="acceptservices"),
     path('rejectservices/<int:id>/', views.RejectServices.as_view(), name="rejectservices"),
     path("pendingkyc",views.PendingKYC.as_view(),name="pendingkyc"),
     path("approveuser/<int:id>",views.ApproveUser.as_view(),name="approveuser"),
     path('enlistedjobs/', views.ProvidedJobs.as_view(),name="enlistedjobs"),
     path('enlistedjobstatus/<int:id>/', views.UpdateEnlistedJobStatus.as_view(),name="enlistedjobstatus"),
-
+    path('jobrequestpay/<int:id>',views.JobRequestPay.as_view(),name='jobrequestpay'),
+    path('confirmpaymentjob/<int:id>',views.confirmpaymentjob.as_view(),name='confirmpaymentjob'),
 
 
 ]

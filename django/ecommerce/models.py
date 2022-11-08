@@ -43,7 +43,7 @@ class HireModel(models.Model):
     user_status = models.BooleanField(default=False)
     worker_status = models.BooleanField(default=False)
     rating = models.IntegerField(default=0, blank=False)
-    comment = models.CharField(default="",max_length=255,null=True,blank=True)
+    # comment = models.CharField(default="",max_length=255,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -114,3 +114,15 @@ class PackageModel(models.Model):
     validity = models.IntegerField(blank=False,null=False)
     cost = models.FloatField(max_length=20, blank=False,null=False,default=0)
     image = models.ImageField(blank=False,null=False)
+class LabopaymentModel(models.Model):
+    work_id = models.ForeignKey(RequestsModel, on_delete=models.CASCADE, default=None)
+    rate = models.FloatField(max_length=20, blank=False,null=False,default=0)
+    status = models.IntegerField(blank=False,null=True,default=0)
+    amount = models.FloatField(max_length=20, blank=False,null=False,default=0)
+
+
+
+
+class productcategory(models.Model):
+    category = models.CharField(max_length=255, blank=False)
+    

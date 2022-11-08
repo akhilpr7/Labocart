@@ -9,7 +9,7 @@ from ecommerce.models import HireModel, ProductsModel, CartModel,RequestsModel
 from .forms import AddStockForm, HireNowForm,Laboregisterform,PurchaseForm,AddPackageForm
 from apps.home.models import Category
 from .forms import UpdateStockForm,CheckoutForm,UpdatePackageForm
-from .models import HireModel, PackageModel, PurchaseModel
+from .models import HireModel, PackageModel, PurchaseModel, LabopaymentModel
 import datetime
 from datetime import date, datetime
 from django.db.models import Sum
@@ -386,37 +386,42 @@ class LaboRegister(View):
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
 			form = Laboregisterform(request.POST,request.FILES)
-			# print(request.POST.get("image_link"),"image linkkkkkkkkkkkkkk")
-			# print(request.POST.get("job_title"),"image linkkkkkkkkkkkkkk")
-			# print(request.POST.get("rate"),"image linkkkkkkkkkkkkkk")
-			# print(request.POST.get("work_type"),"image linkkkkkkkkkkkkkk")
-			# print(form.errors,"errrrororororororoor")
+			print(request.POST.get("image_link"),"image linkkkkkkkkkkkkkk")
+			print(request.POST.get("job_title"),"image linkkkkkkkkkkkkkk")
+			print(request.POST.get("rate"),"image linkkkkkkkkkkkkkk")
+			print(request.POST.get("work_type"),"image linkkkkkkkkkkkkkk")
+			print(form.errors,"errrrororororororoor")
 			# labourmodels['username']=request.user.username
 			job_title = request.POST.get('job_title')
-			
+			category = request.session['category']
+			phone = request.POST.get("phone")
 			form.fields['job_title'].choices = [(job_title, job_title)]
-			
-			jobs = labourmodels.objects.filter(username=request.user.username).values_list('job_title').first()
-			if job_title in jobs :
-				# print(jobs,"------------------------")
-				# print("Eroooooooooooooooooooooor")
-				messages.error(request,"That job is already registered by user !!!")
-				category = request.session['category']
+			# if form.is_valid():
+				# print(form.cleaned_data,"ffffffffffffffffffffffffffff")
+			# image_link = request.POST.get("image_link")
+			image_link = form.cleaned_data.get("image_link")
+			credential = form.cleaned_data.get("credential")
+			job_title = request.POST.get("job_title")
+			rate = request.POST.get("rate")
+			work_type = request.POST.get("work_type")
+			userjob= labourmodels.objects.filter(username=request.user).values_list('job_title',flat=True)
+			print(userjob,"----------------")
+			print(type(userjob),"----------------")
+			if job_title in userjob:
+				print("ind-----------------------0")
+				messages.error(request,"You have already applied for this job !!")
 				form = Laboregisterform(initial=category)
 				return render(request, self.template, {'form': form})
-			else:
 
-				image_link = form.cleaned_data.get("image_link")
-				credential = form.cleaned_data.get("credential")
-				job_title = request.POST.get("job_title")
-				rate = request.POST.get("rate")
-				work_type = request.POST.get("work_type")
-				phone = request.POST.get("phone")
+			else:
+				print("illa-----------------------0")
+				# obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential)
+				
 
 				obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential,phone=phone)
 				# obj.save()
 				messages.success(request,"Success !")
-				print(obj,"55555555555555")
+			# print(obj,"55555555555555")
 				return redirect('shop')
 			# else:
 			# 	print(form.errors)    
@@ -440,7 +445,6 @@ class Labocategories(View):
 			'current_path':"Register Services" 
 		}
 		total_work = labourmodels.objects.filter(Q(username=request.user.username)&((Q(status=1)|Q(status=2)|Q(status=3)))).count()
-		print(total_work,"totttttttttttttttttttaaaaaaal workkkkkkkkkkkkk")
 		if total_work < 5 :
 			return render(request, self.template,context)
 		else:
@@ -452,8 +456,10 @@ class Labocategories(View):
 class ActiveServices(View):
 	def get(self, request, *args, **kwargs):
 		data = labourmodels.objects.filter(Q(username = self.request.user.username) & (Q(status=0) | Q(status=1) | Q(status=2)))
+		user = NewUserModel.objects.all()
 		context = {
 			"data" : data,
+			"user" : user,
 			'current_path':"ActiveServices"
 		}
 		return render(request,'activeServices.html',context)
@@ -461,8 +467,6 @@ class ActiveServices(View):
 @method_decorator(login_required,name='dispatch')
 class HireNowView(View):
 	def get(self, request,id, *args, **kwargs):
-		# username = kwargs.get('username')
-		# job_title = kwargs.get('job_title')
 		data = {
 			"id":id,
 		}
@@ -470,7 +474,6 @@ class HireNowView(View):
 		context = {'form': form}
 		return render(request, "hireNowForm.html",context)
 	def post(self, request, *args, **kwargs):
-		print()
 		if request.method == 'POST':
 			form = HireNowForm(request.POST)
 			id = request.POST.get("id")
@@ -485,25 +488,40 @@ class HireNowView(View):
 
 			if form.is_valid():
 				n = random.randint(0,99999)
+				# print(n,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
 				obj = RequestsModel.objects.create(
-				id=n,
-				hirer=request.user.username,
-				name=name,
-				place=place,
-				phone=phone,
-				work_type =work_type ,
-				rate=rate,
-				status=0,
-				job_title=job_title,
-				worker_name=worker_name,
-				worker_phone=worker_phone,)
-
-				messages.success(request,'Your request Succesfully created')
-				
-				return render(request,'userpayment.html',{"id":n,"rate":rate})
+					id=n,
+					hirer=request.user.username,
+					name=name,
+					place=place,
+					work_type=work_type,
+					phone=phone,
+					status=0,
+					job_title=job_title,
+					worker_name=worker_name,
+					worker_phone=worker_phone,
+					created_at=datetime.datetime.now().date())
+				pay = LabopaymentModel.objects.create(work_id=obj,rate=rate,status=0,amount=0)				
+				return render(request,'user_payments.html',{"id":n,"rate":rate})
 			else:
 				messages.error(request,'Unsuccesfull')
 				return redirect('dashboard')
+class Userpayments(View):
+	def get(self, request,id, *args, **kwargs):
+		wallet_balance =request.user.wallet
+		user_id=id
+		# print(wallet_balance,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
+		# print(user_id,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
+		rate = LabopaymentModel.objects.filter(work_id=id).values_list("rate")[0][0]
+		if wallet_balance >= rate:
+			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)
+			LabopaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
+			RequestsModel.objects.filter(id=id).update(status=1)
+			messages.success(request,'Payment Successful')
+			return redirect('laboshop')
+		else:
+			messages.success(request,'Payment Failed')
+			return redirect('laboshop')
 @method_decorator(login_required,name='dispatch')
 class CancelRequest(View):
 	def get(self, request,id):

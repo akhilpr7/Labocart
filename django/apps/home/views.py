@@ -450,9 +450,10 @@ class ApproveUser(View):
 class JobRequestUpdate(View):
     def get(self, request, *args, **kwargs):
         id = kwargs.get('id')
-        req = AppliedJobs.objects.filter(id=id)
+        req = AppliedJobs.objects.filter(id=id).values()
+        job = AppliedJobs.objects.filter(id=id).values_list("job_title")[0][0]
         req.update(status=1)
-        reject = AppliedJobs.objects.all().exclude(status=1)
+        reject = AppliedJobs.objects.filter(job_title = job).exclude(status=1)
         reject.update(status=2)
         return redirect('jobrequests')
 
@@ -470,7 +471,7 @@ class ProvidedJobs(View):
 @method_decorator(login_required, name='dispatch')
 class LookForJobs(View):
     def get(self, request, *args, **kwargs):
-        jobs = JobPostingModel.objects.filter(status=0).values()
+        jobs = JobPostingModel.objects.filter(is_active=1).values()
         context = {
             'media_url': settings.NEW_VAR,
 
@@ -489,3 +490,27 @@ class  UpdateEnlistedJobStatus(View):
             job.is_active = True
             job.save()
         return redirect('enlistedjobs')
+
+class JobRequestPay(View):
+    template = 'home/jobreqpay.html'
+    def get(self, request, id, *args, **kwargs):
+        rate = AppliedJobs.objects.filter(id=id).values_list("rate")[0][0]
+
+        context={
+            "rate":rate,
+            "id":id,
+        }
+        return render(request,self.template,context)
+
+
+class confirmpaymentjob(View):
+    def get(self ,request,id, *arg, **kwargs):
+        wallet_bal = NewUserModel.objects.filter(username=request.user).values_list("wallet")[0][0]
+        rate = AppliedJobs.objects.filter(id=id).values_list("rate")[0][0]
+        if wallet_bal >= rate:
+            NewUserModel.objects.filter(username=request.user).update(wallet=wallet_bal-rate)
+            messages.success(request,"Success !!!!")
+            return redirect('jobrequestupdate',id)
+        else:
+            messages.error(request,"Not enough balance !!!")
+            return redirect('confirmpaymentjob',id)
