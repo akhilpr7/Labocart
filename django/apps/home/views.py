@@ -120,15 +120,6 @@ class ApplyFormView(View):
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             form = ApplyForm(request.POST)
-            print(request.POST['name'])
-            print(request.POST['hirer'])
-            print(request.POST['place'])
-            print(request.POST['work_type'])
-            print(request.POST['phone'])
-            print(request.POST['status'])
-            print(request.POST['job_title'])
-            print(request.POST['worker_name'])
-            print(request.POST['worker_phone'])
             if form.is_valid():
                 form.save()
                 messages.success(request, "Success")
@@ -244,9 +235,6 @@ class Addjobsview(View):
     template = 'home/addjob.html'
 
     def get(self, request, *args, **kwargs):
-        # category = Category.objects.all().values_list('category_name')
-        # # jobs = jobmodel.objects.filter(category=category).values()
-        # # print("----",jobs,"6666666666666666666666666666666")
         form = AddJobForm()
         context = {
             "form": form,
@@ -304,7 +292,6 @@ class UpdateUser(View):
         else:
             user.is_active = True
             user.save()
-        # print(users)
         return redirect('manageuser')
 
 @method_decorator(login_required, name='dispatch')
@@ -325,14 +312,7 @@ class JobPostingView(View):
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
-            form = JobPostingForm(request.POST, request.FILES)
-            print(request.user.username)
-            print(request.POST['place'])
-            print(request.FILES['image'])
-            print(request.POST['job_title'])
-            print(request.POST['work_type'])
-            print(request.POST['phone'])
-            print(request.POST['name'])
+            form = JobPostingForm(request.POST,request.FILES)
             try:
                 obj = JobPostingModel.objects.create(
                     hirer=request.user.username,
@@ -345,9 +325,8 @@ class JobPostingView(View):
                 obj.save()
                 return redirect('shop')
 
-            except Exception:
-                print(
-                    Exception, "fffffffffffffuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu")
+            except Exception :
+                print(Exception)
                 return redirect('shop')
 
         else:
