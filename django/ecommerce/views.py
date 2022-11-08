@@ -483,8 +483,19 @@ class HireNowView(View):
 
 			if form.is_valid():
 				n = random.randint(0,99999)
-				print(n,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
-				obj = HireModel.objects.create(id=n,worker_name=worker_name,Hire_name=request.user.username,Name=name,Place=place,Phone=phone,status=2,job_title=job_title)
+				# print(n,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
+				obj = RequestsModel.objects.create(
+					id=n,
+					hirer=request.user.username,
+					name=name,
+					place=place,
+					work_type=work_type,
+					phone=phone,
+					status=0,
+					job_title=job_title,
+					worker_name=worker_name,
+					worker_phone=worker_phone,
+					created_at=datetime.datetime.now().date())
 				pay = LabopaymentModel.objects.create(work_id=obj,rate=rate,status=0,amount=0)				
 				return render(request,'user_payments.html',{"id":n,"rate":rate})
 			else:
@@ -494,14 +505,15 @@ class Userpayments(View):
 	def get(self, request,id, *args, **kwargs):
 		wallet_balance =request.user.wallet
 		user_id=id
-		print(wallet_balance,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
-		print(user_id,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
+		# print(wallet_balance,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
+		# print(user_id,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
 		rate = LabopaymentModel.objects.filter(work_id=id).values_list("rate")[0][0]
 		if wallet_balance >= rate:
 			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)
 			LabopaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
+			RequestsModel.objects.filter(id=id).update(status=1)
 			messages.success(request,'Payment Successful')
-			return redirect('dashboard')
+			return redirect('laboshop')
 		else:
 			messages.success(request,'Payment Failed')
 			return redirect('laboshop')

@@ -114,7 +114,7 @@ class PackageModel(models.Model):
     cost = models.FloatField(max_length=20, blank=False,null=False,default=0)
     image = models.ImageField(blank=False,null=False)
 class LabopaymentModel(models.Model):
-    work_id = models.ForeignKey( HireModel, on_delete=models.CASCADE, default=None)
+    work_id = models.ForeignKey(RequestsModel, on_delete=models.CASCADE, default=None)
     rate = models.FloatField(max_length=20, blank=False,null=False,default=0)
     status = models.IntegerField(blank=False,null=True,default=0)
     amount = models.FloatField(max_length=20, blank=False,null=False,default=0)
