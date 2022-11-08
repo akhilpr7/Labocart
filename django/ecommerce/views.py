@@ -58,7 +58,7 @@ class Shop(View):
 		}
 
 		return render(request, 'shop.html', data)
-		
+
 
 @method_decorator(login_required,name='dispatch')
 class CartView(View):
@@ -375,6 +375,7 @@ class LaboRegister(View):
 		jobs = jobmodel.objects.filter(category=category).values()
 		# print("----",jobs,"6666666666666666666666666666666")
 		form = Laboregisterform(initial=category)
+		request.session['category'] = category
 		context = {
 			"form" : form,
 			"jobs" : jobs,
@@ -385,15 +386,26 @@ class LaboRegister(View):
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
 			form = Laboregisterform(request.POST,request.FILES)
-			print(request.POST.get("image_link"),"image linkkkkkkkkkkkkkk")
-			print(request.POST.get("job_title"),"image linkkkkkkkkkkkkkk")
-			print(request.POST.get("rate"),"image linkkkkkkkkkkkkkk")
-			print(request.POST.get("work_type"),"image linkkkkkkkkkkkkkk")
-			print(form.errors,"errrrororororororoor")
+			# print(request.POST.get("image_link"),"image linkkkkkkkkkkkkkk")
+			# print(request.POST.get("job_title"),"image linkkkkkkkkkkkkkk")
+			# print(request.POST.get("rate"),"image linkkkkkkkkkkkkkk")
+			# print(request.POST.get("work_type"),"image linkkkkkkkkkkkkkk")
+			# print(form.errors,"errrrororororororoor")
 			# labourmodels['username']=request.user.username
 			job_title = request.POST.get('job_title')
-
+			
 			form.fields['job_title'].choices = [(job_title, job_title)]
+			
+			jobs = labourmodels.objects.filter(username=request.user.username).values_list('job_title').first()
+			if job_title in jobs :
+				# print(jobs,"------------------------")
+				# print("Eroooooooooooooooooooooor")
+				messages.error(request,"That job is already registered by user !!!")
+				category = request.session['category']
+				form = Laboregisterform(initial=category)
+				return render(request, self.template, {'form': form})
+			else:
+
 			# if form.is_valid():
 				# print(form.cleaned_data,"ffffffffffffffffffffffffffff")
 			# image_link = request.POST.get("image_link")
@@ -490,6 +502,7 @@ class HireNowView(View):
 				worker_phone=worker_phone,)
 
 				messages.success(request,'Your request Succesfully created')
+				
 				return render(request,'userpayment.html',{"id":n,"rate":rate})
 			else:
 				messages.error(request,'Unsuccesfull')
