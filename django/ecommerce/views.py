@@ -264,7 +264,7 @@ class LaboShop(View):
 			'data': data,
 			'current_path':"Request services",
 			'fund': fund,
-			 "datacategory":datacategory,
+			"datacategory":datacategory,
 			"datajob":datajob,
 			"user":users,
 			"work":work,

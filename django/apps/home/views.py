@@ -427,12 +427,8 @@ class JobRequests(View):
     template_name = 'home/jobrequests.html'
     def get(self, request, *args, **kwargs):
         requests = AppliedJobs.objects.filter(
-        hirer=request.user.username).exclude(status=2)
-        context = {
-        "requests": requests,
-        'current_path':"Job Requests"
-        }
-        return render(request,self.template_name,context)
+            hirer=request.user.username).exclude(status=2)
+        return render(request, "home/jobrequests.html", {'requests': requests})
 
 @method_decorator(login_required, name='dispatch')
 class ApproveUser(View):
