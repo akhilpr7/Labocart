@@ -43,3 +43,5 @@ services:
     # command: ./go
     volumes:
       - ./go:/code
+    depends_on:
+      - db  

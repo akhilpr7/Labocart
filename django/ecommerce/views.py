@@ -58,7 +58,7 @@ class Shop(View):
 		}
 
 		return render(request, 'shop.html', data)
-		
+
 
 @method_decorator(login_required,name='dispatch')
 class CartView(View):
@@ -483,6 +483,7 @@ class HireNowView(View):
 				# if wallet_bal >= rate:
 
 				messages.success(request,'Your request Succesfully created')
+				
 				return render(request,'userpayment.html',{"id":n,"rate":rate})
 
 				# obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential)
