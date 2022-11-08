@@ -47,6 +47,7 @@ class HireModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
+
 class RequestsModel(models.Model):
     hirer = models.TextField(max_length=25, blank=False)
     name = models.TextField(max_length=25, blank=False)
