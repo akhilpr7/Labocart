@@ -38,7 +38,8 @@ urlpatterns = [
     path("approveuser/<int:id>",views.ApproveUser.as_view(),name="approveuser"),
     path('enlistedjobs/', views.ProvidedJobs.as_view(),name="enlistedjobs"),
     path('enlistedjobstatus/<int:id>/', views.UpdateEnlistedJobStatus.as_view(),name="enlistedjobstatus"),
-
+    path('jobrequestpay/<int:id>',views.JobRequestPay.as_view(),name='jobrequestpay'),
+    path('confirmpaymentjob/<int:id>',views.confirmpaymentjob.as_view(),name='confirmpaymentjob'),
 
 
 ]

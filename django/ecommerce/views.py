@@ -456,8 +456,10 @@ class Labocategories(View):
 class ActiveServices(View):
 	def get(self, request, *args, **kwargs):
 		data = labourmodels.objects.filter(Q(username = self.request.user.username) & (Q(status=0) | Q(status=1) | Q(status=2)))
+		user = NewUserModel.objects.all()
 		context = {
 			"data" : data,
+			"user" : user,
 			'current_path':"ActiveServices"
 		}
 		return render(request,'activeServices.html',context)

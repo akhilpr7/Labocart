@@ -47,6 +47,7 @@ class HireModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
+
 class RequestsModel(models.Model):
     hirer = models.TextField(max_length=25, blank=False)
     name = models.TextField(max_length=25, blank=False)
@@ -118,3 +119,10 @@ class LabopaymentModel(models.Model):
     rate = models.FloatField(max_length=20, blank=False,null=False,default=0)
     status = models.IntegerField(blank=False,null=True,default=0)
     amount = models.FloatField(max_length=20, blank=False,null=False,default=0)
+
+
+
+
+class productcategory(models.Model):
+    category = models.CharField(max_length=255, blank=False)
+    

@@ -42,4 +42,4 @@ class AppliedJobs(models.Model):
     worker_uname = models.TextField(max_length=25, blank=False)
     worker_phone = models.BigIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-
+    copy_status = models.BooleanField(default=False)
