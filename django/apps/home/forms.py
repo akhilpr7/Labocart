@@ -28,11 +28,10 @@ class AddFundForm(forms.Form):
         wallet.wallet = temp
         wallet.save()
 
-class CategoryForm(forms.ModelForm):
+class CategoryForm(forms.Form):
+    image=forms.ImageField(widget=forms.FileInput(attrs={ 'class': 'form-control'}))
     category_name = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Category Name"}))
-    class Meta:
-        model = Category
-        fields = '__all__'
+
 
 class AddJobForm(forms.Form):
     job_name = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Job Name"}))

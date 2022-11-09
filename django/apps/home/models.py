@@ -5,6 +5,7 @@ from django.db import models
 
 class Category(models.Model):
     category_name = models.CharField(max_length=255, null=False)
+    image = models.FileField(upload_to='categoryImages/')
 
 class Transaction(models.Model):
     username = models.CharField(max_length=255, null=False)
@@ -43,3 +44,4 @@ class AppliedJobs(models.Model):
     worker_phone = models.BigIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     copy_status = models.BooleanField(default=False)
+    work_date =  models.DateTimeField(auto_now_add=True)

@@ -39,11 +39,14 @@
             <div class="card">
               <div class="card-body p-6">
                   <h3 class="font-weight-bolder">Add category</h3><br>
-                  <form method="post">
+                  <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-lg-8"> 
                             {{form.category_name}}
+                        </div>
+                        <div class="col-lg-8"> 
+                            {{form.image}}
                         </div>
                     <div class="col-lg-4 pl-2">
                       <button type="submit" class="btn bg-gray-800 btn-rounded rounded-2 text-white" style="float:right">Add</button> 

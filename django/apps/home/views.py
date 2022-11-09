@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from ecommerce.models import HireModel, PurchaseModel,RequestsModel
 from .forms import AddJobForm, CategoryForm, JobPostingForm, AddFundForm, ApplyForm
-from .models import Category, JobPostingModel, AppliedJobs
+from .models import Category, JobPostingModel, AppliedJobs,Category
 from django.contrib import messages
 from django.urls import reverse
 from authentication.models import jobmodel, NewUserModel, labourmodels
@@ -62,12 +62,18 @@ class TransactionView(View):
             if request.user.is_superuser:
                 new_context = PurchaseModel.objects.filter(
                 status=3).exclude(username=request.user.username)
-                context={'datas' : new_context} 
+                context={
+                    'datas' : new_context,
+                    'current_path': "Transactions"
+                    } 
                 return render(request , self.template_name , context)
             else:
                 new_context = PurchaseModel.objects.filter(
                 status=3,username=request.user.username)
-                context={'datas' : new_context} 
+                context={
+                    'datas' : new_context,
+                    'current_path': "Transactions"
+                    } 
                 return render(request , self.template_name , context)   
 @method_decorator(login_required, name='dispatch')
 class Userservices(View):
@@ -167,7 +173,7 @@ class ServiceView(View):
     template_name = "home/requested-services.html"
     def get(self, request, *args, **kwargs):
         data = RequestsModel.objects.filter(
-            hirer   =request.user).exclude(status=1).exclude(status=2)
+            hirer   =request.user).exclude(status=0).exclude(status=2)
         context = {'data': data, 'current_path': "Requested Services"}
         return render(request, self.template_name, context)
 
@@ -208,20 +214,24 @@ class CategoryView(View):
 @method_decorator(login_required, name='dispatch')
 class AddCategoryView(View):
     def get(self, request, *args, **kwargs):
-        form = CategoryForm
+        form = CategoryForm()
         context = {'form': form, 'current_path': "Add Category"}
         return render(request, "home/add_categoryform.html", context)
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
-            form = CategoryForm(request.POST)
-            if form.is_valid():
-                form.save()
+             try:
+                data =Category.objects.create(
+                    category_name = request.POST['category_name'],
+                    image = request.FILES['image']
+                    )
+                data.save()
                 messages.success(request, "Category added successfully")
                 return redirect('category')
-            else:
+             except Exception as e : 
+                print('error',e)
                 messages.error(request, "error")
-        return redirect(request, 'add_category')
+                return redirect( 'add_category')
 
 
 @method_decorator(login_required, name='dispatch')
@@ -371,7 +381,9 @@ class Labocategories2(View):
         data = Category.objects.all()
         context = {
             "data": data,
-            'current_path': "Provide Jobs"
+            'current_path': "Provide Jobs",
+            'MEDIA_ROOT':settings.NEW_VAR,
+
         }
         total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & (
             (Q(status=1) | Q(status=2) | Q(status=3)))).count()
@@ -461,7 +473,7 @@ class ProvidedJobs(View):
         jobs = JobPostingModel.objects.filter(
             hirer=request.user.username)
         context = {'jobs': jobs,
-                    'current_path': "Provided Jobs"}
+                    'current_path': "Enlisted Jobs"}
     
         return render(request,self.template_name , context)
 @method_decorator(login_required, name='dispatch')

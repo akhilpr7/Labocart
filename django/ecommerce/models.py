@@ -43,10 +43,11 @@ class HireModel(models.Model):
     user_status = models.BooleanField(default=False)
     worker_status = models.BooleanField(default=False)
     rating = models.IntegerField(default=0, blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)
     comment = models.CharField(default="",max_length=255,null=True,blank=True)
-
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    rate = models.FloatField(max_length=20, blank=False,null=False)
+    worker_phone = models.BigIntegerField()
+    work_date =  models.DateTimeField(auto_now_add=True)
 
 class RequestsModel(models.Model):
     hirer = models.TextField(max_length=25, blank=False)
@@ -60,7 +61,7 @@ class RequestsModel(models.Model):
     worker_name = models.TextField(max_length=25, blank=False)
     worker_phone = models.BigIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-
+    work_date =  models.DateTimeField(auto_now_add=True)
 
 class CheckoutModel(models.Model):
     product_id = models.IntegerField(blank=True,null=False)
@@ -76,32 +77,19 @@ class PurchaseModel(models.Model):
 
     phone = models.BigIntegerField(null=True)
     Total = models.FloatField(max_length=20, blank=False,null=False,default=0)
-
     Prices = ArrayField(models.FloatField(max_length=20, blank=True,null=True))
     Quantity = ArrayField(models.IntegerField(blank=True,null=True))
-
     Product_name = ArrayField(models.CharField(max_length=100, blank=True,null=True),null=True)
-
     username = models.CharField(max_length=100, blank=False,null=False)
-
     first_name = models.TextField(max_length=100, blank=False,null=False)
-
-    last_name = models.TextField(max_length=100, blank=False,null=False)
-    
+    last_name = models.TextField(max_length=100, blank=False,null=False) 
     email = models.TextField(max_length=100, blank=False,null=False)
-
     street = models.TextField(max_length=100, blank=False,null=False)
-
     building = models.TextField(max_length=100, blank=False,null=False)
-
     locality = models.TextField(max_length=100, blank=False,null=False)
-
     postal = models.IntegerField(blank=False,null=False)
-
     status =  models.IntegerField(blank=False,null=True,default=1)
-
     order_id =  models.IntegerField(blank=False,null=False,default=0)
-
     date = models.DateField()
 
 
@@ -119,10 +107,3 @@ class LabopaymentModel(models.Model):
     rate = models.FloatField(max_length=20, blank=False,null=False,default=0)
     status = models.IntegerField(blank=False,null=True,default=0)
     amount = models.FloatField(max_length=20, blank=False,null=False,default=0)
-
-
-
-
-class productcategory(models.Model):
-    category = models.CharField(max_length=255, blank=False)
-    
