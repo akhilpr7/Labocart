@@ -442,7 +442,9 @@ class Labocategories(View):
 		data = Category.objects.all()
 		context = {	
 			"data" : data,
-			'current_path':"Register Services" 
+			'current_path':"Register Services" ,
+			 'MEDIA_ROOT':settings.NEW_VAR,
+
 		}
 		total_work = labourmodels.objects.filter(Q(username=request.user.username)&((Q(status=1)|Q(status=2)|Q(status=3)))).count()
 		if total_work < 5 :
