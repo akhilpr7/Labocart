@@ -24,8 +24,10 @@
                       <div class="row">
                       <!-- <ul class="navbar-nav align-items-center col-md-6"> -->
                             <div class="col-md-6  flex-row ">
+                              {% if not request.user.is_superuser %}
                               <a href="{%url 'laboshop' %}" class="btn bg-transparent text-white"><span class=" align-bottom material-symbols-outlined">shopping_bag</span>Laboshop</a>
                               <!-- <a href="{%url 'dashboard'%}">Laboshop</a> -->
+                              {% endif %}
                             </div>
 
                             <div class="col-md-6 flex-row align-self-md-end">
