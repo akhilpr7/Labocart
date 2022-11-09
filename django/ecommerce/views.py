@@ -684,7 +684,7 @@ class Packages(View):
 		package = PackageModel.objects.all()
 		context = {
 			"package":package,
-
+			 'MEDIA_ROOT':settings.NEW_VAR,
 		}
 		return render(request,template,context)
 
@@ -741,7 +741,7 @@ class UpdatePackage(View):
 class Addpackage(View):
 	template = 'addpackage.html'
 	def get(self, request, *args, **kwargs):
-		form = AddPackageForm
+		form = AddPackageForm()
 		context = { 
 					'form': form,
 					'data': 'Add Package',
