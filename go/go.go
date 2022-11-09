@@ -159,9 +159,11 @@ func copytohire(db *sql.DB){
   if(id != 0){
   created_at := time.Now()
   fmt.Println(created_at)
+  work_date := time.Now()
+  fmt.Println(work_date)
   sqlStatement := `
-  INSERT INTO ecommerce_hiremodel("worker_name","Hire_name","Name","Place","Work_mode","Phone","status","job_title","user_status","worker_status","rating","comment","created_at")  VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) ;`
-  _, err := db.Exec(sqlStatement,worker_name,hirer,name,place,work_type,phone,3,job_title,"false","false","0","",created_at)
+  INSERT INTO ecommerce_hiremodel("worker_name","Hire_name","Name","Place","Work_mode","Phone","status","job_title","user_status","worker_status","rating","created_at","rate","worker_phone","work_date","comment")  VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16);`
+  _, err := db.Exec(sqlStatement,worker_name,hirer,name,place,work_type,phone,3,job_title,"false","false","0",created_at,rate,worker_phone,work_date,"")
   if err != nil {
     fmt.Println("------2")
     panic(err)
