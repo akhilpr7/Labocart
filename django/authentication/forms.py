@@ -9,20 +9,13 @@ class RegisterForm(UserCreationForm):
     phone_no = forms.CharField(max_length = 10 , widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control','minlength':'10','maxlength':'10'}))
 
     username = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Username",'class': 'form-control','minlength':'3'}))
-
     first_name = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Firstname",'class': 'form-control','minlength':'3'}))
-
     # wallet = forms.CharField(max_length = 30 , widget=forms.NumberInput(attrs={"placeholder": "Amount",'class': 'form-control','min':'1'}))
     last_name = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Lastname",'class': 'form-control','minlength':'3','min':'0'}))
-
     email = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Email",'type':'email', 'class': 'form-control'}))
-
     password1 = forms.CharField(max_length=30, widget = forms.PasswordInput(attrs={"placeholder": "Password",'class': 'form-control','minlength':'8'}))
-
     password2 = forms.CharField(max_length=30, widget = forms.PasswordInput(attrs={"placeholder": "Password check",'class': 'form-control','minlength':'8','pattern':'[A-Za-z0-9@._-$]' }))
-
     image = forms.ImageField(widget=forms.FileInput(attrs={ 'class': 'form-control'}))
-
     kyc = forms.ImageField(widget=forms.FileInput(attrs={ 'class': 'form-control'}))
 
     class Meta(UserCreationForm.Meta):
