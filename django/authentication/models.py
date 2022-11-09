@@ -10,7 +10,7 @@ class NewUserModel(AbstractUser):
     wallet  = models.FloatField(default=0.0, blank=False)
     subscribed_at = models.DateField(null=True,blank=True)
     package = models.IntegerField(null=False, default=0)
-    image = models.FileField(upload_to='profile/')
+    image = models.FileField(upload_to='profile/',default="profile/Screenshot_from_2022-08-30_09-59-55.png")
     kyc = models.FileField(upload_to='kyc/',blank=True, null=True)
     kyc_approved  = models.BooleanField(default=False)
     USERNAME_FIELD = 'username'
