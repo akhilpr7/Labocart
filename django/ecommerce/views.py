@@ -545,12 +545,12 @@ class Assignedworks(View):
 class Acceptservice(View):
 	def get(self,request,id, *args, **kwargs):
 		# serviceobj = HireModel.objects.get(id=id)
-		status = HireModel.objects.filter(id=id).values_list("status")[0][0]
+		status = RequestsModel.objects.filter(id=id).values_list("status")[0][0]
 		print(status,"----sbsjdsdsldsldshdshldhsdh-----") 
-		if status == 0:
-			HireModel.objects.filter(id=id).update(status=3)
+		if status == 1:
+			RequestsModel.objects.filter(id=id).update(status=3)
 			return redirect('assigned')
-		elif status ==1:
+		elif status ==2:
 			return redirect('laboshop')
 		else:
 			return redirect('labocategory')
@@ -559,7 +559,7 @@ class Togglestatus(View):
 	def get(self, request,id, *args, **kwargs):
 		status = labourmodels.objects.filter(id=id).values_list("status")[0][0]
 
-		print(status,":::::::::::::::::::::::")
+		# print(status,":::::::::::::::::::::::")
 		if status == 0:
 			total_work = labourmodels.objects.filter(Q(username=request.user.username)&((Q(status=1)|Q(status=2)|Q(status=3)))).count()
 			if total_work <5:
@@ -779,7 +779,7 @@ class membership(View):
 		return render(request,template,context)
 class Workerview(View):
 	def get(self, request, *args, **kwargs):
-		return render(request,'home/dashboard1.html',{})
+		return render(request,'index1.html',{})
 
 class Individual(View):
 	def get(self, request, *args, **kwargs):
