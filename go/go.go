@@ -145,7 +145,6 @@ func copytohire(db *sql.DB){
   var worker_name string
   var worker_phone string
   var id int
-
   // fetchsub(db)
   fetch,err3 := db.Query(`SELECT id,hirer,name,place,work_type,phone,status,job_title,rate,worker_name,worker_phone FROM home_appliedjobs WHERE status= 1 `)
   if(err3 != nil){
