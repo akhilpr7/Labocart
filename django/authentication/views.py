@@ -10,6 +10,7 @@ from .forms import LoginForm,UpdateProfileForm
 from .models import NewUserModel
 from django.conf import settings  
 from django.views.decorators.cache import cache_control
+from apps.home.models import Category
 
 
 
@@ -82,9 +83,15 @@ def logout_view(request):
 
 class Demo(View):
     template = 'home/tables-bootstrap-tables.html'
-
+    
     def get(self, request, *args, **kwargs):
-        return render(request, self.template)
+        data = Category.objects.all()
+        context={
+            'data':data,
+    		'MEDIA_ROOT':settings.NEW_VAR,
+
+        }
+        return render(request, self.template,context)
 
 class ProfileView(View):
     def get(self, request, *args, **kwargs):

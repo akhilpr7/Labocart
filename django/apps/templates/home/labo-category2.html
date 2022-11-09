@@ -12,8 +12,9 @@
         <p class="d-none " id="messagecontent">{{message}}</p>
     {% endfor %}
     {% endif %}
-<body style="background-color:#f5eee7" >
-<div class="grey-bg container-fluid">
+    <body style="background-color:#f5eee7" >
+      <div class="grey-bg container-fluid">
+  <div class="col-md-11 mx-auto">
   <section id="minimal-statistics">
     <div class="row">
       <div class="col-12 mt-3 mb-1">
@@ -22,39 +23,51 @@
       </div>
     </div>
     {% comment %} <div class="row "> {% endcomment %}
+   
+  <div class="row ">
       {%for i in data%}
-      <div class="col-xl-2 col-sm-6 col-12"> 
-        <div class="card">
-          <div class="card-content">
-            <a href ="{% url 'job-posting' i.id %}">
-            <div class="card-body">
-              <div class="media d-flex">
-                <div class="align-self-center">
-                  <!-- <i class="icon-pencil primary font-large-2 float-left"></i> -->
-                  <!-- <img src="data:image/png;base64,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"></img> -->
-                </div>
-                <div class="media-body text-center">
-                  <h3>{{i.category_name}}</h3>
-                  <!-- <span>Explore</span> -->
-                </div>
+      <div class="col-xl-3 col-lg-6">
+        <a href ="{% url 'job-posting' i.id %}">
+          <div class="card l-bg-cherry " style="height: 20rem; background-image: url('{{MEDIA_ROOT}}{{i.image}}');background-position: cover;background-repeat: no-repeat;background-size: cover;">
+              <div class="card-statistic-3 my-auto p-4">
+                  <div class=" bg-gray-600" style="border-radius: 20rem;">
+                      <h2  class="card-title mb-0 text-white text-center p-2 text-capitalize" >{{i.category_name}}</h2>
+                  </div>
+
               </div>
-            </div>
           </div>
-        </div>
-        
-        
+        </a>
       </div>
       {% endfor %}
+
+  </div>
+</div>
+<style>.card {
+  border-radius: 10px;
+  border: none;
+  position: relative;
+  margin-bottom: 30px;
+  box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,0.1), 0 0.9375rem 1.40625rem rgba(90,97,105,0.1), 0 0.25rem 0.53125rem rgba(90,97,105,0.12), 0 0.125rem 0.1875rem rgba(90,97,105,0.1);
+}
+
+.card .card-statistic-3 .card-icon-large .fas, .card .card-statistic-3 .card-icon-large .far, .card .card-statistic-3 .card-icon-large .fab, .card .card-statistic-3 .card-icon-large .fal {
+  font-size: 110px;
+}
+
+.card .card-statistic-3 .card-icon {
+  text-align: center;
+  line-height: 50px;
+  margin-left: 15px;
+  color: #000;
+  position: absolute;
+  right: -5px;
+  top: 20px;
+  opacity: 0.1;
+
+}</style>
     {% comment %} </div> {% endcomment %}
 </div>
 </body>
-
-      
-
-
-
-
-
 
 
 {% endblock content %}

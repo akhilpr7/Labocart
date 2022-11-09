@@ -5,6 +5,7 @@ from django.db import models
 
 class Category(models.Model):
     category_name = models.CharField(max_length=255, null=False)
+    image = models.FileField(upload_to='categoryImages/')
 
 class Transaction(models.Model):
     username = models.CharField(max_length=255, null=False)

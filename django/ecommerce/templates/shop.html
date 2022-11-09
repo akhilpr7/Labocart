@@ -141,8 +141,8 @@
 
 
                             <div class="shadow-lg p-3 mb-5 bg-white rounded-3">
-                                <div class="d-flex justify-content-center" >
-                                    <img src="{{i.Image.url}}" class="img-fluid " style="height: 200px;" alt="image of {{i.Product_name}}">
+                                <div class="d-flex justify-content-center fill" >
+                                    <img src="{{i.Image.url}}" class="img-fluid " style="height: 200px;object-fit: cover;" alt="image of {{i.Product_name}}">
                                 </div>
                                 <div class="card-body ">
                                     <h5 class="card-title">{{i.Product_name}} </h5>
@@ -182,8 +182,8 @@
                         <div class=" col-sm-6 col-md-3 my-3">
 
                             <div class="shadow-lg p-3 mb-5 bg-white rounded-3">
-                                <div class="d-flex justify-content-center" >
-                                    <img src="{{i.Image.url}}" class="img-fluid" style="height: 200px;" alt="image of {{i.Product_name}}">
+                                <div class="d-flex justify-content-center fill" >
+                                    <img src="{{i.Image.url}}" class="img-fluid" style="height: 200px;object-fit: cover;" alt="image of {{i.Product_name}}">
                                 </div>
                                 <div class="card-body ">
                                     <h5 class="card-title">{{i.Product_name}} </h5>
@@ -350,6 +350,19 @@
     <!-- Template Javascript -->
     <script src="../../static/shop/js/main.js"></script>
 </body>
+<style>
+    .fill {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden
+    }
+    .fill img {
+        flex-shrink: 0;
+        min-width: 100%;
+        min-height: 100%
+    }
+</style>
 
 {% endblock content %}
 

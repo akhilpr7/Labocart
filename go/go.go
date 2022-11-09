@@ -40,7 +40,9 @@ func main() {
   // gocron.Every(5).Second().Do(expiry2, db)
 
   gocron.Every(5).Second().Do(copytohire, db)
+  gocron.Every(10).Second().Do(requestToHire, db)
 	<-gocron.Start()
+  
 }
 
 func workStatus(db *sql.DB){
@@ -184,86 +186,91 @@ func copytohire(db *sql.DB){
 
 
 
-// func expiry2(db *sql.DB){
-
-//   fmt.Println("Expiry")
+// func requestToHire(db *sql.DB){
+// 	var hirer string
+// 	var name string
+// 	var place string
+// 	var work_type bool
+// 	var phone int64
+// 	var status int
+// 	var job_title string
+// 	var rate float64
+// 	var worker_name string
+// 	var worker_phone string
+// 	var id int
+// 	var created_at string
   
-//   var id int
-  
-  
-//   var created_at time.Time
-  
-//   validity := 2.0
-  
-//   current_date := time.Now()
-  
-//   fetch_id,_ := db.Query(`SELECT id,created_at FROM ecommerce_hiremodel WHERE status=2 `)
-  
-//   defer fetch_id.Close()
-  
-//   for fetch_id.Next(){
-  
-//   fetch_id.Scan(&id,&created_at)
-  
-//   // current_date := time.Now()
-//   fmt.Println("done",created_at)
-//   diff := current_date.Sub(created_at)
-  
-//   fmt.Print(diff.Hours(),"--sdf---")
-  
-//   difference := diff.Hours()/24
-  
-//   if difference > validity {
-  
-//   sqlStatement := `
-  
-//   UPDATE ecommerce_hiremodel set rating=1 WHERE id = $1;`
-  
-//   _, err1 := db.Exec(sqlStatement,id)
-  
-//   fmt.Println("Deleted......")
-  
-//   if err1 != nil {
-  
-//   panic(err1)
-  
-//   }
-  
-  
-//   }
-  
-  
-//   }
-  
-//   }
-
-
-
-// func expiry(db *sql.DB){
-//   // fmt.Println("Expiry")
-//   var id int
- 
-//   var created_at time.Time
-//   validity := 2.0
-//   // current_date := time.Now()
-//   fetch_id,_ := db.Query(`SELECT id,created_at FROM home_appliedjobs WHERE status=2 `)
-//   defer fetch_id.Close()
-//   for fetch_id.Next(){
-//     fetch_id.Scan(&id,&created_at)
-//     current_date := time.Now()
-//     diff := current_date.Sub(created_at)
-//     // fmt.Print(diff,"-----")
-//     difference := diff.Hours()/24
-//     if difference > validity {
-//       sqlStatement := `
-//       DELETE FROM home_appliedjobs WHERE id = $1;`
-//       _, err1 := db.Exec(sqlStatement,id)
-//       fmt.Println("Deleted......")
-//       if err1 != nil {
-//         panic(err1)
-//       }
-
+// 	// fmt.Println("Requesttttttttttttttttttttttttttttttttttttt")
+// 	fetch,err := db.Query(`SELECT * FROM "ecommerce_requestsmodel" WHERE "status" = 1 `)
+// 	if(err!= nil){
+//     fmt.Println("errorrrrrrrrrrrrrrrrrrrrrrrrr aado")
+// 		panic(err)
+// 	}
+//   defer fetch.Close()
+// 	for fetch.Next() {
+//     fmt.Printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+// 	  fetch.Scan(&id,&hirer,&name,&place,&work_type,&phone,&status,&job_title,&rate,&worker_name,&worker_phone,&created_at)
+// 	}
+//   fmt.Println(id,hirer,name,place,work_type,phone,status,job_title,rate,worker_name,worker_phone,created_at)
+//   if(id != 0){
+//     created_at := time.Now()
+//     fmt.Println(created_at)
+//     sqlStatement := `
+//     INSERT INTO ecommerce_hiremodel("worker_name","Hire_name","Name","Place","Work_mode","Phone","status","job_title","user_status","worker_status","rating","comment","created_at")  VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) ;`
+//     _, err := db.Exec(sqlStatement,worker_name,hirer,name,place,work_type,phone,3,job_title,"false","false","0","",created_at)
+//     if err != nil {
+//       fmt.Println("------2")
+//       panic(err)
 //     }
 
-//   }
 // }
+// }
+
+
+
+func requestToHire(db *sql.DB){
+	var hirer string
+	var name string
+	var place string
+	var work_type bool
+	var phone int64
+	var status int
+	var job_title string
+	var rate float64
+	var worker_name string
+	var worker_phone string
+	var id int
+	var created_at string
+	var work_date string
+
+  fetch,err3 := db.Query(`SELECT id,hirer,name,place,work_type,phone,status,job_title,rate,worker_name,worker_phone,created_at,work_date FROM ecommerce_requestsmodel WHERE status= 1 `)
+  if(err3 != nil){
+    fmt.Println("------1")
+    panic(err3)
+  }
+  defer fetch.Close()
+  for fetch.Next() {
+    fetch.Scan(&id,&hirer,&name,&place,&work_type,&phone,&status,&job_title,&rate,&worker_name,&worker_phone,&created_at,&work_date)
+  }
+  fmt.Println(hirer,name,place,work_type,phone,status,job_title,rate,worker_name,worker_phone,work_date)
+  if(id != 0){
+  created_at := time.Now()
+  fmt.Println(created_at)
+  sqlStatement := `
+  INSERT INTO ecommerce_hiremodel("worker_name","Hire_name","Name","Place","Work_mode","Phone","status","job_title","user_status","worker_status","rating","comment","created_at","rate","work_date","worker_phone")  VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) ;`
+  _, err := db.Exec(sqlStatement,worker_name,hirer,name,place,work_type,phone,3,job_title,"false","false","0","",created_at,rate,work_date,worker_phone)
+  if err != nil {
+    fmt.Println("------2")
+    panic(err)
+  }
+  sqlStatement1 :=`
+  UPDATE ecommerce_requestsmodel
+  SET status = 2
+  WHERE id = $1;`
+  _, err3 := db.Exec(sqlStatement1,id)
+  if err3 != nil {
+    fmt.Println("------3")
+    panic(err)
+  }
+}
+}
