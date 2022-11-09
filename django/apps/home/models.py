@@ -44,4 +44,4 @@ class AppliedJobs(models.Model):
     worker_phone = models.BigIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     copy_status = models.BooleanField(default=False)
-    work_date =  models.DateTimeField(auto_now_add=True)
+    work_date = models.DateTimeField(auto_now_add=True)

@@ -349,8 +349,10 @@ class JobPostingView(View):
 class ManageServices(View):
     def get(self, request, *args, **kwargs):
         details = labourmodels.objects.all().exclude(status=3).order_by('id')
+        history = HireModel.objects.filter(status = 4).values()
         context = {
             'details': details,
+            'history': history,
             'current_path': "Manage Services",
         }
         return render(request, "home/manage_services.html", context)
