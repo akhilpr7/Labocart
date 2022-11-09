@@ -22,10 +22,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="../../../static/shop/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    {% comment %} <link href="../../../static/shop/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet"> {% endcomment %}
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="../../../static/shop/css/style.css" rel="stylesheet">
+    {% comment %} <link href="../../../static/shop/css/style.css" rel="stylesheet"> {% endcomment %}
 </head>
 
 <body style="background-color:#f5eee7" >
@@ -197,8 +197,8 @@
                                
                            {% if i.Product_name in cart %}
                                 <div class="card-footer mb-2 d-flex justify-content-center bg-light ">
-                                    <a href="{% url 'cart'  %}" class="btn btn-primary border rounded-lg "><i
-                                            class="fas fa-shopping-cart text-primary mr-1"></i>Go TO Cart</a>
+                                    <a href="{% url 'cart'  %}" class="btn btn-primary border rounded-lg  "><i
+                                            class="fas fa-shopping-cart mr-1"></i>Go to Cart</a>
                                 </div>
                               
                                 {%else%}
