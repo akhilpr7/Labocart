@@ -106,14 +106,14 @@ class AddtocartView(View):
 @method_decorator(login_required,name='dispatch')
 class IncreaseNo(View):
 	def get(self, request, id, *args, **kwargs):
-		price = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Price')[0][0]
-		quantity = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Quantity')[0][0]
-		total = (quantity + 1 ) * price
-		print("toal product price",quantity)
-		print("toal product price",int(price))
-		print("toal product price",total)
-		CartModel.objects.filter(product_id=id,username= request.user.username).update(Quantity = quantity + 1 ,  Total= total)
-		return redirect('cart')
+			price = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Price')[0][0]
+			quantity = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Quantity')[0][0]
+			total = (quantity + 1 ) * price
+			print("toal product price",quantity)
+			print("toal product price",int(price))
+			print("toal product price",total)
+			CartModel.objects.filter(product_id=id,username= request.user.username).update(Quantity = quantity + 1 ,  Total= total)
+			return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
 
 @method_decorator(login_required,name='dispatch')
 class DecreaseNo(View):
@@ -127,10 +127,12 @@ class DecreaseNo(View):
 
 		if quantity <= 1:
 			messages.error(request,"Error !")
-			return redirect('cart')
+			return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
+
 		else:
 			CartModel.objects.filter(product_id=id,username= request.user.username).update(Quantity = quantity - 1, Total = total )
-			return redirect('cart')
+			return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
+
 		
 
 @method_decorator(login_required,name='dispatch')

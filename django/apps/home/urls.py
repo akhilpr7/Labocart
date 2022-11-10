@@ -22,7 +22,6 @@ urlpatterns = [
     path('completedservices/<int:id>/', views.CompletedService.as_view(), name="completedservices"),
     path('usercompletedservices/<int:id>/', views.UserCompletedService.as_view(), name="usercompletedservices"),
     path('rating/<int:id>', views.RatingView.as_view(),name="rating"),
-    path('ratings/<int:id>/<int:id1>/', views.Ratings.as_view(),name="ratings"),
     path('manageuser/', views.ManageUser.as_view(), name="manageuser"),
     path('updateuser/<int:id>/', views.UpdateUser.as_view(),name="updateuser"),
     path('jobpost',views.JobPostingView.as_view(),name="job-posting"),
