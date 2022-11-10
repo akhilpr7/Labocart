@@ -141,6 +141,14 @@ class ApplyFormView(View):
 
 
 @method_decorator(login_required, name='dispatch')
+class UnCompletedService(View):
+    def get(self, request, *args, id, **kwargs):
+        user = HireModel.objects.get(id=id)
+        user.user_status = 2
+        user.save()
+        return redirect('userservices')
+
+@method_decorator(login_required, name='dispatch')
 class CompletedService(View):
     def get(self, request, *args, id, **kwargs):
         user = HireModel.objects.get(id=id)
@@ -372,9 +380,11 @@ class ManageServices(View):
         }
         return render(request, "home/manage_services.html", context)
 
+@method_decorator(login_required, name='dispatch')
 class HireHistory(View):
     def get(self, request, *args, **kwargs):
-        history = HireModel.objects.filter(Q(status = 4) & Q(Hire_name = request.user)).values()
+        history = HireModel.objects.filter(
+            Q(status = 4) & Q(Hire_name = request.user)).values()
         context = {
             'history': history,
             'current_path': "Hire History",
@@ -526,6 +536,7 @@ class  UpdateEnlistedJobStatus(View):
             job.save()
         return redirect('enlistedjobs')
 
+@method_decorator(login_required, name='dispatch')
 class JobRequestPay(View):
     template = 'home/jobreqpay.html'
     def get(self, request, id, *args, **kwargs):
