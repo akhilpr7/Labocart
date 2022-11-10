@@ -41,6 +41,7 @@ func main() {
   // gocron.Every(5).Second().Do(expiry2, db)
 
   gocron.Every(5).Second().Do(copytohire, db)
+  gocron.Every(5).Second().Do(refund, db)
   gocron.Every(10).Second().Do(requestToHire, db)
 	<-gocron.Start()
   
@@ -331,6 +332,136 @@ func requestdelete(db *sql.DB){
         fmt.Println("------3")
         panic(err4)
       }
+    }
+  }
+}
+
+func refund(db *sql.DB){
+  fmt.Println("refund process ....")
+  
+  fetch,err := db.Query(`SELECT created_at,id,rate FROM ecommerce_hiremodel WHERE user_status = 2 and status = 3`)
+  if(err!= nil){
+    panic(err)
+  }
+  defer fetch.Close()
+  for fetch.Next() {
+    var id int
+    var rate float64
+    var created_at time.Time
+    fetch.Scan(&created_at,&id,&rate)
+    current_date := time.Now()
+    difference := current_date.Sub(created_at)
+    diff := difference.Hours()
+    // fmt.Println("Difference :-------",diff)
+    var worker_name string
+    var hirer_name string
+    var wallet_hirer float64
+    var wallet_worker float64
+    if diff >= 1{
+
+      percenthirer := 0.6
+      // fmt.Println("60/100 = ",percenthirer)
+      percentworker := 0.4
+      // fmt.Println("40/100 = ",percentworker)
+      // fmt.Println(rate,"Rate is")
+      // fmt.Println("refund to worker(40%)")
+      refundworker := rate*percentworker
+      refundhirer := rate*percenthirer 
+      // fmt.Println(refundhirer,"refundhirer")
+      // fmt.Println(refundworker,"refundworker")
+      fetch2 := db.QueryRow(`SELECT "worker_name","Hire_name" FROM ecommerce_hiremodel WHERE id =$1`,id)
+      fetch2.Scan(&worker_name,&hirer_name)
+      // fmt.Println(hirer_name,"hirer is ")
+      // fmt.Println(worker_name,"worker is ")
+      row2 := db.QueryRow(`SELECT wallet FROM authentication_newusermodel WHERE username=$1`,worker_name)
+      row2.Scan(&wallet_worker)
+      sqlStatement1 :=`
+      UPDATE authentication_newusermodel
+      SET wallet = $1
+      WHERE username = $2;`
+      // fmt.Println(wallet_worker+refundworker,"refund to worker  ")
+      _, err3 := db.Exec(sqlStatement1,wallet_worker+refundworker,worker_name)
+      if err3 != nil {
+        fmt.Println("------2")
+        panic(err3)
+      }
+      row1 := db.QueryRow(`SELECT wallet FROM authentication_newusermodel WHERE username=$1`,hirer_name)
+      row1.Scan(&wallet_hirer)
+      
+      sqlStatement2 :=`
+      UPDATE authentication_newusermodel
+      SET wallet = $1
+      WHERE username = $2;`
+      // fmt.Println(wallet_hirer+refundhirer,"refund to hirer   ")
+      _, err4 := db.Exec(sqlStatement2,wallet_hirer+refundhirer,hirer_name)
+      if err4 != nil {
+        fmt.Println("------2")
+        panic(err4)
+      }
+
+      sqlStatement6 :=`
+      UPDATE ecommerce_hiremodel
+      SET status = 4
+      WHERE id = $1;`
+      // fmt.Println(wallet_hirer+refundhirer)
+      _, err6 := db.Exec(sqlStatement6,id)
+      if err6 != nil {
+        fmt.Println("------2")
+        panic(err6)
+      }
+      
+      sqlStatement8 :=`
+      UPDATE ecommerce_hiremodel
+      SET user_status = 0
+      WHERE id = $1;`
+      // fmt.Println(wallet_hirer+refundhirer)
+      _, err8 := db.Exec(sqlStatement8,id)
+      if err8 != nil {
+        fmt.Println("------2")
+        panic(err8)
+      }
+      
+
+    }else{
+      // fmt.Println("refund to worker(0%)")
+      fetch5 := db.QueryRow(`SELECT "Hire_name" FROM ecommerce_hiremodel WHERE "id" = $1`,id)
+      fetch5.Scan(&hirer_name)
+      row5 := db.QueryRow(`SELECT wallet FROM authentication_newusermodel WHERE username=$1`,hirer_name)
+      row5.Scan(&wallet_hirer)
+
+      sqlStatement10 :=`
+      UPDATE authentication_newusermodel
+      SET wallet = $1
+      WHERE username = $2;`
+      // fmt.Println(wallet_hirer+rate,"refundhirer")
+      _, err5 := db.Exec(sqlStatement10,wallet_hirer+rate,hirer_name)
+      if err5 != nil {
+        fmt.Println("------2")
+        panic(err5)
+      }
+      sqlStatement7 :=`
+      UPDATE ecommerce_hiremodel
+      SET status = 4
+      WHERE id = $1;`
+      // fmt.Println(wallet_hirer+refundhirer)
+      _, err7 := db.Exec(sqlStatement7,id)
+      if err7 != nil {
+        fmt.Println("------2")
+        panic(err7)
+      }
+
+      sqlStatement9 :=`
+      UPDATE ecommerce_hiremodel
+      SET user_status = 0
+      WHERE id = $1;`
+      // fmt.Println(wallet_hirer+refundhirer)
+      _, err9 := db.Exec(sqlStatement9,id)
+      if err9 != nil {
+        fmt.Println("------2")
+        panic(err9)
+      }
+      
+
     }
 
   }
