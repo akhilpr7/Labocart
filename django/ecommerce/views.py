@@ -522,7 +522,7 @@ class Userpayments(View):
 		if wallet_balance >= rate:
 			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)
 			LabopaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
-			RequestsModel.objects.filter(id=id).update(status=1)
+			RequestsModel.objects.filter(id=id).update(status=3)
 			messages.success(request,'Payment Successful')
 			return redirect('laboshop')
 		else:
@@ -539,7 +539,7 @@ class CancelRequest(View):
 class Assignedworks(View):
 	template_name = 'assigned_works.html'
 	def get(self, request, *args, **kwargs):
-		services = RequestsModel.objects.filter(worker_name = request.user.username ).exclude(status=2)
+		services = RequestsModel.objects.filter(worker_name = request.user.username,status=3)
 		context = {
 			"data": services,
 			'current_path':"Assigned Services"
@@ -549,15 +549,15 @@ class Assignedworks(View):
 class Acceptservice(View):
 	def get(self,request,id, *args, **kwargs):
 		# serviceobj = HireModel.objects.get(id=id)
-		status = RequestsModel.objects.filter(id=id).values_list("status")[0][0]
-		print(status,"----sbsjdsdsldsldshdshldhsdh-----") 
-		if status == 1:
-			RequestsModel.objects.filter(id=id).update(status=3)
+		# status = RequestsModel.objects.filter(id=id).values_list("status")[0][0]
+		# print(status,"----sbsjdsdsldsldshdshldhsdh-----") 
+		# if status == 3:
+			RequestsModel.objects.filter(id=id).update(status=1)
 			return redirect('assigned')
-		elif status ==2:
-			return redirect('laboshop')
-		else:
-			return redirect('labocategory')
+		# elif status ==2:
+		# 	return redirect('laboshop')
+		# else:
+		# 	return redirect('labocategory')
 @method_decorator(login_required,name='dispatch')	
 class Togglestatus(View):
 	def get(self, request,id, *args, **kwargs):
