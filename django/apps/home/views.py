@@ -203,6 +203,7 @@ class RatingView(View):
         data.rating = star
         data.comment = request.POST['comment']
         data.worker_status = True
+        data.user_status = 1
         print(data)
         data.save()
         return redirect('userservices')
