@@ -237,6 +237,21 @@ class AddCategoryView(View):
 @method_decorator(login_required, name='dispatch')
 class DeleteCategoryView(View):
     def get(self, request, id):
+
+        category_name = Category.objects.filter(id=id).values_list("category_name")[0][0]
+        print(category_name)
+        job_name = jobmodel.objects.filter(category=category_name).values_list("job_title")
+        print(job_name,"jooooooooooooooooooob")
+        jobs = jobmodel.objects.filter(category=category_name)
+        jobs.delete()
+        for i in job_name:
+            print(i[0],"1111111")
+            labours = labourmodels.objects.filter(job_title=i[0])
+            labours.delete()
+            print("Deleted.......................")
+            print(labours,"user")
+        print(jobs)
+
         category = Category.objects.get(id=id)
         category.delete()
         messages.success(request, "Category Deleted")
