@@ -159,7 +159,7 @@ class CompletedService(View):
         else:
             user.worker_status = True
             user.save()
-        return redirect('userservices')
+        return redirect('workerservices')
 
 
 @method_decorator(login_required, name='dispatch')
@@ -173,7 +173,7 @@ class UserCompletedService(View):
         else:
             data.user_status = 1
             data.save()
-        return redirect('workerservices')
+        return redirect('userservices')
 
 
 @method_decorator(login_required, name='dispatch')
