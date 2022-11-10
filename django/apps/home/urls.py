@@ -28,6 +28,7 @@ urlpatterns = [
     path('jobpost',views.JobPostingView.as_view(),name="job-posting"),
     path('applyform/<int:id>/',views.ApplyFormView.as_view(),name="applyform"),
     path('manageservices/', views.ManageServices.as_view(), name="manageservices"),
+    path('hirehistory/', views.HireHistory.as_view(), name="hirehistory"),
     path('updateservices/<int:id>/', views.UpdateServices.as_view(),name="updateservices"),
     path('jobpost/<str:id>',views.JobPostingView.as_view(),name="job-posting"),
 	path("labocategory2/",views.Labocategories2.as_view(), name="labocategory2"),

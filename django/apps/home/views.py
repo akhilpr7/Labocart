@@ -372,6 +372,16 @@ class ManageServices(View):
         }
         return render(request, "home/manage_services.html", context)
 
+class HireHistory(View):
+    def get(self, request, *args, **kwargs):
+        history = HireModel.objects.filter(Q(status = 4) & Q(Hire_name = request.user)).values()
+        context = {
+            'history': history,
+            'current_path': "Hire History",
+        }
+        return render(request, "home/hirehistory.html", context)
+
+
 @method_decorator(login_required, name='dispatch')
 class UpdateServices(View):
     def get(self, request, id, *args, **kwargs):
