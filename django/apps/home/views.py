@@ -87,8 +87,6 @@ class Userservices(View):
         return render(request, "home/user-services.html", context)
 
 @method_decorator(login_required, name='dispatch')
-
-@method_decorator(login_required, name='dispatch')
 class Workerservices(View):
     def get(self, request, *args, **kwargs):
         work = HireModel.objects.filter(
