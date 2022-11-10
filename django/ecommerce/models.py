@@ -40,7 +40,7 @@ class HireModel(models.Model):
     Phone = models.BigIntegerField()
     status = models.IntegerField(default=0, blank=False)
     job_title = models.CharField(max_length=20, blank=False,default='none')
-    user_status = models.BooleanField(default=False)
+    user_status = models.IntegerField(default=0)
     worker_status = models.BooleanField(default=False)
     rating = models.IntegerField(default=0, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
