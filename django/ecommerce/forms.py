@@ -15,7 +15,7 @@ class AddStockForm( forms.ModelForm ):
   Product_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
   Price = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
   Quantity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2' ,'min':'1'}))
-  Image = forms.ImageField()
+  Image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control border ps-2' ,'min':'1'}))
   class Meta:
     model = ProductsModel
     fields = ('Product_name','Price','Quantity','Image',)
@@ -55,7 +55,7 @@ class UpdateStockForm( forms.ModelForm ):
   Product_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
   Price = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
   Quantity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
-  Image = forms.ImageField()
+  Image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control border ps-2' ,'min':'1'}))
   class Meta():
     model = ProductsModel
     fields = '__all__'
@@ -113,13 +113,6 @@ class HireNowForm( forms.Form ):
   Place = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
   Phone = forms.CharField(max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Phone"}))
   Work_mode = forms.ChoiceField(choices = CHOICES,widget=forms.Select(attrs={'class':'form-select'}))  # worker_name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"worker name ", 'readonly':'readonly'}))
-  # Hire_name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Hire name", 'readonly':'readonly'}))
-  # job_title = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Job title", 'readonly':'readonly'}))
-  
-
-  # class Meta:
-  #   model = HireModel
-  #   fields = ('Name','Place','Phone','Work_mode', 'Hire_name','worker_name','job_title')
 
 class CheckoutForm(forms.Form):
   Quantity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ','style':'width:50px;','min':'1'}))
@@ -134,7 +127,7 @@ class UpdatePackageForm( forms.ModelForm ):
   package_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
   validity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
   cost = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
-  image = forms.ImageField()
+  image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control border ps-2' ,'min':'1'}))
   class Meta():
     model = PackageModel
     fields = '__all__'
@@ -146,7 +139,7 @@ class AddPackageForm( forms.ModelForm ):
   package_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
   validity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
   cost = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
-  image = forms.ImageField()
+  image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control border ps-2' ,'min':'1'}))
   
   class Meta:
     model = PackageModel
