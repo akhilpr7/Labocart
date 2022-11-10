@@ -87,8 +87,6 @@ class Userservices(View):
         return render(request, "home/user-services.html", context)
 
 @method_decorator(login_required, name='dispatch')
-
-@method_decorator(login_required, name='dispatch')
 class Workerservices(View):
     def get(self, request, *args, **kwargs):
         work = HireModel.objects.filter(
@@ -203,6 +201,7 @@ class RatingView(View):
         data.rating = star
         data.comment = request.POST['comment']
         data.worker_status = True
+        data.user_status = 1
         print(data)
         data.save()
         return redirect('userservices')
