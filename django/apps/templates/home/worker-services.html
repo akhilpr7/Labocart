@@ -66,20 +66,24 @@
               <td>{{data.job_title}}</td>
               <td>
                 {% if data.status == 4 %}
-                <a href="{% url 'usercompletedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
-                {% elif data.user_status %}
-                <a href="{% url 'usercompletedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
+                <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
+                {% elif data.worker_status%}
+                <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
+                {% elif data.user_status == 2 %}
+                <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-danger">close</span></a>
                 {% else %}
-                <a href="{% url 'usercompletedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-black">done</span></a>
+                <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-black">done</span></a>
                 {% endif %}
               </td>
               <td>
                 {% if data.status == 4 %}
-                <button disabled href="{% url 'completedservices' data.id %}" class=" btn border rounded-lg"><span class="material-symbols-outlined text-success">done</span></button>
-                {% elif data.worker_status %}
-                <button disabled href="{% url 'completedservices' data.id %}" class=" btn border rounded-lg"><span class="material-symbols-outlined text-success">done</span></button>
-                {% else %}
-                <button disabled href="{% url 'completedservices' data.id %}"  class=" btn border rounded-lg"><span class="material-symbols-outlined text-black">done</span></button>
+                <button disabled href="{% url 'usercompletedservices' data.id %}" class=" btn border rounded-lg"><span class="material-symbols-outlined text-success">done</span></button>
+                {% elif data.user_status == 1 %}
+                <button disabled href="{% url 'usercompletedservices' data.id %}" class=" btn border rounded-lg"><span class="material-symbols-outlined text-success">done</span></button>
+                {% elif data.user_status == 2 %}
+                <button disabled href="{% url 'usercompletedservices' data.id %}"  class=" btn border rounded-lg"><span class="material-symbols-outlined text-danger">close</span></button>
+                {% elif data.user_status == 0 %}
+                <button disabled href="{% url 'usercompletedservices' data.id %}"  class=" btn border rounded-lg"><span class="material-symbols-outlined text-black">done</span></button>
                 {% endif %}
               </td>
             </tr>
