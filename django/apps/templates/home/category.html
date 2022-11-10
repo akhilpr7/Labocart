@@ -1,33 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-{%extends 'index.html'%}
+
+{%extends 'layouts/base.html'%}
+
+{% block title %} Categories {% endblock %} 
+
+
 {% block content%}
-<head>
-    <meta charset="utf-8">
-    <title>EShopper - Bootstrap Shop Template</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
-
-    <!-- Favicon -->
-    <link href="../../../static/img/favicon.ico" rel="icon">
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="../../../static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="../../../static/css/style.css" rel="stylesheet">
-</head>
-
-<body style="background-color:#f5eee7" >
-    <a class="btn bg-gray-800 text-white rounded-2 my-1 me-1 float-end"  href="{% url 'add_category' %}" > Add Category </a>
+  <section class="container-fluid pb-5">
+  
+  <a class="btn bg-gray-800 text-white rounded-2 my-1 me-1 float-end"  href="{% url 'add_category' %}" > Add Category </a>
   {% if messages %}
     {% for message in messages %}
         <p class="d-none" id="messagetag">{{message.tags}}</p>
@@ -72,7 +52,7 @@
                 </thead>
                 {% for table in tables %}
                 <tbody>
-                  <tr>
+                  <tr class="table-rows">
                     <td><p>{{table.category_name}}</p></td>
                     <td><img src="{{table.image.url}}" style ="width:200px;height:200px;object-fit: cover;"></td>
                     <td>
@@ -100,7 +80,7 @@
                 </thead>
                 {% for i in data %}
                 <tbody>
-                  <tr>
+                  <tr class="table-rows">
                     <td>{{i.job_title}}</td>
                     <td>{{i.category}}</td>
                     <td>
@@ -111,7 +91,7 @@
                 </tbody>
                 {% endfor %}  
             </table>
-            </div>
+          </section >
            
        
 
@@ -119,11 +99,10 @@
     <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-  
-</body>
+    <style>
+      .table-rows td {
+        vertical-align: middle;
+      }
+    </style>
 
 {% endblock content %}
-</html>

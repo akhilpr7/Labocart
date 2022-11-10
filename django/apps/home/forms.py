@@ -35,7 +35,7 @@ class CategoryForm(forms.Form):
 
 class AddJobForm(forms.Form):
     job_name = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Job Name"}))
-    category = forms.ModelChoiceField(queryset=Category.objects.all().values_list("category_name",flat=True))
+    category = forms.ModelChoiceField(queryset=Category.objects.all().values_list("category_name",flat=True),widget=forms.Select(attrs={'class':'form-select'}))
 
 
 class JobPostingForm( forms.Form ):

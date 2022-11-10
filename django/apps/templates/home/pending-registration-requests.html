@@ -1,9 +1,9 @@
-{% extends "layouts/base.html" %} {% block title %} Pending KYC approval {% endblock %}
+{% extends "layouts/base.html" %} 
 
-<!-- Specific Page CSS goes HERE  -->
+{% block title %} Pending KYC approval {% endblock %}
+
 {% block stylesheets %}{% endblock stylesheets %} {% block content %}
 
-<body style="background-color: #f5eee7">
     {% if messages %}
     {% for message in messages %}
         <p class="d-none" id="messagetag">{{message.tags}}</p>
@@ -58,7 +58,6 @@
             </div>
 
     </div>
-</body>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 <script>
 
