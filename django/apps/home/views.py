@@ -168,10 +168,10 @@ class UserCompletedService(View):
         data = HireModel.objects.get(id=id)
         if data.status == 4:
             data.save()
-        elif data.user_status:
+        elif data.user_status == 1:
             data.save()
         else:
-            data.user_status = True
+            data.user_status = 1
             data.save()
         return redirect('workerservices')
 
@@ -563,3 +563,8 @@ class confirmpaymentjob(View):
         else:
             messages.error(request,"Not enough balance !!!")
             return redirect('confirmpaymentjob',id)
+
+class Emptycart(View):
+    def get(self ,request, *arg, **kwargs):
+        return render(request, "home/emptycart.html",{})
+

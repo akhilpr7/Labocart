@@ -64,17 +64,19 @@ class Shop(View):
 class CartView(View):
 	template = 'cart.html'
 	
-
 	def get(self, request, *args, **kwargs):
 		products = list(CartModel.objects.filter(username=request.user.username).values())
-		totalPrice = CartModel.objects.filter(username = request.user.username).aggregate(Sum('Total'))
-		context = {
-		"products":products,
-		'form':CheckoutForm(),
-		'current_path':"Cart" ,
-		'totalPrice': totalPrice["Total__sum"],
-		}	
-		return render(request, self.template, context)
+		if not products:
+			return redirect('emptycart')
+		else:
+			totalPrice = CartModel.objects.filter(username = request.user.username).aggregate(Sum('Total'))
+			context = {
+			"products":products,
+			'form':CheckoutForm(),
+			'current_path':"Cart" ,
+			'totalPrice': totalPrice["Total__sum"],
+			}	
+			return render(request, self.template, context)
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
 			return redirect('checkout')

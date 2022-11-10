@@ -41,6 +41,7 @@ urlpatterns = [
     path('enlistedjobstatus/<int:id>/', views.UpdateEnlistedJobStatus.as_view(),name="enlistedjobstatus"),
     path('jobrequestpay/<int:id>',views.JobRequestPay.as_view(),name='jobrequestpay'),
     path('confirmpaymentjob/<int:id>',views.confirmpaymentjob.as_view(),name='confirmpaymentjob'),
+    path ('emptycart/',views.Emptycart.as_view(),name='emptycart'),
 
 
 ]
