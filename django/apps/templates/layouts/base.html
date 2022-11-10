@@ -47,6 +47,8 @@
 <meta property="twitter:title" content="Volt - Free Bootstrap 5 Dashboard">
 <meta property="twitter:description" content="Volt Pro is a Premium Bootstrap 5 Admin Dashboard featuring over 800 components, 10+ plugins and 20 example pages using Vanilla JS.">
 <meta property="twitter:image" content="https://themesberg.s3.us-east-2.amazonaws.com/public/products/volt-pro-bootstrap-5-dashboard/volt-pro-preview.jpg">
+<link href="../../../static/img/favicon.ico" rel="icon">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
 <!-- Favicon -->
 <link rel="apple-touch-icon" sizes="120x120" href="/static/assets/img/favicon/apple-touch-icon.png">
@@ -56,8 +58,10 @@
 <link rel="mask-icon" href="/static/assets/img/favicon/safari-pinned-tab.svg" color="#ffffff">
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="theme-color" content="#ffffff">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
 <link type="text/css" href="/static/assets/vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+<link href="../../../static/css/style.css" rel="stylesheet">
 
 <link type="text/css" href="/static/assets/vendor/notyf/notyf.min.css" rel="stylesheet">
 <link type="text/css" href="/static/assets/css/volt.css" rel="stylesheet">
@@ -67,7 +71,7 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 </head>
-<body>
+<body style="background-color:#f5eee7"  >
 
     {% include 'includes/sidebar.html' %}
     
@@ -76,16 +80,6 @@
       {% include 'includes/navigation.html' %}
 
 
-      {% comment %} <div id="overlayer" ></div>
-      <div class="d-flex justify-content-center align-content-center">
-
-        <div class="preloader ">
-          <div class="loader">
-       <span class="loader-inner"></span>
-      </div>
-      <p > Loading...</p>
-        </div>
-    </div> {% endcomment %}
       {% block content %}{% endblock content %} 
 
 

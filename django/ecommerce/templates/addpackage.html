@@ -1,4 +1,8 @@
-{% extends 'index.html' %}
+{% extends 'layouts/base.html' %}
+
+{% block title %} Add Package {% endblock %} 
+
+
 {% load widget_tweaks %}
 
 {% block content %}
@@ -9,11 +13,12 @@
         <p class="d-none " id="messagecontent">{{message}}</p>
     {% endfor %}
     {% endif %}
-    <body style="background-color:#f5eee7" >
   <!-- End Navbar -->
   <div class="container-fluid py-4">
   <div class="admin-add-main ">
-    <form class='admin-add-user shadow-sm px-5 pt-4' method="POST" enctype="multipart/form-data">
+    <form class='admin-add-user bg-white rounded shadow-sm px-5 pt-4' method="POST" enctype="multipart/form-data">
+        <h3 class="font-weight-bolder">Add Package</h3><br>
+
         {% csrf_token %}
         {% for field in form %}
           <p class="m-1">
@@ -40,7 +45,6 @@
     </div>
     {% endif %}
   </div>
-</body>
 <style>
     .admin-add-main{
         position: relative;

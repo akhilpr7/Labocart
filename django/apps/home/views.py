@@ -203,6 +203,7 @@ class RatingView(View):
         data.rating = star
         data.comment = request.POST['comment']
         data.worker_status = True
+        print(data)
         data.save()
         return redirect('userservices')
 
@@ -274,7 +275,7 @@ class Addjobsview(View):
         form = AddJobForm()
         context = {
             "form": form,
-            'current_path': "Apply Services"
+            'current_path': "Add Jobs"
         }
         # if not request.user.is_superuser:
         return render(request, self.template, context)
@@ -439,6 +440,7 @@ class ServiceRequests(View):
         details = labourmodels.objects.filter(status=2).order_by('id')
         context = {
             'details': details,
+            'current_path':'Service Requests'
         }
         return render(request, "home/service_requests.html", context)
 

@@ -687,6 +687,7 @@ class Packages(View):
 		context = {
 			"package":package,
 			 'MEDIA_ROOT':settings.NEW_VAR,
+			 'current_path':'Packages List'
 		}
 		return render(request,template,context)
 
