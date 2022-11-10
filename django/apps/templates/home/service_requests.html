@@ -6,7 +6,6 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-<body style="background-color:#f5eee7" >
  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
       <div class="d-block mb-4 mb-md-0">
           <h2 class="h4">Service Requests</h2>
@@ -31,7 +30,7 @@
           </thead>
           <tbody>
             {% for data in details %}
-              <tr>
+              <tr class="table-rows">
                 <td><span>{{data.id}}</span></td>
                 <td><span>{{data.username}}</span></td>
                 <td><span>{{data.job_title}}</span></td>
@@ -44,7 +43,7 @@
                   {% endif %}
                 </span></td>
                 <td><span>{{data.phone}}</span></td>
-                <td><span><img src="{{data.job_certificate.url}}" class="zoomD"></img></span></td>
+                <td><span><img src="{{data.job_certificate.url}}" height="200px" width="300px" class="zoomD rounded border"></img></span></td>
                 <td><span>
                   <a href="{% url 'acceptservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
                   <a href="{% url 'rejectservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-danger">close</span></a>
@@ -56,7 +55,6 @@
       </table>
   </div> 
 
-</body>
 
 
 <style>
@@ -95,6 +93,11 @@
   height: 100vh;
   object-fit: cover;
 }
+
+.table-rows td {
+  vertical-align:middle;
+}
+
 </style>
 <script>
   window.onload = () => {
@@ -119,8 +122,3 @@
   </script>
 {% endblock content %}
 
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}
-
-
-{% endblock javascripts %}

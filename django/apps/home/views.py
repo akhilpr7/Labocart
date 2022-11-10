@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from ecommerce.models import HireModel, PurchaseModel,RequestsModel
-from .forms import AddJobForm, CategoryForm, JobPostingForm, AddFundForm, ApplyForm
+from .forms import AddJobForm, CategoryForm, JobPostingForm, AddFundForm, ApplyForm,CommentForm
 from .models import Category, JobPostingModel, AppliedJobs,Category
 from django.contrib import messages
 from django.urls import reverse
@@ -168,10 +168,10 @@ class UserCompletedService(View):
         data = HireModel.objects.get(id=id)
         if data.status == 4:
             data.save()
-        elif data.user_status:
+        elif data.user_status == 1:
             data.save()
         else:
-            data.user_status = True
+            data.user_status = 1
             data.save()
         return redirect('workerservices')
 
@@ -189,19 +189,21 @@ class ServiceView(View):
 class RatingView(View):
     def get(self, request, *args, id, **kwargs):
         details = HireModel.objects.get(id=id)
+        form =CommentForm()
         context = {
             'details': details,
             'id': id,
+            'form': form,
         }
-        return render(request, "home/rating.html", context)
-
-@method_decorator(login_required, name='dispatch')
-class Ratings(View):
-    def get(self, request, *args, id, id1, **kwargs):
-        star = id
-        data = HireModel.objects.get(id=id1)
+        return render(request, "home/comment.html", context)
+    def post(self, request, *args,  **kwargs):
+        print(request.POST)
+        star = request.POST['rating']
+        data = HireModel.objects.get(id=request.POST['id'])
         data.rating = star
+        data.comment = request.POST['comment']
         data.worker_status = True
+        print(data)
         data.save()
         return redirect('userservices')
 
@@ -273,7 +275,7 @@ class Addjobsview(View):
         form = AddJobForm()
         context = {
             "form": form,
-            'current_path': "Apply Services"
+            'current_path': "Add Jobs"
         }
         # if not request.user.is_superuser:
         return render(request, self.template, context)
@@ -438,6 +440,7 @@ class ServiceRequests(View):
         details = labourmodels.objects.filter(status=2).order_by('id')
         context = {
             'details': details,
+            'current_path':'Service Requests'
         }
         return render(request, "home/service_requests.html", context)
 
@@ -560,3 +563,8 @@ class confirmpaymentjob(View):
         else:
             messages.error(request,"Not enough balance !!!")
             return redirect('confirmpaymentjob',id)
+
+class Emptycart(View):
+    def get(self ,request, *arg, **kwargs):
+        return render(request, "home/emptycart.html",{})
+
