@@ -524,3 +524,8 @@ class confirmpaymentjob(View):
         else:
             messages.error(request,"Not enough balance !!!")
             return redirect('confirmpaymentjob',id)
+
+class Emptycart(View):
+    def get(self ,request, *arg, **kwargs):
+        return render(request, "home/emptycart.html",{})
+

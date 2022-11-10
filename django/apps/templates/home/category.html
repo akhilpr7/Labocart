@@ -49,11 +49,11 @@
           <div class="modal-body">
             This will delete all the jobs depending on it and user applied jobs.
             
-            <p style="margin-top:50px; color:red;">Are you sure</p>
+            <p style="margin-top:50px; color:red;">Are you sure?</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <a href="{% url 'delete_category' j.id%}"><button type="button" class="btn btn-primary" >Delete</button></a>
+            <button type="button" class="btn btn-gray" data-dismiss="modal">Cancel</button>
+            <a href="{% url 'delete_category' j.id%}"><button type="button" class="btn text-danger" >Delete</button></a>
           </div>
         </div>
       </div>
