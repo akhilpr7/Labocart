@@ -49,11 +49,11 @@ func main() {
 func workStatus(db *sql.DB){
   var id int
   // fetchsub(db)
-  fetch_id := db.QueryRow(`SELECT id FROM ecommerce_hiremodel WHERE user_status=true AND worker_status=true `)
+  fetch_id := db.QueryRow(`SELECT id FROM ecommerce_hiremodel WHERE user_status=1 AND worker_status=true `)
   fetch_id.Scan(&id)
   sqlStatement := `
   UPDATE ecommerce_hiremodel
-  SET status=4, worker_status=false, user_status=false 
+  SET status=4, worker_status=false, user_status=0 
   WHERE id = $1;`
   _, err := db.Exec(sqlStatement, id)
   if err != nil {
@@ -166,7 +166,7 @@ func copytohire(db *sql.DB){
   fmt.Println(work_date)
   sqlStatement := `
   INSERT INTO ecommerce_hiremodel("worker_name","Hire_name","Name","Place","Work_mode","Phone","status","job_title","user_status","worker_status","rating","created_at","rate","worker_phone","work_date","comment")  VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16);`
-  _, err := db.Exec(sqlStatement,worker_name,hirer,name,place,work_type,phone,3,job_title,"false","false","0",created_at,rate,worker_phone,work_date,"")
+  _, err := db.Exec(sqlStatement,worker_name,hirer,name,place,work_type,phone,3,job_title,"0","false","0",created_at,rate,worker_phone,work_date,"")
   if err != nil {
     fmt.Println("------2")
     panic(err)
@@ -259,7 +259,7 @@ func requestToHire(db *sql.DB){
   fmt.Println(created_at)
   sqlStatement := `
   INSERT INTO ecommerce_hiremodel("worker_name","Hire_name","Name","Place","Work_mode","Phone","status","job_title","user_status","worker_status","rating","comment","created_at","rate","work_date","worker_phone")  VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) ;`
-  _, err := db.Exec(sqlStatement,worker_name,hirer,name,place,work_type,phone,3,job_title,"false","false","0","",created_at,rate,work_date,worker_phone)
+  _, err := db.Exec(sqlStatement,worker_name,hirer,name,place,work_type,phone,3,job_title,"0","false","0","",created_at,rate,work_date,worker_phone)
   if err != nil {
     fmt.Println("------2")
     panic(err)
