@@ -141,6 +141,14 @@ class ApplyFormView(View):
 
 
 @method_decorator(login_required, name='dispatch')
+class UnCompletedService(View):
+    def get(self, request, *args, id, **kwargs):
+        user = HireModel.objects.get(id=id)
+        user.user_status = 2
+        user.save()
+        return redirect('userservices')
+
+@method_decorator(login_required, name='dispatch')
 class CompletedService(View):
     def get(self, request, *args, id, **kwargs):
         user = HireModel.objects.get(id=id)
@@ -238,6 +246,21 @@ class AddCategoryView(View):
 @method_decorator(login_required, name='dispatch')
 class DeleteCategoryView(View):
     def get(self, request, id):
+
+        category_name = Category.objects.filter(id=id).values_list("category_name")[0][0]
+        print(category_name)
+        job_name = jobmodel.objects.filter(category=category_name).values_list("job_title")
+        print(job_name,"jooooooooooooooooooob")
+        jobs = jobmodel.objects.filter(category=category_name)
+        jobs.delete()
+        for i in job_name:
+            print(i[0],"1111111")
+            labours = labourmodels.objects.filter(job_title=i[0])
+            labours.delete()
+            print("Deleted.......................")
+            print(labours,"user")
+        print(jobs)
+
         category = Category.objects.get(id=id)
         category.delete()
         messages.success(request, "Category Deleted")
@@ -350,11 +373,25 @@ class JobPostingView(View):
 class ManageServices(View):
     def get(self, request, *args, **kwargs):
         details = labourmodels.objects.all().exclude(status=3).order_by('id')
+        history = HireModel.objects.filter(status = 4).values()
         context = {
             'details': details,
+            'history': history,
             'current_path': "Manage Services",
         }
         return render(request, "home/manage_services.html", context)
+
+@method_decorator(login_required, name='dispatch')
+class HireHistory(View):
+    def get(self, request, *args, **kwargs):
+        history = HireModel.objects.filter(
+            Q(status = 4) & Q(Hire_name = request.user)).values()
+        context = {
+            'history': history,
+            'current_path': "Hire History",
+        }
+        return render(request, "home/hirehistory.html", context)
+
 
 @method_decorator(login_required, name='dispatch')
 class UpdateServices(View):
@@ -500,6 +537,7 @@ class  UpdateEnlistedJobStatus(View):
             job.save()
         return redirect('enlistedjobs')
 
+@method_decorator(login_required, name='dispatch')
 class JobRequestPay(View):
     template = 'home/jobreqpay.html'
     def get(self, request, id, *args, **kwargs):

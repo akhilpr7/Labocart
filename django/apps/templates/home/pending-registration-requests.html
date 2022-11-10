@@ -44,9 +44,8 @@
                     <td class="align-middle">{{data.phone_no}}</td>
                     <td class="align-middle"><img  class="rounded" style="width:200px ; height:100px;" src="{{media_url}}{{data.image}}" alt="{{data.username}}'s Image"></td>
                     <td class="align-middle"><img id="myImg{{data.id}}" data="{{data.id}}" class="rounded" style="width:200px ; height:100px;" src="{{media_url}}{{data.kyc}}" alt="{{data.username}}'s Aadhar"></td>
-                    <td class="align-middle"><a href="{% url 'approveuser' data.id %}"
-                        
-                       class="btn btn-success">APPROVE</a></td>
+                    <td class="align-middle"><a href="{% url 'approveuser' data.id %}" class=" btn border rounded-2 text-success">Approve</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

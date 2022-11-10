@@ -69,6 +69,8 @@
                 <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
                 {% else %}
                 <a href="{% url 'rating' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-black">done</span></a>
+              
+                <a onclick="return confirm('Are you sure ')" href="{% url 'uncompletedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-danger">close</span></a>
                 {% endif %}
               </td>
             </tr>
