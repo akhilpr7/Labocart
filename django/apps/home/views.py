@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from ecommerce.models import HireModel, PurchaseModel,RequestsModel
-from .forms import AddJobForm, CategoryForm, JobPostingForm, AddFundForm, ApplyForm
+from .forms import AddJobForm, CategoryForm, JobPostingForm, AddFundForm, ApplyForm,CommentForm
 from .models import Category, JobPostingModel, AppliedJobs,Category
 from django.contrib import messages
 from django.urls import reverse
@@ -189,18 +189,19 @@ class ServiceView(View):
 class RatingView(View):
     def get(self, request, *args, id, **kwargs):
         details = HireModel.objects.get(id=id)
+        form =CommentForm()
         context = {
             'details': details,
             'id': id,
+            'form': form,
         }
-        return render(request, "home/rating.html", context)
-
-@method_decorator(login_required, name='dispatch')
-class Ratings(View):
-    def get(self, request, *args, id, id1, **kwargs):
-        star = id
-        data = HireModel.objects.get(id=id1)
+        return render(request, "home/comment.html", context)
+    def post(self, request, *args,  **kwargs):
+        print(request.POST)
+        star = request.POST['rating']
+        data = HireModel.objects.get(id=request.POST['id'])
         data.rating = star
+        data.comment = request.POST['comment']
         data.worker_status = True
         data.save()
         return redirect('userservices')
