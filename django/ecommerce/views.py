@@ -504,6 +504,7 @@ class HireNowView(View):
 					phone=phone,
 					status=0,
 					job_title=job_title,
+					rate=rate,
 					worker_name=worker_name,
 					worker_phone=worker_phone,
 					created_at=datetime.datetime.now().date())

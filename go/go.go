@@ -339,7 +339,7 @@ func requestdelete(db *sql.DB){
 func refund(db *sql.DB){
   fmt.Println("refund process ....")
   
-  fetch,err := db.Query(`SELECT created_at,id,rate FROM ecommerce_hiremodel WHERE user_status = 2 and status = 3`)
+  fetch,err := db.Query(`SELECT work_date,id,rate FROM ecommerce_hiremodel WHERE user_status = 2 and status = 3`)
   if(err!= nil){
     panic(err)
   }
