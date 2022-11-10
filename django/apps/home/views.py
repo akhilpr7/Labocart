@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from ecommerce.models import HireModel, PurchaseModel,RequestsModel
-from .forms import AddJobForm, CategoryForm, JobPostingForm, AddFundForm, ApplyForm
+from .forms import AddJobForm, CategoryForm, JobPostingForm, AddFundForm, ApplyForm,CommentForm
 from .models import Category, JobPostingModel, AppliedJobs,Category
 from django.contrib import messages
 from django.urls import reverse
@@ -141,6 +141,14 @@ class ApplyFormView(View):
 
 
 @method_decorator(login_required, name='dispatch')
+class UnCompletedService(View):
+    def get(self, request, *args, id, **kwargs):
+        user = HireModel.objects.get(id=id)
+        user.user_status = 2
+        user.save()
+        return redirect('userservices')
+
+@method_decorator(login_required, name='dispatch')
 class CompletedService(View):
     def get(self, request, *args, id, **kwargs):
         user = HireModel.objects.get(id=id)
@@ -181,18 +189,19 @@ class ServiceView(View):
 class RatingView(View):
     def get(self, request, *args, id, **kwargs):
         details = HireModel.objects.get(id=id)
+        form =CommentForm()
         context = {
             'details': details,
             'id': id,
+            'form': form,
         }
-        return render(request, "home/rating.html", context)
-
-@method_decorator(login_required, name='dispatch')
-class Ratings(View):
-    def get(self, request, *args, id, id1, **kwargs):
-        star = id
-        data = HireModel.objects.get(id=id1)
+        return render(request, "home/comment.html", context)
+    def post(self, request, *args,  **kwargs):
+        print(request.POST)
+        star = request.POST['rating']
+        data = HireModel.objects.get(id=request.POST['id'])
         data.rating = star
+        data.comment = request.POST['comment']
         data.worker_status = True
         data.save()
         return redirect('userservices')
@@ -237,6 +246,21 @@ class AddCategoryView(View):
 @method_decorator(login_required, name='dispatch')
 class DeleteCategoryView(View):
     def get(self, request, id):
+
+        category_name = Category.objects.filter(id=id).values_list("category_name")[0][0]
+        print(category_name)
+        job_name = jobmodel.objects.filter(category=category_name).values_list("job_title")
+        print(job_name,"jooooooooooooooooooob")
+        jobs = jobmodel.objects.filter(category=category_name)
+        jobs.delete()
+        for i in job_name:
+            print(i[0],"1111111")
+            labours = labourmodels.objects.filter(job_title=i[0])
+            labours.delete()
+            print("Deleted.......................")
+            print(labours,"user")
+        print(jobs)
+
         category = Category.objects.get(id=id)
         category.delete()
         messages.success(request, "Category Deleted")
@@ -356,6 +380,18 @@ class ManageServices(View):
             'current_path': "Manage Services",
         }
         return render(request, "home/manage_services.html", context)
+
+@method_decorator(login_required, name='dispatch')
+class HireHistory(View):
+    def get(self, request, *args, **kwargs):
+        history = HireModel.objects.filter(
+            Q(status = 4) & Q(Hire_name = request.user)).values()
+        context = {
+            'history': history,
+            'current_path': "Hire History",
+        }
+        return render(request, "home/hirehistory.html", context)
+
 
 @method_decorator(login_required, name='dispatch')
 class UpdateServices(View):
@@ -501,6 +537,7 @@ class  UpdateEnlistedJobStatus(View):
             job.save()
         return redirect('enlistedjobs')
 
+@method_decorator(login_required, name='dispatch')
 class JobRequestPay(View):
     template = 'home/jobreqpay.html'
     def get(self, request, id, *args, **kwargs):
