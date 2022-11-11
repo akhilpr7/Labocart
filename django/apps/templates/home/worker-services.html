@@ -70,7 +70,7 @@
                 {% elif data.worker_status%}
                 <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
                 {% elif data.user_status == 2 %}
-                <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-danger">close</span></a>
+                <a href="#" class=" btn border rounded-2"><span class="material-symbols-outlined text-danger">close</span></a>
                 {% else %}
                 <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-black">done</span></a>
                 {% endif %}
