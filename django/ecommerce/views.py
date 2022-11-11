@@ -275,11 +275,14 @@ class LaboShop(View):
 			"work":work,
 		}
 		is_sub = NewUserModel.objects.filter(username=request.user.username).values_list('is_sub')[0][0]
-		if is_sub:
-			return render(request, 'labo-shop.html', context)
+		if data:
+			if is_sub:
+				return render(request, 'labo-shop.html', context)
+			else:
+				messages.error(request,"Membership Required !")
+				return redirect("membership")
 		else:
-			messages.error(request,"Membership Required !")
-			return redirect("membership")
+			return redirect('emptylaboshop')
 
 @method_decorator(login_required,name='dispatch')
 class LaboShopCategory(View):
