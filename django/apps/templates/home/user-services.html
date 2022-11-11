@@ -71,6 +71,8 @@
               <td>
                 {% if data.status == 4 %}
                 <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
+                {% elif data.status == 5 %}
+                <a href="#" class=" btn border rounded-2"><span class="material-symbols-outlined text-danger">close</span></a>
                 {% elif data.user_status == 1 %}
                 <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
                 {% else %}

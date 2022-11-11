@@ -1,99 +1,314 @@
-{%extends 'index.html'%}
+{%extends 'layouts/base.html'%}
 
-{% block title %} Profile {% endblock %} 
+{% block title %} Profile {% endblock %}
 
 {% block content%}
-<body style="background-color:#f5eee7" >
 
-    <section  class="pb-6 pt-5" >
-      <div class="container pt-5">
-        <div class="main-body">
-              <div class="row gutters-sm">
-                <div class="col-md-4   mb-3">
-                  <div class="card shadow-lg">
-                    <div class="card-body">
-                      <div class="d-flex flex-column align-items-center text-center">
-                        <img src="{{details.image.url}}" class="rounded-circle" width="150">
-                        <div class="mt-3 text-uppercase">
-                          <h5>{{details.username}}</h5>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card mt-3 shadow-lg">
-                    <div class="card-body p-3">
-                      <div class="card-body">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <div class="d-flex flex-column h-100">
-                              <h4 class="text-lg mb-1 pt-2">Your Wallet</h4><br>
-                              <h5 class="font-weight-bolder text-gray-800">Available Balance : ${{ details.wallet}}</h5>
-                              <!-- <h5 class="mb-5 font-weight-bold float-end align-self-sm-end text-black">${{ details.wallet}}</h5> -->
-                            </div>
-                          </div>
-                          <div class="col-lg-5 ms-auto text-center mt-5 mt-lg-0">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+<section class="pb-6 pt-5">
+  <p id="comments" data-comment="{{comment}}">asd</p>
+  <div class="container-fluid pt-5 row">
+    <div class="main-body col-12 ">
+      <div class="row gutters-sm ">
+        <div class="col-md-4   mb-3">
+          <div class="card shadow-lg">
+            <div class="card-body">
+              <div class="d-flex flex-column align-items-center text-center">
+                <img src="{{details.image.url}}" class="rounded-circle" width="150">
+                <div class="mt-3 text-uppercase">
+                  <h5>{{details.username}}</h5>
                 </div>
-                <div class="col-md-8">
-                  <div class="card mb-3 shadow-lg">
-                    <div class="card-body p-5" style="padding: 40px;text-align: center">
-                      
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Full Name</h6>
-                        </div>
-                        <div class="col-sm-9 ">{{details.first_name}} {{details.last_name}}
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Email</h6>
-                        </div>
-                        <div class="col-sm-9">
-                          {{details.email}}                        
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Phone</h6>
-                        </div>
-                        <div class="col-sm-9">
-                          {{details.phone_no}} 
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Rating</h6>
-                        </div>
-                        <div class="col-sm-9">
-                          {{details.rating}} 
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <a class="btn btn-2 rounded-2 text-success float-end" href="{% url 'update_profile' %}">Edit Profile</a>
-                        </div>
-                      </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mt-3 shadow-lg">
+            <div class="card-body p-3">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="d-flex flex-column h-100">
+                      <h4 class="text-lg mb-1 pt-2">Your Wallet</h4><br>
+                      <h5 class="font-weight-bolder text-gray-800">Available Balance : ${{ details.wallet}}</h5>
+                      <!-- <h5 class="mb-5 font-weight-bold float-end align-self-sm-end text-black">${{ details.wallet}}</h5> -->
                     </div>
+                  </div>
+                  <div class="col-lg-5 ms-auto text-center mt-5 mt-lg-0">
                   </div>
                 </div>
               </div>
-    
             </div>
+          </div>
         </div>
-      </section>
-    </body>
+        <div class="col-md-8">
+          <div class="card mb-3 shadow-lg">
+            <div class="card-body p-5" style="padding: 40px;text-align: center">
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Full Name</h6>
+                </div>
+                <div class="col-sm-9 ">{{details.first_name}} {{details.last_name}}
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Email</h6>
+                </div>
+                <div class="col-sm-9">
+                  {{details.email}}
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Phone</h6>
+                </div>
+                <div class="col-sm-9">
+                  {{details.phone_no}}
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Rating</h6>
+                </div>
+                <div class="col-sm-9">
+                  {{details.rating}}
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-12">
+                  <a class="btn btn-2 rounded-2 text-success float-end" href="{% url 'update_profile' %}">Edit
+                    Profile</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+            <div id="carouselExampleIndicators" class="mt-3 carousel slide row " data-bs-ride="carousel">
+             
+              <div class="carousel-inner col-md-12 mx-auto" >
+                
+                <div class="title">
+                  <h2 class="text-center ">Reviews</h2>
+                  <div class="underline"></div>
+                </div>
+                {% for comment in comments|slice:":3" %}
+
+                {% if forloop.first %}
+                <div class="carousel-item active" >
+			        	{% else %}
+                <div class="carousel-item " >
+                  {%endif%}
+                  <article class="review mx-auto d-flex flex-column justify-content-between" style="height: 70vh;">
+                    <div>
+                      <div class="img-container align-middle">
+                        <img src="" alt="" id="img">
+                        <i class="fas fa-quote-right"></i>
+                      </div>
+                      <p id="author" class="mt-5">{{comment.Name}}</p>
+                      <p id="job"> {%if comment.rating == 0%}
+                        {%elif comment.rating == 1%}
+                        <span class="fa fa-star checked"></span>
+                        {%elif comment.rating == 2%}
+                        <span class="fa fa-star checked"></span>
+    
+                        <span class="fa fa-star checked"></span>
+    
+                        {%elif comment.rating == 3%}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+    
+                        {%elif comment.rating == 4%}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+    
+                        {%elif comment.rating == 5%}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        
+                        {%endif%}</p>
+                      <p id="info">{{comment.comment}}</p>
+                    </div>
+                    <div class="arrow-buttons  ">
+                      <button class="btn arrow-btn" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev"> 
+                        <i class="fas fa-chevron-left"></i>
+                      </button>
+                      <button class="btn arrow-btn" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <i class="fas fa-chevron-right"></i>
+                      </button>
+                    </div>
+                  </article>
+        
+                </div>
+                {% endfor %}
+              </div>
+
+            </div>
+
+
+      </div>
+    </div>
+</section>
+
+<style>
+  :root {
+    --main-bg: hsl(205, 100%, 96%);
+    --lightblue: hsl(205, 90%, 88%);
+    --darkblue: hsl(205, 78%, 60%);
+    --grey: hsl(210, 22%, 49%);
+    --letter-spacing: 2px;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .container.col {
+    flex-direction: column;
+  }
+
+  .title h2 {
+    font-size: 35px;
+    line-height: 1;
+    margin-bottom: 12px;
+    letter-spacing: var(--letter-spacing)
+  }
+
+  .underline {
+    height: 4px;
+    width: 80px;
+    background: var(--darkblue);
+    margin: 0 auto 54px;
+  }
+
+  .review {
+    background: white;
+    border-radius: 10px;
+    width: 70vw;
+    max-width: 550px;
+    text-align: center;
+    padding: 24px 32px;
+  }
+
+  .img-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 0 auto;
+    margin-bottom: 1.5rem;
+  }
+
+
+  .fas.fa-quote-right {
+    font-weight: 900;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    transform: translateY(25%);
+    background: var(--darkblue);
+    color: white;
+  }
+
+
+  #img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    position: relative;
+  }
+
+  .review p {
+    margin-bottom: 4px;
+    text-align: center;
+  }
+
+  #author {
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-transform: capitalize;
+  }
+
+  #job {
+    font-size: 13px;
+    color: var(--darkblue);
+    text-transform: uppercase;
+  }
+
+  #info {
+    color: var(--grey);
+    line-height: 1.4;
+    font-size: 16px;
+  }
+
+  .arrow-buttons {
+    margin-top: 10px;
+  }
+
+  .btn {
+    outline: none;
+    border: none;
+    background: transparent;
+    user-select: none;
+  }
+
+  .arrow-btn,
+  .surprise-btn {
+    transition: all 0.3s linear;
+  }
+
+  .arrow-btn {
+    color: var(--lightblue);
+    margin: 0 10px;
+    font-size: 25px;
+  }
+
+  .arrow-btn:hover {
+    color: var(--darkblue);
+  }
+
+  .surprise-btn {
+    border: 2px solid var(--darkblue);
+    font-size: 12px;
+    padding: 5px 10px;
+    margin: 15px 0 0;
+    border-radius: 10px;
+    color: var(--darkblue);
+  }
+
+  .surprise-btn:hover {
+    color: black;
+    background: var(--darkblue);
+  }
+</style>
+
+
 
 {% endblock content %}
-
-
-
-
