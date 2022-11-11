@@ -385,7 +385,7 @@ class ManageServices(View):
 class HireHistory(View):
     def get(self, request, *args, **kwargs):
         history = HireModel.objects.filter(
-            Q(status = 4) & Q(Hire_name = request.user)).values()
+            (Q(status = 4)|Q(status = 5)) & Q(Hire_name = request.user)).values()
         context = {
             'history': history,
             'current_path': "Hire History",
@@ -544,6 +544,14 @@ class  UpdateEnlistedJobStatus(View):
         else:
             job.is_active = True
             job.save()
+        messages.success(request,"Success! ")
+        return redirect('enlistedjobs')
+@method_decorator(login_required, name='dispatch')
+class  deleteenlisted(View):
+    def get(self, request,id, *args, **kwargs):
+        job = JobPostingModel.objects.get(id=id)
+        job.delete()
+        messages.success(request,"Successfully Deleted! ")
         return redirect('enlistedjobs')
 
 @method_decorator(login_required, name='dispatch')

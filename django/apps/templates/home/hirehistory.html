@@ -28,6 +28,7 @@
                 <th class="border-gray-200">Worker phone</th>
                 <th class="border-gray-200">Job</th>
                 <th class="border-gray-200">Rating</th>
+                <th class="border-gray-200">Status</th>
             </tr>
         </thead>
         <tbody>
@@ -41,6 +42,7 @@
               <td><span>{{history.worker_phone}}</span></td> 
               <td><span>{{history.job_title}}</span></td> 
               <td><span>{{history.rating}}</span></td> 
+              <td><span>{%if history.status == 4 %}Success{%elif history.status == 5 %}Cancelled{%else%}Error{%endif%}</span></td> 
             </tr>
             {% endfor %}      
         </tbody>

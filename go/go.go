@@ -64,7 +64,7 @@ func workStatus(db *sql.DB){
     fmt.Println("------2")
     panic(err01)
   }
-  
+
   sqlStatement := `
   UPDATE ecommerce_hiremodel
   SET status=4, worker_status=false, user_status=0 
@@ -352,7 +352,7 @@ func requestdelete(db *sql.DB){
 func refund(db *sql.DB){
   fmt.Println("refund process ....")
   
-  fetch,err := db.Query(`SELECT work_date,id,rate FROM ecommerce_hiremodel WHERE user_status = 2 and status = 3`)
+  fetch,err := db.Query(`SELECT created_at,id,rate FROM ecommerce_hiremodel WHERE user_status = 2 and status = 3`)
   if(err!= nil){
     panic(err)
   }
@@ -371,6 +371,7 @@ func refund(db *sql.DB){
     var hirer_name string
     var wallet_hirer float64
     var wallet_worker float64
+    var work_mode string
     if diff >= 1{
 
       percenthirer := 0.6
@@ -380,11 +381,12 @@ func refund(db *sql.DB){
       // fmt.Println(rate,"Rate is")
       // fmt.Println("refund to worker(40%)")
       refundworker := rate*percentworker
-      refundhirer := rate*percenthirer 
+      refundhirer := rate*percenthirer
+       
       // fmt.Println(refundhirer,"refundhirer")
       // fmt.Println(refundworker,"refundworker")
-      fetch2 := db.QueryRow(`SELECT "worker_name","Hire_name","job_title" FROM ecommerce_hiremodel WHERE id =$1`,id)
-      fetch2.Scan(&worker_name,&hirer_name,&job_title)
+      fetch2 := db.QueryRow(`SELECT "worker_name","Hire_name","job_title","Work_mode" FROM ecommerce_hiremodel WHERE id =$1`,id)
+      fetch2.Scan(&worker_name,&hirer_name,&job_title,&work_mode)
       // fmt.Println(hirer_name,"hirer is ")
       // fmt.Println(worker_name,"worker is ")
       row2 := db.QueryRow(`SELECT wallet FROM authentication_newusermodel WHERE username=$1`,worker_name)
@@ -441,7 +443,12 @@ func refund(db *sql.DB){
         fmt.Println("------2")
         panic(err01)
       }
-
+      sqlStatement02 := ` INSERT INTO ecommerce_refundhistory(hirer,worker,rate,worker_refund,hirer_refund,work_mode,job_title,work_date,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)`
+      _,err02:= db.Exec(sqlStatement02,hirer_name,worker_name,rate,refundworker,refundhirer,work_mode,job_title,created_at,1)
+      if err02 != nil {
+        fmt.Println("------2")
+        panic(err02)
+      }
     }else{
       // fmt.Println("refund to worker(0%)")
       fetch5 := db.QueryRow(`SELECT "Hire_name" FROM ecommerce_hiremodel WHERE "id" = $1`,id)
@@ -450,6 +457,9 @@ func refund(db *sql.DB){
       fetch01.Scan(&worker_name)
       fetch02 := db.QueryRow(`SELECT "job_title" FROM ecommerce_hiremodel WHERE "id" = $1`,id)
       fetch02.Scan(&job_title)
+      fetch03 := db.QueryRow(`SELECT "Work_mode" FROM ecommerce_hiremodel WHERE "id" = $1`,id)
+      fetch03.Scan(&work_mode)
+      fmt.Println(work_mode,"---------")
       row5 := db.QueryRow(`SELECT wallet FROM authentication_newusermodel WHERE username=$1`,hirer_name)
       row5.Scan(&wallet_hirer)
 
@@ -490,6 +500,14 @@ func refund(db *sql.DB){
       if err01 != nil {
         fmt.Println("------2")
         panic(err01)
+      }
+
+
+      sqlStatement02 := ` INSERT INTO ecommerce_refundhistory(hirer,worker,rate,worker_refund,hirer_refund,work_mode,job_title,work_date,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)`
+      _,err02:= db.Exec(sqlStatement02,hirer_name,worker_name,rate,0,rate,work_mode,job_title,created_at,2)
+      if err02 != nil {
+        fmt.Println("------2")
+        panic(err02)
       }
 
     }
