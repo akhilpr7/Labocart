@@ -27,7 +27,7 @@
                     <th class="border-gray-200">Phone No</th>
                     <th class="border-gray-200">Image</th>
                     <th class="border-gray-200">KYC</th>
-                    <th class="border-gray-200">APPROVE</th>
+                    <th class="border-gray-200">Options</th>
                     {% comment %}
                     <th class="border-gray-200">Status</th>
                     {% endcomment %}
@@ -44,7 +44,9 @@
                     <td class="align-middle">{{data.phone_no}}</td>
                     <td class="align-middle"><img  class="rounded" style="width:200px ; height:100px;" src="{{media_url}}{{data.image}}" alt="{{data.username}}'s Image"></td>
                     <td class="align-middle"><img id="myImg{{data.id}}" data="{{data.id}}" class="rounded" style="width:200px ; height:100px;" src="{{media_url}}{{data.kyc}}" alt="{{data.username}}'s Aadhar"></td>
-                    <td class="align-middle"><a href="{% url 'approveuser' data.id %}" class=" btn border rounded-2 text-success">Approve</a>
+                    <td class="align-middle">
+                        <a href="{% url 'approveuser' data.id %}" class=" btn border rounded-2 text-success">Approve</a>
+                        <a href="{% url 'rejectuser' data.id  %}" class=" btn border rounded-2 text-danger">Reject</a>
                     </td>
                 </tr>
                 {% endfor %}
