@@ -494,6 +494,14 @@ class ApproveUser(View):
             messages.error(request, "An error occured during the approval.")
 
 @method_decorator(login_required, name='dispatch')
+class RejectUser(View):
+    def get(self, request, id):
+        user = NewUserModel.objects.get(id=id)
+        user.delete()
+        messages.success(request, "Rejected User")
+        return redirect('pendingkyc')
+
+@method_decorator(login_required, name='dispatch')
 class JobRequestUpdate(View):
     def get(self, request, *args, **kwargs):
         id = kwargs.get('id')
