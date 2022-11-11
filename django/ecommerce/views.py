@@ -109,14 +109,20 @@ class AddtocartView(View):
 @method_decorator(login_required,name='dispatch')
 class IncreaseNo(View):
 	def get(self, request, id, *args, **kwargs):
-			price = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Price')[0][0]
-			quantity = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Quantity')[0][0]
+		price = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Price')[0][0]
+		quantity = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Quantity')[0][0]
+		product = CartModel.objects.filter(product_id=id,username=request.user.username).values_list("Product_name")[0][0]
+		available_qnty = ProductsModel.objects.filter(Product_name=product).values_list("Quantity")[0][0]
+		if (available_qnty-quantity) > 0:
 			total = (quantity + 1 ) * price
 			print("toal product price",quantity)
 			print("toal product price",int(price))
 			print("toal product price",total)
 			CartModel.objects.filter(product_id=id,username= request.user.username).update(Quantity = quantity + 1 ,  Total= total)
 			return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
+		else:
+			messages.error(request,"Not enough available stock !")
+			return redirect("cart")
 
 @method_decorator(login_required,name='dispatch')
 class DecreaseNo(View):
@@ -275,11 +281,14 @@ class LaboShop(View):
 			"work":work,
 		}
 		is_sub = NewUserModel.objects.filter(username=request.user.username).values_list('is_sub')[0][0]
-		if is_sub:
-			return render(request, 'labo-shop.html', context)
+		if data:
+			if is_sub:
+				return render(request, 'labo-shop.html', context)
+			else:
+				messages.error(request,"Membership Required !")
+				return redirect("membership")
 		else:
-			messages.error(request,"Membership Required !")
-			return redirect("membership")
+			return redirect('emptylaboshop')
 
 @method_decorator(login_required,name='dispatch')
 class LaboShopCategory(View):
