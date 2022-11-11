@@ -73,5 +73,5 @@ class ApplyForm(forms.ModelForm):
 
 
 class CommentForm( forms.Form ):
-    comment = forms.CharField(max_length=10, required=True, widget=forms.Textarea(attrs={'class': 'textarea p-3 w-100 ','placeholder':"Enter your Review",'cols':'40','rows':'5',   }))
+    comment = forms.CharField(max_length=1000, required=True, widget=forms.Textarea(attrs={'class': 'textarea p-3 w-100 ','placeholder':"Enter your Review",'cols':'200','rows':'5',   }))
     id = forms.CharField(max_length=10, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Worker Phone",'readonly':'True'}))
