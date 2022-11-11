@@ -47,7 +47,7 @@ class HireModel(models.Model):
     rate = models.FloatField(max_length=20, blank=False,null=False)
     worker_phone = models.BigIntegerField()
     work_date =  models.DateTimeField(auto_now_add=True)
-    comment = models.CharField(default="",max_length=255,null=True,blank=True)
+    comment = models.CharField(default="",max_length=1000,null=True,blank=True)
 
 class RequestsModel(models.Model):
     hirer = models.TextField(max_length=25, blank=False)
@@ -108,3 +108,13 @@ class LabopaymentModel(models.Model):
     rate = models.FloatField(max_length=20, blank=False,null=False,default=0)
     status = models.IntegerField(blank=False,null=True,default=0)
     amount = models.FloatField(max_length=20, blank=False,null=False,default=0)
+class RefundHistory(models.Model):
+    hirer = models.CharField(max_length=255,blank=False,null=False)
+    worker = models.CharField(max_length=255,blank=False,null=False)
+    rate = models.FloatField(max_length=100,blank=False,null=False)
+    worker_refund = models.FloatField(max_length=100,blank=False,null=False,default=0)
+    hirer_refund = models.FloatField(max_length=100,blank=False,null=False,default=0)
+    work_mode = models.CharField(max_length=10,blank=False,null=False,default="half")
+    job_title = models.CharField(max_length=50,blank=False,null=False)
+    work_date = models.DateTimeField()
+    status = models.IntegerField(default=3,blank=False,null=False)

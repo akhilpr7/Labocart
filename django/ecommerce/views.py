@@ -542,7 +542,7 @@ class Userpayments(View):
 @method_decorator(login_required,name='dispatch')
 class CancelRequest(View):
 	def get(self, request,id):
-		requests = HireModel.objects.get(id=id)
+		requests = RequestsModel.objects.get(id=id)
 		requests.delete()
 		messages.success(request,"Success !")
 		return redirect('requested')

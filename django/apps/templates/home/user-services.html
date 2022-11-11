@@ -65,12 +65,12 @@
               <td><p>{{data.id}}</p></td>
               <td>{{data.worker_name}}</td>
               <td>{{data.Place}}</td>
-              <td>{{data.Work_mode}} day</td>
+              <td>{% if data.Work_mode == "true" %}Full day{% else %}Half Day{% endif %}</td>
               <td>{{data.Phone}}</td>
               <td>{{data.job_title}}</td>
               <td>
                 {% if data.status == 4 %}
-                <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
+                <a href="#" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
                 {% elif data.status == 5 %}
                 <a href="#" class=" btn border rounded-2"><span class="material-symbols-outlined text-danger">close</span></a>
                 {% elif data.user_status == 1 %}
