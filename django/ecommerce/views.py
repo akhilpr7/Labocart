@@ -53,7 +53,7 @@ class Shop(View):
 		'form':PurchaseForm(),
 		'current_path':"Shop",
 		'cart' : cart,
-		'MEDIA_ROOT':settings.MEDIA_ROOT,
+		
 
 		}
 
@@ -66,6 +66,7 @@ class CartView(View):
 	
 	def get(self, request, *args, **kwargs):
 		products = list(CartModel.objects.filter(username=request.user.username).values())
+		print(products,"-----------products=====")
 		if not products:
 			return redirect('emptycart')
 		else:
@@ -108,14 +109,20 @@ class AddtocartView(View):
 @method_decorator(login_required,name='dispatch')
 class IncreaseNo(View):
 	def get(self, request, id, *args, **kwargs):
-			price = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Price')[0][0]
-			quantity = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Quantity')[0][0]
+		price = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Price')[0][0]
+		quantity = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Quantity')[0][0]
+		product = CartModel.objects.filter(product_id=id,username=request.user.username).values_list("Product_name")[0][0]
+		available_qnty = ProductsModel.objects.filter(Product_name=product).values_list("Quantity")[0][0]
+		if (available_qnty-quantity) > 0:
 			total = (quantity + 1 ) * price
 			print("toal product price",quantity)
 			print("toal product price",int(price))
 			print("toal product price",total)
 			CartModel.objects.filter(product_id=id,username= request.user.username).update(Quantity = quantity + 1 ,  Total= total)
 			return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
+		else:
+			messages.error(request,"Not enough available stock !")
+			return redirect("cart")
 
 @method_decorator(login_required,name='dispatch')
 class DecreaseNo(View):
@@ -274,11 +281,14 @@ class LaboShop(View):
 			"work":work,
 		}
 		is_sub = NewUserModel.objects.filter(username=request.user.username).values_list('is_sub')[0][0]
-		if is_sub:
-			return render(request, 'labo-shop.html', context)
+		if data:
+			if is_sub:
+				return render(request, 'labo-shop.html', context)
+			else:
+				messages.error(request,"Membership Required !")
+				return redirect("membership")
 		else:
-			messages.error(request,"Membership Required !")
-			return redirect("membership")
+			return redirect('emptylaboshop')
 
 @method_decorator(login_required,name='dispatch')
 class LaboShopCategory(View):
@@ -504,6 +514,7 @@ class HireNowView(View):
 					phone=phone,
 					status=0,
 					job_title=job_title,
+					rate=rate,
 					worker_name=worker_name,
 					worker_phone=worker_phone,
 					created_at=datetime.datetime.now().date())
@@ -522,7 +533,7 @@ class Userpayments(View):
 		if wallet_balance >= rate:
 			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)
 			LabopaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
-			RequestsModel.objects.filter(id=id).update(status=1)
+			RequestsModel.objects.filter(id=id).update(status=3)
 			messages.success(request,'Payment Successful')
 			return redirect('laboshop')
 		else:
@@ -539,7 +550,7 @@ class CancelRequest(View):
 class Assignedworks(View):
 	template_name = 'assigned_works.html'
 	def get(self, request, *args, **kwargs):
-		services = RequestsModel.objects.filter(worker_name = request.user.username ).exclude(status=2)
+		services = RequestsModel.objects.filter(worker_name = request.user.username,status=3)
 		context = {
 			"data": services,
 			'current_path':"Assigned Services"
@@ -549,15 +560,23 @@ class Assignedworks(View):
 class Acceptservice(View):
 	def get(self,request,id, *args, **kwargs):
 		# serviceobj = HireModel.objects.get(id=id)
-		status = RequestsModel.objects.filter(id=id).values_list("status")[0][0]
-		print(status,"----sbsjdsdsldsldshdshldhsdh-----") 
-		if status == 1:
-			RequestsModel.objects.filter(id=id).update(status=3)
-			return redirect('assigned')
-		elif status ==2:
-			return redirect('laboshop')
-		else:
-			return redirect('labocategory')
+		# status = RequestsModel.objects.filter(id=id).values_list("status")[0][0]
+		# print(status,"----sbsjdsdsldsldshdshldhsdh-----") 
+		# if status == 3:
+		job = RequestsModel.objects.filter(id=id).values_list("job_title")[0][0]
+
+
+		labo_job = labourmodels.objects.filter(Q(username=request.user)&Q(job_title=job))
+		print(labo_job)
+		labo_job.update(status=0)
+		RequestsModel.objects.filter(id=id).update(status=1)
+		
+		
+		return redirect('assigned')
+		# elif status ==2:
+		# 	return redirect('laboshop')
+		# else:
+		# 	return redirect('labocategory')
 @method_decorator(login_required,name='dispatch')	
 class Togglestatus(View):
 	def get(self, request,id, *args, **kwargs):
@@ -567,9 +586,18 @@ class Togglestatus(View):
 		if status == 0:
 			total_work = labourmodels.objects.filter(Q(username=request.user.username)&((Q(status=1)|Q(status=2)|Q(status=3)))).count()
 			if total_work <5:
-				labourmodels.objects.filter(id=id).update(status=1)
-				messages.success(request,"Success !")
-				return redirect("active_service")
+				hire = HireModel.objects.filter(Q(worker_name=request.user)&Q(status=3)).values()
+				if not hire.exists():
+					labourmodels.objects.filter(id=id).update(status=1)
+					messages.success(request,"Success !")
+					# print("hireeeeeeeeeeeeeeeeee")
+					return redirect("active_service")
+				else:
+					messages.error(request,"Pending Job Found! ")
+					# print("hireeeeeeeeeeeeeeeeee")
+					# print("someting in query")
+					return redirect("active_service")
+				
 			else:
 				messages.error(request,"Maximum Job Limit Reached !!!")
 				return redirect("active_service")

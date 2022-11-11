@@ -57,7 +57,7 @@ class RequestsModel(models.Model):
     phone = models.BigIntegerField()
     status =  models.IntegerField(default = 0)
     job_title = models.CharField(max_length=20, blank=False,default='none')
-    rate = models.IntegerField(default=500)
+    rate = models.IntegerField(default=1)
     worker_name = models.TextField(max_length=25, blank=False)
     worker_phone = models.BigIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
