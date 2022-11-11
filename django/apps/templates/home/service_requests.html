@@ -1,37 +1,65 @@
-{% extends "layouts/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+{%extends 'index.html'%}
+{% block content%}
+<head>
+    <meta charset="utf-8">
+    <title>EShopper - Bootstrap Shop Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
 
-{% block title %} Service Requests {% endblock %} 
+    <!-- Favicon -->
+    <link href="../../../static/img/favicon.ico" rel="icon">
 
-<!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+        <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
-{% block content %}
+    <!-- Libraries Stylesheet -->
+    <link href="../../../static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="../../../static/css/style.css" rel="stylesheet">
+</head>
+
+<body style="background-color:#f5eee7" >
+  {% if messages %}
+  {% for message in messages %}
+      <p class="d-none" id="messagetag">{{message.tags}}</p>
+      <p class="d-none " id="messagecontent">{{message}}</p>
+  {% endfor %}
+{% endif %}
  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
       <div class="d-block mb-4 mb-md-0">
-          <h2 class="h4">Service Requests</h2>
+          <h2 class="h4">Manage Services</h2>
       </div>
 
   </div>
   
-  <div id="lightbox"></div>
+
   <div class="card card-body border-0 shadow table-wrapper table-responsive">
       <table class="table table-hover">
           <thead>
               <tr>
-                  <th class="border-gray-200">User ID</th>
-                  <th class="border-gray-200">Username</th>
-                  <th class="border-gray-200">Job Title</th>
-                  <th class="border-gray-200">Rate</th>
-                  <th class="border-gray-200">Work Type</th>
-                  <th class="border-gray-200">Phone</th>
-                  <th class="border-gray-200">Certificate</th>
-                  <th class="border-gray-200">Options</th>
+                <th class="border-gray-200">User ID</th>
+                <th class="border-gray-200">Username</th>
+                <th class="border-gray-200">Job Title</th>
+                <th class="border-gray-200">Rate</th>
+                <th class="border-gray-200">Work Type</th>
+                <th class="border-gray-200">Phone</th>
+                <th class="border-gray-200">Certificate</th>
+                <th class="border-gray-200">Options</th>
               </tr>
           </thead>
           <tbody>
-            {% for data in details %}
-              <tr class="table-rows">
-                <td><span>{{data.id}}</span></td>
+
+            {% for data in details %}           
+             <tr>
+              <td><span>{{data.id}}</span></td>
                 <td><span>{{data.username}}</span></td>
                 <td><span>{{data.job_title}}</span></td>
                 <td><span>{{data.rate}}</span></td>
@@ -44,81 +72,58 @@
                 </span></td>
                 <td><span>{{data.phone}}</span></td>
                 <td><span><img src="{{data.job_certificate.url}}" height="200px" width="300px" class="zoomD rounded border"></img></span></td>
-                <td><span>
-                  <a href="{% url 'acceptservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
-                  <a href="{% url 'rejectservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-danger">close</span></a>
-                </span>
-                  </td>
-              </tr>
-            {% endfor %}
+              <td><span>
+                <a href="{% url 'acceptservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
+              </span>
+              <a data-target="#selectModal{{data.id}}" data-toggle="modal" class=" btn border rounded-2"><span class="material-symbols-outlined text-danger">close</span></a>
+
+
+
+              <!-- Modal -->
+              <div class="modal fade" id="selectModal{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">Do You Really Want to Delete This?</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-footer">
+                      <a href="{% url 'servicerequests' %}" class=" btn border rounded-2"><span class="text-black">Cancel</span></a> 
+                      <a href="{% url 'rejectservices' data.id %}" class=" btn border rounded-2"><span class="text-black">Yes</span></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+
+          {% endfor %}
+
           </tbody>
       </table>
+     
   </div> 
 
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
 
-<style>
-#lightbox {
- 
-  position: fixed; z-index: 999;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="lib/easing/easing.min.js"></script>
+<script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
-  background: rgba(0, 0, 0, 0.5);
- 
-  display: flex;
-  align-items: center;
-  align-items: center;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity ease 0.4s;
-}
- 
+<!-- Contact Javascript File -->
+<script src="mail/jqBootstrapValidation.min.js"></script>
+<script src="mail/contact.js"></script>
 
-#lightbox.show {
-  visibility: visible;
-  opacity: 1;
-}
- 
+<!-- Template Javascript -->
+<script src="js/main.js"></script>
+</body>
 
-#lightbox img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
- 
-
-#lightbox img {
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-}
-
-.table-rows td {
-  vertical-align:middle;
-}
-
-</style>
-<script>
-  window.onload = () => {
-    let all = document.getElementsByClassName("zoomD"),
-        lightbox = document.getElementById("lightbox");
-   
-    if (all.length>0) { for (let i of all) {
-      i.onclick = () => {
-        let clone = i.cloneNode();
-        clone.className = "";
-        lightbox.innerHTML = "";
-        lightbox.appendChild(clone);
-        lightbox.className = "show";
-      };
-    }}
-   
-  
-    lightbox.onclick = () => {
-      lightbox.className = "";
-    };
-  };
-  </script>
 {% endblock content %}
-
+</html>
