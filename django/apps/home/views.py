@@ -567,3 +567,8 @@ class Emptycart(View):
     def get(self ,request, *arg, **kwargs):
         return render(request, "home/emptycart.html",{})
 
+class EmptyLaboshop(View):
+    def get(self ,request, *arg, **kwargs):
+        return render(request, "home/emptylaboshop.html",{})
+
+
