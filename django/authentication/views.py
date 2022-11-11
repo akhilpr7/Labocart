@@ -8,9 +8,13 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm,UpdateProfileForm
 from .models import NewUserModel
+from ecommerce.models import HireModel
 from django.conf import settings  
 from django.views.decorators.cache import cache_control
 from apps.home.models import Category
+from django.utils.safestring import mark_safe
+import json
+from json import dumps
 
 
 
@@ -97,7 +101,13 @@ class ProfileView(View):
     def get(self, request, *args, **kwargs):
         user_id = request.user.pk
         details = NewUserModel.objects.filter(id=user_id).first()
-        context = {"details": details ,'current_path':"Profile" }
+        data = list(HireModel.objects.all().values('comment','rating','Name'))
+        print(data)
+        context = {
+            "details": details ,
+            'current_path':"Profile",
+            'comments' : data
+             }
         return render(request, 'accounts/profile.html',context)
 
 

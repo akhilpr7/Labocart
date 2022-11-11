@@ -123,15 +123,6 @@
                     href="#!">{{j.phone_no}}</a></p>
               
 
-                    {% comment %} {% with tot=0 %}
-                    {% for k in work %}
-                    {% if j.username in k.worker_name %}
-                    {{k.worker_name}}
-                    {% tot|add:1 %}
-                    {% endif %}
-                    {% endfor %}
-                    {{tot}}
-                    {% endwith %} {% endcomment %}
                 </a></p>
                 <p class="text-muted mb-4">Rating :<span class="mx-2">|</span> <a
                     href="#!">

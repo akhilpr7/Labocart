@@ -71,6 +71,12 @@
                 <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
                 {% elif data.user_status == 2 %}
                 <a href="#" class=" btn border rounded-2"><span class="material-symbols-outlined text-danger">close</span></a>
+                {% elif data.status == 5 %}
+                  {% if data.worker_status%}
+                  <a href="#" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
+                  {%else%}
+                  <a href="#" class=" btn border rounded-2"><span class="material-symbols-outlined text-black">done</span></a>
+                  {%endif%}
                 {% else %}
                 <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-black">done</span></a>
                 {% endif %}
@@ -78,6 +84,9 @@
               <td>
                 {% if data.status == 4 %}
                 <button disabled href="{% url 'usercompletedservices' data.id %}" class=" btn border rounded-lg"><span class="material-symbols-outlined text-success">done</span></button>
+                {% elif data.status == 5 %}
+                <button disabled href="#" class=" btn border rounded-lg"><span class="material-symbols-outlined text-danger">close</span></button>
+
                 {% elif data.user_status == 1 %}
                 <button disabled href="{% url 'usercompletedservices' data.id %}" class=" btn border rounded-lg"><span class="material-symbols-outlined text-success">done</span></button>
                 {% elif data.user_status == 2 %}
