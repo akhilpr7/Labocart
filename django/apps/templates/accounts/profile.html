@@ -2,7 +2,7 @@
 
 {% block title %} Profile {% endblock %}
 
-{% block content%}
+{% block content %}
 
 <section class="pb-6 pt-5">
   <p id="comments" data-comment="{{comment}}">asd</p>
@@ -138,8 +138,9 @@
                         <span class="fa fa-star checked"></span>
                         
                         {%endif%}</p>
-                      <p id="info">{{comment.comment}}</p>
-                    </div>
+                        <div class="container-fluid p-3" style="overflow-x:scroll ; width: 80%; ">{{comment.comment}}</div>
+
+                      </div>
                     <div class="arrow-buttons  ">
                       <button class="btn arrow-btn" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev"> 
                         <i class="fas fa-chevron-left"></i>

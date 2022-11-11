@@ -47,7 +47,7 @@ class HireModel(models.Model):
     rate = models.FloatField(max_length=20, blank=False,null=False)
     worker_phone = models.BigIntegerField()
     work_date =  models.DateTimeField(auto_now_add=True)
-    comment = models.CharField(default="",max_length=255,null=True,blank=True)
+    comment = models.CharField(default="",max_length=1000,null=True,blank=True)
 
 class RequestsModel(models.Model):
     hirer = models.TextField(max_length=25, blank=False)
