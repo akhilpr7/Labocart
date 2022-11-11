@@ -91,7 +91,7 @@
 
             <div id="carouselExampleIndicators" class="mt-3 carousel slide row " data-bs-ride="carousel">
              
-              <div class="carousel-inner col-md-12 mx-auto" >
+              <div class="carousel-inner col-md-12 mx-auto " style="width: 51%;">
                 
                 <div class="title">
                   <h2 class="text-center ">Reviews</h2>
@@ -138,7 +138,7 @@
                         <span class="fa fa-star checked"></span>
                         
                         {%endif%}</p>
-                      <p id="info">{{comment.comment}}</p>
+                      <p id="info" class="" style="word-wrap:break-word">{{comment.comment}}</p>
                     </div>
                     <div class="arrow-buttons  ">
                       <button class="btn arrow-btn" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev"> 
