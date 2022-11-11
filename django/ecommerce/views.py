@@ -53,7 +53,7 @@ class Shop(View):
 		'form':PurchaseForm(),
 		'current_path':"Shop",
 		'cart' : cart,
-		'MEDIA_ROOT':settings.MEDIA_ROOT,
+		
 
 		}
 
@@ -66,6 +66,7 @@ class CartView(View):
 	
 	def get(self, request, *args, **kwargs):
 		products = list(CartModel.objects.filter(username=request.user.username).values())
+		print(products,"-----------products=====")
 		if not products:
 			return redirect('emptycart')
 		else:
@@ -553,8 +554,16 @@ class Acceptservice(View):
 		# status = RequestsModel.objects.filter(id=id).values_list("status")[0][0]
 		# print(status,"----sbsjdsdsldsldshdshldhsdh-----") 
 		# if status == 3:
-			RequestsModel.objects.filter(id=id).update(status=1)
-			return redirect('assigned')
+		job = RequestsModel.objects.filter(id=id).values_list("job_title")[0][0]
+
+
+		labo_job = labourmodels.objects.filter(Q(username=request.user)&Q(job_title=job))
+		print(labo_job)
+		labo_job.update(status=0)
+		RequestsModel.objects.filter(id=id).update(status=1)
+		
+		
+		return redirect('assigned')
 		# elif status ==2:
 		# 	return redirect('laboshop')
 		# else:
@@ -568,9 +577,18 @@ class Togglestatus(View):
 		if status == 0:
 			total_work = labourmodels.objects.filter(Q(username=request.user.username)&((Q(status=1)|Q(status=2)|Q(status=3)))).count()
 			if total_work <5:
-				labourmodels.objects.filter(id=id).update(status=1)
-				messages.success(request,"Success !")
-				return redirect("active_service")
+				hire = HireModel.objects.filter(Q(worker_name=request.user)&Q(status=3)).values()
+				if not hire.exists():
+					labourmodels.objects.filter(id=id).update(status=1)
+					messages.success(request,"Success !")
+					# print("hireeeeeeeeeeeeeeeeee")
+					return redirect("active_service")
+				else:
+					messages.error(request,"Pending Job Found! ")
+					# print("hireeeeeeeeeeeeeeeeee")
+					# print("someting in query")
+					return redirect("active_service")
+				
 			else:
 				messages.error(request,"Maximum Job Limit Reached !!!")
 				return redirect("active_service")
