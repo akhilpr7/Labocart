@@ -518,8 +518,9 @@ class HireNowView(View):
 					worker_name=worker_name,
 					worker_phone=worker_phone,
 					created_at=datetime.datetime.now().date())
+				k = request.POST.get("id")
 				pay = LabopaymentModel.objects.create(work_id=obj,rate=rate,status=0,amount=0)				
-				return render(request,'user_payments.html',{"id":n,"rate":rate})
+				return render(request,'home/hirenowpay.html',{"id":k,"rate":rate})
 			else:
 				messages.error(request,'Unsuccesfull')
 				return redirect('dashboard')
@@ -537,6 +538,22 @@ class Userpayments(View):
 		else:
 			messages.success(request,'Payment Failed')
 			return redirect('laboshop')
+
+class HireNowPayments(View):
+	def get(self, request,id, *args, **kwargs):
+		wallet_balance =request.user.wallet
+		rate = labourmodels.objects.filter(id=id).values_list("rate")[0][0]
+		if wallet_balance >= rate:
+			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)	
+			LabopaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
+			RequestsModel.objects.filter(id=id).update(status=3)
+			messages.success(request,'Payment Successful')
+			return redirect('laboshop')
+		else:
+			messages.success(request,'Payment Failed')
+			return redirect('laboshop')
+
+
 @method_decorator(login_required,name='dispatch')
 class CancelRequest(View):
 	def get(self, request,id):

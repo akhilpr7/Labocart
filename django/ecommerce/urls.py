@@ -20,6 +20,7 @@ urlpatterns = [
 	path('delete_product/<int:id>/', views.Deleteproduct.as_view(), name="delete_product"),
 	path('updateProduct/<int:id>/', UpdateProduct.as_view(), name="updateProduct"),
 	path("hire_now/<int:id>/",views.HireNowView.as_view(),name="hire_now"),
+	path("hirenowpayments/<int:id>/",views.HireNowPayments.as_view(),name="hirenowpayments"),
 	path('cancel_request/<int:id>/', views.CancelRequest.as_view(), name="cancel_request"),
 	path("active_service/",views.ActiveServices.as_view(),name="active_service"),
 	path('increase-no/<int:id>/', views.IncreaseNo.as_view(), name="increase-no"),
