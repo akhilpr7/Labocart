@@ -254,7 +254,7 @@ class LaboShop(View):
 			print(filter,"fgldjfdjkfjdfjdjfhjkdfkjdfhjkhd")
 			job=jobmodel.objects.filter(id=filter).values_list("job_title")[0][0]
 			datajob = jobmodel.objects.values()
-			data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1))
+			data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1)).exclude(username=request.user.username)
 			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
 			users=NewUserModel.objects.all()
 			work = HireModel.objects.all()
@@ -265,7 +265,7 @@ class LaboShop(View):
 		# if request.GET.get('jobtitle') is not None and request.GET.get('job') != '':
 		# datacategory=Category.objects.values()
 			datajob = jobmodel.objects.values()
-			data = labourmodels.objects.filter(status=1)
+			data = labourmodels.objects.filter(status=1).exclude(username=request.user.username)
 			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
 			users=NewUserModel.objects.all()
 			work = HireModel.objects.all()
