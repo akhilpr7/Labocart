@@ -1,0 +1,53 @@
+{% extends "index1.html" %} {% block title %} Refund History {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div class="d-block mb-4 mb-md-0">
+            <h2 class="h4">Refund History</h2>
+        </div>
+    </div>
+
+    <div class="card card-body border-0 shadow table-wrapper table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="border-gray-200">ID</th>
+                    <th class="border-gray-200">Worker</th>
+                    <th class="border-gray-200">Rate</th>
+                    <th class="border-gray-200">Worker Refund</th>
+                    <th class="border-gray-200">hirer Refund</th>
+                    <th class="border-gray-200">Work Mode</th>
+                    <th class="border-gray-200">Job Title</th>
+                    <th class="border-gray-200">Date</th>
+                    <th class="border-gray-200">Status</th>
+                    {% comment %}
+                    <th class="border-gray-200">Status</th>
+                    {% endcomment %}
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Item -->
+                {% for data in refund %}
+                <tr>
+                    <td>{{data.id}}</td>
+                    <td>{{data.worker}}</td>
+                    <td>{{data.rate}}</td>
+                    <td>{{data.worker_refund}}</td>
+                    <td>{{data.hirer_refund}}</td>
+                    <td>{%if data.work_mode == 'true' %}Full Day{%else%}Half Day{%endif%}</td>
+                    <td>{{data.job_title}}</td>
+                    <td>{{data.work_date}}</td>
+                    <td>{%if data.status == 2 %}Completed{%else%}Completed{%endif%}</td>
+                   
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

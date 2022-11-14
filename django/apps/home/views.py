@@ -487,7 +487,7 @@ class JobRequests(View):
     template_name = 'home/jobrequests.html'
     def get(self, request, *args, **kwargs):
         requests = AppliedJobs.objects.filter(
-            hirer=request.user.username).exclude(status=2)
+            hirer=request.user.username)
         return render(request, "home/jobrequests.html", {'requests': requests})
 
 @method_decorator(login_required, name='dispatch')

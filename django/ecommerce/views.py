@@ -7,9 +7,9 @@ from django.db.models import Q
 from django.urls import reverse
 from ecommerce.models import HireModel, ProductsModel, CartModel,RequestsModel
 from .forms import AddStockForm, HireNowForm,Laboregisterform,PurchaseForm,AddPackageForm
-from apps.home.models import Category
+from apps.home.models import Category,AppliedJobs
 from .forms import UpdateStockForm,CheckoutForm,UpdatePackageForm
-from .models import HireModel, PackageModel, PurchaseModel, LabopaymentModel
+from .models import HireModel, PackageModel, PurchaseModel, LabopaymentModel,RefundHistory
 import datetime
 from datetime import date, datetime
 from django.db.models import Sum
@@ -527,15 +527,13 @@ class Userpayments(View):
 	def get(self, request,id, *args, **kwargs):
 		wallet_balance =request.user.wallet
 		user_id=id
-		# print(wallet_balance,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
-		# print(user_id,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
-		rate = LabopaymentModel.objects.filter(work_id=id).values_list("rate")[0][0]
+		rate = AppliedJobs.objects.filter(id=id).values_list("rate")[0][0]
 		if wallet_balance >= rate:
-			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)
-			LabopaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
+			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)	
 			RequestsModel.objects.filter(id=id).update(status=3)
+			AppliedJobs.objects.filter(id=id).update(status=2)
 			messages.success(request,'Payment Successful')
-			return redirect('laboshop')
+			return redirect('jobrequests')
 		else:
 			messages.success(request,'Payment Failed')
 			return redirect('laboshop')
@@ -818,3 +816,19 @@ class Individual(View):
 	def get(self, request, *args, **kwargs):
 		template = 'individualprofile.html'
 		return render(request,template,{})
+class RefundHistoryUser(View):
+	def get(self, request, *args, **kwargs):
+		template = 'refundhistoryuser.html'
+		refund = RefundHistory.objects.filter(hirer=request.user).values()
+		context = {
+			"refund":refund,
+		}
+		return render(request,template,context)
+class RefundHistoryWorker(View):
+	def get(self, request, *args, **kwargs):
+		template = 'refundhistoryworker.html'
+		refund = RefundHistory.objects.filter(worker=request.user).values()
+		context = {
+			"refund":refund,
+		}
+		return render(request,template,context)
