@@ -273,7 +273,7 @@ class LaboShop(View):
 			users=NewUserModel.objects.all()
 			work = HireModel.objects.all()
 			datacategory=Category.objects.values()
-		requests = RequestsModel.objects.filter(hirer=request.user.username).values().exclude(status=0).exclude(status=5)
+		requests = RequestsModel.objects.filter(hirer=request.user.username).values()
 		context = {
 			'data': data,
 			'current_path':"Request services",
