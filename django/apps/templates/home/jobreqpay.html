@@ -23,7 +23,6 @@
   
       <div class="col-md-7 mt-5 m-auto">  
       
-      <!-- <span>Payment Method</span> -->
       <div class="card shadow-lg">
   
         <div class="accordion" id="accordionExample">
@@ -48,8 +47,7 @@
                 {{request.user.wallet}}
               <br>
           </div>
-          <!-- <label for=""></label> -->
-            <!-- <input type="text" class="form-control"> -->
+
           </div>
           </div>
         </div>
@@ -61,12 +59,7 @@
             <div class="d-flex align-items-center justify-content-between">
   
               <span><b>Summary</b> </span>
-              <!-- <div class="icons">
-              <img src="../../static/payment/img/master.png" width="30">
-              <img src="../../static/payment/img/visa.png" width="30">
-              <img src="../../static/payment/img/stripe.png" width="30">
-              <img src="../../static/payment/img/master.png" width="30">
-              </div> -->
+             
               
             </div>
             </button>
@@ -82,30 +75,6 @@
   
             <div class="row mt-3 mb-3">
   
-            <!-- <div class="col-md-6">
-  
-              <span class="font-weight-normal card-text">Expiry Date</span>
-              <div class="input">
-  
-              <i class="fa fa-calendar"></i>
-              <input type="text" class="form-control" placeholder="MM/YY">
-              
-              </div> 
-              
-            </div>
-  
-  
-            <div class="col-md-6">
-  
-              <span class="font-weight-normal card-text">CVC/CVV</span>
-              <div class="input">
-  
-              <i class="fa fa-lock"></i>
-              <input type="text" class="form-control" placeholder="000">
-              
-              </div> 
-              
-            </div> -->
             <div class="p-3">
               <a href="{% url 'userpayments' id %}">
               <button class="btn-gray-800 text-white btn-block rounded-2 p-2">Pay Now</button>
@@ -115,7 +84,6 @@
   
             </div>
   
-            <!-- <span class="text-muted certificate-text"><i class="fa fa-lock"></i> Your transaction is secured with ssl certificate</span> -->
            
           </div>
           </div>
@@ -124,21 +92,12 @@
         <div class="card">
           <div class="card-header p-0" id="headingTwo">
           <h2 class="mb-0">
-            <!-- <button class="btn btn-light btn-block text-left collapsed p-3 rounded-0 border-bottom-custom" type="button"  aria-expanded="false" aria-pressed="true" > -->
             <div class="d-flex align-items-center justify-content-between">
   
-              <!-- <span>Wallet</span>
-              <img src="../../static/payment/img/wallet.jpg" width="30"> -->
-              
             </div>
             </button>
           </h2>
           </div>
-          <!-- <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-          <div class="card-body">
-            <input type="text" class="form-control" placeholder="Paypal email">
-          </div>
-          </div> -->
         </div>
         
         </div>
@@ -146,139 +105,6 @@
       </div>
   
       </div>
-  
-      {% comment %} <div class="col-md-6">
-        <span>Summary</span>
-  
-        <div class="card">
-  
-        <div class="d-flex justify-content-between p-3">
-  
-          <div class="d-flex flex-column">
-            <span>Total Bill</span>
-          <!-- <button class="btn btn-light btn-block text-left collapsed p-3 rounded-0 border-bottom-custom" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
-          <span>Total Bill <i class="fa fa-caret-down"></i></span>
-          </button> -->
-          <!-- <a href="#" class="billing">Save upto 10% with packages!</a> -->
-          
-          <!-- <div id="collapse3" class="collapse" aria-labelledby="headingTwo" data-parent="#collapse3">
-          <div class="d-flex flex-row jistify-content-between">
-          <div class="card-body">
-            {%for i in products%}
-            {%for j in i%}
-            <p>{{j}}</p>
-            {%endfor%}
-            {%endfor%}
-          </div>
-          <div class="card-body float-right">
-            {%for i in products%}
-            {%for j in i%}
-            <p>{{j}}</p>
-            {%endfor%}
-            {%endfor%}
-          </div>
-
-
-          </div>  
-          </div>  -->
-          
-          </div>
-  
-          <div class="mt-1">
-         
-          <sup class="super-price px-4 ">${{rate}}</sup>
-          <!-- <span class="super-month">/-</span> -->
-          </div>
-        </div>
-          <!-- <div id="collapse3" class="collapse" aria-labelledby="headingTwo" data-parent="#collapse3">
-          <div class="d-flex flex-row jistify-content-between">
-          <div class="card-body">
-            <span class="font-weight-bold">Product Name</span><br><br>
-            {%for i in products%}
-            {%for j in i%}
-            <p>{{j}}</p>
-            {%endfor%}
-            {%endfor%}
-          </div>
-          <div class="card-body">
-            <span class="font-weight-bold">Quantity</span><br><br>
-
-            {%for i in quantity%}
-            {%for j in i%}
-            <p>{{j}}</p>
-            {%endfor%}
-            {%endfor%}
-          </div>
-          <div class="card-body float-right" style="text-align:end ;">
-            <span class="font-weight-bold">Price</span><br><br>
-
-            {%for i in prices%}
-            {%for j in i%}
-            <p>${{j}}</p>
-            {%endfor%}
-            {%endfor%}
-          </div>
-
-
-          </div>  
-          </div>   -->
-
-        
-        <!-- <hr class="mt-0 line">
-  
-        <div class="p-3">
-  
-          <div class="d-flex justify-content-between mb-2">
-  
-          <span>Refferal Bonus</span>
-          <span>-$0.00</span>
-          
-          </div>
-  
-          <div class="d-flex justify-content-between">
-  
-          <span>Discount <i class="fa fa-clock-o"></i></span>
-          <span>-0%</span>
-          
-          </div>
-          
-  
-        </div>
-  
-        <hr class="mt-0 line"> -->
-  
-  
-        <div class="p-3 d-flex justify-content-between">
-  
-          <div class="d-flex flex-column">
-  
-          <span>Today you pay(US Dollars)</span>
-          <!-- <small>After 30 days $9.59</small> -->
-          
-          </div>
-          <span>${{rate}}</span>
-  
-          
-  
-        </div>
-  
-  
-        <div class="p-3">
-        <a href="{% url 'userpayments' id %}">
-        <button class="btn-gray-800 text-white btn-block rounded-2 p-2">Pay Now</button>
-        </a> 
-         <div class="text-center">
-         <!-- <a href="#">Have any problems?</a> -->
-         </div>
-          
-        </div>
-  
-  
-  
-        
-        </div>
-      </div> {% endcomment %}
-      
     </div>
     
   
