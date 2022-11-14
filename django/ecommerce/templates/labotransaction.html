@@ -29,7 +29,7 @@
 <body style="background-color:#f5eee7" >
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
     <div class="d-block mb-4 mb-md-0">
-        <h2 class="h4">LaboCart Transactions</h2>
+        <h2 class="h4">Laboshop Transactions</h2>
     </div>
 
 </div>
@@ -63,14 +63,13 @@
               <td>{{data.Work_mode}} day</td>
               <td>{{data.Phone}}</td>
               <td>{{data.job_title}}</td>
-                <td>
-                    {% if data.status == 4 %}
-                    <span class="text-success">Completed</span>
-                    {% else %}
-                    <span class="text-danger">Cancelled</span>
-                    {% endif % }
-                    {% endif %}    
-                </td>          
+              <td>
+                {% if data.status == 4 %}
+                <span class="text-success">Completed</span>
+                {% else %}
+                <span class="text-danger">Cancelled</span>
+                {% endif %}
+              </td>          
             </tr>
 
           {% endfor %}
