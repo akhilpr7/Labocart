@@ -42,6 +42,6 @@ urlpatterns = [
 	path('userpayments/<int:id>/',views.Userpayments.as_view(), name="userpayments"),
 	path('refundhistory/',views.RefundHistoryUser.as_view(), name="refundhistory"),
 	path('refundhistoryworker/',views.RefundHistoryWorker.as_view(), name="refundhistoryworker"),
-
+	path('labotransactions/',views.LaboTransactions.as_view(), name="labotransactions"),
 ]
 

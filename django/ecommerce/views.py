@@ -832,3 +832,14 @@ class RefundHistoryWorker(View):
 			"refund":refund,
 		}
 		return render(request,template,context)
+
+@method_decorator(login_required,name='dispatch')
+class LaboTransactions(View):
+	def get(self, request, *args, **kwargs):
+		work = HireModel.objects.filter(worker_name=request.user).filter(status__in=[4, 5]).order_by('id')
+		context = {
+            'work': work,
+            'current_path': "LaboCart Transactions"
+        }
+		return render(request,'labotransaction.html',context)
+
