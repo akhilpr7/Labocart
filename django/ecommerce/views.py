@@ -9,7 +9,7 @@ from ecommerce.models import HireModel, ProductsModel, CartModel,RequestsModel
 from .forms import AddStockForm, HireNowForm,Laboregisterform,PurchaseForm,AddPackageForm
 from apps.home.models import Category
 from .forms import UpdateStockForm,CheckoutForm,UpdatePackageForm
-from .models import HireModel, PackageModel, PurchaseModel, LabopaymentModel
+from .models import HireModel, PackageModel, PurchaseModel, LabopaymentModel,RefundHistory
 import datetime
 from datetime import date, datetime
 from django.db.models import Sum
@@ -818,3 +818,19 @@ class Individual(View):
 	def get(self, request, *args, **kwargs):
 		template = 'individualprofile.html'
 		return render(request,template,{})
+class RefundHistoryUser(View):
+	def get(self, request, *args, **kwargs):
+		template = 'refundhistoryuser.html'
+		refund = RefundHistory.objects.filter(hirer=request.user).values()
+		context = {
+			"refund":refund,
+		}
+		return render(request,template,context)
+class RefundHistoryWorker(View):
+	def get(self, request, *args, **kwargs):
+		template = 'refundhistoryworker.html'
+		refund = RefundHistory.objects.filter(worker=request.user).values()
+		context = {
+			"refund":refund,
+		}
+		return render(request,template,context)
