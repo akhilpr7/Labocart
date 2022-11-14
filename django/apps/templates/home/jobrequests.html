@@ -47,11 +47,9 @@
                    
                   
                     <div class="card-footer">
-                        {%if request.status == 1%}
+                        {%if request.status == 2%}
                         <a href="" type = "button" class="btn-slack text-center text-decoration-none btn-gray-800 btn-block btn-lg btn-rounded rounded-3 text-white"><i class="far fa-clock me-2 text-white"></i>Request accepted ✔</a>     
                         {%else%}
-                        {% comment %} <a href="{% url 'jobrequestupdate' request.id %}" type = "button" class="text-center text-decoration-none btn-gray-800 btn-block btn-lg btn-rounded rounded-3 text-white"><i class="far fa-clock me-2 text-white"></i>Accept Request</a> 
-                        {% endif %} {% endcomment %}
                         <a href="{% url 'jobrequestpay' request.id %}" type = "button" class="text-center text-decoration-none btn-gray-800 btn-block btn-lg btn-rounded rounded-3 text-white"><i class="far fa-clock me-2 text-white"></i>Accept Request</a> 
                         {% endif %}
                     </div>

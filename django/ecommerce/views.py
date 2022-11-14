@@ -531,6 +531,7 @@ class Userpayments(View):
 		if wallet_balance >= rate:
 			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)	
 			RequestsModel.objects.filter(id=id).update(status=3)
+			AppliedJobs.objects.filter(id=id).update(status=2)
 			messages.success(request,'Payment Successful')
 			return redirect('jobrequests')
 		else:
