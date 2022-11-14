@@ -83,7 +83,7 @@ class TransactionView(View):
 class Userservices(View):
     def get(self, request, *args, **kwargs):
         details = HireModel.objects.filter(
-            Hire_name=request.user).order_by('id')
+            Hire_name=request.user).order_by('id').exclude(status=4)
         context = {
             'details': details,
             'current_path': "User Services"
@@ -94,7 +94,7 @@ class Userservices(View):
 class Workerservices(View):
     def get(self, request, *args, **kwargs):
         work = HireModel.objects.filter(
-            worker_name=request.user).order_by('id')
+            worker_name=request.user).order_by('id').exclude(status=4)
         context = {
             'work': work,
             'current_path': "Worker Services"
@@ -153,21 +153,12 @@ class UnCompletedService(View):
 class CompletedService(View):
     def get(self, request, *args, id, **kwargs):
         user = HireModel.objects.get(id=id)
-        if user.worker_status == 0:
-            update.user.worker_status =1
+        if user.status == 4:
+            user.save()
+        elif user.worker_status:
             user.save()
         else:
             user.save()
-
-
-
-        # if user.status == 4:
-        #     user.save()
-        # elif user.worker_status:
-        #     user.save()
-        # else:
-        #     user.worker_status = True
-        #     user.save()
         return redirect('workerservices')
 
 
