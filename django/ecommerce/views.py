@@ -518,9 +518,9 @@ class HireNowView(View):
 					worker_name=worker_name,
 					worker_phone=worker_phone,
 					created_at=datetime.datetime.now().date())
-				k = request.POST.get("id")
+				# k = request.POST.get("id")
 				pay = LabopaymentModel.objects.create(work_id=obj,rate=rate,status=0,amount=0)				
-				return render(request,'home/hirenowpay.html',{"id":k,"rate":rate})
+				return render(request,'home/hirenowpay.html',{"id":n,"rate":rate})
 			else:
 				messages.error(request,'Unsuccesfull')
 				return redirect('dashboard')
@@ -542,12 +542,11 @@ class Userpayments(View):
 class HireNowPayments(View):
 	def get(self, request,id, *args, **kwargs):
 		wallet_balance =request.user.wallet
-		rate = labourmodels.objects.filter(id=id).values_list("rate")[0][0]
+		rate = LabopaymentModel.objects.filter(work_id=id).values_list("rate")[0][0]
 		if wallet_balance >= rate:
-			print(rate,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
-			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)	
-			LabopaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
+			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)
 			RequestsModel.objects.filter(id=id).update(status=3)
+			LabopaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
 			messages.success(request,'Payment Successful')
 			return redirect('laboshop')
 		else:
