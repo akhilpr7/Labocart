@@ -301,16 +301,8 @@
                         </div>
                         {%for fund in fund%}
                         {%if i.rate <= fund.wallet%}
-                        <div class="card-footer"> 
-                            {%for request in request%}
-                            {%if request.status == 3%}
-                            <a href="" type = "button" class="btn-paypal text-center text-decoration-none btn-gray-800 d-block btn-lg text-white btn-block"><i class="far fa-clock me-2 text-white"></i>Pending</a> 
-                            {%elif request.ststus == 5 %}
-                            <a href="" type = "button" class="btn-slack text-center text-decoration-none btn-gray-800 d-block btn-lg text-white btn-block"><i class="far fa-clock me-2 text-white"></i>Hired</a> 
-                            {%else%}                       
+                        <div class="card-footer">                         
                             <a href="{% url 'hire_now' i.id %}" type = "button" class="text-center text-decoration-none btn-gray-800 d-block btn-lg text-white btn-block"><i class="far fa-clock me-2 text-white"></i>Hire Now</a>
-                            {%endif%}
-                            {%endfor%}
                         </div>
                         {%else%}
                         <div class="card-footer">
