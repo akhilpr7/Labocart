@@ -40,6 +40,8 @@ urlpatterns = [
 	path("workerview/",views.Workerview.as_view(), name="workerview"),
 	path("userprofile/",views.Individual.as_view(), name="userprofile"),
 	path('userpayments/<int:id>/',views.Userpayments.as_view(), name="userpayments"),
+	path('refundhistory/',views.RefundHistoryUser.as_view(), name="refundhistory"),
+	path('refundhistoryworker/',views.RefundHistoryWorker.as_view(), name="refundhistoryworker"),
 
 ]
 
