@@ -544,6 +544,7 @@ class HireNowPayments(View):
 		wallet_balance =request.user.wallet
 		rate = labourmodels.objects.filter(id=id).values_list("rate")[0][0]
 		if wallet_balance >= rate:
+			print(rate,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
 			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)	
 			LabopaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
 			RequestsModel.objects.filter(id=id).update(status=3)
