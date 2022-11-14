@@ -34,8 +34,8 @@
                     <td>{{data.id}}</td>
                     <td>{{data.worker}}</td>
                     <td>{{data.rate}}</td>
-                    <td>{{data.worker_refund}}</td>
-                    <td>{{data.hirer_refund}}</td>
+                    <td>{{data.worker_refund|floatformat:4}}</td>
+                    <td>{{data.hirer_refund|floatformat:4}}</td>
                     <td>{%if data.work_mode == 'true' %}Full Day{%else%}Half Day{%endif%}</td>
                     <td>{{data.job_title}}</td>
                     <td>{{data.work_date}}</td>
