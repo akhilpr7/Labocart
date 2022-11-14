@@ -259,18 +259,21 @@ class LaboShop(View):
 			users=NewUserModel.objects.all()
 			work = HireModel.objects.all()
 			datacategory=Category.objects.values()
+			# requests = RequestsModel.objects.filter(hirer=request.user).values()
 		else:
 			# job=jobmodel.objects.filter().values_list("job_title")[0][0]
 			
 		# if request.GET.get('jobtitle') is not None and request.GET.get('job') != '':
 		# datacategory=Category.objects.values()
+			
+			
 			datajob = jobmodel.objects.values()
 			data = labourmodels.objects.filter(status=1).exclude(username=request.user.username)
 			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
 			users=NewUserModel.objects.all()
 			work = HireModel.objects.all()
 			datacategory=Category.objects.values()
-		
+		requests = RequestsModel.objects.filter(hirer=request.user.username).values().exclude(status=0).exclude(status=5)
 		context = {
 			'data': data,
 			'current_path':"Request services",
@@ -279,6 +282,7 @@ class LaboShop(View):
 			"datajob":datajob,
 			"user":users,
 			"work":work,
+			"request":requests,
 		}
 		is_sub = NewUserModel.objects.filter(username=request.user.username).values_list('is_sub')[0][0]
 		if data:
