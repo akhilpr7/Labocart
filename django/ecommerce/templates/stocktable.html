@@ -64,8 +64,8 @@
               <td><p>{{data.Price}}</p></td>
               <td><p>{{data.Quantity}}</p></td>
               <td>
-                <a href="{% url 'updateProduct' data.id%}" class=" btn border rounded-2"><span class="material-symbols-outlined">edit</span></a>
-                <a data-target="#selectModal{{data.id}}" data-toggle="modal" class=" btn border rounded-2"><span class="material-symbols-outlined">delete</span></a>
+                <a href="{% url 'updateProduct' data.id%}" class=" btn border rounded-2 shadow-sm"><span class="material-symbols-outlined">edit</span></a>
+                <a data-target="#selectModal{{data.id}}" data-toggle="modal" class=" btn border rounded-2 shadow-sm"><span class="material-symbols-outlined">delete</span></a>
 
                 <!-- Modal -->
                 <div class="modal fade" id="selectModal{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

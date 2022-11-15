@@ -48,9 +48,9 @@
                 <td><span>{{data.subscribed_at}}</span></td>
                 <td>
                 {% if data.is_active %}
-                    <a href="{% url 'updateuser' data.id %}"class=" btn text-success">Active</a>
+                    <a href="{% url 'updateuser' data.id %}"class=" btn shadow-sm text-success">Active</a>
                 {%else%}
-                    <a href="{% url 'updateuser' data.id %}"class="btn text-danger">Block</a>
+                    <a href="{% url 'updateuser' data.id %}"class="btn shadow-sm text-danger">Block</a>
                 {% endif %}
                 </td>
               </tr>
