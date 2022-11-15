@@ -2,6 +2,7 @@ from email.policy import default
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 import datetime
+import random
 
 class ProductsModel(models.Model):
     Product_name = models.TextField(max_length=100,null=False, blank=False)
@@ -48,6 +49,7 @@ class HireModel(models.Model):
     worker_phone = models.BigIntegerField()
     work_date =  models.DateTimeField(auto_now_add=True)
     comment = models.CharField(default="",max_length=1000,null=True,blank=True)
+    otp = models.IntegerField(default=random.randint(100000,999999),blank=False,null=False)
 
 class RequestsModel(models.Model):
     hirer = models.TextField(max_length=25, blank=False)
