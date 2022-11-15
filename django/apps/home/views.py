@@ -83,7 +83,7 @@ class TransactionView(View):
 class Userservices(View):
     def get(self, request, *args, **kwargs):
         details = HireModel.objects.filter(
-            Hire_name=request.user).order_by('id').exclude(status=4)
+            Hire_name=request.user).order_by('id').exclude(status__in=[4,5])
         context = {
             'details': details,
             'current_path': "User Services"
@@ -94,7 +94,7 @@ class Userservices(View):
 class Workerservices(View):
     def get(self, request, *args, **kwargs):
         work = HireModel.objects.filter(
-            worker_name=request.user).order_by('id').exclude(status=4)
+        worker_name=request.user).order_by('id').exclude(status__in=[4,5])
         context = {
             'work': work,
             'current_path': "Worker Services"
@@ -158,6 +158,7 @@ class CompletedService(View):
         elif user.worker_status:
             user.save()
         else:
+            user.worker_status=True
             user.save()
         return redirect('workerservices')
 
@@ -374,7 +375,7 @@ class JobPostingView(View):
 @method_decorator(login_required, name='dispatch')
 class ManageServices(View):
     def get(self, request, *args, **kwargs):
-        details = labourmodels.objects.all().exclude(status=3).order_by('id')
+        details = labourmodels.objects.all().exclude(status=2).order_by('id')
         history = HireModel.objects.filter(status = 4).values()
         context = {
             'details': details,

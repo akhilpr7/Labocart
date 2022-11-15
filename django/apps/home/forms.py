@@ -7,7 +7,7 @@ class AddFundForm(forms.Form):
     def __init__(self,*args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(AddFundForm, self).__init__(*args, **kwargs)
-        self.fields['amount'] = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control','min':'1'}))
+        self.fields['amount'] = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control','min':'1','max':'9999'}))
         print(self.request.user.username)
 
     def clean(self):
