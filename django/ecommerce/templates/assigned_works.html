@@ -34,7 +34,7 @@
     {% endfor %}
     {% endif %}
     <!-- Navbar Start -->
-    <div class="container-fluid">
+    <!-- <div class="container-fluid">
         <div class="row border-top px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
                 <a class="btn shadow-none d-flex align-items-center justify-content-between w-100 rounded-2 bg-gray-800 text-white" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
@@ -84,7 +84,7 @@
             </div>
             
         </div>
-    </div>
+    </div> -->
     <!-- Navbar End -->
 
     <!-- Shop Product Start -->
@@ -100,7 +100,13 @@
                                 {% comment %} <h6 class="mb-4"> {{i.Hire_name}}</h6> {% endcomment %}
                                 <h6 class="mb-4"> Requested user : {{i.name}}</h6>
                                 <h6 class="mb-4">Place : {{i.place}}</h6>
-                                <h6 class="mb-4">Work mode :{{i.work_type}}</h6>
+                                <h6 class="mb-4">Work Mode :
+                                    {% if i.work_type == True %}
+                                        <span>Half Day</span>
+                                    {%else%}
+                                        <span>Full Day</span>
+                                    {%endif%}
+                                </h6>
                                 <h6 class="mb-4">Phone Number : {{i.phone}}</h6>
                                 {%if i.status == 0%}
                                 <h6 class="mb-4">Status : Active</h6>
