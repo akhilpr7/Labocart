@@ -37,7 +37,7 @@ class LoginViews(LoginView):
         user = authenticate(
             request, username=request.POST['username'], password=request.POST['password'])
         if user is not None:
-            if user.kyc_approved :
+            if user.kyc_approved:
                 login(request, user)
                 return HttpResponseRedirect(reverse('dashboard'))
             else:

@@ -301,15 +301,16 @@ class LaboShop(View):
 			"work":work,
 			"request":requests,
 		}
-		is_sub = NewUserModel.objects.filter(username=request.user.username).values_list('is_sub')[0][0]
-		if data:
-			if is_sub:
+		is_sub = NewUserModel.objects.filter(username=request.user).values_list('is_sub')[0][0]
+		print(is_sub,"subbbbbbbbbbbbbbbbbbb")
+		if is_sub == True or request.user.is_superuser:
+			if data:
 				return render(request, 'labo-shop.html', context)
 			else:
-				messages.error(request,"Membership Required !")
-				return redirect("membership")
+				return redirect('emptylaboshop')
 		else:
-			return redirect('emptylaboshop')
+			messages.error(request,"Membership Required !")
+			return redirect("membership")
 
 @method_decorator(login_required,name='dispatch')
 class LaboShopCategory(View):
