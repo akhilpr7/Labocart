@@ -158,6 +158,7 @@ class CompletedService(View):
         elif user.worker_status:
             user.save()
         else:
+            user.worker_status=True
             user.save()
         return redirect('workerservices')
 
