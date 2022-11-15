@@ -52,6 +52,7 @@
                 <th class="border-gray-200">Phone</th>
                 <th class="border-gray-200">Job</th>
                 <th class="border-gray-200">Option</th>
+                <th class="border-gray-200">One Time Code</th>
 
 
                  
@@ -90,13 +91,18 @@
                       </div>
                       <div class="modal-footer">
                         <a href="{% url 'uncompletedservices' data.id %}" class=" btn border rounded-2"><span class="text-black">Not completed</span></a> 
-                        <a href="{% url 'rating' data.id %}" class=" btn border rounded-2"><span class="text-black">Completed</span></a>
+                        {% if data.worker_status %}
+                        <a href="{% url 'rating' data.id %}" class=" btn border rounded-2"><span class="text-success">Completed</span></a>
+                        {% else %}
+                        <a href="" class=" btn border rounded-2"><span class="text-danger">Pending Completion</span></a>
+                        {% endif %}
                       </div>
                     </div>
                   </div>
                 </div>
                 {% endif %}
               </td>
+              <td><b>{{data.otp}}</b></td>
             </tr>
 
           {% endfor %}

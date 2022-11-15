@@ -200,7 +200,7 @@ class RatingView(View):
         data = HireModel.objects.get(id=request.POST['id'])
         data.rating = star
         data.comment = request.POST['comment']
-        data.worker_status = True
+        # data.worker_status = True
         data.user_status = 1
         print(data)
         data.save()
@@ -586,5 +586,33 @@ class Emptycart(View):
 class EmptyLaboshop(View):
     def get(self ,request, *arg, **kwargs):
         return render(request, "home/emptylaboshop.html",{})
+
+
+@method_decorator(login_required, name='dispatch')
+class ConfirmOTP(View):
+    def get(self ,request,id, *arg, **kwargs):
+        return render(request, "home/otp.html",{"id":id})   
+    def post(self,request,*arg,**kwargs):
+        id = request.POST['id']   
+        n1 = request.POST['first']   
+        n2 = request.POST['second']   
+        n3 = request.POST['third']   
+        n4 = request.POST['fourth']   
+        n5 = request.POST['fifth']   
+        n6 = request.POST['sixth']
+        # print(id,"------",n1,"------",n2,"------",n3,"------",n4,"------",n5,"------",n6)
+        # a=[]
+        a= n1+n2+n3+n4+n5+n6
+        print(a,"--==========--")
+        otp = HireModel.objects.filter(id=id).values_list("otp")[0][0]
+        print(otp,"oooooooooooooooootttttttttppppppp")
+        if otp==int(a):
+            print("accepted......")
+            return redirect("completedservices",id)
+
+        else:
+            messages.error(request,"OTP is not valid !!")
+            print("rejected......")
+            return redirect("confirmotp",id)
 
 

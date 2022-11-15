@@ -198,25 +198,10 @@
     <!-- Shop Product Start -->
     <div class="col-12 col-md-12">
         <div class="row pb-3">
-            {% comment %} {{request}} {% endcomment %}
-            {%if request != nil %}
             {% for i in data %}
-            {% for j in request %}
-          
-            {% if i.username == j.worker_name and i.job_title == j.job_title %}
-            {% comment %} <p>pending</p> {% endcomment %}
-            {%else%}
-            {% comment %} {{i.username}}
-            <p>.........</p>
-            {{i.job_title}}
-            <p>.........</p>
-            {{j.worker_name}}
-            <p>.........</p>
-            {{j.job_title}} 
-            <p>.........</p>     {% endcomment %}
             <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                 <div class="card product-item border-0 mb-4 shadow-lg">
-                    <div class="card" style="border-radius: 15px; backgrou  nd-color: rgba(255, 255, 255, 0.993);">
+                    <div class="card" style="border-radius: 15px; background-color: rgba(255, 255, 255, 0.993);">
                         <div class="card-body p-4 text-black">
                             <div>
                                 <h6 class="mb-4">{{i.job_title}}</h6>
@@ -327,35 +312,13 @@
                         {%endfor%}
                     </div>
                 </div>
-                
             </div>
-            
-            {%endif%}
             {% endfor %}
-            {% endfor %}
-            {%endif%}
-
-            
-
-
-
-
-
-
-
-
+         
         </div>
-
-
-
-
-
-
-
-
     </div>
     <!-- Back to Top -->
-  
+    {% comment %} <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a> {% endcomment %}
 
 
     <!-- JavaScript Libraries -->

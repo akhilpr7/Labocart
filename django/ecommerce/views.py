@@ -273,6 +273,8 @@ class LaboShop(View):
 			users=NewUserModel.objects.all()
 			work = HireModel.objects.all()
 			datacategory=Category.objects.values()
+		# new = []
+		# new1 =[]
 		requests = RequestsModel.objects.filter(hirer=request.user.username).values().exclude(status=0).exclude(status=5)
 		context = {
 			'data': data,
