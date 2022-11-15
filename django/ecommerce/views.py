@@ -255,29 +255,44 @@ class LaboShop(View):
 			job=jobmodel.objects.filter(id=filter).values_list("job_title")[0][0]
 			datajob = jobmodel.objects.values()
 			data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1)).exclude(username=request.user.username)
+			requestData = RequestsModel.objects.filter(hirer=request.user.username,status=3)	
+			if requestData :
+					print("enterd")
+					for user in data:
+						workername = user.username 
+						for datas in requestData:
+							if datas.hirer == request.user.username and datas.worker_name == workername  :
+								newdata = data.exclude(username=datas.worker_name,job_title = datas.job_title)
+			else:
+				newdata = data					
 			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
 			users=NewUserModel.objects.all()
 			work = HireModel.objects.all()
 			datacategory=Category.objects.values()
 			# requests = RequestsModel.objects.filter(hirer=request.user).values()
 		else:
-			# job=jobmodel.objects.filter().values_list("job_title")[0][0]
-			
-		# if request.GET.get('jobtitle') is not None and request.GET.get('job') != '':
-		# datacategory=Category.objects.values()
-			
 			
 			datajob = jobmodel.objects.values()
 			data = labourmodels.objects.filter(status=1).exclude(username=request.user.username)
+
+			requestData = RequestsModel.objects.filter(hirer=request.user.username,status=3)			
+			if requestData :
+					for user in data:
+						workername = user.username 
+						job = user.job_title
+						for datas in requestData:
+							if datas.hirer == request.user.username and datas.worker_name == workername and datas.job_title == job :
+								newdata = data.exclude(username=datas.worker_name,job_title = datas.job_title)
+			else:
+				newdata = data					
 			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
 			users=NewUserModel.objects.all()
 			work = HireModel.objects.all()
 			datacategory=Category.objects.values()
-		# new = []
-		# new1 =[]
-		requests = RequestsModel.objects.filter(hirer=request.user.username).values().exclude(status=0).exclude(status=5)
+		requests = RequestsModel.objects.filter(hirer=request.user.username).values()
+
 		context = {
-			'data': data,
+			'data': newdata,
 			'current_path':"Request services",
 			'fund': fund,
 			"datacategory":datacategory,
@@ -524,9 +539,9 @@ class HireNowView(View):
 					worker_name=worker_name,
 					worker_phone=worker_phone,
 					created_at=datetime.datetime.now().date())
-				k = request.POST.get("id")
+				# k = request.POST.get("id")
 				pay = LabopaymentModel.objects.create(work_id=obj,rate=rate,status=0,amount=0)				
-				return render(request,'home/hirenowpay.html',{"id":k,"rate":rate})
+				return render(request,'home/hirenowpay.html',{"id":n,"rate":rate})
 			else:
 				messages.error(request,'Unsuccesfull')
 				return redirect('dashboard')
@@ -548,11 +563,11 @@ class Userpayments(View):
 class HireNowPayments(View):
 	def get(self, request,id, *args, **kwargs):
 		wallet_balance =request.user.wallet
-		rate = labourmodels.objects.filter(id=id).values_list("rate")[0][0]
+		rate = LabopaymentModel.objects.filter(work_id=id).values_list("rate")[0][0]
 		if wallet_balance >= rate:
-			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)	
-			LabopaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
+			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)
 			RequestsModel.objects.filter(id=id).update(status=3)
+			LabopaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
 			messages.success(request,'Payment Successful')
 			return redirect('laboshop')
 		else:
@@ -855,3 +870,14 @@ class RefundHistoryWorker(View):
 			"refund":refund,
 		}
 		return render(request,template,context)
+
+@method_decorator(login_required,name='dispatch')
+class LaboTransactions(View):
+	def get(self, request, *args, **kwargs):
+		work = HireModel.objects.filter(worker_name=request.user).filter(status__in=[4, 5]).order_by('id')
+		context = {
+            'work': work,
+            'current_path': "LaboCart Transactions"
+        }
+		return render(request,'labotransaction.html',context)
+

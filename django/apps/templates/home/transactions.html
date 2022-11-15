@@ -5,7 +5,7 @@
 
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div class="d-block mb-4 mb-md-0">
-            <h2 class="h4">Transactions</h2>
+            <h5 class="h5"> <b>TRANSACTIONS</b> </h5>
         </div>
     </div>
 
@@ -67,6 +67,57 @@
             </tbody>
         </table>
     </div>
+
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div class="d-block mb-4 mb-md-0">
+            <h5 class="h5"> <b>LABOSHOP TRANSACTIONS</b> </h5>
+        </div>
+  
+    </div>
+    
+  
+    <div class="card card-body border-0 shadow table-wrapper table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+              <th class="border-gray-200">ID</th>
+              <th class="border-gray-200">Worker Name</th>
+              <th class="border-gray-200">Place</th>
+              <th class="border-gray-200">Work Mode</th>
+              <th class="border-gray-200">Phone</th>
+              <th class="border-gray-200">Job</th>
+              <th class="border-gray-200">Status</th>
+
+
+               
+            </tr>
+        </thead>
+        <tbody>
+
+          {% for data in details %}
+
+          <tr>
+            <td><p>{{data.id}}</p></td>
+            <td>{{data.worker_name}}</td>
+            <td>{{data.Place}}</td>
+            <td>{% if data.Work_mode == "true" %}Full day{% else %}Half Day{% endif %}</td>
+            <td>{{data.Phone}}</td>
+            <td>{{data.job_title}}</td>
+            <td>
+              {% if data.status == 4 %}
+              <span class="text-success">Completed</span>
+              {% else %}
+              <span class="text-danger">Cancelled</span>
+              {% endif %}
+                         
+            </td>
+          </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->

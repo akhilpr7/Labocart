@@ -70,8 +70,12 @@ class TransactionView(View):
             else:
                 new_context = PurchaseModel.objects.filter(
                 status=3,username=request.user.username)
+                # for labocat transactions
+                details = HireModel.objects.filter(
+            Hire_name=request.user).filter(status__in=[4, 5]).order_by('id')
                 context={
                     'datas' : new_context,
+                    'details' : details,
                     'current_path': "Transactions"
                     } 
                 return render(request , self.template_name , context)   
@@ -79,7 +83,7 @@ class TransactionView(View):
 class Userservices(View):
     def get(self, request, *args, **kwargs):
         details = HireModel.objects.filter(
-            Hire_name=request.user).order_by('id')
+            Hire_name=request.user).order_by('id').exclude(status=4)
         context = {
             'details': details,
             'current_path': "User Services"
@@ -90,13 +94,12 @@ class Userservices(View):
 class Workerservices(View):
     def get(self, request, *args, **kwargs):
         work = HireModel.objects.filter(
-            worker_name=request.user).order_by('id')
+            worker_name=request.user).order_by('id').exclude(status=4)
         context = {
             'work': work,
             'current_path': "Worker Services"
         }
         return render(request, "home/worker-services.html", context)
-
 
 @method_decorator(login_required, name='dispatch')
 
@@ -155,7 +158,6 @@ class CompletedService(View):
         elif user.worker_status:
             user.save()
         else:
-            user.worker_status = True
             user.save()
         return redirect('workerservices')
 

@@ -29,7 +29,7 @@
 <body style="background-color:#f5eee7" >
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
     <div class="d-block mb-4 mb-md-0">
-      <h5 class="h5"> <b>WORKER SERVICES</b> </h5>
+      <h5 class="h5"> <b>LABOSHOP TRANSACTIONS</b> </h5>
     </div>
 
 </div>
@@ -45,8 +45,7 @@
               <th class="border-gray-200">Work Mode</th>
               <th class="border-gray-200">Phone</th>
               <th class="border-gray-200">Job</th>
-              <th class="border-gray-200">Option</th>
-              <th class="border-gray-200">Done</th>
+              <th class="border-gray-200">Status</th>
 
 
 
@@ -66,35 +65,11 @@
               <td>{{data.job_title}}</td>
               <td>
                 {% if data.status == 4 %}
-                <a href="{% url 'confirmotp' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
-                {% elif data.worker_status%}
-                <a href="{% url 'confirmotp' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
-                {% elif data.user_status == 2 %}
-                <a href="#" class=" btn border rounded-2"><span class="material-symbols-outlined text-danger">close</span></a>
-                {% elif data.status == 5 %}
-                  {% if data.worker_status%}
-                  <a href="#" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
-                  {%else%}
-                  <a href="#" class=" btn border rounded-2"><span class="material-symbols-outlined text-black">done</span></a>
-                  {%endif%}
+                <span class="text-success">Completed</span>
                 {% else %}
-                <a href="{% url 'confirmotp' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-black">done</span></a>
+                <span class="text-danger">Cancelled</span>
                 {% endif %}
-              </td>
-              <td>
-                {% if data.status == 4 %}
-                <button disabled href="{% url 'usercompletedservices' data.id %}" class=" btn border rounded-lg"><span class="material-symbols-outlined text-success">done</span></button>
-                {% elif data.status == 5 %}
-                <button disabled href="#" class=" btn border rounded-lg"><span class="material-symbols-outlined text-danger">close</span></button>
-
-                {% elif data.user_status == 1 %}
-                <button disabled href="{% url 'usercompletedservices' data.id %}" class=" btn border rounded-lg"><span class="material-symbols-outlined text-success">done</span></button>
-                {% elif data.user_status == 2 %}
-                <button disabled href="{% url 'usercompletedservices' data.id %}"  class=" btn border rounded-lg"><span class="material-symbols-outlined text-danger">close</span></button>
-                {% elif data.user_status == 0 %}
-                <button disabled href="{% url 'usercompletedservices' data.id %}"  class=" btn border rounded-lg"><span class="material-symbols-outlined text-black">done</span></button>
-                {% endif %}
-              </td>
+              </td>          
             </tr>
 
           {% endfor %}

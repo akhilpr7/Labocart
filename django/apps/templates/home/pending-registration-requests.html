@@ -1,66 +1,108 @@
-{% extends "layouts/base.html" %} 
+<!DOCTYPE html>
+<html lang="en">
+{%extends 'index.html'%}
+{% block content%}
+<head>
+    <meta charset="utf-8">
+    <title>EShopper - Bootstrap Shop Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
 
-{% block title %} Pending KYC approval {% endblock %}
+    <!-- Favicon -->
+    <link href="../../../static/img/favicon.ico" rel="icon">
 
-{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+        <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
-    {% if messages %}
-    {% for message in messages %}
-        <p class="d-none" id="messagetag">{{message.tags}}</p>
-        <p class="d-none " id="messagecontent">{{message}}</p>
-    {% endfor %}
-  {% endif %}
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-        <div class="d-block mb-4 mb-md-0">
-            <h2 class="h4">Pending KYC approval</h2>
-        </div>
+    <!-- Libraries Stylesheet -->
+    <link href="../../../static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="../../../static/css/style.css" rel="stylesheet">
+</head>
+
+<body style="background-color:#f5eee7" >
+
+  {% if messages %}
+  {% for message in messages %}
+      <p class="d-none" id="messagetag">{{message.tags}}</p>
+      <p class="d-none " id="messagecontent">{{message}}</p>
+  {% endfor %}
+{% endif %}
+
+ <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+      <div class="d-block mb-4 mb-md-0">
+        <h5 class="h5"> <b>PENDING KYC APPROVAL</b> </h5>
     </div>
 
-    <div class="card card-body border-0 shadow table-wrapper table-responsive">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th class="border-gray-200">Username</th>
-                    <th class="border-gray-200">First Name</th>
-                    <th class="border-gray-200">Last Name</th>
-                    <th class="border-gray-200">Email</th>
-                    <th class="border-gray-200">Phone No</th>
-                    <th class="border-gray-200">Image</th>
-                    <th class="border-gray-200">KYC</th>
-                    <th class="border-gray-200">Options</th>
-                    {% comment %}
-                    <th class="border-gray-200">Status</th>
-                    {% endcomment %}
-                </tr>
-            </thead>
-            <tbody >
-                <!-- Item -->
-                {% for data in datas %}
-                <tr class="" > 
-                    <td class="align-middle">{{data.username}}</td>
-                    <td class="align-middle" >{{data.first_name}}</td>
-                    <td class="align-middle" >{{data.last_name}}</td>
-                    <td class="align-middle" >{{data.email}}</td>
-                    <td class="align-middle">{{data.phone_no}}</td>
-                    <td class="align-middle"><img  class="rounded" style="width:200px ; height:200px;object-fit: cover;" src="{{media_url}}{{data.image}}" alt="{{data.username}}'s Image"></td>
-                    <td class="align-middle"><img id="myImg{{data.id}}" data="{{data.id}}" class="rounded" style="width:200px ; height:200px;object-fit: cover;" src="{{media_url}}{{data.kyc}}" alt="{{data.username}}'s Aadhar"></td>
-                    <td class="align-middle">
-                        <a href="{% url 'approveuser' data.id %}" class=" btn border rounded-2 text-success">Approve</a>
-                        <a href="{% url 'rejectuser' data.id  %}" class=" btn border rounded-2 text-danger">Reject</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+  </div>
+  
 
-            <div id="myModal" class="modal">
-                <span class="close">&times;</span>
-                <img class="modal-content" id="img01">
-                <div id="caption"></div>
-            </div>
+  <div class="card card-body border-0 shadow table-wrapper table-responsive">
+      <table class="table table-hover">
+          <thead>
+            <tr>
+                <th class="border-gray-200">Username</th>
+                <th class="border-gray-200">First Name</th>
+                <th class="border-gray-200">Last Name</th>
+                <th class="border-gray-200">Email</th>
+                <th class="border-gray-200">Phone No</th>
+                <th class="border-gray-200">Image</th>
+                <th class="border-gray-200">KYC</th>
+                <th class="border-gray-200">Options</th>
+            </tr>
+          </thead>
+          <tbody>
 
-    </div>
+            {% for data in datas %}
+
+            <tr>
+                <td class="align-middle">{{data.username}}</td>
+                <td class="align-middle" >{{data.first_name}}</td>
+                <td class="align-middle" >{{data.last_name}}</td>
+                <td class="align-middle" >{{data.email}}</td>
+                <td class="align-middle">{{data.phone_no}}</td>
+                <td class="align-middle"><img  class="rounded" style="width:200px ; height:200px;object-fit: cover;" src="{{media_url}}{{data.image}}" alt="{{data.username}}'s Image"></td>
+                <td class="align-middle"><img id="myImg{{data.id}}" data="{{data.id}}" class="rounded" style="width:200px ; height:200px;object-fit: cover;" src="{{media_url}}{{data.kyc}}" alt="{{data.username}}'s Aadhar"></td>
+                <td class="align-middle">
+                    <a href="{% url 'approveuser' data.id %}" class=" btn border rounded-2 shadow-sm text-success">Approve</a>
+
+                <a data-target="#selectModal{{data.id}}" data-toggle="modal" class=" btn border rounded-2 shadow-sm text-danger">Reject</a>
+
+                <!-- Modal -->
+                <div class="modal fade" id="selectModal{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Do You Really Want to Delete This?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-footer">
+                        <a href="{% url 'pendingkyc'%}" class=" btn border rounded-2"><span class="text-black">Cancel</span></a> 
+                        <a href="{% url 'rejectuser' data.id %}" class=" btn border rounded-2"><span class="text-black">Yes</span></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+          {% endfor %}
+
+          </tbody>
+      </table>
+     
+  </div> 
+
 <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+
 <script>
 
     
@@ -88,8 +130,24 @@
             modal.style.display = "none";
         }
         </script>
-        
-        {% endblock content %}
-        
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="lib/easing/easing.min.js"></script>
+<script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Contact Javascript File -->
+<script src="mail/jqBootstrapValidation.min.js"></script>
+<script src="mail/contact.js"></script>
+
+<!-- Template Javascript -->
+<script src="js/main.js"></script>
+</body>
+
+{% endblock content %}
+</html>
