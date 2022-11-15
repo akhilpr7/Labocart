@@ -35,7 +35,7 @@
 {% endif %}
  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
       <div class="d-block mb-4 mb-md-0">
-          <h2 class="h4">Manage Services</h2>
+        <h5 class="h5"> <b>SERVICE REQUEST</b> </h5>
       </div>
 
   </div>
@@ -73,9 +73,9 @@
                 <td><span>{{data.phone}}</span></td>
                 <td><span><img src="{{data.job_certificate.url}}" height="200px" width="300px" class="zoomD rounded border"></img></span></td>
               <td><span>
-                <a href="{% url 'acceptservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
+                <a href="{% url 'acceptservices' data.id %}" class=" btn border rounded-2 shadow-sm"><span class="material-symbols-outlined text-success">done</span></a>
               </span>
-              <a data-target="#selectModal{{data.id}}" data-toggle="modal" class=" btn border rounded-2"><span class="material-symbols-outlined text-danger">close</span></a>
+              <a data-target="#selectModal{{data.id}}" data-toggle="modal" class=" btn border rounded-2 shadow-sm"><span class="material-symbols-outlined text-danger">close</span></a>
 
 
 

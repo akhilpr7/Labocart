@@ -8,8 +8,8 @@
 {% block content %}
  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
       <div class="d-block mb-4 mb-md-0">
-          <h2 class="h4">Manage Services</h2>
-      </div>
+        <h5 class="h5"> <b>MANAGE SERVICES</b> </h5>
+    </div>
 
   </div>
   
@@ -52,9 +52,9 @@
                   </span></td>
                 <td><span>
                 {% if data.status == 0 %}
-                    <a href="{%url 'updateservices' data.id %}" class="btn rounded-2 text-danger">Inactive</a>
+                    <a href="{%url 'updateservices' data.id %}" class="btn rounded-2 shadow-sm text-danger">Inactive</a>
                 {% elif data.status == 1 %}
-                    <a href="{%url 'updateservices' data.id %}" class="btn rounded-2 text-success">Active</a>
+                    <a href="{%url 'updateservices' data.id %}" class="btn rounded-2 shadow-sm text-success">Active</a>
                 {% elif data.status == 2 %}
                     <a href="{%url 'updateservices' data.id %}" class="btn text-danger">Cancel</a>
                 {% endif %}

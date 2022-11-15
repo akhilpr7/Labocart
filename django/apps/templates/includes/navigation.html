@@ -33,7 +33,7 @@
                             <div class="col-md-6 flex-row align-self-md-end">
                               <a href="{% url 'profile' %}"><img class="avatar rounded-circle" alt="" src="/static/media/{{request.user.image}}">
                               <span class="mb-0 font-small fw-bold text-white align-top">
-                                Current User: <strong>{{request.user}}</strong>
+                                Current User: <strong>{{request.user.username}}</strong>
                               </span>
                             </a>
                             </div>

@@ -29,7 +29,7 @@
 <body style="background-color:#f5eee7" >
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
     <div class="d-block mb-4 mb-md-0">
-        <h2 class="h4">Worker Services</h2>
+      <h5 class="h5"> <b>WORKER SERVICES</b> </h5>
     </div>
 
 </div>
@@ -66,9 +66,9 @@
               <td>{{data.job_title}}</td>
               <td>
                 {% if data.status == 4 %}
-                <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
+                <a href="{% url 'confirmotp' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
                 {% elif data.worker_status%}
-                <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
+                <a href="{% url 'confirmotp' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
                 {% elif data.user_status == 2 %}
                 <a href="#" class=" btn border rounded-2"><span class="material-symbols-outlined text-danger">close</span></a>
                 {% elif data.status == 5 %}
@@ -78,7 +78,7 @@
                   <a href="#" class=" btn border rounded-2"><span class="material-symbols-outlined text-black">done</span></a>
                   {%endif%}
                 {% else %}
-                <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-black">done</span></a>
+                <a href="{% url 'confirmotp' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-black">done</span></a>
                 {% endif %}
               </td>
               <td>

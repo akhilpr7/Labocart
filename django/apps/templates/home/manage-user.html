@@ -8,8 +8,8 @@
 {% block content %}
  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
       <div class="d-block mb-4 mb-md-0">
-          <h2 class="h4">Manage User</h2>
-      </div>
+        <h5 class="h5"> <b>MANAGE USER</b> </h5>
+    </div>
 
   </div>
   
@@ -48,9 +48,9 @@
                 <td><span>{{data.subscribed_at}}</span></td>
                 <td>
                 {% if data.is_active %}
-                    <a href="{% url 'updateuser' data.id %}"class=" btn text-success">Active</a>
+                    <a href="{% url 'updateuser' data.id %}"class=" btn shadow-sm text-success">Active</a>
                 {%else%}
-                    <a href="{% url 'updateuser' data.id %}"class="btn text-danger">Block</a>
+                    <a href="{% url 'updateuser' data.id %}"class="btn shadow-sm text-danger">Block</a>
                 {% endif %}
                 </td>
               </tr>
