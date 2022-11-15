@@ -29,6 +29,8 @@ class labourmodels(models.Model):
     status = models.IntegerField(blank = False,default=0)
     job_certificate = models.ImageField(upload_to='credentials',blank=False,null=False,default=0)
 
+    def __str__(self):
+        return self.username
 
 class jobmodel(models.Model):
     job_title = models.CharField(max_length=255, blank=False)

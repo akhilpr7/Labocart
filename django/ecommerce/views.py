@@ -255,27 +255,44 @@ class LaboShop(View):
 			job=jobmodel.objects.filter(id=filter).values_list("job_title")[0][0]
 			datajob = jobmodel.objects.values()
 			data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1)).exclude(username=request.user.username)
+			requestData = RequestsModel.objects.filter(hirer=request.user.username,status=3)	
+			if requestData :
+					print("enterd")
+					for user in data:
+						workername = user.username 
+						for datas in requestData:
+							if datas.hirer == request.user.username and datas.worker_name == workername  :
+								newdata = data.exclude(username=datas.worker_name,job_title = datas.job_title)
+			else:
+				newdata = data					
 			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
 			users=NewUserModel.objects.all()
 			work = HireModel.objects.all()
 			datacategory=Category.objects.values()
 			# requests = RequestsModel.objects.filter(hirer=request.user).values()
 		else:
-			# job=jobmodel.objects.filter().values_list("job_title")[0][0]
-			
-		# if request.GET.get('jobtitle') is not None and request.GET.get('job') != '':
-		# datacategory=Category.objects.values()
-			
 			
 			datajob = jobmodel.objects.values()
 			data = labourmodels.objects.filter(status=1).exclude(username=request.user.username)
+
+			requestData = RequestsModel.objects.filter(hirer=request.user.username,status=3)			
+			if requestData :
+					for user in data:
+						workername = user.username 
+						job = user.job_title
+						for datas in requestData:
+							if datas.hirer == request.user.username and datas.worker_name == workername and datas.job_title == job :
+								newdata = data.exclude(username=datas.worker_name,job_title = datas.job_title)
+			else:
+				newdata = data					
 			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
 			users=NewUserModel.objects.all()
 			work = HireModel.objects.all()
 			datacategory=Category.objects.values()
 		requests = RequestsModel.objects.filter(hirer=request.user.username).values()
+
 		context = {
-			'data': data,
+			'data': newdata,
 			'current_path':"Request services",
 			'fund': fund,
 			"datacategory":datacategory,
