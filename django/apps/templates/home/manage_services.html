@@ -52,9 +52,9 @@
                   </span></td>
                 <td><span>
                 {% if data.status == 0 %}
-                    <a href="{%url 'updateservices' data.id %}" class="btn rounded-2 text-danger">Inactive</a>
+                    <a href="{%url 'updateservices' data.id %}" class="btn rounded-2 shadow-sm text-danger">Inactive</a>
                 {% elif data.status == 1 %}
-                    <a href="{%url 'updateservices' data.id %}" class="btn rounded-2 text-success">Active</a>
+                    <a href="{%url 'updateservices' data.id %}" class="btn rounded-2 shadow-sm text-success">Active</a>
                 {% elif data.status == 2 %}
                     <a href="{%url 'updateservices' data.id %}" class="btn text-danger">Cancel</a>
                 {% endif %}
