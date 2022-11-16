@@ -536,7 +536,10 @@ class LookForJobs(View):
             'jobs': jobs,
             'current_path': "Available Jobs"
         }
-        return render(request, "home/lookforjobs.html", context)
+        if jobs:
+            return render(request, "home/lookforjobs.html", context)
+        else:
+            return redirect('emptylaboshop')
 @method_decorator(login_required, name='dispatch')
 class  UpdateEnlistedJobStatus(View):
     def get(self, request,id, *args, **kwargs):
