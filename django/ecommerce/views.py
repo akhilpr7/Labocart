@@ -238,6 +238,7 @@ class Invoice(View):
 class LaboShop(View):
 	def get(self, request, *args, **kwargs):
 		filter=request.GET.get('filter')
+		newdata = ''
 		if request.GET.get('filter') is not None and request.GET.get('filter') != '':
 			job=jobmodel.objects.filter(id=filter).values_list("job_title")[0][0]
 			datajob = jobmodel.objects.values()
@@ -842,7 +843,21 @@ class membership(View):
 		return render(request,template,context)
 class Workerview(View):
 	def get(self, request, *args, **kwargs):
-		return render(request,'home/dashboard1.html',{})
+		reqcount = RequestsModel.objects.filter(Q(worker_name=request.user)&Q(status=3)).count()
+		revenue = HireModel.objects.filter(Q(worker_name=request.user)&Q(status=4)).values_list("rate")
+		a = 0
+		for i in revenue:
+			a+=i[0]
+		refund = RefundHistory.objects.filter(worker=request.user).values_list("worker_refund")
+		for j in refund:
+			a+=j[0]
+		tot_work = HireModel.objects.filter(Q(worker_name=request.user)&Q(status=4)).count()
+		context ={
+            "req" :reqcount,
+            "rev": a,
+			"tot" :tot_work,
+        }
+		return render(request,'home/dashboard1.html',context)
 
 class Individual(View):
 	def get(self, request, *args, **kwargs):
