@@ -104,11 +104,11 @@
                     </div>
                     <h4 class="mb-2">{{j.first_name}}. {{j.last_name}}</h4>
                     <p class="text-muted mb-4">@{{j.username}} <span class="mx-2">|</span> <a
-                        href="#!">{{j.email}}</a></p>
+                        href="#!" class="text-dark">{{j.email}}</a></p>
                     <p class="text-muted mb-4">Date Joined :<span class="mx-2">|</span> <a
-                        href="#!">{{j.date_joined}}</a></p>
+                        href="#!" class="text-dark">{{j.date_joined}}</a></p>
                     <p class="text-muted mb-4">Phone Number :<span class="mx-2">|</span> <a
-                        href="#!">{{j.phone_no}}</a></p>
+                        href="#!" class="text-dark">{{j.phone_no}}</a></p>
                   
     
                         {% comment %} {% with tot=0 %}
@@ -122,7 +122,7 @@
                         {% endwith %} {% endcomment %}
                     </a></p>
                     <p class="text-muted mb-4">Rating :<span class="mx-2">|</span> <a
-                        href="#!">
+                        href="#!" class="text-warning">
                         {%if j.rating == 0%}
                         {%elif j.rating == 1%}
                         <span class="fa fa-star checked"></span>
@@ -245,7 +245,7 @@
                                     <div>
                                         {% comment %} <button type="button" class="btn btn-outline-dark btn-rounded btn-sm"
                                         data-mdb-ripple-color="dark">+ Follow</button> {% endcomment %}
-                                        <button type="button" class="btn btn-outline-dark btn-rounded btn-sm"
+                                        <button type="button" class="btn shadow-sm btn-rounded btn-sm text-dark"
                                         data-mdb-ripple-color="dark" data-target="#profile-dialog{{i.username}}" data-toggle="modal">See profile</button>
                                             {% comment %} <button type="button" class="btn btn-outline-dark btn-floating btn-sm"
                                             data-mdb-ripple-color="dark"><i class="fas fa-comment"></i></button> {% endcomment %}
@@ -255,12 +255,37 @@
                         </div>
                         <div class="card-footer">
                             {% if i.status == 0 %}
-                                <a href="{%url 'togglestatus' i.id %}" class=" btn rounded-2 btn-danger">Inactive</a>
+                                <a href="{%url 'togglestatus' i.id %}" class=" btn rounded-2 text-danger shadow-sm">Inactive</a>
                             {% elif i.status == 1 %}
-                                <a href="{%url 'togglestatus' i.id %}" class="btn rounded-2 btn-success">Active</a>
+                                <a href="{%url 'togglestatus' i.id %}" class="btn rounded-2 text-success shadow-sm">Active</a>
                             {% elif i.status == 2 %}
-                                <i class="btn btn-dark rounded-2">Pending</i>
-                                <a href="{%url 'togglestatus' i.id %}" class="btn btn-danger rounded-2">Delete</a>
+                                <span class="btn rounded-2 text-dark shadow-sm">Pending</span>
+                                <!-- <a href="{%url 'togglestatus' i.id %}" class="btn rounded-2 text-danger shadow-sm">Delete</a> -->
+                                <a data-target="#selectModal{{data.id}}" data-toggle="modal" class=" btn border rounded-2 text-danger shadow-sm">Cancel</a>
+
+
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="selectModal{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                  <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Do You Really Want to Delete This?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <a href="{% url 'active_service' %}" class=" btn border rounded-2"><span class="text-black">Cancel</span></a> 
+                                        <a href="{% url 'togglestatus' i.id %}" class=" btn border rounded-2"><span class="text-black">Yes</span></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                  
+                  
                             {% endif %}
                             <!-- <button type="button" class="btn-gray-800 btn-block btn-lg btn-rounded rounded-3 text-white"></i>Active</button>                                 -->
                         </div>

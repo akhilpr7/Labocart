@@ -84,13 +84,9 @@ class TransactionView(View):
                 return render(request , self.template_name , context)
             else:
                 new_context = PurchaseModel.objects.filter(
-                status=3,username=request.user.username)
-                # for labocat transactions
-                details = HireModel.objects.filter(
-            Hire_name=request.user).filter(status__in=[4, 5]).order_by('id')
+                status=3,username=request.user.username)  
                 context={
                     'datas' : new_context,
-                    'details' : details,
                     'current_path': "Transactions"
                     } 
                 return render(request , self.template_name , context)   
@@ -411,11 +407,11 @@ class ManageServices(View):
 @method_decorator(login_required, name='dispatch')
 class HireHistory(View):
     def get(self, request, *args, **kwargs):
-        history = HireModel.objects.filter(
-            (Q(status = 4)|Q(status = 5)) & Q(Hire_name = request.user)).values()
+        details = HireModel.objects.filter(
+            Hire_name=request.user).filter(status__in=[4, 5]).order_by('id')
         context = {
-            'history': history,
-            'current_path': "Hire History",
+            'details' : details,
+            'current_path': "Laboshop History",
         }
         return render(request, "home/hirehistory.html", context)
 

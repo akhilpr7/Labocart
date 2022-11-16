@@ -61,7 +61,7 @@
               <td><p>{{data.id}}</p></td>
               <td>{{data.Hire_name}}</td>
               <td>{{data.Place}}</td>
-              <td>{{data.Work_mode}} day</td>
+              <td>{% if data.Work_mode == "true" %}Full day{% else %}Half Day{% endif %}</td>
               <td>{{data.Phone}}</td>
               <td>{{data.job_title}}</td>
               <td>

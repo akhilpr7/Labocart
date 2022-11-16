@@ -56,15 +56,15 @@
               <td class="align-middle"><p>{{table.category_name}}</p></td>
                 <td><img src="{{table.image.url}}" style ="width:200px;height:200px;object-fit: cover;"></td>
               <td class="align-middle">
-                <a data-target="#selectModal{{table.id}}" data-toggle="modal" class=" btn border shadow-sm rounded-2"><span class="material-symbols-outlined">delete</span></a>
+                <a data-target="#categoryModal{{table.id}}" data-toggle="modal" class=" btn border shadow-sm rounded-2"><span class="material-symbols-outlined">delete</span></a>
                
                 <!-- Modal -->
                 
-                <div class="modal fade" id="selectModal{{table.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="categoryModal{{table.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Do You Really Want to Delete This?</h5>
+                        <p class="modal-title text-black" id="exampleModalLongTitle"><b>Deleting This Category Will Also Delete The Depended Jobs</b></p>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>

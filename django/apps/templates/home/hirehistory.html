@@ -10,43 +10,53 @@
 
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
     <div class="d-block mb-4 mb-md-0">
-      <h5 class="h5"> <b>HIRE HISTORY</b> </h5>
+      <h5 class="h5"> <b>LABOSHOP HISTORY</b> </h5>
     </div>
 
 </div>
 
 
 <div class="card card-body border-0 shadow table-wrapper table-responsive">
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th class="border-gray-200">Hirer Name</th>
-                <th class="border-gray-200">Phone</th>
-                <th class="border-gray-200">Place</th>
-                <th class="border-gray-200">Rate</th>
-                <th class="border-gray-200">Worker name</th>
-                <th class="border-gray-200">Worker phone</th>
-                <th class="border-gray-200">Job</th>
-                <th class="border-gray-200">Rating</th>
-                <th class="border-gray-200">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-          {% for history in history %}
-            <tr>
-              <td><span>{{history.Hire_name}}</span></td>
-              <td><span>{{history.Phone}}</span></td>
-              <td><span>{{history.Place}}</span></td>
-              <td><span>{{history.rate}}</span></td> 
-              <td><span>{{history.worker_name}}</span></td>
-              <td><span>{{history.worker_phone}}</span></td> 
-              <td><span>{{history.job_title}}</span></td> 
-              <td><span>{{history.rating}}</span></td> 
-              <td><span>{%if history.status == 4 %}Success{%elif history.status == 5 %}Cancelled{%else%}Error{%endif%}</span></td> 
-            </tr>
-            {% endfor %}      
-        </tbody>
-    </table>
+  <table class="table table-hover">
+      <thead>
+          <tr>
+            <th class="border-gray-200">ID</th>
+            <th class="border-gray-200">Worker Name</th>
+            <th class="border-gray-200">Place</th>
+            <th class="border-gray-200">Work Mode</th>
+            <th class="border-gray-200">Phone</th>
+            <th class="border-gray-200">Job</th>
+            <th class="border-gray-200">Status</th>
+
+
+             
+          </tr>
+      </thead>
+      <tbody>
+
+        {% for data in details %}
+
+        <tr>
+          <td><p>{{data.id}}</p></td>
+          <td>{{data.worker_name}}</td>
+          <td>{{data.Place}}</td>
+          <td>{% if data.Work_mode == "true" %}Full day{% else %}Half Day{% endif %}</td>
+          <td>{{data.Phone}}</td>
+          <td>{{data.job_title}}</td>
+          <td>
+            {% if data.status == 4 %}
+            <span class="text-success">Completed</span>
+            {% else %}
+            <span class="text-danger">Cancelled</span>
+            {% endif %}
+                       
+          </td>
+        </tr>
+
+      {% endfor %}
+
+      </tbody>
+  </table>
 </div> 
 
 
