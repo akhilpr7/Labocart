@@ -878,7 +878,7 @@ class LaboTransactions(View):
 		work = HireModel.objects.filter(worker_name=request.user).filter(status__in=[4, 5]).order_by('id')
 		context = {
             'work': work,
-            'current_path': "LaboCart Transactions"
+            'current_path': "Laboshop History"
         }
 		return render(request,'labotransaction.html',context)
 
