@@ -481,8 +481,17 @@ class JobRequests(View):
     template_name = 'home/jobrequests.html'
     def get(self, request, *args, **kwargs):
         requests = AppliedJobs.objects.filter(
-            hirer=request.user.username)
+            hirer=request.user.username).exclude(status=3)
         return render(request, "home/jobrequests.html", {'requests': requests})
+
+
+@method_decorator(login_required, name='dispatch')
+class CancelJobRequests(View):
+    def get(self, request,id, *args, **kwargs):
+        id = id
+        cancel = AppliedJobs.objects.filter(id=id).update(status=3)
+        return redirect('jobrequests')
+
 
 @method_decorator(login_required, name='dispatch')
 class ApproveUser(View):
