@@ -68,7 +68,7 @@ class CartView(View):
 		products = list(CartModel.objects.filter(username=request.user.username).values())
 		print(products,"-----------products=====")
 		if not products:
-			return redirect('emptycart')
+			return render(request,'home/emptycart.html',{'current_path':"Cart" })
 		else:
 			totalPrice = CartModel.objects.filter(username = request.user.username).aggregate(Sum('Total'))
 			context = {
@@ -295,7 +295,7 @@ class LaboShop(View):
 			if newdata:
 				return render(request, 'labo-shop.html', context)
 			else:
-				return redirect('emptylaboshop')
+				return render(request,'home/emptylaboshop.html',{'current_path':"Laboshop"})
 		else:
 			messages.error(request,"Membership Required !")
 			return redirect("membership")
