@@ -182,7 +182,7 @@ class ServiceView(View):
     template_name = "home/requested-services.html"
     def get(self, request, *args, **kwargs):
         data = RequestsModel.objects.filter(
-            hirer   =request.user).exclude(status=0).exclude(status=2)
+            hirer   =request.user).exclude(status__in=[0,2,5])
         context = {'data': data, 'current_path': "Requested Services"}
         return render(request, self.template_name, context)
 
