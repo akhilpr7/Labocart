@@ -447,7 +447,7 @@ class LaboRegister(View):
 				# obj.save()
 				messages.success(request,"Success !")
 			# print(obj,"55555555555555")
-				return redirect('shop')
+				return redirect('active_service')
 			# else:
 			# 	print(form.errors)    
 			# 	return render(request, self.template, {'form': form})
@@ -549,7 +549,7 @@ class Userpayments(View):
 		if wallet_balance >= rate:
 			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)	
 			RequestsModel.objects.filter(id=id).update(status=3)
-			AppliedJobs.objects.filter(id=id).update(status=2)
+			AppliedJobs.objects.filter(id=id).update(status=1)
 			messages.success(request,'Payment Successful')
 			return redirect('jobrequests')
 		else:
