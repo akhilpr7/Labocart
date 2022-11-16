@@ -529,7 +529,7 @@ class ProvidedJobs(View):
 @method_decorator(login_required, name='dispatch')
 class LookForJobs(View):
     def get(self, request, *args, **kwargs):
-        jobs = JobPostingModel.objects.filter(is_active=1).values()
+        jobs = JobPostingModel.objects.filter(is_active=1).exclude(hirer=request.user.username).values()
         context = {
             'media_url': settings.NEW_VAR,
 
