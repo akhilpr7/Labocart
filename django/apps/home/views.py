@@ -452,7 +452,7 @@ class Labocategories2(View):
         }
         total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & (
             (Q(status=1) | Q(status=2) | Q(status=3)))).count()
-
+     
         if total_work < 5:
             return render(request, self.template, context)
         else:
@@ -598,11 +598,14 @@ class LookForJobs(View):
             'jobs': jobs,
             'current_path': "Available Jobs"
         }
-        if jobs:
-            return render(request, "home/lookforjobs.html", context)
+        if request.user.is_sub:
+            if jobs:
+                return render(request, "home/lookforjobs.html", context)
+            else:
+                return redirect('emptylookforjobs')
         else:
-            return redirect('emptylookforjobs')
-
+            messages.error(request,"Subscription required !! ")
+            return redirect("workerview")
 
 @method_decorator(login_required, name='dispatch')
 class EmptyLookForjobs(View):

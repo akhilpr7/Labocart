@@ -471,12 +471,15 @@ class Labocategories(View):
 
 		}
 		total_work = labourmodels.objects.filter(Q(username=request.user.username)&((Q(status=1)|Q(status=2)|Q(status=3)))).count()
-		if total_work < 5 :
-			return render(request, self.template,context)
+		if request.user.is_sub:
+			if total_work < 5 :
+				return render(request, self.template,context)
+			else:
+				messages.error(request,"Job Applying Limit Reached !!")
+				return redirect("laboshop")
 		else:
-			messages.error(request,"Job Applying Limit Reached !!")
-			return redirect("laboshop")
-
+			messages.error(request,"Subscription Required !!")
+			return redirect("workerview")
 
 @method_decorator(login_required,name='dispatch')
 class ActiveServices(View):
@@ -488,8 +491,11 @@ class ActiveServices(View):
 			"user" : user,
 			'current_path':"ActiveServices"
 		}
-		return render(request,'activeServices.html',context)
-
+		if request.user.is_sub:
+			return render(request,'activeServices.html',context)
+		else:
+			messages.error(request,"Subscription Required !!")
+			return redirect("workerview")
 @method_decorator(login_required,name='dispatch')
 class HireNowView(View):
 	def get(self, request,id, *args, **kwargs):
@@ -580,7 +586,11 @@ class Assignedworks(View):
 			"data": services,
 			'current_path':"Assigned Services"
 		}
-		return render(request,self.template_name,context)
+		if request.user.is_sub:
+			return render(request,self.template_name,context)
+		else:
+			messages.error(request,"Subscription Required !! ")
+			return redirect("workerview")
 @method_decorator(login_required,name='dispatch')
 class Acceptservice(View):
 	def get(self,request,id, *args, **kwargs):

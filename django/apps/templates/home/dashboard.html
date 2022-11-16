@@ -6,6 +6,14 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+{% if messages %}
+{% for message in messages %}
+    <p class="d-none" id="messagetag">{{message.tags}}</p>
+    <p class="d-none " id="messagecontent">{{message}}</p>
+{% endfor %}
+{% else%}
+
+{% endif %}
 <div class="row">
 
     <div class="col-12 col-sm-6 col-xl-4 mb-4">
