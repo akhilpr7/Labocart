@@ -294,10 +294,11 @@ class LaboShop(View):
 			if newdata:
 				return render(request, 'labo-shop.html', context)
 			else:
-				messages.error(request,"Membership Required !")
-				return redirect("membership")
+				return redirect('emptylaboshop')
 		else:
-			return redirect('emptylaboshop')
+			messages.error(request,"Membership Required !")
+			return redirect("membership")
+		
 
 @method_decorator(login_required,name='dispatch')
 class LaboShopCategory(View):
@@ -843,6 +844,7 @@ class RefundHistoryUser(View):
 		refund = RefundHistory.objects.filter(hirer=request.user).values()
 		context = {
 			"refund":refund,
+			'current_path': "Refund history",
 		}
 		return render(request,template,context)
 class RefundHistoryWorker(View):
@@ -851,6 +853,7 @@ class RefundHistoryWorker(View):
 		refund = RefundHistory.objects.filter(worker=request.user).values()
 		context = {
 			"refund":refund,
+			'current_path': "Refund history",
 		}
 		return render(request,template,context)
 

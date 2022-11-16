@@ -468,7 +468,19 @@ class ServiceRequests(View):
             'details': details,
             'current_path':'Service Requests'
         }
-        return render(request, "home/service_requests.html", context)
+        if details:
+            return render(request, "home/service_requests.html", context)
+        else:
+            return redirect('emptyservicerequests')
+
+
+@method_decorator(login_required, name='dispatch')
+class EmptyServiceRequests(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'current_path':'Service Requests'
+        }
+        return render(request, "home/emptyservicerequests.html", context)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -482,7 +494,19 @@ class PendingKYC(View):
             'datas': datas,
             'current_path': "Pending KYC  ",
         }
-        return render(request, self.template_name, context)
+        if datas:
+            return render(request, self.template_name, context)
+        else:
+            return redirect('emptyKYC')
+
+
+@method_decorator(login_required, name='dispatch')
+class EmptyKYC(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'current_path':'Pending KYC'
+        }
+        return render(request, "home/emptyKYC.html", context)
 
 @method_decorator(login_required, name='dispatch')
 class AcceptServices(View):
@@ -506,7 +530,12 @@ class JobRequests(View):
     def get(self, request, *args, **kwargs):
         requests = AppliedJobs.objects.filter(
             hirer=request.user.username).exclude(status=3)
-        return render(request, "home/jobrequests.html", {'requests': requests})
+        context = {
+            'requests': requests,
+            'current_path': "Job requests",
+            }
+        
+        return render(request, "home/jobrequests.html", context)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -572,7 +601,14 @@ class LookForJobs(View):
         if jobs:
             return render(request, "home/lookforjobs.html", context)
         else:
-            return redirect('emptylaboshop')
+            return redirect('emptylookforjobs')
+
+
+@method_decorator(login_required, name='dispatch')
+class EmptyLookForjobs(View):
+    def get(self ,request, *arg, **kwargs):
+        return render(request, "home/emptylookforjobs.html",{'current_path': "Look for jobs"})
+
 @method_decorator(login_required, name='dispatch')
 class  UpdateEnlistedJobStatus(View):
     def get(self, request,id, *args, **kwargs):
@@ -625,6 +661,7 @@ class Emptycart(View):
 class EmptyLaboshop(View):
     def get(self ,request, *arg, **kwargs):
         return render(request, "home/emptylaboshop.html",{})
+
 
 
 @method_decorator(login_required, name='dispatch')
