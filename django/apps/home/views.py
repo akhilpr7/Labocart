@@ -14,6 +14,7 @@ from authentication.models import jobmodel, NewUserModel, labourmodels
 from django.views.generic import ListView
 from django.db.models import Q
 import pdb
+import datetime
 from django.views.decorators.cache import cache_control
 
 # Create your views here.
@@ -88,6 +89,10 @@ class Userservices(View):
             'details': details,
             'current_path': "User Services"
         }
+        # work_hour = HireModel.objects.get(worker_name=request.user).values_list("created_at")[0][0]
+        # timediff = datetime.datetime.now() - work_hour
+        # print(work_hour.seconds,"hoooooooooooooooooooooooooooooooooooooooooooo")
+        # print(timediff.seconds,"hoooooooooooooooooooooooooooooooooooooooooooo")
         return render(request, "home/user-services.html", context)
 
 @method_decorator(login_required, name='dispatch')
@@ -99,6 +104,7 @@ class Workerservices(View):
             'work': work,
             'current_path': "Worker Services"
         }
+       
         return render(request, "home/worker-services.html", context)
 
 @method_decorator(login_required, name='dispatch')
@@ -145,9 +151,13 @@ class ApplyFormView(View):
 class UnCompletedService(View):
     def get(self, request, *args, id, **kwargs):
         user = HireModel.objects.get(id=id)
-        user.user_status = 2
-        user.save()
-        return redirect('userservices')
+        if user.worker_status:
+            messages.error(request,"Sorry The Service Is Completed,   Unable To Cancel !!")
+            return redirect('userservices')
+        else:
+            user.user_status = 2
+            user.save()
+            return redirect('userservices')
 
 @method_decorator(login_required, name='dispatch')
 class CompletedService(View):
