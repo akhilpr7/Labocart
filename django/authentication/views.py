@@ -102,12 +102,15 @@ class ProfileView(View):
     def get(self, request, *args, **kwargs):
         user_id = request.user.pk
         details = NewUserModel.objects.filter(id=user_id).first()
-        data = list(HireModel.objects.filter(Q(worker_name=request.user)&Q(status=4)).values())
+        data = list(HireModel.objects.filter(Q(worker_name=request.user)&Q(status=4)&~Q(comment="")).values())
+        userimage = NewUserModel.objects.all().values()
         print(data)
         context = {
             "details": details ,
             'current_path':"Profile",
-            'comments' : data
+            'comments' : data,
+            "user" :userimage
+
              }
         return render(request, 'accounts/profile.html',context)
 
