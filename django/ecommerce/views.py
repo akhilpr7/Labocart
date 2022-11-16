@@ -251,18 +251,18 @@ class LaboShop(View):
 	def get(self, request, *args, **kwargs):
 		filter=request.GET.get('filter')
 		if request.GET.get('filter') is not None and request.GET.get('filter') != '':
-			print(filter,"fgldjfdjkfjdfjdjfhjkdfkjdfhjkhd")
 			job=jobmodel.objects.filter(id=filter).values_list("job_title")[0][0]
 			datajob = jobmodel.objects.values()
 			data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1)).exclude(username=request.user.username)
 			requestData = RequestsModel.objects.filter(hirer=request.user.username,status=3)	
 			if requestData :
-					print("enterd")
 					for user in data:
 						workername = user.username 
 						for datas in requestData:
 							if datas.hirer == request.user.username and datas.worker_name == workername  :
 								newdata = data.exclude(username=datas.worker_name,job_title = datas.job_title)
+							else:
+								newdata = data	
 			else:
 				newdata = data					
 			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
@@ -271,10 +271,8 @@ class LaboShop(View):
 			datacategory=Category.objects.values()
 			# requests = RequestsModel.objects.filter(hirer=request.user).values()
 		else:
-			
 			datajob = jobmodel.objects.values()
 			data = labourmodels.objects.filter(status=1).exclude(username=request.user.username)
-
 			requestData = RequestsModel.objects.filter(hirer=request.user.username,status=3)			
 			if requestData :
 					for user in data:
@@ -283,6 +281,8 @@ class LaboShop(View):
 						for datas in requestData:
 							if datas.hirer == request.user.username and datas.worker_name == workername and datas.job_title == job :
 								newdata = data.exclude(username=datas.worker_name,job_title = datas.job_title)
+							else:
+								newdata = data	
 			else:
 				newdata = data					
 			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
@@ -302,9 +302,8 @@ class LaboShop(View):
 			"request":requests,
 		}
 		is_sub = NewUserModel.objects.filter(username=request.user).values_list('is_sub')[0][0]
-		print(is_sub,"subbbbbbbbbbbbbbbbbbb")
 		if is_sub == True or request.user.is_superuser:
-			if data:
+			if newdata:
 				return render(request, 'labo-shop.html', context)
 			else:
 				return redirect('emptylaboshop')
