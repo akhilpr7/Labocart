@@ -454,7 +454,19 @@ class ServiceRequests(View):
             'details': details,
             'current_path':'Service Requests'
         }
-        return render(request, "home/service_requests.html", context)
+        if details:
+            return render(request, "home/service_requests.html", context)
+        else:
+            return redirect('emptyservicerequests')
+
+
+@method_decorator(login_required, name='dispatch')
+class EmptyServiceRequests(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'current_path':'Service Requests'
+        }
+        return render(request, "home/emptyservicerequests.html", context)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -468,7 +480,19 @@ class PendingKYC(View):
             'datas': datas,
             'current_path': "Pending KYC  ",
         }
-        return render(request, self.template_name, context)
+        if datas:
+            return render(request, self.template_name, context)
+        else:
+            return redirect('emptyKYC')
+
+
+@method_decorator(login_required, name='dispatch')
+class EmptyKYC(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'current_path':'Pending KYC'
+        }
+        return render(request, "home/emptyKYC.html", context)
 
 @method_decorator(login_required, name='dispatch')
 class AcceptServices(View):
