@@ -289,7 +289,6 @@ class LaboShop(View):
 			users=NewUserModel.objects.all()
 			work = HireModel.objects.all()
 			datacategory=Category.objects.values()
-		
 		requests = RequestsModel.objects.filter(hirer=request.user.username).values()
 
 		context = {
@@ -302,16 +301,15 @@ class LaboShop(View):
 			"work":work,
 			"request":requests,
 		}
-		is_sub = NewUserModel.objects.filter(username=request.user).values_list('is_sub')[0][0]
-		print(is_sub,"subbbbbbbbbbbbbbbbbbb")
-		if is_sub == True or request.user.is_superuser:
-			if data:
+		is_sub = NewUserModel.objects.filter(username=request.user.username).values_list('is_sub')[0][0]
+		if data:
+			if is_sub:
 				return render(request, 'labo-shop.html', context)
 			else:
-				return redirect('emptylaboshop')
+				messages.error(request,"Membership Required !")
+				return redirect("membership")
 		else:
-			messages.error(request,"Membership Required !")
-			return redirect("membership")
+			return redirect('emptylaboshop')
 
 @method_decorator(login_required,name='dispatch')
 class LaboShopCategory(View):
@@ -459,7 +457,7 @@ class LaboRegister(View):
 				# obj.save()
 				messages.success(request,"Success !")
 			# print(obj,"55555555555555")
-				return redirect('active_service')
+				return redirect('shop')
 			# else:
 			# 	print(form.errors)    
 			# 	return render(request, self.template, {'form': form})
@@ -494,7 +492,7 @@ class Labocategories(View):
 @method_decorator(login_required,name='dispatch')
 class ActiveServices(View):
 	def get(self, request, *args, **kwargs):
-		data = labourmodels.objects.filter(Q(username = self.request.user.username) & (Q(status=0) | Q(status=1) | Q(status=2))).order_by("id")
+		data = labourmodels.objects.filter(Q(username = self.request.user.username) & (Q(status=0) | Q(status=1) | Q(status=2)))
 		user = NewUserModel.objects.all()
 		context = {
 			"data" : data,
