@@ -13,7 +13,7 @@
           <div class="card shadow-lg">
             <div class="card-body">
               <div class="d-flex flex-column align-items-center text-center">
-                <img src="{{details.image.url}}" class="rounded-circle" width="150">
+                <img src="{{details.image.url}}" class="rounded-circle" width="150" height="150">
                 <div class="mt-3 text-uppercase">
                   <h5>{{details.username}}</h5>
                 </div>
@@ -109,7 +109,11 @@
                   <article class="review mx-auto d-flex flex-column justify-content-between" style="height: 70vh;">
                     <div>
                       <div class="img-container align-middle">
-                        <img src="" alt="" id="img">
+                        {%for i in user%}
+                        {%if comment.Hire_name in i.username%}
+                        <img src="../../../static/media/{{i.image}}" alt="" id="img">
+                        {%endif%}
+                        {%endfor%}
                         <i class="fas fa-quote-right"></i>
                       </div>
                       <p id="author" class="mt-5">{{comment.Name}}</p>

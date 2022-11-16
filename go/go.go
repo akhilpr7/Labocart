@@ -112,6 +112,8 @@ func fetchsub(db *sql.DB) {
 	var subscribed_at time.Time
 	var packagenum int
   var validity float64
+  var id int
+  var status int
 	row,_ := db.Query(
     `SELECT username FROM authentication_newusermodel WHERE is_sub=true;`  )
   defer row.Close()
@@ -141,6 +143,17 @@ func fetchsub(db *sql.DB) {
       _, err := db.Exec(sqlStatement, username)
       if err != nil {
         panic(err)
+      }
+      row01,_:= db.Query(
+        `SELECT  id,status FROM authentication_labourmodels WHERE username=$1;`,username)
+      defer row01.Close()
+      for row01.Next(){
+        row01.Scan(&id,&status)
+        _,err := db.Exec(`UPDATE authentication_labourmodels SET status = 0 WHERE id = $1 AND status = 1;`,id)
+        if err != nil {
+          fmt.Println("err")
+        }
+
       }
     }
   }

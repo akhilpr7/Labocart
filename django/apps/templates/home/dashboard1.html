@@ -6,6 +6,14 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+{% if messages %}
+{% for message in messages %}
+    <p class="d-none" id="messagetag">{{message.tags}}</p>
+    <p class="d-none " id="messagecontent">{{message}}</p>
+{% endfor %}
+{% else%}
+
+{% endif %}
 <body style="background-color:#f5eee7" >
 <div class="row">
 

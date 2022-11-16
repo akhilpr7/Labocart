@@ -6,6 +6,14 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+{% if messages %}
+{% for message in messages %}
+    <p class="d-none" id="messagetag">{{message.tags}}</p>
+    <p class="d-none " id="messagecontent">{{message}}</p>
+{% endfor %}
+{% else%}
+
+{% endif %}
 <div class="row">
 
     <div class="col-12 col-sm-6 col-xl-4 mb-4">
@@ -18,13 +26,13 @@
                     </div>
                     <div class="d-sm-none">
                         <h2 class="h5">Customers</h2>
-                        <h3 class="fw-extrabold mb-1">345,678</h3>
+                        <h3 class="fw-extrabold mb-1">346,678</h3>
                     </div>
                 </div>
                 <div class="col-12 col-xl-7 px-xl-0">
                     <div class="d-none d-sm-block">
                         <h2 class="h6 text-gray-400 mb-0">Requested Services</h2>
-                        <h3 class="fw-extrabold mb-2">345k</h3>
+                        <h3 class="fw-extrabold mb-2">{{req}}</h3>
                     </div>
                     <small class="d-flex align-items-center text-gray-500">
                         Feb 1 - Apr 1,  
@@ -55,7 +63,7 @@
                 <div class="col-12 col-xl-7 px-xl-0">
                     <div class="d-none d-sm-block">
                         <h2 class="h6 text-gray-400 mb-0">Revenue</h2>
-                        <h3 class="fw-extrabold mb-2">$43,594</h3>
+                        <h3 class="fw-extrabold mb-2">${{rev}}</h3>
                     </div>
                     <small class="d-flex align-items-center text-gray-500">
                         Feb 1 - Apr 1,  

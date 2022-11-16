@@ -5,7 +5,7 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from ecommerce.models import HireModel, PurchaseModel,RequestsModel
+from ecommerce.models import HireModel, PurchaseModel,RequestsModel,RefundHistory
 from .forms import AddJobForm, CategoryForm, JobPostingForm, AddFundForm, ApplyForm,CommentForm
 from .models import Category, JobPostingModel, AppliedJobs,Category
 from django.contrib import messages
@@ -23,7 +23,21 @@ from django.views.decorators.cache import cache_control
 @method_decorator(login_required, name='dispatch')
 class HomeView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, "home/dashboard.html")
+        reqcount = RequestsModel.objects.filter(Q(worker_name=request.user)&Q(status=3)).count()
+        revenue = HireModel.objects.filter(Q(worker_name=request.user)&Q(status=4)).values_list("rate")
+      
+        a = 0
+        for i in revenue:
+            a+=i[0]
+           
+        refund = RefundHistory.objects.filter(worker=request.user).values_list("worker_refund")
+        for j in refund:
+            a+=j[0]
+        context ={
+            "req" :reqcount,
+            "rev": a,
+        }
+        return render(request, "home/dashboard.html",context)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -434,7 +448,7 @@ class Labocategories2(View):
         }
         total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & (
             (Q(status=1) | Q(status=2) | Q(status=3)))).count()
-
+     
         if total_work < 5:
             return render(request, self.template, context)
         else:
@@ -580,11 +594,14 @@ class LookForJobs(View):
             'jobs': jobs,
             'current_path': "Available Jobs"
         }
-        if jobs:
-            return render(request, "home/lookforjobs.html", context)
+        if request.user.is_sub:
+            if jobs:
+                return render(request, "home/lookforjobs.html", context)
+            else:
+                return redirect('emptylookforjobs')
         else:
-            return redirect('emptylookforjobs')
-
+            messages.error(request,"Subscription required !! ")
+            return redirect("workerview")
 
 @method_decorator(login_required, name='dispatch')
 class EmptyLookForjobs(View):
