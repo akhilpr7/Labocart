@@ -14,6 +14,7 @@ from authentication.models import jobmodel, NewUserModel, labourmodels
 from django.views.generic import ListView
 from django.db.models import Q
 import pdb
+import datetime
 from django.views.decorators.cache import cache_control
 
 # Create your views here.
@@ -84,6 +85,10 @@ class Userservices(View):
             'details': details,
             'current_path': "User Services"
         }
+        # work_hour = HireModel.objects.get(worker_name=request.user).values_list("created_at")[0][0]
+        # timediff = datetime.datetime.now() - work_hour
+        # print(work_hour.seconds,"hoooooooooooooooooooooooooooooooooooooooooooo")
+        # print(timediff.seconds,"hoooooooooooooooooooooooooooooooooooooooooooo")
         return render(request, "home/user-services.html", context)
 
 @method_decorator(login_required, name='dispatch')
@@ -95,6 +100,7 @@ class Workerservices(View):
             'work': work,
             'current_path': "Worker Services"
         }
+       
         return render(request, "home/worker-services.html", context)
 
 @method_decorator(login_required, name='dispatch')
@@ -141,9 +147,13 @@ class ApplyFormView(View):
 class UnCompletedService(View):
     def get(self, request, *args, id, **kwargs):
         user = HireModel.objects.get(id=id)
-        user.user_status = 2
-        user.save()
-        return redirect('userservices')
+        if user.worker_status:
+            messages.error(request,"Sorry The Service Is Completed,   Unable To Cancel !!")
+            return redirect('userservices')
+        else:
+            user.user_status = 2
+            user.save()
+            return redirect('userservices')
 
 @method_decorator(login_required, name='dispatch')
 class CompletedService(View):
@@ -440,7 +450,19 @@ class ServiceRequests(View):
             'details': details,
             'current_path':'Service Requests'
         }
-        return render(request, "home/service_requests.html", context)
+        if details:
+            return render(request, "home/service_requests.html", context)
+        else:
+            return redirect('emptyservicerequests')
+
+
+@method_decorator(login_required, name='dispatch')
+class EmptyServiceRequests(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'current_path':'Service Requests'
+        }
+        return render(request, "home/emptyservicerequests.html", context)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -454,7 +476,19 @@ class PendingKYC(View):
             'datas': datas,
             'current_path': "Pending KYC  ",
         }
-        return render(request, self.template_name, context)
+        if datas:
+            return render(request, self.template_name, context)
+        else:
+            return redirect('emptyKYC')
+
+
+@method_decorator(login_required, name='dispatch')
+class EmptyKYC(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'current_path':'Pending KYC'
+        }
+        return render(request, "home/emptyKYC.html", context)
 
 @method_decorator(login_required, name='dispatch')
 class AcceptServices(View):
@@ -477,8 +511,22 @@ class JobRequests(View):
     template_name = 'home/jobrequests.html'
     def get(self, request, *args, **kwargs):
         requests = AppliedJobs.objects.filter(
-            hirer=request.user.username)
-        return render(request, "home/jobrequests.html", {'requests': requests})
+            hirer=request.user.username).exclude(status=3)
+        context = {
+            'requests': requests,
+            'current_path': "Job requests",
+            }
+        
+        return render(request, "home/jobrequests.html", context)
+
+
+@method_decorator(login_required, name='dispatch')
+class CancelJobRequests(View):
+    def get(self, request,id, *args, **kwargs):
+        id = id
+        cancel = AppliedJobs.objects.filter(id=id).update(status=3)
+        return redirect('jobrequests')
+
 
 @method_decorator(login_required, name='dispatch')
 class ApproveUser(View):
@@ -525,14 +573,24 @@ class ProvidedJobs(View):
 @method_decorator(login_required, name='dispatch')
 class LookForJobs(View):
     def get(self, request, *args, **kwargs):
-        jobs = JobPostingModel.objects.filter(is_active=1).values()
+        jobs = JobPostingModel.objects.filter(is_active=1).exclude(hirer=request.user.username).values()
         context = {
             'media_url': settings.NEW_VAR,
 
             'jobs': jobs,
             'current_path': "Available Jobs"
         }
-        return render(request, "home/lookforjobs.html", context)
+        if jobs:
+            return render(request, "home/lookforjobs.html", context)
+        else:
+            return redirect('emptylookforjobs')
+
+
+@method_decorator(login_required, name='dispatch')
+class EmptyLookForjobs(View):
+    def get(self ,request, *arg, **kwargs):
+        return render(request, "home/emptylookforjobs.html",{'current_path': "Look for jobs"})
+
 @method_decorator(login_required, name='dispatch')
 class  UpdateEnlistedJobStatus(View):
     def get(self, request,id, *args, **kwargs):
@@ -585,6 +643,7 @@ class Emptycart(View):
 class EmptyLaboshop(View):
     def get(self ,request, *arg, **kwargs):
         return render(request, "home/emptylaboshop.html",{})
+
 
 
 @method_decorator(login_required, name='dispatch')

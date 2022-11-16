@@ -180,10 +180,6 @@ class CheckoutView(View):
 					Prices = list(CartModel.objects.filter(username=request.user.username).values_list('Total',flat=True))
 					Quantity = list(CartModel.objects.filter(username=request.user.username).values_list('Quantity',flat=True))
 					n = random.randint(0,99999)
-			
-					# request.session['Prices']= Prices_invoice
-					# request.session['Quantity']= Quantity_invoice
-					# request.session['Names']= Names_invoice
 					request.session['order']= n
 					request.session['Building']= request.POST['building']
 					request.session['Street']= request.POST['street']
@@ -191,7 +187,6 @@ class CheckoutView(View):
 
 					product_name = list(CartModel.objects.filter(username=request.user.username).values_list('Product_name',flat=True))
 					totalPrice = CartModel.objects.aggregate(Sum('Total'))
-					print("entering")
 					data = PurchaseModel(	
 						phone=request.POST['phone'],
 						Total=totalPrice["Total__sum"],
@@ -211,9 +206,6 @@ class CheckoutView(View):
 					)
 					data.save()
 					id = PurchaseModel.objects.filter(order_id=n).values_list("id")[0][0]
-
-					print("valid")
-					print("iiiiiiiiiiiiddddddddddd",id)
 					return redirect('payment',id)
 			return render(request,self.template, {'form': PurchaseForm(request.POST)})
 
@@ -225,13 +217,9 @@ class Invoice(View):
 	template_name = 'invoice.html'
 	def get(self, request):
 		products = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Product_name')[0]
-		print(products, "Prodduuuuuucts")
 		prices = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Prices')[0]
 		quantity = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Quantity')[0]
-		print(prices, "priceeeeeeeeeeeeeeeees")
 		total = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Total')[0][0]
-		print(total, "total")
-
 		context = {
 
 		"total": total,
@@ -251,18 +239,18 @@ class LaboShop(View):
 	def get(self, request, *args, **kwargs):
 		filter=request.GET.get('filter')
 		if request.GET.get('filter') is not None and request.GET.get('filter') != '':
-			print(filter,"fgldjfdjkfjdfjdjfhjkdfkjdfhjkhd")
 			job=jobmodel.objects.filter(id=filter).values_list("job_title")[0][0]
 			datajob = jobmodel.objects.values()
 			data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1)).exclude(username=request.user.username)
 			requestData = RequestsModel.objects.filter(hirer=request.user.username,status=3)	
 			if requestData :
-					print("enterd")
 					for user in data:
 						workername = user.username 
 						for datas in requestData:
 							if datas.hirer == request.user.username and datas.worker_name == workername  :
 								newdata = data.exclude(username=datas.worker_name,job_title = datas.job_title)
+							else:
+								newdata = data	
 			else:
 				newdata = data					
 			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
@@ -271,10 +259,8 @@ class LaboShop(View):
 			datacategory=Category.objects.values()
 			# requests = RequestsModel.objects.filter(hirer=request.user).values()
 		else:
-			
 			datajob = jobmodel.objects.values()
 			data = labourmodels.objects.filter(status=1).exclude(username=request.user.username)
-
 			requestData = RequestsModel.objects.filter(hirer=request.user.username,status=3)			
 			if requestData :
 					for user in data:
@@ -283,6 +269,8 @@ class LaboShop(View):
 						for datas in requestData:
 							if datas.hirer == request.user.username and datas.worker_name == workername and datas.job_title == job :
 								newdata = data.exclude(username=datas.worker_name,job_title = datas.job_title)
+							else:
+								newdata = data	
 			else:
 				newdata = data					
 			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
@@ -302,15 +290,15 @@ class LaboShop(View):
 			"request":requests,
 		}
 		is_sub = NewUserModel.objects.filter(username=request.user).values_list('is_sub')[0][0]
-		print(is_sub,"subbbbbbbbbbbbbbbbbbb")
 		if is_sub == True or request.user.is_superuser:
-			if data:
+			if newdata:
 				return render(request, 'labo-shop.html', context)
 			else:
 				return redirect('emptylaboshop')
 		else:
 			messages.error(request,"Membership Required !")
 			return redirect("membership")
+		
 
 @method_decorator(login_required,name='dispatch')
 class LaboShopCategory(View):
@@ -458,7 +446,7 @@ class LaboRegister(View):
 				# obj.save()
 				messages.success(request,"Success !")
 			# print(obj,"55555555555555")
-				return redirect('active_service')
+				return redirect('shop')
 			# else:
 			# 	print(form.errors)    
 			# 	return render(request, self.template, {'form': form})
@@ -493,7 +481,7 @@ class Labocategories(View):
 @method_decorator(login_required,name='dispatch')
 class ActiveServices(View):
 	def get(self, request, *args, **kwargs):
-		data = labourmodels.objects.filter(Q(username = self.request.user.username) & (Q(status=0) | Q(status=1) | Q(status=2))).order_by("id")
+		data = labourmodels.objects.filter(Q(username = self.request.user.username) & (Q(status=0) | Q(status=1) | Q(status=2)))
 		user = NewUserModel.objects.all()
 		context = {
 			"data" : data,
@@ -703,13 +691,9 @@ class Payment(View):
 	def get(self, request, id, *args, **kwargs):
 		template= 'payment.html'
 		products= PurchaseModel.objects.filter(id=id).values_list('Product_name')[0]
-		# print(products,"Prodduuuuuucts") 
 		prices = PurchaseModel.objects.filter(id=id).values_list('Prices')[0]
 		quantity = PurchaseModel.objects.filter(id=id).values_list('Quantity')[0]
-		# print(prices,"priceeeeeeeeeeeeeeeees")
 		total= PurchaseModel.objects.filter(id=id).values_list('Total')[0][0]
-		print(total,"total")
-
 		context={
 			"total":total,
 			"products":products,
@@ -726,18 +710,17 @@ class ConfirmPay(View):
 		wallet_balance = NewUserModel.objects.filter(username=request.user.username).values_list("wallet")[0][0]
 		total_price=PurchaseModel.objects.filter(id=id).values_list("Total")[0][0]
 		if wallet_balance >= total_price:
+			adminwallet =  NewUserModel.objects.get(username = 'admin')
+			adminbalance = NewUserModel.objects.filter(username = 'admin').values_list('wallet',flat=True)[0]
+			print(adminbalance)
+			adminwallet.wallet = adminbalance + total_price
+			adminwallet.save()
 			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-total_price)
 			PurchaseModel.objects.filter(id=id).update(status=3)
-			messages.success(request,"Payment Successful")
 			obj = CartModel.objects.filter(username=request.user.username)
-			# products = PurchaseModel.objects.filter(id=id).values_list("Product_name")[0]
-			# quantity = PurchaseModel.objects.filter(id=id).values_list("Quantity")[0]
 			product_id = CartModel.objects.filter(username=request.user.username).values_list("product_id")
-			
 			for i in product_id:
-				print(i[0],"hhhhhhhhhhhhhhhhhhhhhh")
 				quantity = CartModel.objects.filter(product_id=i[0]).values_list("Quantity")[0][0]
-				print(quantity,"quannnnnnntititititi")
 				quant = ProductsModel.objects.filter(id=i[0]).values_list("Quantity")[0][0]
 				ProductsModel.objects.filter(id=i[0]).update(Quantity=quant-quantity)
 			obj.delete()
@@ -861,6 +844,7 @@ class RefundHistoryUser(View):
 		refund = RefundHistory.objects.filter(hirer=request.user).values()
 		context = {
 			"refund":refund,
+			'current_path': "Refund history",
 		}
 		return render(request,template,context)
 class RefundHistoryWorker(View):
@@ -869,6 +853,7 @@ class RefundHistoryWorker(View):
 		refund = RefundHistory.objects.filter(worker=request.user).values()
 		context = {
 			"refund":refund,
+			'current_path': "Refund history",
 		}
 		return render(request,template,context)
 

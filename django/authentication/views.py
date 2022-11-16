@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm,UpdateProfileForm
 from .models import NewUserModel
 from ecommerce.models import HireModel
+from django.db.models import Q
 from django.conf import settings  
 from django.views.decorators.cache import cache_control
 from apps.home.models import Category
@@ -101,7 +102,7 @@ class ProfileView(View):
     def get(self, request, *args, **kwargs):
         user_id = request.user.pk
         details = NewUserModel.objects.filter(id=user_id).first()
-        data = list(HireModel.objects.all().values('comment','rating','Name'))
+        data = list(HireModel.objects.filter(Q(worker_name=request.user)&Q(status=4)).values())
         print(data)
         context = {
             "details": details ,

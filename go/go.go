@@ -9,6 +9,7 @@ import (
   "math"
   "io"
   "crypto/rand"
+  
 )
 
 const (
@@ -72,7 +73,7 @@ func workStatus(db *sql.DB){
   var wallet_worker float64
   var rate float64
   // fetchsub(db)
-  fetch_id := db.QueryRow(`SELECT id FROM ecommerce_hiremodel WHERE user_status=1 AND worker_status=true `)
+  fetch_id := db.QueryRow(`SELECT id FROM ecommerce_hiremodel WHERE worker_status=true`)
   fetch_id.Scan(&id)
   fetch_id1 := db.QueryRow(`SELECT worker_name FROM ecommerce_hiremodel WHERE id=$1 `,id)
   fetch_id1.Scan(&worker_name)
@@ -208,7 +209,17 @@ func copytohire(db *sql.DB){
   fmt.Println(created_at)
   work_date := time.Now()
   fmt.Println(work_date)
-  otp:=EncodeToString(6)
+  var otp string
+  otp=EncodeToString(6)
+  for {
+  if len([]rune(otp)) != 6{
+    otp=EncodeToString(6)
+  }else{
+    break
+  }
+  }
+    // fmt.Println(len([]rune(otp)),"lengthhhhhhhhhhhhhhhhhhh")
+
   
   sqlStatement := `
   INSERT INTO ecommerce_hiremodel("worker_name","Hire_name","Name","Place","Work_mode","Phone","status","job_title","user_status","worker_status","rating","created_at","rate","worker_phone","work_date","comment","otp")  VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17);`
@@ -404,7 +415,7 @@ func requestdelete(db *sql.DB){
 }
 
 func refund(db *sql.DB){
-  fmt.Println("refund process ....")
+  // fmt.Println("refund process ....")
   
   fetch,err := db.Query(`SELECT created_at,id,rate FROM ecommerce_hiremodel WHERE user_status = 2 and status = 3`)
   if(err!= nil){
@@ -426,8 +437,8 @@ func refund(db *sql.DB){
     var wallet_hirer float64
     var wallet_worker float64
     var work_mode string
-    fmt.Println(diff,"difference......")
-    if diff >= 1{
+    // fmt.Println(diff,"difference......")
+    if diff >= 0.5{
 
       percenthirer := 0.6
       // fmt.Println("60/100 = ",percenthirer)
@@ -594,12 +605,12 @@ func hirexpiry(db *sql.DB){
     var wallet_hirer float64
     // var wallet_worker float64
     var work_mode string
-    fmt.Println(diff,"DAYSSSSSSSSSSSS")
+    // fmt.Println(diff,"DAYSSSSSSSSSSSS")
     if diff >= 1{
-      fmt.Println("wooooooooooo")
+      // fmt.Println("wooooooooooo")
       fetch1 := db.QueryRow(`SELECT user_status,worker_status FROM ecommerce_hiremodel WHERE id=$1`,id)
       fetch1.Scan(&user_status,&worker_status)
-      fmt.Println(user_status,"sssssssssssssssssssssssss",worker_status)
+      // fmt.Println(user_status,"sssssssssssssssssssssssss",worker_status)
       if (user_status==0) && (worker_status==false){
         fmt.Println("entered both false!!")
         fetch5 := db.QueryRow(`SELECT "Hire_name" FROM ecommerce_hiremodel WHERE "id" = $1`,id)
