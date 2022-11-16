@@ -44,7 +44,8 @@ urlpatterns = [
     path('jobrequestpay/<int:id>',views.JobRequestPay.as_view(),name='jobrequestpay'),
     path('confirmpaymentjob/<int:id>',views.confirmpaymentjob.as_view(),name='confirmpaymentjob'),
     path ('emptycart/',views.Emptycart.as_view(),name='emptycart'),
-    path('emptylaboshop',views.EmptyLaboshop.as_view(),name='emptylaboshop'),
+    path('emptylaboshop/',views.EmptyLaboshop.as_view(),name='emptylaboshop'),
+    path('emptylookforjobs/',views.EmptyLookForjobs.as_view(),name='emptylookforjobs'),
     path('deleteenlisted/<int:id>/',views.deleteenlisted.as_view(),name='deleteenlisted'),
     path('confirmotp/<int:id>/',views.ConfirmOTP.as_view(),name='confirmotp'),
 
