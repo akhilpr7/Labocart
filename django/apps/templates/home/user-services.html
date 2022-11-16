@@ -90,9 +90,11 @@
                         </button>
                       </div>
                       <div class="modal-footer">
-                        <a href="{% url 'uncompletedservices' data.id %}" class=" btn border rounded-2"><span class="text-black">Not completed</span></a> 
+                        {% if not data.worker_status %}
+                        <a href="{% url 'uncompletedservices' data.id %}" class=" btn border rounded-2"><span class="text-black">Cancel</span></a> 
+                        {%endif%}
                         {% if data.worker_status %}
-                        <a href="{% url 'rating' data.id %}" class=" btn border rounded-2"><span class="text-success">Completed</span></a>
+                        <a href="{% url 'rating' data.id %}" class=" btn border rounded-2"><span class="text-success">How Was Your Experience?</span></a>
                         {% else %}
                         <a href="" class=" btn border rounded-2"><span class="text-danger">Pending Completion</span></a>
                         {% endif %}

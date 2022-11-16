@@ -46,7 +46,7 @@
               <th class="border-gray-200">Phone</th>
               <th class="border-gray-200">Job</th>
               <th class="border-gray-200">Option</th>
-              <th class="border-gray-200">Done</th>
+              {% comment %} <th class="border-gray-200">Done</th> {% endcomment %}
 
 
 
@@ -82,7 +82,7 @@
                 {% endif %}
               </td>
               <td>
-                {% if data.status == 4 %}
+                {% comment %} {% if data.status == 4 %}
                 <button disabled href="{% url 'usercompletedservices' data.id %}" class=" btn border rounded-lg"><span class="material-symbols-outlined text-success">done</span></button>
                 {% elif data.status == 5 %}
                 <button disabled href="#" class=" btn border rounded-lg"><span class="material-symbols-outlined text-danger">close</span></button>
@@ -93,7 +93,7 @@
                 <button disabled href="{% url 'usercompletedservices' data.id %}"  class=" btn border rounded-lg"><span class="material-symbols-outlined text-danger">close</span></button>
                 {% elif data.user_status == 0 %}
                 <button disabled href="{% url 'usercompletedservices' data.id %}"  class=" btn border rounded-lg"><span class="material-symbols-outlined text-black">done</span></button>
-                {% endif %}
+                {% endif %} {% endcomment %}
               </td>
             </tr>
 
