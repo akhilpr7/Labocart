@@ -885,7 +885,7 @@ class RefundHistoryWorker(View):
 		if refund:
 			return render(request,template,context)
 		else:
-			return render(request,"emptylaboshop.html",context)
+			return render(request,"home/emptylaboshop.html",context)
 
 @method_decorator(login_required,name='dispatch')
 class LaboTransactions(View):
