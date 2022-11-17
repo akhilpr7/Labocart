@@ -30,12 +30,31 @@ class Laboregisterform(forms.Form):
     super(Laboregisterform, self).__init__(*args,**kwargs)
     self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True),
                               widget=forms.Select(attrs={'class':'form-select'}))
-  phone = forms.CharField(max_length = 10 , widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control','minlength':'10','maxlength':'10'}))
+  phone = forms.CharField(widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control'}))
   image_link = forms.ImageField(widget=forms.FileInput(attrs={'class':'form-control'}))
   rate = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1','placeholder':'Rate'}))
   CHOICES = (('True','Half day'),('False','Full day'))
   work_type = forms.ChoiceField(choices = CHOICES,widget=forms.Select(attrs={'class':'form-select'}))
   credential = forms.ImageField(widget=forms.FileInput(attrs={'class':'form-control'}))
+  def clean(self):
+
+            data = super().clean()
+            phone = data['phone'] 
+            print(phone)
+            if int(phone) <= 0:
+
+                print("ssssss")
+                self._errors['phone'] = self.error_class([
+                    'Phone Number field cannnot be null',])
+            elif len(phone)< 6:
+                    self._errors['phone'] = self.error_class([
+                    'Phone Number should have minimum of 6 letters ',])
+            elif len(phone)> 15:
+                    self._errors['phone'] = self.error_class([
+                    'The length of phone number should be less than 15 ',])
+
+            return self.cleaned_data
+
 
 
 class AddToCartForm( forms.ModelForm ):
@@ -62,7 +81,7 @@ class UpdateStockForm( forms.ModelForm ):
 
 class PurchaseForm(forms.Form):
   
-  phone = forms.CharField(max_length = 10 , widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control','minlength':'10','maxlength':'10'}))
+  phone = forms.CharField( widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control'}))
   
   first_name = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Firstname",'class': 'form-control','minlength':'3'}))
 
@@ -88,21 +107,27 @@ class PurchaseForm(forms.Form):
             phone = data['phone'] 
             email = data['email']
             if validate_email(email) :
-                print("ssssss")
-
                 self._errors['email'] = self.error_class([
                     'Enter a valid email address',])
             if int(phone) <= 0:
                 print("ssssss")
                 self._errors['phone'] = self.error_class([
                     'Phone Number field cannnot be null',])
-      
+            phone = data['phone'] 
+            print(phone)
+            if int(phone) <= 0:
+
+                print("ssssss")
+                self._errors['phone'] = self.error_class([
+                    'Phone Number field cannnot be null',])
+            elif len(phone)< 6:
+                    self._errors['phone'] = self.error_class([
+                    'Phone Number should have minimum of 6 letters ',])
+            elif len(phone)> 15:
+                    self._errors['phone'] = self.error_class([
+                    'The length of phone number should be less than 15 ',])
+
             return self.cleaned_data
-
-
-
-
-
 
 
 
@@ -110,8 +135,28 @@ class HireNowForm( forms.Form ):
   CHOICES = (('True','Half day'),('False','Full day'))
   id = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Your Name"}))
   Place = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
-  Phone = forms.CharField(max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control ','placeholder':"Your Phone"}))
+  Phone = forms.CharField( required=True, widget=forms.TextInput(attrs={'class': 'form-control ','placeholder':"Your Phone"}))
   Work_mode = forms.ChoiceField(choices = CHOICES,widget=forms.Select(attrs={'class':'form-select'}))  # worker_name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"worker name ", 'readonly':'readonly'}))
+  def clean(self):
+
+            data = super().clean()
+            phone = data['phone'] 
+            print(phone)
+            if int(phone) <= 0:
+
+                print("ssssss")
+                self._errors['phone'] = self.error_class([
+                    'Phone Number field cannnot be null',])
+            elif len(phone)< 6:
+                    self._errors['phone'] = self.error_class([
+                    'Phone Number should have minimum of 6 letters ',])
+            elif len(phone)> 15:
+                    self._errors['phone'] = self.error_class([
+                    'The length of phone number should be less than 15 ',])
+
+            return self.cleaned_data
+
+
 
 class CheckoutForm(forms.Form):
   Quantity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ','style':'width:50px;','min':'1'}))
