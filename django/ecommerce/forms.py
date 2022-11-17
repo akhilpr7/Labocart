@@ -108,7 +108,6 @@ class PurchaseForm(forms.Form):
 
 class HireNowForm( forms.Form ):
   CHOICES = (('True','Half day'),('False','Full day'))
-  Name = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Name"}))
   id = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Your Name"}))
   Place = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
   Phone = forms.CharField(min_length=10,max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control ','placeholder':"Your Phone"}))

@@ -615,6 +615,9 @@ class ProvidedJobs(View):
 class LookForJobs(View):
     def get(self, request, *args, **kwargs):
         jobs = JobPostingModel.objects.filter(is_active=1).exclude(hirer=request.user.username).values()
+        appliedones = AppliedJobs.objects.filter(worker_uname=request.user.username)
+
+
         context = {
             'media_url': settings.NEW_VAR,
 
