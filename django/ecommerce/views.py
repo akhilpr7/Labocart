@@ -243,12 +243,12 @@ class LaboShop(View):
 			job=jobmodel.objects.filter(id=filter).values_list("job_title")[0][0]
 			datajob = jobmodel.objects.values()
 			data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1)).exclude(username=request.user.username)
-			requestData = RequestsModel.objects.filter(hirer=request.user.username,status=3)	
+			requestData = RequestsModel.objects.filter(Q(hirer=request.user.username)&Q(status=3))	
 			if requestData :
 					for user in data:
 						workername = user.username 
 						for datas in requestData:
-							if datas.hirer == request.user.username and datas.worker_name == workername  :
+							if datas.hirer == request.user.username and datas.worker_name == workername:
 								newdata = data.exclude(username=datas.worker_name,job_title = datas.job_title)
 							else:
 								newdata = data	
@@ -262,7 +262,7 @@ class LaboShop(View):
 		else:
 			datajob = jobmodel.objects.values()
 			data = labourmodels.objects.filter(status=1).exclude(username=request.user.username)
-			requestData = RequestsModel.objects.filter(hirer=request.user.username,status=3)			
+			requestData = RequestsModel.objects.filter(Q(hirer=request.user.username)&Q(status=3))			
 			if requestData :
 					for user in data:
 						workername = user.username 
