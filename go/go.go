@@ -55,7 +55,7 @@ func main() {
   gocron.Every(2).Second().Do(workStatus, db)
   gocron.Every(2).Second().Do(requestdelete, db)
   gocron.Every(100).Second().Do(fetchsub, db)
-  gocron.Every(60).Second().Do(rating, db)
+  gocron.Every(2).Second().Do(rating, db)
   // gocron.Every(5).Second().Do(expiry2, db)
 
   gocron.Every(5).Second().Do(copytohire, db)
@@ -73,7 +73,7 @@ func workStatus(db *sql.DB){
   var wallet_worker float64
   var rate float64
   // fetchsub(db)
-  fetch_id := db.QueryRow(`SELECT id FROM ecommerce_hiremodel WHERE worker_status=true`)
+  fetch_id := db.QueryRow(`SELECT id FROM ecommerce_hiremodel WHERE worker_status=true AND user_status=1`)
   fetch_id.Scan(&id)
   fetch_id1 := db.QueryRow(`SELECT worker_name FROM ecommerce_hiremodel WHERE id=$1 `,id)
   fetch_id1.Scan(&worker_name)
@@ -170,7 +170,7 @@ func rating(db *sql.DB){
 	// fetchsub(db)
 	
 	row,_ := db.Query(
-		`SELECT  avg(rating),worker_name FROM ecommerce_hiremodel group by worker_name;`  )
+		`SELECT  avg(rating),worker_name FROM ecommerce_hiremodel WHERE status=4 group by worker_name;`  )
 		defer row.Close()
 
 
@@ -207,7 +207,7 @@ func copytohire(db *sql.DB){
   var worker_phone string
   var id int
   // fetchsub(db)
-  fetch,err3 := db.Query(`SELECT id,hirer,name,place,work_type,phone,status,job_title,rate,worker_name,worker_phone FROM home_appliedjobs WHERE status= 1 `)
+  fetch,err3 := db.Query(`SELECT id,hirer,name,place,work_type,phone,status,job_title,rate,worker_uname,worker_phone FROM home_appliedjobs WHERE status= 1 `)
   if(err3 != nil){
     fmt.Println("------1")
     panic(err3)
@@ -327,7 +327,15 @@ func requestToHire(db *sql.DB){
   if(id != 0){
   created_at := time.Now()
   fmt.Println(created_at)
-  otp:=EncodeToString(6)
+  var otp string
+  otp=EncodeToString(6)
+  for {
+  if len([]rune(otp)) != 6{
+    otp=EncodeToString(6)
+  }else{
+    break
+  }
+  }
   sqlStatement := `
   INSERT INTO ecommerce_hiremodel("worker_name","Hire_name","Name","Place","Work_mode","Phone","status","job_title","user_status","worker_status","rating","comment","created_at","rate","work_date","worker_phone","otp")  VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17) ;`
   _, err := db.Exec(sqlStatement,worker_name,hirer,name,place,work_type,phone,3,job_title,"0","false","0","",created_at,rate,work_date,worker_phone,otp)
