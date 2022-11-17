@@ -171,14 +171,20 @@ class ApplyFormView(View):
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
-            form = ApplyForm(request.POST)
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Success")
+            applied = AppliedJobs.objects.filter(Q(worker_uname=request.user.username)&Q(hirer=request.POST.get("hirer"))&Q(job_title=request.POST.get("job_title"))).exists()
+            # print(applied,"exists or notttttttttttt")
+            if applied:
+                messages.error(request, "Already applied for this job !!")
                 return redirect('lookforjobs')
             else:
-                messages.error(request, "error")
-                return redirect('lookforjobs')
+                form = ApplyForm(request.POST)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, "Success")
+                    return redirect('lookforjobs')
+                else:
+                    messages.error(request, "error")
+                    return redirect('lookforjobs')
         else:
             messages.error(request, "error")
             # return redirect('shop')
@@ -401,6 +407,7 @@ class JobPostingView(View):
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
+            # applied = JobPostingModel.objects.filter
             form = JobPostingForm(request.POST,request.FILES)
             try:
                 obj = JobPostingModel.objects.create(

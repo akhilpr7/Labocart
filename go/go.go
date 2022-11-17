@@ -362,7 +362,7 @@ func requestdelete(db *sql.DB){
   var created_at time.Time
   var id int
   var status int
-  fetch,err := db.Query(`SELECT created_at,id,status FROM ecommerce_requestsmodel WHERE status=2 or status=0`)
+  fetch,err := db.Query(`SELECT created_at,id,status FROM ecommerce_requestsmodel WHERE status=3 or status=0`)
   if(err!= nil){
     panic(err)
   }
@@ -376,25 +376,25 @@ func requestdelete(db *sql.DB){
       fmt.Println(diff)
       fmt.Println("-----------")
       if diff > 1{
-        var rate float64
-        var hirer string
-        var wallet float64
-        row1 := db.QueryRow(`SELECT rate FROM ecommerce_requestsmodel WHERE id=$1`,id)
-        row1.Scan(&rate)
-        row2 := db.QueryRow(`SELECT hirer FROM ecommerce_requestsmodel WHERE id=$1`,id)
-        row2.Scan(&hirer)
-        row3 := db.QueryRow(`SELECT wallet FROM authentication_newusermodel WHERE username=$1`,hirer)
-        row3.Scan(&wallet)
+        // var rate float64
+        // var hirer string
+        // var wallet float64
+        // row1 := db.QueryRow(`SELECT rate FROM ecommerce_requestsmodel WHERE id=$1`,id)
+        // row1.Scan(&rate)
+        // row2 := db.QueryRow(`SELECT hirer FROM ecommerce_requestsmodel WHERE id=$1`,id)
+        // row2.Scan(&hirer)
+        // row3 := db.QueryRow(`SELECT wallet FROM authentication_newusermodel WHERE username=$1`,hirer)
+        // row3.Scan(&wallet)
         
-        sqlStatement1 :=`
-        UPDATE authentication_newusermodel
-        SET wallet = $1
-        WHERE username = $2;`
-        _, err3 := db.Exec(sqlStatement1,wallet+rate,hirer)
-        if err3 != nil {
-          fmt.Println("------2")
-          panic(err)
-        }
+        // sqlStatement1 :=`
+        // UPDATE authentication_newusermodel
+        // SET wallet = $1
+        // WHERE username = $2;`
+        // _, err3 := db.Exec(sqlStatement1,wallet+rate,hirer)
+        // if err3 != nil {
+        //   fmt.Println("------2")
+        //   panic(err)
+        // }
   
         sqlStatement3 :=`
         DELETE FROM ecommerce_labopaymentmodel WHERE work_id_id = $1;`
@@ -415,25 +415,67 @@ func requestdelete(db *sql.DB){
           panic(err4)
         }
       }
-    }else if status == 2 {
-     
-    
+    }else if status == 3 {
+      current_date := time.Now()
+      difference := current_date.Sub(created_at)
+      diff := difference.Hours()
+      fmt.Println(diff)
+      fmt.Println("-----------")
+      if diff > 1{
+         var rate float64
+        var hirer string
+        var wallet float64
+        row1 := db.QueryRow(`SELECT rate FROM ecommerce_requestsmodel WHERE id=$1`,id)
+        row1.Scan(&rate)
+        row2 := db.QueryRow(`SELECT hirer FROM ecommerce_requestsmodel WHERE id=$1`,id)
+        row2.Scan(&hirer)
+        row3 := db.QueryRow(`SELECT wallet FROM authentication_newusermodel WHERE username=$1`,hirer)
+        row3.Scan(&wallet)
+        
+        sqlStatement1 :=`
+        UPDATE authentication_newusermodel
+        SET wallet = $1
+        WHERE username = $2;`
+        _, err3 := db.Exec(sqlStatement1,wallet+rate,hirer)
+        if err3 != nil {
+          fmt.Println("------2")
+          panic(err)
+        }
+        
+        sqlStatement3 :=`
+        DELETE FROM ecommerce_labopaymentmodel WHERE work_id_id = $1;`
+        _, err5 := db.Exec(sqlStatement3,id)
+        if err5 != nil {
+          fmt.Println("------5")
+          panic(err5)
+        }
+      
+  
+  
+        sqlStatement2 :=`
+        DELETE FROM ecommerce_requestsmodel WHERE id = $1;`
+        _, err4 := db.Exec(sqlStatement2,id)
+        fmt.Println("Deleting req model")
+        if err4 != nil {
+          fmt.Println("------3")
+          panic(err4)
+        }
 
 
-      sqlStatement2 :=`
-      UPDATE ecommerce_requestsmodel
-      SET status = 5
-      WHERE id = $1;`
-      _, err4 := db.Exec(sqlStatement2,id)
-      fmt.Println("updating req model")
-      if err4 != nil {
-        fmt.Println("------3")
-        panic(err4)
-      }
+        // sqlStatement2 :=`
+        // UPDATE ecommerce_requestsmodel
+        // SET status = 5
+        // WHERE id = $1;`
+        // _, err4 := db.Exec(sqlStatement2,id)
+        // fmt.Println("updating req model")
+        // if err4 != nil {
+        //   fmt.Println("------3")
+        //   panic(err4)
+        // }
 
     }
   }
-}
+}}
 
 func refund(db *sql.DB){
   // fmt.Println("refund process ....")
