@@ -479,9 +479,10 @@ class Labocategories2(View):
             'MEDIA_ROOT':settings.NEW_VAR,
 
         }
-        total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & (
-            (Q(status=1) | Q(status=2) | Q(status=3)))).count()
-     
+        # total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & Q(
+        #     (Q(status=1) | Q(status=2) | Q(status=3)))).count()
+        total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & Q(status = 0)).count()
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",total_work)
         if total_work < 5:
             return render(request, self.template, context)
         else:
