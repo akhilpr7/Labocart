@@ -140,19 +140,19 @@ class HireNowForm( forms.Form ):
   def clean(self):
 
             data = super().clean()
-            phone = data['phone'] 
-            print(phone)
-            if int(phone) <= 0:
+            Phone = data['Phone'] 
+            print(Phone)
+            if int(Phone) <= 0:
 
                 print("ssssss")
-                self._errors['phone'] = self.error_class([
+                self._errors['Phone'] = self.error_class([
                     'Phone Number field cannnot be null',])
-            elif len(phone)< 6:
-                    self._errors['phone'] = self.error_class([
+            elif len(Phone)< 6:
+                    self._errors['Phone'] = self.error_class([
                     'Phone Number should have minimum of 6 letters ',])
-            elif len(phone)> 15:
-                    self._errors['phone'] = self.error_class([
-                    'The length of phone number should be less than 15 ',])
+            elif len(Phone)> 15:
+                    self._errors['Phone'] = self.error_class([
+                    'The length of Phone number should be less than 15 ',])
 
             return self.cleaned_data
 
