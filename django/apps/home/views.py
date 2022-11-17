@@ -489,7 +489,6 @@ class Labocategories2(View):
         # total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & Q(
         #     (Q(status=1) | Q(status=2) | Q(status=3)))).count()
         total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & Q(status = 0)).count()
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",total_work)
         if total_work < 5:
             return render(request, self.template, context)
         else:
@@ -646,6 +645,31 @@ class LookForJobs(View):
         else:
             messages.error(request,"Subscription required !! ")
             return redirect("workerview")
+
+@method_decorator(login_required, name='dispatch')
+class LookJobs(View):
+    def get(self, request, *args, **kwargs):
+        data = AppliedJobs.objects.filter(worker_uname=request.user).values()
+        context = {
+            'media_url': settings.NEW_VAR,
+            'data': data,
+            'current_path': "Applied Jobs"  
+        }
+        if request.user.is_sub:
+            if data:
+                return render(request, "home/appliedjobs.html", context)
+            else:
+                return render(request,"home/emptylookforjobs.html",context)
+        else:
+            messages.error(request,"Subscription required !! ")
+            return redirect("workerview")
+@method_decorator(login_required, name='dispatch')
+class CancelLookJobs(View):
+    def get(self, request,id, *args, **kwargs):
+        delete = AppliedJobs.objects.filter(id=id)
+        delete.delete()
+        return redirect('lookjobs')
+
 
 @method_decorator(login_required, name='dispatch')
 class  UpdateEnlistedJobStatus(View):
