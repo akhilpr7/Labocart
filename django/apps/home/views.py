@@ -79,7 +79,7 @@ class FundView(View):
             form = AddFundForm(request.POST, request=request)
             if form.is_valid():
                 form.save()
-                return redirect(reverse('funds'))
+                return redirect(reverse('dashboard'))
             else:
                 return render(request, self.template, {'form': form})
 
