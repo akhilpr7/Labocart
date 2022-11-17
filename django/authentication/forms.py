@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 
 class RegisterForm(UserCreationForm):
 
-    phone_no = forms.CharField(min_length=10,max_length = 10 , widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control','minlength':'10','maxlength':'10'}))
+    phone_no = forms.CharField(max_length = 10 , widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control','minlength':'10','maxlength':'10'}))
 
     username = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Username",'class': 'form-control','minlength':'3'}))
     first_name = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Firstname",'class': 'form-control','minlength':'3'}))
