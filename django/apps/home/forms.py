@@ -42,7 +42,7 @@ class JobPostingForm( forms.Form ):
   name = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Name"}))
   place = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
   image = forms.ImageField(widget=forms.FileInput(attrs={ 'class': 'form-control'}))
-  phone = forms.CharField(max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Phone"}))
+  phone = forms.CharField(min_length=10, max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Phone"}))
   CHOICES = (('True','Half day'),('False','Full day'))
   work_type = forms.ChoiceField(choices = CHOICES,widget=forms.Select(attrs={'class':'form-select'}))
 
@@ -61,7 +61,7 @@ class ApplyForm(forms.ModelForm):
     status = forms.IntegerField(required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Status" ,'readonly':'True'}))
     place = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Place",'readonly':'True'}))
     work_type = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Work type",'readonly':'True'}))
-    phone = forms.CharField(max_length=10, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Phone number",'readonly':'True'}))
+    phone = forms.CharField(min_length=10,max_length=10, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Phone number",'readonly':'True'}))
     job_title = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Job title",'readonly':'True'}))
     rate = forms.IntegerField(required=True, widget=forms.TextInput(attrs={'class':'form-control','placeholder':"Rate", 'label':'rrrrrrrrrrrrrrrrrrrrrr'}))
     worker_name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Worker name",'readonly':'True' }))
