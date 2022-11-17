@@ -101,8 +101,11 @@ class TransactionView(View):
                 context={
                     'datas' : new_context,
                     'current_path': "Transactions"
-                    } 
-                return render(request , self.template_name , context)
+                    }
+                if new_context: 
+                    return render(request , self.template_name , context)
+                else:
+                    return render(request, "home/emptylaboshop.html",context)
             else:
                 new_context = PurchaseModel.objects.filter(
                 status=3,username=request.user.username)  
@@ -110,7 +113,10 @@ class TransactionView(View):
                     'datas' : new_context,
                     'current_path': "Transactions"
                     } 
-                return render(request , self.template_name , context)   
+                if new_context:
+                    return render(request , self.template_name , context)   
+                else:
+                    return render(request, "home/emptylaboshop.html",context)
 @method_decorator(login_required, name='dispatch')
 class Userservices(View):
     def get(self, request, *args, **kwargs):
@@ -120,11 +126,10 @@ class Userservices(View):
             'details': details,
             'current_path': "User Services"
         }
-        # work_hour = HireModel.objects.get(worker_name=request.user).values_list("created_at")[0][0]
-        # timediff = datetime.datetime.now() - work_hour
-        # print(work_hour.seconds,"hoooooooooooooooooooooooooooooooooooooooooooo")
-        # print(timediff.seconds,"hoooooooooooooooooooooooooooooooooooooooooooo")
-        return render(request, "home/user-services.html", context)
+        if details:
+            return render(request, "home/user-services.html", context)
+        else:
+            return render(request, "home/emptylaboshop.html",context)
 
 @method_decorator(login_required, name='dispatch')
 class Workerservices(View):
@@ -135,8 +140,10 @@ class Workerservices(View):
             'work': work,
             'current_path': "Worker Services"
         }
-       
-        return render(request, "home/worker-services.html", context)
+        if work:
+            return render(request, "home/worker-services.html", context)
+        else:
+            return render(request, "home/emptylookforjobs.html",context)
 
 @method_decorator(login_required, name='dispatch')
 
@@ -231,8 +238,10 @@ class ServiceView(View):
         data = RequestsModel.objects.filter(
             hirer   =request.user).exclude(status__in=[0,2,5])
         context = {'data': data, 'current_path': "Requested Services"}
-        return render(request, self.template_name, context)
-
+        if data:
+            return render(request, self.template_name, context)
+        else:
+            return render(request, "home/emptylaboshop.html", context)
 @method_decorator(login_required, name='dispatch')
 class RatingView(View):
     def get(self, request, *args, id, **kwargs):
@@ -441,7 +450,10 @@ class HireHistory(View):
             'details' : details,
             'current_path': "Laboshop History",
         }
-        return render(request, "home/hirehistory.html", context)
+        if details:
+            return render(request, "home/hirehistory.html", context)
+        else:
+            return render(request, "home/emptylaboshop.html", context)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -594,8 +606,10 @@ class ProvidedJobs(View):
             hirer=request.user.username)
         context = {'jobs': jobs,
                     'current_path': "Enlisted Jobs"}
-    
-        return render(request,self.template_name , context)
+        if jobs:
+            return render(request,self.template_name , context)
+        else:
+            return render(request,"home/emptylaboshop.html",context)
 @method_decorator(login_required, name='dispatch')
 class LookForJobs(View):
     def get(self, request, *args, **kwargs):
