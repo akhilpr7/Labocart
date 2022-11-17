@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from ecommerce.models import HireModel, PurchaseModel,RequestsModel,RefundHistory,PackageModel
 from .forms import AddJobForm, CategoryForm, JobPostingForm, AddFundForm, ApplyForm,CommentForm
-from .models import Category, JobPostingModel, AppliedJobs,Category
+from .models import Category, JobPostingModel, AppliedJobs,Category,JobPaymentModel
 from django.contrib import messages
 from django.urls import reverse
 from authentication.models import jobmodel, NewUserModel, labourmodels
@@ -177,9 +177,11 @@ class ApplyFormView(View):
                 messages.error(request, "Already applied for this job !!")
                 return redirect('lookforjobs')
             else:
+                rate = request.POST['rate']
                 form = ApplyForm(request.POST)
                 if form.is_valid():
-                    form.save()
+                    obj = form.save()
+                    pay = JobPaymentModel.objects.create(work_id=obj,rate=rate,status=0,amount=0)				
                     messages.success(request, "Success")
                     return redirect('lookforjobs')
                 else:
@@ -696,7 +698,6 @@ class JobRequestPay(View):
     template = 'home/jobreqpay.html'
     def get(self, request, id, *args, **kwargs):
         rate = AppliedJobs.objects.filter(id=id).values_list("rate")[0][0]
-
         context={
             "rate":rate,
             "id":id,

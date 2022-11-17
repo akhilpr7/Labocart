@@ -48,5 +48,6 @@ class AppliedJobs(models.Model):
 
 class JobPaymentModel(models.Model):
     work_id = models.ForeignKey(AppliedJobs, on_delete=models.CASCADE, default=None)
+    rate = models.FloatField(max_length=20, blank=False,null=False,default=0)
     status = models.IntegerField(blank=False,null=True,default=0)
     amount = models.FloatField(max_length=20, blank=False,null=False,default=0)

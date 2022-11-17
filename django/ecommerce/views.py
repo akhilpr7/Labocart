@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.urls import reverse
 from ecommerce.models import HireModel, ProductsModel, CartModel,RequestsModel
 from .forms import AddStockForm, HireNowForm,Laboregisterform,PurchaseForm,AddPackageForm
-from apps.home.models import Category,AppliedJobs
+from apps.home.models import Category,AppliedJobs,JobPaymentModel
 from .forms import UpdateStockForm,CheckoutForm,UpdatePackageForm
 from .models import HireModel, PackageModel, PurchaseModel, LabopaymentModel,RefundHistory
 import datetime
@@ -161,7 +161,7 @@ class CheckoutView(View):
 
 	def get(self, request, *args, **kwargs):
 		products = list(CartModel.objects.filter(username=request.user.username).values())
-		totalPrice = CartModel.objects.aggregate(Sum('Total'))
+		totalPrice = CartModel.objects.filter(username = request.user.username).aggregate(Sum('Total'))
 		# items = list(PurchaseModel.objects.filter(username=request.user.username,status = 1).values_list('Prices',flat=True))[0]
 		# print(items)
 		context = {
@@ -186,7 +186,8 @@ class CheckoutView(View):
 					request.session['Locality']= request.POST['locality']
 
 					product_name = list(CartModel.objects.filter(username=request.user.username).values_list('Product_name',flat=True))
-					totalPrice = CartModel.objects.aggregate(Sum('Total'))
+					# totalPrice = CartModel.objects.aggregate(Sum('Total'))
+					totalPrice = CartModel.objects.filter(username = request.user.username).aggregate(Sum('Total'))
 					data = PurchaseModel(	
 						phone=request.POST['phone'],
 						Total=totalPrice["Total__sum"],
@@ -532,6 +533,7 @@ class HireNowView(View):
 					worker_phone=worker_phone,
 					created_at=datetime.datetime.now().date())
 				# k = request.POST.get("id")
+				print(obj)
 				pay = LabopaymentModel.objects.create(work_id=obj,rate=rate,status=0,amount=0)				
 				return render(request,'home/hirenowpay.html',{"id":n,"rate":rate})
 			else:
@@ -544,8 +546,8 @@ class Userpayments(View):
 		rate = AppliedJobs.objects.filter(id=id).values_list("rate")[0][0]
 		if wallet_balance >= rate:
 			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)	
-			# RequestsModel.objects.filter(id=id).update(status=3)
 			AppliedJobs.objects.filter(id=id).update(status=1)
+			JobPaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
 			messages.success(request,'Payment Successful')
 			return redirect('jobrequests')
 		else:
