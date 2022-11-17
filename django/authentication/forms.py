@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 
 class RegisterForm(UserCreationForm):
 
-    phone_no = forms.CharField(min_length=10,max_length = 10 , widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control','minlength':'10','maxlength':'10'}))
+    phone_no = forms.CharField( widget=forms.NumberInput(attrs={"placeholder": "Phone Number",'class': 'form-control'}))
 
     username = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Username",'class': 'form-control','minlength':'3'}))
     first_name = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Firstname",'class': 'form-control','minlength':'3'}))
@@ -27,15 +27,20 @@ class RegisterForm(UserCreationForm):
     def clean(self):
 
             data = super().clean()
-
-            print(data)
-            print("===========data",data['phone_no'])
             phone = data['phone_no'] 
+            print(phone)
             if int(phone) <= 0:
+
                 print("ssssss")
                 self._errors['phone_no'] = self.error_class([
                     'Phone Number field cannnot be null',])
-      
+            elif len(phone)< 6:
+                    self._errors['phone_no'] = self.error_class([
+                    'Phone Number should have minimum of 6 letters ',])
+            elif len(phone)> 15:
+                    self._errors['phone_no'] = self.error_class([
+                    'The length of phone number should be less than 15 ',])
+
             return self.cleaned_data
 
 
@@ -58,3 +63,23 @@ class UpdateProfileForm(UserCreationForm):
 
         model = NewUserModel
         fields = ('first_name','last_name','phone_no','email','image',)
+   
+    def clean(self):
+
+            data = super().clean()
+            phone = data['phone_no'] 
+            print(phone)
+            if int(phone) <= 0:
+
+                print("ssssss")
+                self._errors['phone_no'] = self.error_class([
+                    'Phone Number field cannnot be null',])
+            elif len(phone)< 6:
+                    self._errors['phone_no'] = self.error_class([
+                    'Phone Number should have minimum of 6 letters ',])
+            elif len(phone)> 15:
+                    self._errors['phone_no'] = self.error_class([
+                    'The length of phone number should be less than 15 ',])
+
+            return self.cleaned_data
+
