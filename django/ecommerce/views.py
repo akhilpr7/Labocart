@@ -898,5 +898,5 @@ class LaboTransactions(View):
 		if work:
 			return render(request,'labotransaction.html',context)
 		else:
-			return render(request,"emptylaboshop.html",context)	
+			return render(request,"home/emptylaboshop.html",context)	
 
