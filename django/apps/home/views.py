@@ -548,8 +548,22 @@ class RejectServices(View):
 class JobRequests(View):
     template_name = 'home/jobrequests.html'
     def get(self, request, *args, **kwargs):
-        requests = AppliedJobs.objects.filter(
-            hirer=request.user.username).exclude(status=3)
+        hire = HireModel.objects.filter(status=3)
+        print(hire,"hiiiiiiiiiiiiiiii")
+        if hire!= None:
+            # requests = AppliedJobs.objects.filter(hirer=request.user.username).exclude(status=3)
+            requests = AppliedJobs.objects.filter(Q(hirer=request.user.username)&Q(status=0))
+            for data in requests:
+                for hirer in hire:
+                    print(data.worker_uname,hirer.worker_name,"whatttttttttttttttttttttttttttttt")
+                    if data.worker_uname == hirer.worker_name:
+                        requests = requests.exclude(worker_uname=data.worker_uname)
+                        print(requests,"reqqqqqqqqqqqqqqqqqqqq")
+        print(requests,"--------------------------")
+        # requetn = HireModel.objects.filter(status=3)
+
+
+        
         context = {
             'requests': requests,
             'current_path': "Job requests",
