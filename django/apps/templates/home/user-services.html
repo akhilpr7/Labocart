@@ -77,10 +77,10 @@
                 {% elif data.user_status == 1 %}
                 <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
                 {% else %}
-                <a data-target="#selectModal" data-toggle="modal" class=" btn border rounded-2"><span class="material-symbols-outlined text-black">keyboard_double_arrow_right </span></a>
+                <a data-target="#selectModal{{data.id}}" data-toggle="modal" class=" btn border rounded-2"><span class="material-symbols-outlined text-black">keyboard_double_arrow_right </span></a>
               
                 <!-- Modal -->
-                <div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="selectModal{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -93,7 +93,8 @@
                         {% if not data.worker_status %}
                         <a href="{% url 'uncompletedservices' data.id %}" class=" btn border rounded-2"><span class="text-black">Cancel</span></a> 
                         {%endif%}
-                        {% if data.worker_status %}
+                        {% if data.worker_status == True %}
+                 
                         <a href="{% url 'rating' data.id %}" class=" btn border rounded-2"><span class="text-success">How Was Your Experience?</span></a>
                         {% else %}
                         <a href="" class=" btn border rounded-2"><span class="text-danger">Pending Completion</span></a>
