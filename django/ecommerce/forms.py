@@ -62,7 +62,7 @@ class UpdateStockForm( forms.ModelForm ):
 
 class PurchaseForm(forms.Form):
   
-  phone = forms.CharField(max_length = 10 , widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control','minlength':'10','maxlength':'10'}))
+  phone = forms.CharField(min_length=10,max_length = 10 , widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control','minlength':'10','maxlength':'10'}))
   
   first_name = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Firstname",'class': 'form-control','minlength':'3'}))
 
@@ -111,7 +111,7 @@ class HireNowForm( forms.Form ):
   Name = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Name"}))
   id = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Your Name"}))
   Place = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
-  Phone = forms.CharField(max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control ','placeholder':"Your Phone"}))
+  Phone = forms.CharField(min_length=10,max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control ','placeholder':"Your Phone"}))
   Work_mode = forms.ChoiceField(choices = CHOICES,widget=forms.Select(attrs={'class':'form-select'}))  # worker_name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"worker name ", 'readonly':'readonly'}))
 
 class CheckoutForm(forms.Form):
