@@ -10,6 +10,12 @@
 {% block content%}
 
 <head>
+    {% if messages %}
+{% for message in messages %}
+    <p class="d-none" id="messagetag">{{message.tags}}</p>
+    <p class="d-none " id="messagecontent">{{message}}</p>
+{% endfor %}
+{% endif %}
     <meta charset="utf-8">
     <title>Invoice</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">

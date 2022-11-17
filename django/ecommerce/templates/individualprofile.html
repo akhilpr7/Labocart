@@ -38,7 +38,12 @@
     </div>
   </section>
 
-
+  {% if messages %}
+  {% for message in messages %}
+      <p class="d-none" id="messagetag">{{message.tags}}</p>
+      <p class="d-none " id="messagecontent">{{message}}</p>
+  {% endfor %}
+  {% endif %}
 
 
 <div>
