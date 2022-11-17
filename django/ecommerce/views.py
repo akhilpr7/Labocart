@@ -207,6 +207,7 @@ class CheckoutView(View):
 					data.save()
 					id = PurchaseModel.objects.filter(order_id=n).values_list("id")[0][0]
 					return redirect('payment',id)
+			messages.error(request,"Form not valid ! ")
 			return render(request,self.template, {'form': PurchaseForm(request.POST)})
 
 		else:   
