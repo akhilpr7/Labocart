@@ -238,47 +238,45 @@ class Invoice(View):
 class LaboShop(View):
 	def get(self, request, *args, **kwargs):
 		filter=request.GET.get('filter')
-		newdata = ''
+		datajob = jobmodel.objects.values()
+
+
+
 		if request.GET.get('filter') is not None and request.GET.get('filter') != '':
 			job=jobmodel.objects.filter(id=filter).values_list("job_title")[0][0]
-			datajob = jobmodel.objects.values()
-			data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1)).exclude(username=request.user.username)
-			requestData = RequestsModel.objects.filter(Q(hirer=request.user.username)&Q(status=3))	
-			if requestData :
-					for user in data:
-						workername = user.username 
-						for datas in requestData:
-							if datas.hirer == request.user.username and datas.worker_name == workername:
-								newdata = data.exclude(username=datas.worker_name,job_title = datas.job_title)
-							else:
-								newdata = data	
-			else:
-				newdata = data					
-			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
-			users=NewUserModel.objects.all()
-			work = HireModel.objects.all()
-			datacategory=Category.objects.values()
-			# requests = RequestsModel.objects.filter(hirer=request.user).values()
+			data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1)).exclude(username=request.user.username)		
 		else:
-			datajob = jobmodel.objects.values()
 			data = labourmodels.objects.filter(status=1).exclude(username=request.user.username)
-			requestData = RequestsModel.objects.filter(Q(hirer=request.user.username)&Q(status=3))			
-			if requestData :
-					for user in data:
-						workername = user.username 
-						job = user.job_title
-						for datas in requestData:
-							if datas.hirer == request.user.username and datas.worker_name == workername and datas.job_title == job :
-								newdata = data.exclude(username=datas.worker_name,job_title = datas.job_title)
-							else:
-								newdata = data	
-			else:
-				newdata = data					
-			fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
-			users=NewUserModel.objects.all()
-			work = HireModel.objects.all()
-			datacategory=Category.objects.values()
-		requests = RequestsModel.objects.filter(hirer=request.user.username).values()
+
+		newdata = data	
+		alreadyRequested = RequestsModel.objects.filter(Q(hirer= request.user.username) & Q(status=3))
+		hiredata = HireModel.objects.filter(status=3)
+
+		print('alreadyRequested')
+		print(alreadyRequested)
+		
+		if alreadyRequested != None:
+			for datas in newdata:
+				for item in alreadyRequested:
+					if datas.username == item.worker_name:
+						newdata = newdata.exclude(username=item.worker_name)
+
+		if hiredata != None :
+			print("New")
+			for datas in newdata:
+				for item in hiredata:
+					print("1")
+					if datas.username == item.worker_name:
+						newdata = newdata.exclude(username = item.worker_name)		
+						print("2")
+
+
+		fund = NewUserModel.objects.filter(username=request.user.username).values('wallet')
+		users=NewUserModel.objects.all()
+		work = HireModel.objects.all()
+		datacategory=Category.objects.values()
+
+		
 
 		context = {
 			'data': newdata,
@@ -288,7 +286,6 @@ class LaboShop(View):
 			"datajob":datajob,
 			"user":users,
 			"work":work,
-			"request":requests,
 		}
 		is_sub = NewUserModel.objects.filter(username=request.user).values_list('is_sub')[0][0]
 		if is_sub == True or request.user.is_superuser:
@@ -510,7 +507,7 @@ class HireNowView(View):
 		if request.method == 'POST':
 			form = HireNowForm(request.POST)
 			id = request.POST.get("id")
-			name = request.POST.get("Name")
+			name = request.user.first_name +" "+ request.user.last_name
 			place = request.POST.get("Place")
 			phone = request.POST.get("Phone")
 			work_type = request.POST.get("Work_mode")
@@ -521,7 +518,6 @@ class HireNowView(View):
 
 			if form.is_valid():
 				n = random.randint(0,99999)
-				# print(n,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
 				obj = RequestsModel.objects.create(
 					id=n,
 					hirer=request.user.username,
@@ -540,7 +536,7 @@ class HireNowView(View):
 				return render(request,'home/hirenowpay.html',{"id":n,"rate":rate})
 			else:
 				messages.error(request,'Unsuccesfull')
-				return redirect('dashboard')
+				return redirect('laboshop')
 class Userpayments(View):
 	def get(self, request,id, *args, **kwargs):
 		wallet_balance =request.user.wallet
@@ -889,7 +885,7 @@ class RefundHistoryWorker(View):
 		if refund:
 			return render(request,template,context)
 		else:
-			return render(request,"emptylaboshop.html",context)
+			return render(request,"home/emptylaboshop.html",context)
 
 @method_decorator(login_required,name='dispatch')
 class LaboTransactions(View):
