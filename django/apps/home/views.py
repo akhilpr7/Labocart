@@ -105,7 +105,7 @@ class TransactionView(View):
                 if new_context: 
                     return render(request , self.template_name , context)
                 else:
-                    return render(request, "home/emptylaboshop.html",context)
+                    return render(request, "home/emptyadmin.html",context)
             else:
                 new_context = PurchaseModel.objects.filter(
                 status=3,username=request.user.username)  

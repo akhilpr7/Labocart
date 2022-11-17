@@ -1,0 +1,47 @@
+{% extends "layouts/base.html" %}
+{% block title %} Fund Management {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+    <p class="d-none" id="messagetag">{{message.tags}}</p>
+    <p class="d-none " id="messagecontent">{{message}}</p>
+{% endfor %}
+{% endif %}
+<!-- <div class="row  px-3 ">
+     <div class="card"> -->
+<body style="background-color:#f5eee7" >
+<div class="container-fluid py-4">
+
+    <div class="row">
+        <div class="col-7 p-2 m-auto">
+            <div class="card mb-4 rounded-3 shadow-lg">
+                
+                    <div class="card-body" style="text-align:center;padding-block-end: 5% !important;">
+                        <div class="col-12 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center p-5">
+                            <div class="icon-shape icon-shape-primary rounded me-4 me-sm-0">
+                                <span class="material-symbols-outlined "style="font-size: 40px;">warning</span>                                 
+                                </div>
+                                
+                        </div>
+                        <h4>Oops! Unable to Find ...</h4>
+                        <div class="mt-5" style="width:60%;margin-left: 20%;">
+                        <i>Why don't you try again later</i><b>  :)</b>
+                        </div>
+                        <div class="mt-5" style="width:60%;margin-left: 20%;">
+                            <a href="{% url 'dashboard' %}" class="btn-sm"><span class="material-symbols-outlined"style="font-size: 30px;">keyboard_return </span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- </div> -->
+</body>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
