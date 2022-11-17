@@ -112,6 +112,26 @@ class HireNowForm( forms.Form ):
   Place = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
   Phone = forms.CharField(min_length=10,max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control ','placeholder':"Your Phone"}))
   Work_mode = forms.ChoiceField(choices = CHOICES,widget=forms.Select(attrs={'class':'form-select'}))  # worker_name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"worker name ", 'readonly':'readonly'}))
+  def clean(self):
+
+            data = super().clean()
+            Phone = data['Phone'] 
+            print(Phone)
+            if int(Phone) <= 0:
+
+                print("ssssss")
+                self._errors['Phone'] = self.error_class([
+                    'Phone Number field cannnot be null',])
+            elif len(Phone)< 6:
+                    self._errors['Phone'] = self.error_class([
+                    'Phone Number should have minimum of 6 letters ',])
+            elif len(Phone)> 15:
+                    self._errors['Phone'] = self.error_class([
+                    'The length of Phone number should be less than 15 ',])
+
+            return self.cleaned_data
+
+
 
 class CheckoutForm(forms.Form):
   Quantity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ','style':'width:50px;','min':'1'}))

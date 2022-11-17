@@ -45,3 +45,8 @@ class AppliedJobs(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     copy_status = models.BooleanField(default=False)
     work_date = models.DateTimeField(auto_now_add=True)
+
+class JobPaymentModel(models.Model):
+    work_id = models.ForeignKey(AppliedJobs, on_delete=models.CASCADE, default=None)
+    status = models.IntegerField(blank=False,null=True,default=0)
+    amount = models.FloatField(max_length=20, blank=False,null=False,default=0)

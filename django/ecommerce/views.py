@@ -663,7 +663,7 @@ class Subscribe(View):
 				messages.error(request,"Already Subscribed")
 				return redirect ("laboshop")
 			elif is_sub == False:
-
+				
 				n = random.randint(0,99999)
 				data = PurchaseModel(	
 					phone=request.user.phone_no,
@@ -685,6 +685,9 @@ class Subscribe(View):
 				)
 				data.save()
 				NewUserModel.objects.filter(username=request.user.username).update(is_sub=True,wallet=wallet_balance-packagecost,subscribed_at=datetime.datetime.now().date(),package=id)	
+				walletadmin =NewUserModel.objects.filter(username="admin").first()
+				NewUserModel.objects.filter(username="admin").update(wallet=walletadmin.wallet+packagecost)	
+				
 				messages.success(request,"Succesfully Subscribed")
 				return redirect ("laboshop")
 			else:
