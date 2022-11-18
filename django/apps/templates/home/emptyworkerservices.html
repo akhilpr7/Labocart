@@ -1,5 +1,5 @@
-{% extends "layouts/base.html" %}
-{% block title %}{% endblock %} 
+{% extends "index1.html" %}
+{% block title %} {% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -27,12 +27,12 @@
                                 </div>
                                 
                         </div>
-                        <h4>Sorry,No Requests Found</h4>
+                        <h4>Oops.! No Services Found</h4>
                         <div class="mt-5" style="width:60%;margin-left: 20%;">
                         <i>Please try again later</i><b>  :)</b>
                         </div>
                         <div class="mt-5" style="width:60%;margin-left: 20%;">
-                            <a href="{% url 'admindashboard' %}" class="btn-sm"><span class="material-symbols-outlined"style="font-size: 30px;">keyboard_return </span></a>
+                            <a href="{% url 'workerview' %}" class="btn-sm"><span class="material-symbols-outlined"style="font-size: 30px;">keyboard_return </span></a>
                         </div>
                     </div>
                 </div>
