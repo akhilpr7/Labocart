@@ -910,3 +910,9 @@ class LaboTransactions(View):
 		else:
 			return render(request,"home/emptylaboshop.html",context)	
 
+class SearchProducts(View):
+	def post(self,request, *args, **kwargs):
+		search_tag = request.POST['search_keyword']
+		filterdData = ProductsModel.objects.filter(Product_name__icontains = search_tag)
+		context = {'search_result': filterdData}
+		return render(request ,'shop/items_list.html',context)

@@ -1,0 +1,20 @@
+<form action="" method="POST">
+    {% csrf_token %}
+
+    <div class="input-group">
+        <input type="text" class="form-control"
+        placeholder="Search by name"
+        name="search_keyword"
+        >
+        <div class="input-group-append">
+            <button class="btn input-group-text bg-transparent text-dark"
+            type="submit"
+            hx-post='/search_products/'
+            hx-target="#shop_list"
+            hx-trigger="click"
+            >
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+    </div>
+</form>
