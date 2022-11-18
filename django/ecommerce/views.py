@@ -346,6 +346,9 @@ class Deleteproduct(View):
 	def get(self, request, id):
 		productData = ProductsModel.objects.get(id=id)
 		productData.delete()
+		cartDta = CartModel.objects.filter(Product_name = productData)
+		if cartDta:
+			cartDta.delete()
 		messages.success(request,"Success !")
 		return redirect('stocklist')
 @method_decorator(login_required,name='dispatch')
