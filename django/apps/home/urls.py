@@ -47,6 +47,7 @@ urlpatterns = [
     path('confirmpaymentjob/<int:id>',views.confirmpaymentjob.as_view(),name='confirmpaymentjob'),
     path('deleteenlisted/<int:id>/',views.deleteenlisted.as_view(),name='deleteenlisted'),
     path('confirmotp/<int:id>/',views.ConfirmOTP.as_view(),name='confirmotp'),
+    path('admindashboard',views.AdminDashboard.as_view(),name='admindashboard'),
 
 
 ]
