@@ -47,12 +47,14 @@ class Shop(View):
 		else:
 			product = ProductsModel.objects.all()
 		cart = CartModel.objects.all().filter(username=request.user.username).values_list("Product_name",flat=True)
+		count = CartModel.objects.all().filter(username=request.user.username).count()
 		print(settings.MEDIA_ROOT,"media roooooooooooot")
 		data = {
 		"product":product,
 		'form':PurchaseForm(),
 		'current_path':"Shop",
 		'cart' : cart,
+		'count' : count,
 		
 
 		}
