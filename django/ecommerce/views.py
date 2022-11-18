@@ -921,6 +921,19 @@ class LaboTransactions(View):
 		else:
 			return render(request,"home/emptyworkerpage.html",context)	
 
+@method_decorator(login_required,name='dispatch')
+class AdminTransactions(View):
+	def get(self, request, *args, **kwargs):
+		purchase = PurchaseModel.objects.all().values_list()
+		hire = HireModel.objects.filter(status__in = [4,5])
+		print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",purchase)
+		# print("ppppppppppppppppppppppppppppppppppppppppppppppppppppppppp",purchase.username)
+		context = {
+			'purchase': purchase,
+			'hire':hire,
+		}
+		return render(request,'home/adminTransactions.html',context)
+
 class SearchProducts(View):
 	def post(self,request, *args, **kwargs):
 		search_tag = request.POST['search_keyword']

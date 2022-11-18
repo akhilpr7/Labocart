@@ -1,0 +1,111 @@
+{% extends "layouts/base.html" %}
+{% block title %}  {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+    <p class="d-none" id="messagetag">{{message.tags}}</p>
+    <p class="d-none " id="messagecontent">{{message}}</p>
+{% endfor %}
+{% endif %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <div class="d-block mb-4 mb-md-0">
+      <h5 class="h5"> <b>Purchase History</b> </h5>
+    </div>
+
+</div>
+
+
+<div class="card card-body border-0 shadow table-wrapper table-responsive">
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th class="border-gray-200">Product ID</th>
+            <th scope="border-gray-200">Product Name</th>
+            <th class="border-gray-200">Username</th>
+            <th scope="border-gray-200">Price</th>
+            <th scope="border-gray-200">Total Price</th>
+            <th scope="border-gray-200">Date</th>
+            <th scope="border-gray-200">Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for purchase in purchase %}
+
+          <tr>
+            <td><p>{{purchase.id}}</p></td>
+            <td><p>{{data.Product_name}}</p></td>
+            <td><p>{{data.username}}</p></td>
+            <td><p>{{data.Prices}}</p></td>
+            <td><p>{{data.Total}}</p></td>
+            <td><p>{{data.date}}</p></td>
+            <td><p>{{data.Quantity}}</p></td>
+          </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+   
+</div> 
+
+
+
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <div class="d-block mb-4 mb-md-0">
+      <h5 class="h5"> <b>Purchase History</b> </h5>
+    </div>
+
+</div>
+
+
+<div class="card card-body border-0 shadow table-wrapper table-responsive">
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th class="border-gray-200">ID</th>
+            <th scope="border-gray-200">Worker Name</th>
+            <th class="border-gray-200">Hirer Name</th>
+            <th scope="border-gray-200">Place</th>
+            <th scope="border-gray-200">Work Mode</th>
+            <th scope="border-gray-200">Phone</th>
+            <th scope="border-gray-200">Job</th>
+            <th scope="border-gray-200">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for hire in hire %}
+
+          <tr>
+            <td><p>{{hire.id}}</p></td>
+            <td><p>{{hire.worker_name}}</p></td>
+            <td><p>{{hire.Hire_name}}</p></td>
+            <td><p>{{hire.Place}}</p></td>
+            <td><p>{{hire.Work_mode}}</p></td>
+            <td><p>{{hire.Phone}}</p></td>
+            <td><p>{{hire.job_title}}</p></td>
+            <td><p>
+                {%if hire.status == 4%}
+                Completed
+                {%else status == 5%}
+                Not Completed
+                {%endif%}
+            </p></td>
+          </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+   
+</div> 
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
