@@ -553,7 +553,7 @@ class Userpayments(View):
 			messages.success(request,'Payment Successful')
 			return redirect('jobrequests')
 		else:
-			messages.success(request,'Payment Failed')
+			messages.error(request,'Payment Failed')
 			return redirect('laboshop')
 
 class HireNowPayments(View):
@@ -567,7 +567,7 @@ class HireNowPayments(View):
 			messages.success(request,'Payment Successful')
 			return redirect('laboshop')
 		else:
-			messages.success(request,'Payment Failed')
+			messages.error(request,'Payment Failed')
 			return redirect('laboshop')
 
 
