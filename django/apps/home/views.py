@@ -346,9 +346,15 @@ class Addjobsview(View):
             job_name = request.POST['job_name']
             category = request.POST['category']
             form.fields['category'].choices = [(category, category)]
-            obj = jobmodel.objects.create(
-                job_title=job_name, category=category)
-            return redirect(reverse('category'))
+            data = jobmodel.objects.filter(job_title=job_name, category=category).first()
+            if data:
+                messages.error(request, "Job Already Exists")
+                return redirect(reverse('category'))
+            else:
+                obj = jobmodel.objects.create(
+                    job_title=job_name, category=category)
+                messages.success(request, "Job Added Successfully")
+                return redirect(reverse('category'))
         else:
             return render(request, self.template, {'form': form})
         # else:
