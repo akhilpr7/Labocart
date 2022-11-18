@@ -161,7 +161,8 @@ class CheckoutView(View):
 
 	def get(self, request, *args, **kwargs):
 		products = list(CartModel.objects.filter(username=request.user.username).values())
-		totalPrice = CartModel.objects.aggregate(Sum('Total'))
+		totalPrice = CartModel.objects.filter(username=request.user).aggregate(Sum('Total'))
+		print(totalPrice,"totttaaaaaaal")
 		# items = list(PurchaseModel.objects.filter(username=request.user.username,status = 1).values_list('Prices',flat=True))[0]
 		# print(items)
 		context = {
@@ -174,6 +175,7 @@ class CheckoutView(View):
 	@cache_control( no_cache=True, must_revalidate=True, no_store=True )
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
+			print("entered")
 			form = PurchaseForm(request.POST)
 			if form.is_valid():
 					
@@ -186,7 +188,8 @@ class CheckoutView(View):
 					request.session['Locality']= request.POST['locality']
 
 					product_name = list(CartModel.objects.filter(username=request.user.username).values_list('Product_name',flat=True))
-					totalPrice = CartModel.objects.aggregate(Sum('Total'))
+					totalPrice = CartModel.objects.filter(username=request.user).aggregate(Sum('Total'))
+					# totalPrice = CartModel.objects.aggregate(Sum('Total'))
 					data = PurchaseModel(	
 						phone=request.POST['phone'],
 						Total=totalPrice["Total__sum"],
