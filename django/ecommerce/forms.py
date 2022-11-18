@@ -12,9 +12,9 @@ from django.core.validators import validate_email
 
 class AddStockForm( forms.ModelForm ):
 
-  Product_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
-  Price = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
-  Quantity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2' ,'min':'1'}))
+  Product_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2','maxlength':'30'}))
+  Price = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1','max':'9999'}))
+  Quantity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2' ,'min':'1','max':'1000'}))
   Image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control border ps-2' ,'min':'1'}))
   class Meta:
     model = ProductsModel
