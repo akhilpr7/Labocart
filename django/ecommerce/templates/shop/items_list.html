@@ -1,0 +1,165 @@
+{% if search_result %}
+    <div class="row mx-auto">
+
+        {% for i in search_result %}
+
+        {% if i.Quantity <= 0 %}
+        <div class=" col-sm-6 col-md-3  my-3">
+
+
+            <div class="shadow-lg p-3 mb-5 bg-white rounded-3">
+                <div class="d-flex justify-content-center fill" >
+                    <img src="{{i.Image.url}}" class="img-fluid " style="height: 200px;object-fit: cover;" alt="image of {{i.Product_name}}">
+                </div>
+                <div class="card-body ">
+                    <h5 class="card-title">{{i.Product_name}} </h5>
+                    <div class="">
+                        <h6>${{ i.Price }}</h6>
+
+                    </div>
+                </div>
+                <div class="card-footer mb-2 d-flex justify-content-center bg-light ">
+                    <a href="#/" class="btn border rounded-2 shadow-sm text-danger">Out Of Stock</a>
+                </div>
+            </div>
+        </div>
+        {% comment %} {% elif i.Product_name in cart %}
+        <div class=" col-sm-6 col-md-3  my-3">
+
+        <div class="shadow-lg p-3 mb-5 bg-white rounded-lg">
+                <div class="d-flex justify-content-center" >
+                    <img src="{{i.Image.url}}" class="img-fluid " style="height: 200px;" alt="image of {{i.Product_name}}">
+                </div>
+                <div class="card-body ">
+                    <h5 class="card-title">{{i.Product_name}} </h5>
+                    <div class="">
+                        <h6>${{ i.Price }}</h6>
+
+                    </div>
+                </div>
+                <div class="card-footer mb-2 d-flex justify-content-center bg-light ">
+                    <a href="{% url 'cart' %}" class="btn btn-primary border rounded-lg "><i
+                            class="fas fa-shopping-cart text-primary mr-1"></i>Go to cart</a>
+                </div>
+            </div> 
+        </div> {% endcomment %}
+        {% else %}
+
+        <div class=" col-sm-6 col-md-3 my-3">
+
+            <div class="shadow-lg p-3 mb-5 bg-white rounded-3">
+                <div class="d-flex justify-content-center fill" >
+                    <img src="{{i.Image.url}}" class="img-fluid" style="height: 200px;object-fit: cover;" alt="image of {{i.Product_name}}">
+                </div>
+                <div class="card-body ">
+                    <h5 class="card-title">{{i.Product_name}} </h5>
+                    <div class="d-flex justify-content-between">
+                        <h6>${{ i.Price }}</h6>
+                        <h6 class="card-text">Qty : {{i.Quantity}}</h6>
+
+                    </div>
+                </div>
+
+            
+        {% if i.Product_name in cart %}
+                <div class="card-footer mb-2 d-flex justify-content-center bg-light ">
+                    <a href="{% url 'cart'  %}" class="btn btn-primary border rounded-lg  "><i
+                            class="fas fa-shopping-cart mr-1"></i>Go to Cart</a>
+                </div>
+            
+                {%else%}
+                <div class="card-footer mb-2 d-flex justify-content-center bg-light ">
+                    <a href="{% url 'addtocart' i.id %}" class="btn btn-primary border rounded-2 bg-gray-800 text-white">Add to Cart</a>
+                </div>
+                
+                {%endif%} 
+            
+            </div>
+        </div>
+
+        {% endif %}
+        {% endfor %}
+    </div>
+{%else%}
+<div class="row mx-auto">
+
+    {% for i in product %}
+
+    {% if i.Quantity <= 0 %}
+    <div class=" col-sm-6 col-md-3  my-3">
+
+
+        <div class="shadow-lg p-3 mb-5 bg-white rounded-3">
+            <div class="d-flex justify-content-center fill" >
+                <img src="{{i.Image.url}}" class="img-fluid " style="height: 200px;object-fit: cover;" alt="image of {{i.Product_name}}">
+            </div>
+            <div class="card-body ">
+                <h5 class="card-title">{{i.Product_name}} </h5>
+                <div class="">
+                    <h6>${{ i.Price }}</h6>
+
+                </div>
+            </div>
+            <div class="card-footer mb-2 d-flex justify-content-center bg-light ">
+                <a href="#/" class="btn border rounded-2 shadow-sm text-danger">Out Of Stock</a>
+            </div>
+        </div>
+    </div>
+    {% comment %} {% elif i.Product_name in cart %}
+    <div class=" col-sm-6 col-md-3  my-3">
+
+    <div class="shadow-lg p-3 mb-5 bg-white rounded-lg">
+            <div class="d-flex justify-content-center" >
+                <img src="{{i.Image.url}}" class="img-fluid " style="height: 200px;" alt="image of {{i.Product_name}}">
+            </div>
+            <div class="card-body ">
+                <h5 class="card-title">{{i.Product_name}} </h5>
+                <div class="">
+                    <h6>${{ i.Price }}</h6>
+
+                </div>
+            </div>
+            <div class="card-footer mb-2 d-flex justify-content-center bg-light ">
+                <a href="{% url 'cart' %}" class="btn btn-primary border rounded-lg "><i
+                        class="fas fa-shopping-cart text-primary mr-1"></i>Go to cart</a>
+            </div>
+        </div> 
+    </div> {% endcomment %}
+    {% else %}
+
+    <div class=" col-sm-6 col-md-3 my-3">
+
+        <div class="shadow-lg p-3 mb-5 bg-white rounded-3">
+            <div class="d-flex justify-content-center fill" >
+                <img src="{{i.Image.url}}" class="img-fluid" style="height: 200px;object-fit: cover;" alt="image of {{i.Product_name}}">
+            </div>
+            <div class="card-body ">
+                <h5 class="card-title">{{i.Product_name}} </h5>
+                <div class="d-flex justify-content-between">
+                    <h6>${{ i.Price }}</h6>
+                    <h6 class="card-text">Qty : {{i.Quantity}}</h6>
+
+                </div>
+            </div>
+
+        
+    {% if i.Product_name in cart %}
+            <div class="card-footer mb-2 d-flex justify-content-center bg-light ">
+                <a href="{% url 'cart'  %}" class="btn btn-primary border rounded-lg  "><i
+                        class="fas fa-shopping-cart mr-1"></i>Go to Cart</a>
+            </div>
+        
+            {%else%}
+            <div class="card-footer mb-2 d-flex justify-content-center bg-light ">
+                <a href="{% url 'addtocart' i.id %}" class="btn btn-primary border rounded-2 bg-gray-800 text-white">Add to Cart</a>
+            </div>
+            
+            {%endif%} 
+        
+        </div>
+    </div>
+
+    {% endif %}
+    {% endfor %}
+</div>    
+{%endif%}
