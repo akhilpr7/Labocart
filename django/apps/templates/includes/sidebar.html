@@ -25,6 +25,11 @@
       </a>
     </li>
     <!-- Admin View -->
+    <li class="nav-item{% if '' == current_path %} active {% endif %}" style="padding:8px;">
+      <a class="nav-link" href="{% url 'admindashboard' %}">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+    </li>
     
     {% if request.user.is_superuser %}
     
@@ -37,11 +42,6 @@
         <span class="sidebar-text">Dashboard</span>
       </a>
     </li> --> 
-    <li class="nav-item{% if 'Dashboard' in current_path %} active {% endif %}" style="padding:8px;">
-      <a class="nav-link" href="{% url 'admindashboard' %}">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
-    </li>
 
     <!-- <li class="nav-item " style="padding:8px;" >
       <a href="{% url 'transaction' %}" class="nav-link" id="something">
@@ -383,5 +383,9 @@
   s1.setAttribute('crossorigin','*');
   s0.parentNode.insertBefore(s1,s0);
   })();
+
+
+  
   </script>
+
 </nav>
