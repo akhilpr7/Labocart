@@ -174,6 +174,7 @@ class CheckoutView(View):
 	@cache_control( no_cache=True, must_revalidate=True, no_store=True )
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
+			print("entered")
 			form = PurchaseForm(request.POST)
 			if form.is_valid():
 					
