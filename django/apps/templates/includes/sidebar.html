@@ -10,8 +10,12 @@
         <span class="mt-1 ms-1 sidebar-text">LABOCART</span>
       </a>
     </li>
+    <!-- Admin View -->
+    
+    {% if request.user.is_superuser %}
+    
     <li class="nav-item  {% if 'transactions' in segment  %} active {% endif %} "  data='dashboard'  >
-      <a href="{% url 'dashboard' %}" class="nav-link" >
+      <a href="{% url 'admindashboard' %}" class="nav-link" >
         <span class="sidebar-icon">
           <span class="material-symbols-outlined">
             dashboard
@@ -19,11 +23,6 @@
         <span class="sidebar-text">Dashboard</span>
       </a>
     </li>
-   
-
-    <!-- Admin View -->
-    
-    {% if request.user.is_superuser %}
 
     <li class="nav-item {% if 'transactions' in segment %} active {% endif %}"  >
       <a href="{% url 'transaction' %}" class="nav-link" id="something">
@@ -175,7 +174,15 @@
 <!-- User View -->
 
 {% if not request.user.is_superuser %}
-
+    <li class="nav-item  {% if 'transactions' in segment  %} active {% endif %} "  data='dashboard'  >
+      <a href="{% url 'dashboard' %}" class="nav-link" >
+        <span class="sidebar-icon">
+          <span class="material-symbols-outlined">
+            dashboard
+            </span>        </span> 
+        <span class="sidebar-text">Dashboard</span>
+      </a>
+    </li>
     <li class="nav-item  {% if 'transactions' in segment  %} active {% endif %} "  data='dashboard'  >
       <a href="{% url 'funds' %}" class="nav-link" >
         <span class="sidebar-icon ">

@@ -554,7 +554,7 @@ class Userpayments(View):
 			return redirect('jobrequests')
 		else:
 			messages.success(request,'Payment Failed')
-			return redirect('laboshop')
+			return redirect('jobrequests')
 
 class HireNowPayments(View):
 	def get(self, request,id, *args, **kwargs):

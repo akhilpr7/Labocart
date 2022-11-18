@@ -8,12 +8,17 @@
                       <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                           <ol class="breadcrumb  bg-transparent text-white">
+                            {% if request.user.is_superuser %}
+                            <li class="breadcrumb-item"><a href="{% url 'admindashboard' %}">
+                              Dashboard
+                            </a></li>
+                            {% endif %}
+                            {% if not request.user.is_superuser %}
                             <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">
                               Dashboard
                             </a></li>
-                            <li class="breadcrumb-item active text-white" aria-current="page">
-                        {{ current_path}}
-                      </li>
+                            {% endif %}
+                            <li class="breadcrumb-item active text-white" aria-current="page">{{ current_path}}</li>
                       </ol>
                     </nav>
                   </div>
