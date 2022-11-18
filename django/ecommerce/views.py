@@ -346,6 +346,9 @@ class Deleteproduct(View):
 	def get(self, request, id):
 		productData = ProductsModel.objects.get(id=id)
 		productData.delete()
+		cartDta = CartModel.objects.filter(Product_name = productData)
+		if cartDta:
+			cartDta.delete()
 		messages.success(request,"Success !")
 		return redirect('stocklist')
 @method_decorator(login_required,name='dispatch')
@@ -553,7 +556,7 @@ class Userpayments(View):
 			messages.success(request,'Payment Successful')
 			return redirect('jobrequests')
 		else:
-			messages.success(request,'Payment Failed')
+			messages.error(request,'Payment Failed')
 			return redirect('laboshop')
 
 class HireNowPayments(View):
@@ -567,7 +570,7 @@ class HireNowPayments(View):
 			messages.success(request,'Payment Successful')
 			return redirect('laboshop')
 		else:
-			messages.success(request,'Payment Failed')
+			messages.error(request,'Payment Failed')
 			return redirect('laboshop')
 
 
