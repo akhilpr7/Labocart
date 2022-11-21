@@ -924,13 +924,15 @@ class LaboTransactions(View):
 @method_decorator(login_required,name='dispatch')
 class AdminTransactions(View):
 	def get(self, request, *args, **kwargs):
-		purchase = PurchaseModel.objects.all().values_list()
+		purchase = PurchaseModel.objects.all().values()
 		hire = HireModel.objects.filter(status__in = [4,5])
+		refund = RefundHistory.objects.all().values()
 		print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",purchase)
 		# print("ppppppppppppppppppppppppppppppppppppppppppppppppppppppppp",purchase.username)
 		context = {
 			'purchase': purchase,
 			'hire':hire,
+			'refund':refund,
 		}
 		return render(request,'home/adminTransactions.html',context)
 
