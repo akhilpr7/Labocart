@@ -28,13 +28,14 @@
       </button>
     </li>
     <!-- Admin View -->
+  
+    
+    {% if request.user.is_superuser %}
     <li class="nav-item{% if '' == current_path %} active {% endif %}" style="padding:8px;">
       <a class="nav-link" href="{% url 'admindashboard' %}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
     </li>
-    
-    {% if request.user.is_superuser %}
     
     <!-- <li class="nav-item  {% if 'transactions' in segment  %} active {% endif %} "  data='dashboard'  >
       <a href="{% url 'admindashboard' %}" class="nav-link" >
@@ -217,6 +218,12 @@
 <!-- User View -->
 
 {% if not request.user.is_superuser %}
+
+<li class="nav-item{% if '' == current_path %} active {% endif %}" style="padding:8px;">
+  <a class="nav-link" href="{% url 'dashboard' %}">
+      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <span>Dashboard</span></a>
+</li>
 
     <!-- <li class="nav-item  {% if 'transactions' in current_path  %} active {% endif %} "  data='dashboard'  >
       <a href="{% url 'funds' %}" class="nav-link" >

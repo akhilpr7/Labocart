@@ -218,7 +218,7 @@ class CheckoutView(View):
 		else:   
 			return redirect('shop')
 			
-
+@method_decorator(login_required, name='dispatch')
 class Invoice(View):
 	template_name = 'shop/invoice.html'
 	def get(self, request):
@@ -319,14 +319,18 @@ class LaboShopCategory(View):
 class Addproduct(View):
 	template = 'addStock.html'
 	def get(self, request, *args, **kwargs):
-		form = AddStockForm
-		context = { 
-					'form': form,
-					'data': 'Add Stock',
-					'current_path':"Add Stock", 
-				  }
-   
-		return render(request,self.template,context)
+		if request.user.is_superuser:
+			
+			form = AddStockForm
+			context = { 
+						'form': form,
+						'data': 'Add Stock',
+						'current_path':"Add Stock", 
+					}
+	
+			return render(request,self.template,context)
+		else:
+			return render(request,'home/page-403.html')
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
 			
@@ -390,13 +394,16 @@ class UpdateProduct(View):
 class ProductTable(View):
 	template = 'stocktable.html'
 	def get(self, request, *args, **kwargs):
-		products = ProductsModel.objects.all().order_by('id')
-		context = {
-			'prod' : products,
-			'current_path':"Stock Table" 
-		}
-		return render(request, self.template, context=context)
+		if request.user.is_superuser:
 
+			products = ProductsModel.objects.all().order_by('id')
+			context = {
+				'prod' : products,
+				'current_path':"Stock Table" 
+			}
+			return render(request, self.template, context=context)
+		else:
+			return render(request,'home/page-403.html',{})
 
 @method_decorator(login_required,name='dispatch')
 class LaboRegister(View):
@@ -547,6 +554,7 @@ class HireNowView(View):
 			else:
 				messages.error(request,'Unsuccesfull')
 				return redirect('laboshop')
+@method_decorator(login_required, name='dispatch')
 class Userpayments(View):
 	def get(self, request,id, *args, **kwargs):
 		wallet_balance =request.user.wallet
@@ -562,7 +570,7 @@ class Userpayments(View):
 		else:
 			messages.error(request,'Payment Failed')
 			return redirect('jobrequests')
-
+@method_decorator(login_required, name='dispatch')
 class HireNowPayments(View):
 	def get(self, request,id, *args, **kwargs):
 		wallet_balance =request.user.wallet
@@ -717,6 +725,7 @@ class HomePage(View):
 	def get(self, request, *args, **kwargs):
 		template = 'Homepage/Homepage.html'
 		return render(request,template,{})
+@method_decorator(login_required, name='dispatch')
 class Payment(View):
 	template_name= 'shop/payment.html'
 	def get(self, request, id, *args, **kwargs):
@@ -733,6 +742,7 @@ class Payment(View):
 
 		}
 		return render(request,self.template_name,context)
+@method_decorator(login_required, name='dispatch')
 class ConfirmPay(View):
 	
 	@cache_control( no_cache=True, must_revalidate=True, no_store=True )
@@ -760,17 +770,20 @@ class ConfirmPay(View):
 			PurchaseModel.objects.filter(id=id).update(status=2)
 			return redirect("payment",id)
 
+@method_decorator(login_required, name='dispatch')
 class Packages(View):
 	def get(self, request, *args, **kwargs):
-		template = 'packages.html'
-		package = PackageModel.objects.all()
-		context = {
-			"package":package,
-			 'MEDIA_ROOT':settings.NEW_VAR,
-			 'current_path':'Packages List'
-		}
-		return render(request,template,context)
-
+		if request.user.is_superuser:
+			template = 'packages.html'
+			package = PackageModel.objects.all()
+			context = {
+				"package":package,
+				'MEDIA_ROOT':settings.NEW_VAR,
+				'current_path':'Packages List'
+			}
+			return render(request,template,context)
+		else:
+			return render(request,'home/page-403.html')
 
 @method_decorator(login_required,name='dispatch')
 class Deletepackage(View):
@@ -824,14 +837,18 @@ class UpdatePackage(View):
 class Addpackage(View):
 	template = 'addpackage.html'
 	def get(self, request, *args, **kwargs):
-		form = AddPackageForm()
-		context = { 
-					'form': form,
-					'data': 'Add Package',
-					'current_path':"Add Package", 
-				  }
-   
-		return render(request,self.template,context)
+		if request.user.is_superuser:
+
+			form = AddPackageForm()
+			context = { 
+						'form': form,
+						'data': 'Add Package',
+						'current_path':"Add Package", 
+					}
+	
+			return render(request,self.template,context)
+		else:
+			return render(request, 'home/page-403.html')
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
 			form = AddPackageForm(request.POST,request.FILES)
@@ -852,6 +869,7 @@ class Addpackage(View):
 			form = AddPackageForm()
 			return render(request, self.template)
 
+@method_decorator(login_required, name='dispatch')
 class membership(View):
 	def get(self, request, *args, **kwargs):
 		template = "membership_card.html"
@@ -860,6 +878,7 @@ class membership(View):
 			"data": data,
 		}
 		return render(request,template,context)
+@method_decorator(login_required, name='dispatch')
 class Workerview(View):
 	def get(self, request, *args, **kwargs):
 		reqcount = RequestsModel.objects.filter(Q(worker_name=request.user)&Q(status=3)).count()
@@ -879,10 +898,12 @@ class Workerview(View):
         }
 		return render(request,'home/dashboard1.html',context)
 
+@method_decorator(login_required, name='dispatch')
 class Individual(View):
 	def get(self, request, *args, **kwargs):
 		template = 'individualprofile.html'
 		return render(request,template,{})
+@method_decorator(login_required, name='dispatch')
 class RefundHistoryUser(View):
 	def get(self, request, *args, **kwargs):
 		template = 'refundhistoryuser.html'
@@ -895,6 +916,7 @@ class RefundHistoryUser(View):
 			return render(request,template,context)
 		else:
 			return render(request,"home/emptypage.html", context)
+@method_decorator(login_required, name='dispatch')
 class RefundHistoryWorker(View):
 	def get(self, request, *args, **kwargs):
 		template = 'refundhistoryworker.html'
@@ -924,17 +946,21 @@ class LaboTransactions(View):
 @method_decorator(login_required,name='dispatch')
 class AdminTransactions(View):
 	def get(self, request, *args, **kwargs):
-		purchase = PurchaseModel.objects.all().values()
-		hire = HireModel.objects.filter(status__in = [4,5])
-		refund = RefundHistory.objects.all().values()
-		print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",purchase)
-		# print("ppppppppppppppppppppppppppppppppppppppppppppppppppppppppp",purchase.username)
-		context = {
-			'purchase': purchase,
-			'hire':hire,
-			'refund':refund,
-		}
-		return render(request,'home/adminTransactions.html',context)
+		if request.user.is_superuser:
+			purchase = PurchaseModel.objects.all().values()
+			hire = HireModel.objects.filter(status__in = [4,5])
+			refund = RefundHistory.objects.all().values()
+			print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",purchase)
+			# print("ppppppppppppppppppppppppppppppppppppppppppppppppppppppppp",purchase.username)
+			context = {
+				'purchase': purchase,
+				'hire':hire,
+				'refund':refund,
+				'current_path':'Transactions',
+			}
+			return render(request,'home/adminTransactions.html',context)
+		else:
+			return render(request,'home/page-403.html')
 
 class SearchProducts(View):
 	template_name='shop/items_list.html'
