@@ -17,7 +17,7 @@
 
 
         <!-- Page Header Start -->
-        <div class="container-fluid bg-secondary mb-5 bg-gray-800 rounded-3">
+        <div class="container-fluid bg-tertiary mb-5 rounded-3">
             <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 150px">
                 <h1 class="font-weight-semi-bold text-uppercase mb-3 text-white">Shopping Cart</h1>
                 <div class="d-inline-flex">
@@ -38,7 +38,7 @@
             <div class="row px-xl-5">
                 <div class="col-lg-8 table-responsive mb-5" >
                     <table class="table table-bordered text-center mb-0">
-                        <thead class="bg-secondary text-white bg-gray-800">
+                        <thead class="bg-tertiary text-white">
                             <tr>
                                 <th>Product</th>
                                 <th>Price</th>
@@ -71,7 +71,7 @@
                                     <div class="input-group quantity mx-auto" >
                                         <div class="input-group-btn">
                                             <a href="{% url 'decrease-no' product.product_id %}"
-                                            class="btn btn-sm btn-primary btn-minus">
+                                            class="btn btn-sm btn-primary btn-minus bg-tertiary">
                                             <i class="fa fa-minus"></i>
                                         </a href="{% url 'decrease-no' product.product_id%}">
                                     </div>
@@ -82,7 +82,7 @@
                                     
                                         <div class="input-group-btn">
                                             <a href="{% url 'increase-no' product.product_id%}"
-                                            class="btn btn-sm btn-primary btn-plus">
+                                            class="btn btn-sm btn-primary btn-plus bg-tertiary">
                                             <i class="fa fa-plus"></i>
                                         </a href="{% url 'increase-no' product.product_id%}">
                                     </div>
@@ -90,7 +90,7 @@
                             </td>
                             <td class="align-middle" >  <p id="total_price" > {{product.Total}}</p></td>
                             <td class="align-middle"><a href="{% url 'del_from_cart' product.product_id%}"
-                                class="btn btn-sm btn-primary"><i class="fa fa-times"></i></a></td>
+                                class="btn btn-sm btn-primary bg-tertiary" ><i class="fa fa-times"></i></a></td>
                             </tr>
                             
                             {% endfor %}
@@ -101,7 +101,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="card border-dark mb-5">
-                        <div class="card-header bg-gray-800 border-0">
+                        <div class="card-header bg-tertiary border-0">
                             <h4 class="font-weight-semi-bold m-0 text-white">Cart Summary</h4>
                         </div>
                         <div class="card-body">
@@ -109,7 +109,7 @@
                                 <h5 class="font-weight-bold">Total</h5>
                                 <h5 class="font-weight-bold">${{totalPrice}}</h5>
                             </div>
-                                <button type="submit" class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                                <button type="submit" class="btn btn-block btn-primary bg-tertiary my-3 py-3">Proceed To Checkout</button>
                         </div>
                         
                     </div>

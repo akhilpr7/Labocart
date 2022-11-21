@@ -874,10 +874,13 @@ class membership(View):
 	def get(self, request, *args, **kwargs):
 		template = "membership_card.html"
 		data = PackageModel.objects.all()
-		context={
-			"data": data,
-		}
-		return render(request,template,context)
+		if data:
+			context={
+				"data": data,
+			}
+			return render(request,template,context)
+		else:
+			return render(request,"home/emptypackage.html")
 @method_decorator(login_required, name='dispatch')
 class Workerview(View):
 	def get(self, request, *args, **kwargs):
