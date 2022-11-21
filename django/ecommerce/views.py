@@ -337,19 +337,30 @@ class UpdateProduct(View):
 			context['form'] = form
 			context["media_url"] = settings.NEW_VAR
 			context["Image"] = productData.Image    
+			
+			
 			return render(request, 'updatestock.html', context)
 	
 	def post(self, request, *args, **kwargs):
 		id = request.POST['id']
 		if request.method == 'POST':
 
+
 			updatedRecord = ProductsModel.objects.get(id=id)
+
 
 			updatedRecord. Product_name = request.POST['Product_name']
 			updatedRecord. Price = request.POST['Price']
 			updatedRecord. Quantity = request.POST['Quantity']
 			try:
+				cart_image = CartModel.objects.filter(product_id=id)
+				for image in cart_image:
+					image.Image = request.FILES['Image']
+					image.save()
+						
+				print("changeing")	
 				updatedRecord. Image = request.FILES['Image']
+				# print(cart_image)
 			except Exception:	
 				print("no image found")
 			updatedRecord.save()
@@ -977,8 +988,10 @@ class DecreaseNo(View):
 class IncreaseNo(View):
 	template_name = 'shop/cart.html'
 	def post(self, request, *args, **kwargs):
+
 		p_id = request.POST['p_id']
 		print(p_id)
+		print("Incrementing")
 		price = CartModel.objects.filter(product_id=p_id,username= request.user.username).values_list('Price')[0][0]
 		quantity = CartModel.objects.filter(product_id=p_id,username= request.user.username).values_list('Quantity')[0][0]
 		product = CartModel.objects.filter(product_id=p_id,username=request.user.username).values_list("Product_name")[0][0]
