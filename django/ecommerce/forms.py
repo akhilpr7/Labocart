@@ -54,8 +54,8 @@ class UpdateStockForm( forms.ModelForm ):
   id = forms.IntegerField( widget=forms.NumberInput(attrs={'class': 'form-control', 'readonly':'true','maxlength':'10'}))
   Product_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
   Price = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
-  Quantity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
-  Image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control border ps-2' ,'min':'1'}))
+  Quantity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control ','min':'1',}))
+  Image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control ' ,'min':'1'}),required=False)
   class Meta():
     model = ProductsModel
     fields = '__all__'
@@ -136,6 +136,7 @@ class HireNowForm( forms.Form ):
 class CheckoutForm(forms.Form):
   Quantity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ','style':'width:50px;','min':'1'}))
   total = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ','style':'width:100px;','min':'1'}))
+  product_id = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ','style':'width:100px;','min':'1'}))
 
 
 

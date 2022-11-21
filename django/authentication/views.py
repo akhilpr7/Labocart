@@ -93,6 +93,8 @@ class Demo(View):
     template = 'home/tables-bootstrap-tables.html'
     
     def get(self, request, *args, **kwargs):
+        from django.http import HttpResponse
+        return HttpResponse("helo2")
         data = Category.objects.all()
         context={
             'data':data,

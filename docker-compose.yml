@@ -6,7 +6,7 @@ services:
     volumes: 
       #- ./sql/django.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
       - ./data/db:/var/lib/postgresql/data 
-    hostname: db
+    # hostname: db
     environment:
       - POSTGRES_DB=labocart
       - POSTGRES_USER=labouser
@@ -34,8 +34,11 @@ services:
   adminer:
     image: adminer:4.8.1-standalone
     restart: always
+    container_name: new-adminer
+    depends_on:
+      - db
     ports:
-      - 8051:8080     
+      - 8050:8080     
   go:
     build:
       context: ./go

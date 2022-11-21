@@ -12,10 +12,6 @@
     <!-- Topbar Start -->
     <div class="container-fluid">
 
-
-
-
-
         <!-- Page Header Start -->
         <div class="container-fluid bg-secondary mb-5 bg-gray-800 rounded-3">
             <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 150px">
@@ -23,7 +19,7 @@
                 <div class="d-inline-flex">
                     <p class="m-0 text-white"><a href="">Home</a></p>
                     <p class="m-0 px-2">-</p>
-                    <p class="m-0 text-white">Shopping Cart</p>
+                    <p id="main_text" class="m-0 text-white">Shopping Cart</p>
                 </div>
             </div>
         </div>
@@ -47,51 +43,54 @@
                                 <th>Remove</th>
                             </tr>
                         </thead>
-                        <tbody class="align-middle" id="cart-body">
-                            <tbody class="align-middle">
+                            <tbody class="align-middle " >
 
                                 {% for product in products %}
-                                <tr class ="rows">
-                                <td class=" align-middle d-flex justify-content-between align-items-center pe-5 ">
-                                    <div class="col-8">
+                             <div class="filter">
+                                <tr class ="rows ">
+                                    <td class=" align-middle d-flex justify-content-between align-items-center pe-5 ">
+                                        <div class="col-8">
+                                            
+                                            <img src="/static/media/{{product.Image}}" alt="" class="img-fluid rounded-circle borderborder-dark border-3" style="width: 100px; height: 100px;">
+                                        </div>
+                                        <div class="col-4">
+                                            <h6 class="">{{product.Product_name}}</h6>
+                                            
+                                        </div>
+                                    </td>
+                                    <!-- <td class="align-middle">${{product.Price}}</td> -->
+                                    <input type="hidden" id="id_Price"
+                                    class="form-control  quantity-field form-control-sm bg-secondary text-center"
+                                    value="{{product.Price}}">
+                                    <td class="align-middle" >${{product.Price}}</td>
+                                    <td class="align-middle">
+                                        <div class="input-group quantity mx-auto" >
+                                            <div class="input-group-btn">
+                                                <a 
+                                                class="btn btn-sm btn-primary btn-minus">
+                                                <i class="fa fa-minus"></i>
+                                            </a >
+                                        </div>
                                         
-                                        <img src="/static/media/{{product.Image}}" alt="" class="img-fluid rounded-circle borderborder-dark border-3" style="width: 100px; height: 100px;">
-                                    </div>
-                                    <div class="col-4">
-                                        <h6 class="">{{product.Product_name}}</h6>
+                                        {% render_field form.Quantity class="p_qty"  readonly=true value=product.Quantity  %} 
+                                        {% render_field form.product_id hidden=true class="p_id"  readonly=true value=product.product_id  %} 
+                                        {% render_field form.total hidden=true value=product.Total %} 
                                         
+                                        
+                                        
+                                            <div class="input-group-btn">
+                                                <a 
+                                                class="btn btn-sm btn-primary btn-plus">
+                                                <i class="fa fa-plus"></i>
+                                            </a >
+                                        </div>
                                     </div>
                                 </td>
-                                <!-- <td class="align-middle">${{product.Price}}</td> -->
-                                <input type="hidden" id="id_Price"
-                                class="form-control  quantity-field form-control-sm bg-secondary text-center"
-                                value="{{product.Price}}">
-                                <td class="align-middle" >${{product.Price}}</td>
-                                <td class="align-middle">
-                                    <div class="input-group quantity mx-auto" >
-                                        <div class="input-group-btn">
-                                            <a href="{% url 'decrease-no' product.product_id %}"
-                                            class="btn btn-sm btn-primary btn-minus">
-                                            <i class="fa fa-minus"></i>
-                                        </a href="{% url 'decrease-no' product.product_id%}">
-                                    </div>
-                                    
-                                    {% render_field form.Quantity  readonly=true value=product.Quantity %} 
-                                    {% render_field form.total hidden=true value=product.Total %} 
-                                    
-                                    
-                                        <div class="input-group-btn">
-                                            <a href="{% url 'increase-no' product.product_id%}"
-                                            class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </a href="{% url 'increase-no' product.product_id%}">
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle" >  <p id="total_price" > {{product.Total}}</p></td>
-                            <td class="align-middle"><a href="{% url 'del_from_cart' product.product_id%}"
-                                class="btn btn-sm btn-primary"><i class="fa fa-times"></i></a></td>
-                            </tr>
+                                <td class="align-middle" >   <p id="p_total">{{product.Total}}</p></td>
+                                <td class="align-middle"><a href="{% url 'del_from_cart' product.product_id%}"
+                                    class="btn btn-sm btn-primary"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                             </div>
                             
                             {% endfor %}
                             
@@ -107,7 +106,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between mt-2">
                                 <h5 class="font-weight-bold">Total</h5>
-                                <h5 class="font-weight-bold">${{totalPrice}}</h5>
+                                <h5 class="font-weight-bold" id="grand_total">${{totalPrice}}</h5>
                             </div>
                                 <button type="submit" class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
                         </div>
@@ -138,6 +137,64 @@ input[type=number] {
 
 }
 </style>
+<script>
+    // $('.btn-plus').on('click',function ()  {  
+    //     document.getElementById('newone').innerHTML= `<p class="p_total" id="total_price" > {{product.Total}}</p> ${0}`
+    //             // alert('finest   ')
+    //         })
+    $('.btn-minus').on('click',function ()  {  
+        let p_qty =  $(this).closest('.quantity').find('.p_qty')
+        let p_id =  $(this).closest('.quantity').find('.p_id').val()
+        let p_total = $(this).closest('.rows').find('#p_total')
+        let token = $('input[name=csrfmiddlewaretoken]').val()
+        
+        $.ajax({
+            method:"POST",
+            url : '/decrease_no/',
+            data : {
+                'p_id' : p_id,
+                'p_qty' : p_qty.val(),
+                csrfmiddlewaretoken: token
+            },
+            success : function (response){
+                if (response.status == 'success'){
+                    console.log("happy");
+                    p_qty.val(response.p_qty)
+                    p_total.html(response.p_total)
+                    console.log( $('#grand_total').html('$'+response.totalPrice))
+                }
+            }
+            
+        
+        })
+    } )
+    $('.btn-plus').on('click',function ()  {  
+        let p_qty =  $(this).closest('.quantity').find('.p_qty')
+        let p_id =  $(this).closest('.quantity').find('.p_id').val()
+        let p_total = $(this).closest('.rows').find('#p_total')
+        let token = $('input[name=csrfmiddlewaretoken]').val()
+        
+        $.ajax({
+            method:"POST",
+            url : '/increase_no/',
+            data : {
+                'p_id' : p_id,
+                'p_qty' : p_qty.val(),
+                csrfmiddlewaretoken: token
+            },
+            success : function (response){
+                if (response.status == 'success'){
+                    console.log("happy");
+                    p_qty.val(response.p_qty)
+                    p_total.html(response.p_total)
+                    console.log( $('#grand_total').html('$'+response.totalPrice))
+                }
+            }
+            
+        
+        })
+    } )
+</script>
 
 {% endblock content %}
 
