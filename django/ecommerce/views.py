@@ -245,9 +245,6 @@ class LaboShop(View):
 	def get(self, request, *args, **kwargs):
 		filter=request.GET.get('filter')
 		datajob = jobmodel.objects.values()
-
-
-
 		if request.GET.get('filter') is not None and request.GET.get('filter') != '':
 			job=jobmodel.objects.filter(id=filter).values_list("job_title")[0][0]
 			data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1)).exclude(username=request.user.username)		
