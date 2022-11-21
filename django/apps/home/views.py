@@ -41,6 +41,7 @@ class HomeView(View):
                 "req" : req_count,
                 "tot" : tot_purchase,
                 "exp" : validity-diff.days, 
+                "current_path":"",
             }
         else:
             tot_purchase = 0
@@ -49,7 +50,7 @@ class HomeView(View):
             context ={
                 "req" : req_count,
                 "tot" : tot_purchase,
-                
+                "current_path":"",
             }
 
 

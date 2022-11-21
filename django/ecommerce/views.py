@@ -497,7 +497,7 @@ class Labocategories(View):
 @method_decorator(login_required,name='dispatch')
 class ActiveServices(View):
 	def get(self, request, *args, **kwargs):
-		data = labourmodels.objects.filter(Q(username = self.request.user.username) & (Q(status=0) | Q(status=1) | Q(status=2)))
+		data = labourmodels.objects.filter(Q(username = self.request.user.username) & (Q(status=0) | Q(status=1) | Q(status=2))).order_by("id")
 		user = NewUserModel.objects.all()
 		context = {
 			"data" : data,
@@ -877,10 +877,13 @@ class membership(View):
 	def get(self, request, *args, **kwargs):
 		template = "membership_card.html"
 		data = PackageModel.objects.all()
-		context={
-			"data": data,
-		}
-		return render(request,template,context)
+		if data:
+			context={
+				"data": data,
+			}
+			return render(request,template,context)
+		else:
+			return render(request,"home/emptypackage.html")
 @method_decorator(login_required, name='dispatch')
 class Workerview(View):
 	def get(self, request, *args, **kwargs):
