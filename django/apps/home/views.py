@@ -418,16 +418,22 @@ class JobPostingView(View):
             # applied = JobPostingModel.objects.filter
             form = JobPostingForm(request.POST,request.FILES)
             try:
-                obj = JobPostingModel.objects.create(
-                    hirer=request.user.username,
-                    place=request.POST['place'],
-                    image=request.FILES['image'],
-                    job_title=request.POST['job_title'],
-                    work_type=request.POST['work_type'],
-                    phone=request.POST['phone'],
-                    name=request.POST['name'])
-                obj.save()
-                return redirect('enlistedjobs')
+                job = request.POST['job_title']
+                userjobs = JobPostingModel.objects.filter(hirer=request.user).values_list("job_title",flat=True)
+                if job in userjobs:
+                    messages.error(request,"Already Applied To This Job  !!")
+                    return redirect('labocategory2')
+                else:
+                    obj = JobPostingModel.objects.create(
+                        hirer=request.user.username,
+                        place=request.POST['place'],
+                        image=request.FILES['image'],
+                        job_title=request.POST['job_title'],
+                        work_type=request.POST['work_type'],
+                        phone=request.POST['phone'],
+                        name=request.POST['name'])
+                    obj.save()
+                    return redirect('enlistedjobs')
 
             except Exception :
                 print(Exception)
