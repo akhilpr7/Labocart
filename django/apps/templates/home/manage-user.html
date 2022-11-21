@@ -40,7 +40,7 @@
                 <td><span>{{data.id}}</span></td>
                 <td><span>{{data.username}}</span></td>
                 <td><span>{{data.first_name}}{{data.last_name}}</span></td>                        
-                <td><span>{{data.date_joined}}</span></td>
+                <td><span>{{data.date_joined|date}}</span></td>
 
                 <td>
                     {% if data.is_active %}
