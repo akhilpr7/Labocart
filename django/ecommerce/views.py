@@ -58,7 +58,7 @@ class Shop(View):
 
 		}
 		if product:
-			return render(request, 'shop/shop.html', data)
+			return render(request, self.template_name, data)
 		else:
 			return render(request,'home/emptylaboshop.html',{'current_path':"Shop"})
 	def post(self, request, *args, **kwargs):
@@ -110,43 +110,9 @@ class AddtocartView(View):
 		messages.success(request,"Success !")
 		data.save()
 		return redirect('shop')
-@method_decorator(login_required,name='dispatch')
-class IncreaseNo(View):
-	def get(self, request, id, *args, **kwargs):
-		price = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Price')[0][0]
-		quantity = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Quantity')[0][0]
-		product = CartModel.objects.filter(product_id=id,username=request.user.username).values_list("Product_name")[0][0]
-		available_qnty = ProductsModel.objects.filter(Product_name=product).values_list("Quantity")[0][0]
-		if (available_qnty-quantity) > 0:
-			total = (quantity + 1 ) * price
-			print("toal product price",quantity)
-			print("toal product price",int(price))
-			print("toal product price",total)
-			CartModel.objects.filter(product_id=id,username= request.user.username).update(Quantity = quantity + 1 ,  Total= total)
-			return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
-		else:
-			messages.error(request,"Not enough available stock !")
-			return redirect("cart")
 
-@method_decorator(login_required,name='dispatch')
-class DecreaseNo(View):
-	def get(self, request, id, *args, **kwargs):
-		price = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Price')[0][0]
-		quantity = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Quantity')[0][0]
-		total = (quantity - 1 ) * price
-		print("toal product price",quantity)
-		print("toal product price",price)
-		print("toal product price",total)
 
-		if quantity <= 1:
-			messages.error(request,"Error !")
-			return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
 
-		else:
-			CartModel.objects.filter(product_id=id,username= request.user.username).update(Quantity = quantity - 1, Total = total )
-			return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
-
-		
 
 @method_decorator(login_required,name='dispatch')
 class DelFromCartView(View):
@@ -246,9 +212,6 @@ class LaboShop(View):
 	def get(self, request, *args, **kwargs):
 		filter=request.GET.get('filter')
 		datajob = jobmodel.objects.values()
-
-
-
 		if request.GET.get('filter') is not None and request.GET.get('filter') != '':
 			job=jobmodel.objects.filter(id=filter).values_list("job_title")[0][0]
 			data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1)).exclude(username=request.user.username)		
@@ -363,27 +326,44 @@ class Deleteproduct(View):
 class UpdateProduct(View): 
 	def get(self, request,id, *args, **kwargs):
 			productData = ProductsModel.objects.get(id=id)
+
 			data = {"id": productData.id,
 			"Product_name": productData.Product_name,
 			"Price" : productData.Price,
 			"Quantity" : productData.Quantity,
-			"Image" : productData.Image,              
+			"Image" : productData.Image,          
 			}
 			context ={'current_path':"Update Stock" }
 			form    = UpdateStockForm(data)
 			context['form'] = form
+			context["media_url"] = settings.NEW_VAR
+			context["Image"] = productData.Image    
+			
+			
 			return render(request, 'updatestock.html', context)
 	
 	def post(self, request, *args, **kwargs):
 		id = request.POST['id']
 		if request.method == 'POST':
 
+
 			updatedRecord = ProductsModel.objects.get(id=id)
+
 
 			updatedRecord. Product_name = request.POST['Product_name']
 			updatedRecord. Price = request.POST['Price']
 			updatedRecord. Quantity = request.POST['Quantity']
-			updatedRecord. Image = request.FILES['Image']
+			try:
+				cart_image = CartModel.objects.filter(product_id=id)
+				for image in cart_image:
+					image.Image = request.FILES['Image']
+					image.save()
+						
+				print("changeing")	
+				updatedRecord. Image = request.FILES['Image']
+				# print(cart_image)
+			except Exception:	
+				print("no image found")
 			updatedRecord.save()
 			messages.success(request,"Success!")
 			return redirect('stocklist')
@@ -751,6 +731,24 @@ class ConfirmPay(View):
 	
 	@cache_control( no_cache=True, must_revalidate=True, no_store=True )
 	def get(self, request,id, *args, **kwargs):
+		product_id = CartModel.objects.filter(username=request.user.username).values_list("product_id")
+		for j in product_id:
+				quantity = CartModel.objects.filter(product_id=j[0]).values_list("Quantity")[0][0]
+				quant = ProductsModel.objects.filter(id=j[0]).values_list("Quantity")[0][0]
+				a = ""
+				if quant>=quantity:
+					pass
+				else:
+					product = CartModel.objects.filter(product_id=j[0]).values_list("Product_name")[0][0]
+					a+=product
+
+
+					messages.error(request,"Sorry , "+ a +" are unavailable at the moment !!")
+					return redirect("cart")
+		for k in product_id:
+			quantity = CartModel.objects.filter(product_id=k[0]).values_list("Quantity")[0][0]
+			quant = ProductsModel.objects.filter(id=k[0]).values_list("Quantity")[0][0]			
+			ProductsModel.objects.filter(id=k[0]).update(Quantity=quant-quantity)
 		wallet_balance = NewUserModel.objects.filter(username=request.user.username).values_list("wallet")[0][0]
 		total_price=PurchaseModel.objects.filter(id=id).values_list("Total")[0][0]
 		if wallet_balance >= total_price:
@@ -762,11 +760,11 @@ class ConfirmPay(View):
 			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-total_price)
 			PurchaseModel.objects.filter(id=id).update(status=3)
 			obj = CartModel.objects.filter(username=request.user.username)
-			product_id = CartModel.objects.filter(username=request.user.username).values_list("product_id")
-			for i in product_id:
-				quantity = CartModel.objects.filter(product_id=i[0]).values_list("Quantity")[0][0]
-				quant = ProductsModel.objects.filter(id=i[0]).values_list("Quantity")[0][0]
-				ProductsModel.objects.filter(id=i[0]).update(Quantity=quant-quantity)
+			# product_id = CartModel.objects.filter(username=request.user.username).values_list("product_id")
+			# for i in product_id:
+			# 	quantity = CartModel.objects.filter(product_id=i[0]).values_list("Quantity")[0][0]
+			# 	quant = ProductsModel.objects.filter(id=i[0]).values_list("Quantity")[0][0]
+			# 	ProductsModel.objects.filter(id=i[0]).update(Quantity=quant-quantity)
 			obj.delete()
 			return redirect("invoice")
 		else:
@@ -976,3 +974,63 @@ class SearchProducts(View):
 		filterdData = ProductsModel.objects.filter(Product_name__icontains = search_tag)
 		context = {'search_result': filterdData}
 		return render(request ,self.template_name,context)
+
+
+@method_decorator(login_required,name='dispatch')
+class DecreaseNo(View):
+	def post(self,request, *args, **kwargs):
+		p_id = request.POST['p_id']
+		print(p_id)
+		price = CartModel.objects.filter(product_id=p_id,username= request.user.username).values_list('Price')[0][0]
+		quantity = CartModel.objects.filter(product_id=p_id,username= request.user.username).values_list('Quantity')[0][0]
+		print(price,quantity)
+		total = (quantity - 1 ) * price
+		if quantity <= 1:
+			messages.error(request,"Error !")
+			return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
+
+		else:
+			CartModel.objects.filter(product_id=p_id,username= request.user.username).update(Quantity = quantity - 1, Total = total )
+			p_qty = CartModel.objects.filter(product_id=p_id,username= request.user.username).values_list('Quantity')[0][0]
+			totalPrice = CartModel.objects.filter(username = request.user.username).aggregate(Sum('Total'))
+
+			data = 	{'status':'success',
+					'p_qty':p_qty,
+					'p_total':total,
+					'totalPrice': totalPrice["Total__sum"],
+					}
+			from django.http import JsonResponse
+			return JsonResponse(data)
+
+
+@method_decorator(login_required,name='dispatch')
+class IncreaseNo(View):
+	template_name = 'shop/cart.html'
+	def post(self, request, *args, **kwargs):
+
+		p_id = request.POST['p_id']
+		print(p_id)
+		print("Incrementing")
+		price = CartModel.objects.filter(product_id=p_id,username= request.user.username).values_list('Price')[0][0]
+		quantity = CartModel.objects.filter(product_id=p_id,username= request.user.username).values_list('Quantity')[0][0]
+		product = CartModel.objects.filter(product_id=p_id,username=request.user.username).values_list("Product_name")[0][0]
+		available_qnty = ProductsModel.objects.filter(Product_name=product).values_list("Quantity")[0][0]
+		if (available_qnty-quantity) > 0:
+			total = (quantity + 1 ) * price
+			print("toal product price",quantity)
+			print("toal product price",int(price))
+			print("toal product price",total)
+			products = list(CartModel.objects.filter(username=request.user.username).values())
+			CartModel.objects.filter(product_id=p_id,username= request.user.username).update(Quantity = quantity + 1 ,  Total= total)
+			totalPrice = CartModel.objects.filter(username = request.user.username).aggregate(Sum('Total'))
+			p_qty = CartModel.objects.filter(product_id=p_id,username= request.user.username).values_list('Quantity')[0][0]
+			data = 	{'status':'success',
+					'p_qty':p_qty,
+					'p_total':total,
+					'totalPrice': totalPrice["Total__sum"],
+					}
+			from django.http import JsonResponse
+			return JsonResponse(data)
+		else:
+			messages.error(request,"Not enough available stock !")
+			return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))

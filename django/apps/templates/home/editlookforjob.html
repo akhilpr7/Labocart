@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
 {%extends 'index.html'%}
 {% block content%}
 <head>
-  {% if messages %}
-{% for message in messages %}
-    <p class="d-none" id="messagetag">{{message.tags}}</p>
-    <p class="d-none " id="messagecontent">{{message}}</p>
-{% endfor %}
-{% endif %}
     <meta charset="utf-8">
     <title>EShopper - Bootstrap Shop Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -33,46 +25,49 @@
 </head>
 
 <body>
-
+  {% if messages %}
+  {% for message in messages %}
+      <p class="d-none" id="messagetag">{{message.tags}}</p>
+      <p class="d-none " id="messagecontent">{{message}}</p>
+  {% endfor %}
+  {% endif %}
     <div class="container-fluid py-4">
         <div class="row">
-          <div class="col-lg-6 mb-lg-0 mb-4 m-auto">
-            <div class="card shadow-lg">
+          <div class="col-lg-6 mb-lg-0 mb-4">
+            <div class="card">
               <div class="card-body p-6">
-                  <h3 class="font-weight-bolder text-center">Update Profile</h3><br>
-                  <form method="post" enctype="multipart/form-data">
+                  <h3 class="font-weight-bolder">Edit Application</h3><br>
+                  <form method="post">
                     {% csrf_token %}
                     <div class="row">
-                        <div class="col-lg-8"> 
-                          <label for="firstname">Firstname :</label>
-                          {{form.first_name}}
-                          <br>
-                        </div>
-                        <label for="lastname">Lastname :</label>
-                        <div class="col-lg-8"> 
-                          {{form.last_name}}
-                          <br>
-                        </div>
-                        <div class="col-lg-8"> 
-                          <label for="phone">Phone Number :</label>
-                          {{form.phone_no}}
-                          <br>
-                        </div>
-                        <div class="col-lg-8"> 
-                          <label for="email">email :</label>
-                          {{form.email}}
-                          <br>
-                        </div>
-                        <div class="col-lg-8"> 
-                          <label for="firstname">Image :</label>
-                          {{form.image}}
-                          <br>
-                        </div>
-
-                    <div class="pl-2">
-                      <button href="{% url 'update_profile' %}" type="submit" class="btn bg-tertiary btn-rounded rounded-2 text-white" style="float:right">Update</button> 
+                    <div class="col-lg-8"> 
+                      {% comment %} <label for="rate">Rate :</label> {% endcomment %}
+                      <input type="number" name="id" value={{id}} hidden readonly></input>
+                  </div>
+                    <div class="col-lg-8 mt-3" > 
+                        <label for="location">Location :</label>
+                      
+                      <input class="form-control" type="text" name="location" placeholder="{{location}}"></input>
+                  </div>
+                
+                    <div class="col-lg-8 mt-3" > 
+                      <label for="work_mode">Work Mode :</label><br>
+                      <div >
+                      <select style="width:200px;" class="rounder-3 p-1 form-select"  name="work_mode" id="work_mode">
+                        <option value="0">Half Day</option>
+                        <option value="1">Full Day</option>
+                      </select>
                     </div>
+                  </div>
+                    <div class="col-lg-8 mt-3"> 
+                      <label for="rate">Rate :</label>
+                      <input class="form-control" type="number" name="rate" placeholder="{{rate}}"></input>
+                  </div>
+                    
                     </div>
+                    <div class="col-lg-4 pl-2 mt-4">
+                        <button type="submit" class="btn bg-gray-800 btn-rounded rounded-2 text-white" style="float:left">submit</button> 
+                      </div>
                   </form> 
               </div>
             </div>
@@ -80,6 +75,8 @@
         </div>
       </div>
   
+
+
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
@@ -99,4 +96,3 @@
 </body>
 
 {% endblock content %}
-</html>

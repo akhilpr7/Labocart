@@ -126,7 +126,7 @@
                                 <span class="input-group-text" id="basic-addon2">
                                     <span class="fa fa-phone fa-rotate-90"></span>
                                 </span>
-                                {{ form.phone }}
+                                {{ form.phone |attr:"type:integer,minlength:10,maxlength:10"}}
 
                             </div>
                             <span class="text-danger">{{ form.phone.errors }}</span>
@@ -205,8 +205,5 @@
     <!-- JavaScript Libraries -->
 
 {% endblock content %}
-
-
-
 
 

@@ -76,8 +76,10 @@ class FundView(View):
             form = AddFundForm(request.POST, request=request)
             if form.is_valid():
                 form.save()
-                return redirect(reverse('dashboard'))
+                messages.success(request,"Added fund successfully!!!")
+                return redirect(reverse('funds'))
             else:
+                messages.error(request,"Not Valid !!" )
                 return render(request, self.template, {'form': form})
 
         else:
@@ -663,15 +665,25 @@ class ProvidedJobs(View):
 @method_decorator(login_required, name='dispatch')
 class LookForJobs(View):
     def get(self, request, *args, **kwargs):
-        jobs = JobPostingModel.objects.filter(is_active=1).exclude(hirer=request.user.username).values()
+        
         appliedones = AppliedJobs.objects.filter(worker_uname=request.user.username)
-
-
+        filter=request.GET.get('filter')
+        job_title = jobmodel.objects.filter(id=filter)
+        datajob = jobmodel.objects.all()
+        if request.GET.get('filter') is not None and request.GET.get('filter') != '':
+            jobs = JobPostingModel.objects.filter(Q(is_active=1)&Q(job_title=job_title)).exclude(hirer=request.user.username).values()
+            # data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1)).exclude(username=request.user.username)		
+        else:
+            jobs = JobPostingModel.objects.filter(is_active=1).exclude(hirer=request.user.username).values()
+            # data = labourmodels.objects.filter(status=1).exclude(username=request.user.username)
+        datacategory=Category.objects.values()
         context = {
             'media_url': settings.NEW_VAR,
 
             'jobs': jobs,
-            'current_path': "Available Jobs"
+            'current_path': "Available Jobs",
+            'datacategory':datacategory,
+            "datajob":datajob,
         }
         if request.user.is_sub:
             if jobs:
@@ -704,6 +716,31 @@ class CancelLookJobs(View):
     def get(self, request,id, *args, **kwargs):
         delete = AppliedJobs.objects.filter(id=id)
         delete.delete()
+        return redirect('lookjobs')
+@method_decorator(login_required, name='dispatch')
+class EditLookJobs(View):
+    def get(self, request,id, *args, **kwargs):
+        # delete = AppliedJobs.objects.filter(id=id)
+        # delete.delete()
+        data=AppliedJobs.objects.filter(id=id).first()
+        context={
+            "id":id,
+            "location":data.place,
+            "rate":data.rate,
+
+
+        }
+        template= 'home/editlookforjob.html'
+
+        return render(request,template,context)
+    def post(self, request, *args, **kwargs):
+        id=request.POST.get("id")
+        work_mode=request.POST.get("work_mode")
+        location=request.POST.get("location")
+        rate=request.POST.get("rate")
+        print(id,work_mode,location,rate,"Yepppudraaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        AppliedJobs.objects.filter(id=id).update(work_type=work_mode,place=location,rate=rate)
+
         return redirect('lookjobs')
 
 

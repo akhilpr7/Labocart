@@ -7,11 +7,14 @@
         <input type="text" class="form-control"
         placeholder="Search by name"
         name="search_keyword"
+        >
+        <button 
+        class="btn btn-primary"
+        type="submit"
         hx-post='/search_products/'
         hx-target="#shop_list"
-        hx-trigger="keyup"
-        >
-
+        hx-trigger="click">
+        Search</button>
     </div>
 
 </form>
