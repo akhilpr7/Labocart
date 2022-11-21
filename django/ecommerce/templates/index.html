@@ -40,6 +40,8 @@
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="theme-color" content="#ffffff">
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
 <link type="text/css" href="/static/assets/vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
 
 <link type="text/css" href="/static/assets/vendor/notyf/notyf.min.css" rel="stylesheet">
@@ -51,7 +53,7 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 </head>
-<body>
+<body style="background-color:#f5eee7">
 
     {% include 'includes/sidebar.html' %}
     
@@ -303,11 +305,14 @@
       }
     }
        </style>  
-
+       <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+   
        <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
        <!-- jQuery -->
        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> 
-       
+       {% comment %} <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> {% endcomment %}
+
        <script>
         $(window).load(function() {
         $(".preloader").delay(150).fadeOut("slow");

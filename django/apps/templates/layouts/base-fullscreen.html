@@ -74,9 +74,8 @@
 
 </head>
 <body >
-
-  
-<div class="loader">
+{% comment %}  
+  <div class="loader">
     <div class="loader-inner">
       <div class="loader-line-wrap">
         <div class="loader-line"></div>
@@ -189,7 +188,7 @@
       transform: rotate(360deg);
     }
   }
-  </style>
+  </style> {% endcomment %}
     {% block content %}{% endblock content %}
 
     {% include 'includes/scripts.html' %}
