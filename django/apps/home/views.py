@@ -502,7 +502,6 @@ class Labocategories2(View):
     def get(self, request, *args, **kwargs):
         data = Category.objects.all()
         job = jobmodel.objects.values_list('category', flat=True)
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",job)
         context = {
             "data": data,
             "job": job,
