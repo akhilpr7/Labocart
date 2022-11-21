@@ -17,7 +17,7 @@
 
 
         <!-- Page Header Start -->
-        <div class="container-fluid bg-primary mb-5 rounded-3">
+        <div class="container-fluid bg-tertiary mb-5 rounded-3">
             <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 150px">
                 <h1 class="font-weight-semi-bold text-uppercase mb-3 text-white">Checkout </h1>
                 <div class="d-inline-flex text-white">
@@ -36,7 +36,7 @@
             <div class="col-md-4 ">
                 <div class="col-11 table-responsive mb-5">
                     <table class="table table-bordered text-center mb-0">
-                        <thead class="bg-primary text-white">
+                        <thead class="bg-tertiary text-white">
                             <tr>
                                 <th>Products</th>
                                 <th>Quantity</th>
@@ -65,7 +65,7 @@
 
                 <div class="col-11">
                     <div class="card border-dark mb-5">
-                        <div class="card-header bg-primary p-2 border-0">
+                        <div class="card-header bg-tertiary p-2 border-0">
                             <h4 class="font-weight-semi-bold m-0 text-white">Checkout Summary</h4>
                         </div>
                         <div class="card-body">
@@ -126,7 +126,7 @@
                                 <span class="input-group-text" id="basic-addon2">
                                     <span class="fa fa-phone fa-rotate-90"></span>
                                 </span>
-                                {{ form.phone }}
+                                {{ form.phone |attr:"type:integer,minlength:10,maxlength:10"}}
 
                             </div>
                             <span class="text-danger">{{ form.phone.errors }}</span>
@@ -183,7 +183,7 @@
                     </div>
                     <div class="row ">
                         <div class="col-4 mx-auto d-flex justify-content-center">
-                            <input type="submit" value="Next" class="btn btn-block btn-primary my-3 px-5 py-3">
+                            <input type="submit" value="Next" class="btn btn-block btn-primary bg-tertiary my-3 px-5 py-3">
 
                         </div>
                     </div>

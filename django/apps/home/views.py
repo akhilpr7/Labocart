@@ -41,6 +41,7 @@ class HomeView(View):
                 "req" : req_count,
                 "tot" : tot_purchase,
                 "exp" : validity-diff.days, 
+                "current_path":"",
             }
         else:
             tot_purchase = 0
@@ -49,7 +50,7 @@ class HomeView(View):
             context ={
                 "req" : req_count,
                 "tot" : tot_purchase,
-                
+                "current_path":"",
             }
 
 
@@ -75,8 +76,10 @@ class FundView(View):
             form = AddFundForm(request.POST, request=request)
             if form.is_valid():
                 form.save()
-                return redirect(reverse('dashboard'))
+                messages.success(request,"Added fund successfully!!!")
+                return redirect(reverse('funds'))
             else:
+                messages.error(request,"Not Valid !!" )
                 return render(request, self.template, {'form': form})
 
         else:
@@ -267,14 +270,18 @@ class RatingView(View):
 @method_decorator(login_required, name='dispatch')
 class CategoryView(View):
     def get(self, request, *args, **kwargs):
-        tables = Category.objects.all()
-        jobs = jobmodel.objects.all()
-        context = {
-            'tables': tables,
-            'current_path': "Categories",
-            'data': jobs
-        }
-        return render(request, "home/category.html", context)
+        if request.user.is_superuser:
+
+            tables = Category.objects.all()
+            jobs = jobmodel.objects.all()
+            context = {
+                'tables': tables,
+                'current_path': "Categories",
+                'data': jobs
+            }
+            return render(request, "home/category.html", context)
+        else:
+            return render(request, "home/page-403.html")
 
 
 @method_decorator(login_required, name='dispatch')
@@ -342,8 +349,8 @@ class Addjobsview(View):
             job_name = request.POST['job_name']
             category = request.POST['category']
             form.fields['category'].choices = [(category, category)]
-            data = jobmodel.objects.filter(job_title=job_name, category=category).first()
-            if data:
+            duplicate = jobmodel.objects.filter(job_title__icontains = job_name, category__icontains=category).exists()
+            if duplicate:
                 messages.error(request, "Job Already Exists")
                 return redirect(reverse('category'))
             else:
@@ -353,8 +360,6 @@ class Addjobsview(View):
                 return redirect(reverse('category'))
         else:
             return render(request, self.template, {'form': form})
-        # else:
-        #     return render(request, self.template, {'form': form})
 
 @method_decorator(login_required, name='dispatch')
 class Deletejob(View):
@@ -374,12 +379,17 @@ class Access_denied(View):
 @method_decorator(login_required, name='dispatch')
 class ManageUser(View):
     def get(self, request, *args, **kwargs):
-        details = NewUserModel.objects.all().order_by('id').exclude(username='admin')
-        context = {
-            'details': details,
-            'current_path': "Manage User",
-        }
-        return render(request, "home/manage-user.html", context)
+        if request.user.is_superuser:
+
+            details = NewUserModel.objects.all().order_by('id').exclude(username='admin')
+            context = {
+                'details': details,
+                'current_path': "Manage User",
+            }
+            return render(request, "home/manage-user.html", context)
+        else:
+            return render(request, "home/page-403.html")
+
 
 @method_decorator(login_required, name='dispatch')
 class UpdateUser(View):
@@ -414,16 +424,22 @@ class JobPostingView(View):
             # applied = JobPostingModel.objects.filter
             form = JobPostingForm(request.POST,request.FILES)
             try:
-                obj = JobPostingModel.objects.create(
-                    hirer=request.user.username,
-                    place=request.POST['place'],
-                    image=request.FILES['image'],
-                    job_title=request.POST['job_title'],
-                    work_type=request.POST['work_type'],
-                    phone=request.POST['phone'],
-                    name=request.POST['name'])
-                obj.save()
-                return redirect('enlistedjobs')
+                job = request.POST['job_title']
+                userjobs = JobPostingModel.objects.filter(hirer=request.user).values_list("job_title",flat=True)
+                if job in userjobs:
+                    messages.error(request,"Already Applied To This Job  !!")
+                    return redirect('labocategory2')
+                else:
+                    obj = JobPostingModel.objects.create(
+                        hirer=request.user.username,
+                        place=request.POST['place'],
+                        image=request.FILES['image'],
+                        job_title=request.POST['job_title'],
+                        work_type=request.POST['work_type'],
+                        phone=request.POST['phone'],
+                        name=request.POST['name'])
+                    obj.save()
+                    return redirect('enlistedjobs')
 
             except Exception :
                 print(Exception)
@@ -436,14 +452,18 @@ class JobPostingView(View):
 @method_decorator(login_required, name='dispatch')
 class ManageServices(View):
     def get(self, request, *args, **kwargs):
-        details = labourmodels.objects.all().exclude(status=2).order_by('id')
-        history = HireModel.objects.filter(status = 4).values()
-        context = {
-            'details': details,
-            'history': history,
-            'current_path': "Manage Services",
-        }
-        return render(request, "home/manage_services.html", context)
+        if request.user.is_superuser:
+
+            details = labourmodels.objects.all().exclude(status=2).order_by('id')
+            history = HireModel.objects.filter(status = 4).values()
+            context = {
+                'details': details,
+                'history': history,
+                'current_path': "Manage Services",
+            }
+            return render(request, "home/manage_services.html", context)
+        else:
+            return render(request, "home/page-403.html")
 
 @method_decorator(login_required, name='dispatch')
 class HireHistory(View):
@@ -484,8 +504,11 @@ class Labocategories2(View):
 
     def get(self, request, *args, **kwargs):
         data = Category.objects.all()
+        job = jobmodel.objects.values_list('category', flat=True)
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",job)
         context = {
             "data": data,
+            "job": job,
             'current_path': "Provide Jobs",
             'MEDIA_ROOT':settings.NEW_VAR,
 
@@ -506,34 +529,40 @@ class Labocategories2(View):
 @method_decorator(login_required, name='dispatch')
 class ServiceRequests(View):
     def get(self, request, *args, **kwargs):
-        details = labourmodels.objects.filter(status=2).order_by('id')
-        context = {
-            'details': details,
-            'current_path':'Service Requests'
-        }
-        if details:
-            return render(request, "home/service_requests.html", context)
+        if request.user.is_superuser:
+
+            details = labourmodels.objects.filter(status=2).order_by('id')
+            context = {
+                'details': details,
+                'current_path':'Service Requests'
+            }
+            if details:
+                return render(request, "home/service_requests.html", context)
+            else:
+                return render(request,'home/emptyKYC.html', context)
+
         else:
-            return render(request,'home/emptyKYC.html', context)
-
-
+            return render(request,'home/page-403.html')
 
 @method_decorator(login_required, name='dispatch')
 class PendingKYC(View):
     template_name = 'home/pending-registration-requests.html'
 
     def get(self, request, *args, **kwargs):
-        datas = NewUserModel.objects.filter(kyc_approved=0).order_by('id')
-        context = {
-            'media_url': settings.NEW_VAR,
-            'datas': datas,
-            'current_path': "Pending KYC  ",
-        }
-        if datas:
-            return render(request, self.template_name, context)
-        else:
-            return render(request,'home/emptyKYC.html', context)
+        if request.user.is_superuser:
 
+            datas = NewUserModel.objects.filter(kyc_approved=0).order_by('id')
+            context = {
+                'media_url': settings.NEW_VAR,
+                'datas': datas,
+                'current_path': "Pending KYC  ",
+            }
+            if datas:
+                return render(request, self.template_name, context)
+            else:
+                return render(request,'home/emptyKYC.html', context)
+        else:
+            return render(request,'home/page-403.html')
 
 @method_decorator(login_required, name='dispatch')
 class AcceptServices(View):
@@ -576,7 +605,7 @@ class JobRequests(View):
             'current_path': "Job requests",
             }
         if requests:
-            return render(request, 'jobrequests.html', context)
+            return render(request, 'home/jobrequests.html', context)
         else:
             return render(request,'home/emptyservices.html',{'current_path':"Job requests"})
         
@@ -637,15 +666,25 @@ class ProvidedJobs(View):
 @method_decorator(login_required, name='dispatch')
 class LookForJobs(View):
     def get(self, request, *args, **kwargs):
-        jobs = JobPostingModel.objects.filter(is_active=1).exclude(hirer=request.user.username).values()
+        
         appliedones = AppliedJobs.objects.filter(worker_uname=request.user.username)
-
-
+        filter=request.GET.get('filter')
+        job_title = jobmodel.objects.filter(id=filter)
+        datajob = jobmodel.objects.all()
+        if request.GET.get('filter') is not None and request.GET.get('filter') != '':
+            jobs = JobPostingModel.objects.filter(Q(is_active=1)&Q(job_title=job_title)).exclude(hirer=request.user.username).values()
+            # data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1)).exclude(username=request.user.username)		
+        else:
+            jobs = JobPostingModel.objects.filter(is_active=1).exclude(hirer=request.user.username).values()
+            # data = labourmodels.objects.filter(status=1).exclude(username=request.user.username)
+        datacategory=Category.objects.values()
         context = {
             'media_url': settings.NEW_VAR,
 
             'jobs': jobs,
-            'current_path': "Available Jobs"
+            'current_path': "Available Jobs",
+            'datacategory':datacategory,
+            "datajob":datajob,
         }
         if request.user.is_sub:
             if jobs:
@@ -679,12 +718,38 @@ class CancelLookJobs(View):
         delete = AppliedJobs.objects.filter(id=id)
         delete.delete()
         return redirect('lookjobs')
+@method_decorator(login_required, name='dispatch')
+class EditLookJobs(View):
+    def get(self, request,id, *args, **kwargs):
+        # delete = AppliedJobs.objects.filter(id=id)
+        # delete.delete()
+        data=AppliedJobs.objects.filter(id=id).first()
+        context={
+            "id":id,
+            "location":data.place,
+            "rate":data.rate,
+
+
+        }
+        template= 'home/editlookforjob.html'
+
+        return render(request,template,context)
+    def post(self, request, *args, **kwargs):
+        id=request.POST.get("id")
+        work_mode=request.POST.get("work_mode")
+        location=request.POST.get("location")
+        rate=request.POST.get("rate")
+        print(id,work_mode,location,rate,"Yepppudraaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        AppliedJobs.objects.filter(id=id).update(work_type=work_mode,place=location,rate=rate)
+
+        return redirect('lookjobs')
 
 
 @method_decorator(login_required, name='dispatch')
 class  UpdateEnlistedJobStatus(View):
     def get(self, request,id, *args, **kwargs):
         job = JobPostingModel.objects.get(id=id)
+        print(job.is_active,"activityyyyyyyyyyyyyyyyyyyyyyyyy")
         if job.is_active:
             job.is_active = False
             job.save()
@@ -712,7 +777,7 @@ class JobRequestPay(View):
         }
         return render(request,self.template,context)
 
-
+@method_decorator(login_required, name='dispatch')
 class confirmpaymentjob(View):
     def get(self ,request,id, *arg, **kwargs):
         wallet_bal = NewUserModel.objects.filter(username=request.user).values_list("wallet")[0][0]
@@ -757,4 +822,7 @@ class ConfirmOTP(View):
 @method_decorator(login_required, name='dispatch')
 class AdminDashboard(View):
     def get(self, request,*args, **kwargs):
-        return render(request,'home/admindashboard.html',{"current_path":''})
+        if request.user.is_superuser:
+            return render(request,'home/admindashboard.html',{"current_path":''})
+        else:
+            return render(request,'home/page-403.html',{})

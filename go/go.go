@@ -54,7 +54,7 @@ func main() {
   // gocron.Every(10).Second().Do(expiry, db)
   gocron.Every(2).Second().Do(workStatus, db)
   gocron.Every(2).Second().Do(requestdelete, db)
-  gocron.Every(100).Second().Do(fetchsub, db)
+  gocron.Every(2).Second().Do(fetchsub, db)
   gocron.Every(2).Second().Do(rating, db)
   // gocron.Every(5).Second().Do(expiry2, db)
 

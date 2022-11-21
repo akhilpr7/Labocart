@@ -16,8 +16,8 @@ from apps.home.models import Category
 from django.utils.safestring import mark_safe
 import json
 from json import dumps
-
-
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -88,7 +88,7 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('login'))
 
-
+@method_decorator(login_required, name='dispatch')
 class Demo(View):
     template = 'home/tables-bootstrap-tables.html'
     
@@ -102,7 +102,7 @@ class Demo(View):
 
         }
         return render(request, self.template,context)
-
+@method_decorator(login_required, name='dispatch')
 class ProfileView(View):
     def get(self, request, *args, **kwargs):
         user_id = request.user.pk
@@ -120,7 +120,7 @@ class ProfileView(View):
         return render(request, 'accounts/profile.html',context)
 
 
-
+@method_decorator(login_required, name='dispatch')
 class UpdateProfileView(View):
     def get(self,request, *args, **kwargs):
         user = NewUserModel.objects.get(id=request.user.id)

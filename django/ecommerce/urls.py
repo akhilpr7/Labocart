@@ -43,6 +43,7 @@ urlpatterns = [
 	path('refundhistory/',views.RefundHistoryUser.as_view(), name="refundhistory"),
 	path('refundhistoryworker/',views.RefundHistoryWorker.as_view(), name="refundhistoryworker"),
 	path('labotransactions/',views.LaboTransactions.as_view(), name="labotransactions"),
+	path('adminTransactions/',views.AdminTransactions.as_view(), name="adminTransactions"),
 	path('search_products/',views.SearchProducts.as_view(), name="search_products"),
 ]
 

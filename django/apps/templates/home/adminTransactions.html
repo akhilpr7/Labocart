@@ -1,0 +1,186 @@
+{% extends "layouts/base.html" %}
+{% block title %}  {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+    <p class="d-none" id="messagetag">{{message.tags}}</p>
+    <p class="d-none " id="messagecontent">{{message}}</p>
+{% endfor %}
+{% endif %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <div class="d-block mb-4 mb-md-0">
+      <h5 class="h5"> <b>Purchase History</b> </h5>
+    </div>
+
+</div>
+
+
+<div class="card card-body border-0 shadow table-wrapper table-responsive">
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th >Product ID</th>
+            <th >username</th>
+            <th >Product Name</th>
+            <th >Price</th>
+            <th >Total Price</th>
+            <th >Date</th>
+            <th >Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for data in purchase %}
+
+          <tr>
+            <td>{{data.order_id}}</td>
+            <td>{{data.username}}</td>
+            <td>{% for Product_name in data.Product_name %}
+                <p>{{Product_name}}</p>
+                {% comment %} {% if forloop.last %}
+                {{" "}}
+                {% else %}
+                
+                {% endif %} {% endcomment %}
+                {% endfor %}
+            </td>
+            <td>{% for price in data.Prices %}
+                <p>{{price}}</p>
+                {% comment %} {% if forloop.last %}
+                {{" "}}
+                {% else %}
+                
+                {% endif %} {% endcomment %}
+                {% endfor %}
+            </td>
+
+            <td>{{data.Total}}</td>
+            <td>{{data.date}}</td>
+            <td>{% for quantity in data.Quantity %}
+                <p>{{quantity}}</p>
+                {% comment %} {% if forloop.last %}
+                {{" "}}
+                {% else %}
+                ,
+                {% endif %} {% endcomment %}
+                {% endfor %}
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+   
+</div> 
+
+
+
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <div class="d-block mb-4 mb-md-0">
+      <h5 class="h5"> <b>Hire History</b> </h5>
+    </div>
+
+</div>
+
+
+<div class="card card-body border-0 shadow table-wrapper table-responsive">
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th >ID</th>
+            <th >Worker Name</th>
+            <th >Hirer Name</th>
+            <th >Place</th>
+            <th >Work Mode</th>
+            <th >Phone</th>
+            <th >Job</th>
+            <th >Status</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for hire in hire %}
+
+          <tr>
+            <td><p>{{hire.id}}</p></td>
+            <td><p>{{hire.worker_name}}</p></td>
+            <td><p>{{hire.Hire_name}}</p></td>
+            <td><p>{{hire.Place}}</p></td>
+            <td><p>{{hire.Work_mode}}</p></td>
+            <td><p>{{hire.Phone}}</p></td>
+            <td><p>{{hire.job_title}}</p></td>
+            <td><p>
+                {%if hire.status == 4%}
+                Completed
+                {%elif hire.status == 5%}
+                Cancelled
+                {%endif%}
+            </p></td>
+          </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+   
+</div> 
+
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+  <div class="d-block mb-4 mb-md-0">
+    <h5 class="h5"> <b>Refund History</b> </h5>
+  </div>
+
+</div>
+
+
+
+<div class="card card-body border-0 shadow table-wrapper table-responsive">
+  <table class="table table-hover">
+      <thead>
+          <tr>
+              <th >ID</th>
+              <th >Worker</th>
+              <th >Rate</th>
+              <th >Worker Refund</th>
+              <th >hirer Refund</th>
+              <th >Work Mode</th>
+              <th >Job Title</th>
+              <th >Date</th>
+              <th >Status</th>
+              {% comment %}
+              <th >Status</th>
+              {% endcomment %}
+          </tr>
+      </thead>
+      <tbody>
+          <!-- Item -->
+          {% for data in refund %}
+          <tr>
+              <td>{{data.id}}</td>
+              <td>{{data.worker}}</td>
+              <td>{{data.rate}}</td>
+              <td>{{data.worker_refund|floatformat:4}}</td>
+              <td>{{data.hirer_refund|floatformat:4}}</td>
+              <td>{%if data.work_mode == 'true' %}Full Day{%else%}Half Day{%endif%}</td>
+              <td>{{data.job_title}}</td>
+              <td>{{data.work_date}}</td>
+              <td>{%if data.status == 2 %}Completed{%else%}Completed{%endif%}</td>
+             
+
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+</div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
