@@ -580,7 +580,7 @@ class JobRequests(View):
             'current_path': "Job requests",
             }
         if requests:
-            return render(request, 'jobrequests.html', context)
+            return render(request, 'home/jobrequests.html', context)
         else:
             return render(request,'home/emptyservices.html',{'current_path':"Job requests"})
         

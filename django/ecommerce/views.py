@@ -58,7 +58,7 @@ class Shop(View):
 
 		}
 		if product:
-			return render(request, 'shop.html', data)
+			return render(request, 'shop/shop.html', data)
 		else:
 			return render(request,'home/emptylaboshop.html',{'current_path':"Shop"})
 
@@ -111,10 +111,7 @@ class AddtocartView(View):
 		return redirect('shop')
 @method_decorator(login_required,name='dispatch')
 class IncreaseNo(View):
-	template_name = 'shop/cart_body.html'
-	def post(self, request, *args, **kwargs):
-		id=request.POST['id']
-		print('data',id)
+	def get(self, request, id, *args, **kwargs):
 		price = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Price')[0][0]
 		quantity = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Quantity')[0][0]
 		product = CartModel.objects.filter(product_id=id,username=request.user.username).values_list("Product_name")[0][0]
@@ -124,19 +121,11 @@ class IncreaseNo(View):
 			print("toal product price",quantity)
 			print("toal product price",int(price))
 			print("toal product price",total)
-			products = list(CartModel.objects.filter(username=request.user.username).values())
 			CartModel.objects.filter(product_id=id,username= request.user.username).update(Quantity = quantity + 1 ,  Total= total)
-			totalPrice = CartModel.objects.filter(username = request.user.username).aggregate(Sum('Total'))
-			context = {
-			"products":products,
-			'form':CheckoutForm(),
-			'current_path':"Cart" ,
-			'totalPrice': totalPrice["Total__sum"],
-			}	
-			return render(request, self.template_name, context)
+			return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
 		else:
 			messages.error(request,"Not enough available stock !")
-		return redirect("cart")
+			return redirect("cart")
 
 @method_decorator(login_required,name='dispatch')
 class DecreaseNo(View):
@@ -563,6 +552,7 @@ class Userpayments(View):
 		wallet_balance =request.user.wallet
 		user_id=id
 		rate = AppliedJobs.objects.filter(id=id).values_list("rate")[0][0]
+		print(rate,"rateeeeeeeeeeeeeeeeeeeeeeeeeeeee")
 		if wallet_balance >= rate:
 			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)	
 			AppliedJobs.objects.filter(id=id).update(status=1)
@@ -570,7 +560,7 @@ class Userpayments(View):
 			messages.success(request,'Payment Successful')
 			return redirect('jobrequests')
 		else:
-			messages.success(request,'Payment Failed')
+			messages.error(request,'Payment Failed')
 			return redirect('jobrequests')
 
 class HireNowPayments(View):
