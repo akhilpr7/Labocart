@@ -8,7 +8,6 @@ urlpatterns = [
 	path("shop/",views.Shop.as_view(),name="shop"),
 	path("laboshopcategory/",views.LaboShopCategory.as_view(),name="laboshopcategory"),
 	path("laboshop/",views.LaboShop.as_view(),name="laboshop"),
-	# path("laboshop/<slug:filter>/<slug:sort>/",views.LaboShop.as_view(),name="laboshop"),
 	path("addstock/",views.Addproduct.as_view(),name="addproduct"),
 	path("stocklist/",views.ProductTable.as_view(),name="stocklist"),
 	path("laboregister/<str:id>",views.LaboRegister.as_view(), name="laboregister"),
@@ -23,7 +22,7 @@ urlpatterns = [
 	path("hirenowpayments/<int:id>/",views.HireNowPayments.as_view(),name="hirenowpayments"),
 	path('cancel_request/<int:id>/', views.CancelRequest.as_view(), name="cancel_request"),
 	path("active_service/",views.ActiveServices.as_view(),name="active_service"),
-	path('increase-no/<int:id>/', views.IncreaseNo.as_view(), name="increase-no"),
+	path('increase-no/', views.IncreaseNo.as_view(), name="increase-no"),
 	path('decrease-no/<int:id>/', views.DecreaseNo.as_view(), name="decrease-no"),
 	path('assigned/', views.Assignedworks.as_view(), name="assigned"),
 	path('invoice/', views.Invoice.as_view(), name="invoice"),
@@ -44,6 +43,7 @@ urlpatterns = [
 	path('refundhistory/',views.RefundHistoryUser.as_view(), name="refundhistory"),
 	path('refundhistoryworker/',views.RefundHistoryWorker.as_view(), name="refundhistoryworker"),
 	path('labotransactions/',views.LaboTransactions.as_view(), name="labotransactions"),
-	path('search_products/',views.SearchProducts.as_view(), name="search_products")
+	path('adminTransactions/',views.AdminTransactions.as_view(), name="adminTransactions"),
+	path('search_products/',views.SearchProducts.as_view(), name="search_products"),
 ]
 

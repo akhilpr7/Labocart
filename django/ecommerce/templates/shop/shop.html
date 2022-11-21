@@ -1,0 +1,197 @@
+{%extends 'index.html'%}
+
+{% block title %}Shop{% endblock title%}
+
+{% block content%}
+ 
+    {% if messages %}
+    {% for message in messages %}
+    <p class="d-none" id="messagetag">{{message.tags}}</p>
+    <p class="d-none " id="messagecontent">{{message}}</p>
+    {% endfor %}
+    {% endif %}
+
+
+
+    <!-- Shop Start -->
+    <div class="container-fluid pt-5">
+        <div class="row  px-xl-5">
+            <!-- Shop Product Start -->
+            <div class="col-lg-12 col-md-12">
+                <div class="row pb-3">
+                    <div class="col-12 pb-1">
+                        <div class="d-flex align-items-center justify-content-between mb-4" row>
+                            <div class="dropdown ml-4">
+                                <button class="btn border dropdown-toggle" type="button" id="triggerId"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Sort by
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
+                                    <a class="dropdown-item" href="/shop/?orderby=atoz">AtoZ</a>
+                                    <a class="dropdown-item" href="/shop/?orderby=ztoa">ZtoA</a>
+                                    <a class="dropdown-item" href="/shop/?orderby=latest">Latest</a>
+                                    <a class="dropdown-item" href="/shop/?orderby=oldest">Oldest</a>
+                                </div>
+                            </div>
+                            {% include 'search/shop_search.html' %}
+                            <div class="col-lg-2 d-flex align-items-center justify-content-center">
+                                <a class="btn" href="{% url 'cart' %}">
+                                    <i class='fas fa-cart-arrow-down' style='font-size:36px'></i>
+                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1200 1200"><rect x="0" y="0" width="1200" height="1200" fill="none" stroke="none" /><path fill="black" d="m1199.398 403.537l-50.323 288.696c-6.206 31.891-31.615 51.282-60.917 51.646H354.5l-14.566 82.106h699.226c36.818 2.798 61.793 28.88 62.242 62.24c-2.678 36.743-28.758 61.786-62.242 62.242H265.773c-41.827-3.762-66.768-37.103-62.242-74.16l33.107-180.104l-50.323-505.88L43.292 145.3C8.341 131.423-5.924 99.805 2.239 67.167c13.573-34.015 46.096-49.556 78.133-41.053l182.752 58.269c24.62 9.229 38.783 29.382 42.377 52.972l10.594 100.646l829.006 92.7c38.09 8.251 58.769 38.422 54.297 72.836zm-744.126 677.619c0 52.476-42.54 95.017-95.018 95.017c-52.477 0-95.017-42.541-95.017-95.017c0-52.478 42.541-95.019 95.017-95.019c52.477.001 95.018 42.543 95.018 95.019zm567.252 0c0 52.476-42.541 95.017-95.019 95.017c-52.477 0-95.017-42.541-95.017-95.017c0-52.478 42.54-95.019 95.017-95.019c52.478.001 95.019 42.543 95.019 95.019z"/></svg>                     -->
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cards Starting  -->
+                    
+                    <div id="shop_list">
+                        {% include 'shop/items_list.html' %}
+                    </div>
+
+
+                    <!-- end of Cards -->
+
+                    {% comment %} <div class="col-12 pb-1">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center mb-3">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+            <!-- Shop Product End -->
+        </div>
+    </div>
+    <!-- Shop End -->
+
+
+    <!-- Footer Start -->
+    {% comment %} <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
+        <div class="row px-xl-5 pt-5">
+            <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
+                <a href="" class="text-decoration-none">
+                    <h1 class="mb-4 display-5 font-weight-semi-bold"><span
+                            class="text-primary font-weight-bold border border-white px-3 mr-1">E</span>Shopper</h1>
+                </a>
+                <p>Dolore erat dolor sit lorem vero amet. Sed sit lorem magna, ipsum no sit erat lorem et magna ipsum
+                    dolore amet erat.</p>
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
+                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
+            </div>
+            <div class="col-lg-8 col-md-12">
+                <div class="row">
+                    <div class="col-md-4 mb-5">
+                        <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our
+                                Shop</a>
+                            <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
+                                Detail</a>
+                            <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping
+                                Cart</a>
+                            <a class="text-dark mb-2" href="checkout.html"><i
+                                    class="fa fa-angle-right mr-2"></i>Checkout</a>
+                            <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact
+                                Us</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our
+                                Shop</a>
+                            <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
+                                Detail</a>
+                            <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping
+                                Cart</a>images/wallpapersden.com_daenerys-targaryen-and-dragons-in-fire_2048x1152.jpg
+
+                            <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact
+                                Us</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
+                        <form action="">
+                            <div class="form-group">
+                                <input type="text" class="form-control border-0 py-4" placeholder="Your Name"
+                                    required="required" />
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control border-0 py-4" placeholder="Your Email"
+                                    required="required" />
+                            </div>
+                            <div>
+                                <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe
+                                    Now</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row border-top border-light mx-xl-5 py-4">
+            <div class="col-md-6 px-xl-0">
+                <p class="mb-md-0 text-center text-md-left text-dark">
+                    &copy; <a class="text-dark font-weight-semi-bold" href="#">Your Site Name</a>. All Rights Reserved.
+                    Designed
+                    by
+                    <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">HTML Codex</a>
+                </p>
+            </div>
+            <div class="col-md-6 px-xl-0 text-center text-md-right">
+                <img class="img-fluid" src="../../../static/shop/img/payments.png" alt="">
+            </div>
+        </div>
+    </div> {% endcomment %}
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Contact Javascript File -->
+
+    <!-- Template Javascript -->
+    <script src="../../static/shop/js/main.js"></script>
+</body>
+<style>
+    .fill {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden
+    }
+
+    .fill img {
+        flex-shrink: 0;
+        min-width: 100%;
+        min-height: 100%
+    }
+</style>
+
+{% endblock content %}
+
+</html>
