@@ -24,10 +24,7 @@
                         <div class="text-center text-md-center mb-4 mt-md-0">
                             <h1 class="mb-0 h3">Enter JOB Details</h1>
                             <br />
-                            {% if messages %} {% for message in messages %}
-                            <p class="d-none" id="messagetag">{{message.tags}}</p>
-                            <p class="d-none" id="messagecontent">{{message}}</p>
-                            {% endfor %} {% endif %}
+                           
                         </div>
 
                         {% if success %}
@@ -39,7 +36,7 @@
                         {% else %}
                         <!-- Form -->
 
-                        <form method="post" action="" class="mt-4" enctype="multipart/form-data">
+                        <form method="post" action="" class="mt-4" >
                             {% csrf_token %}
                             
 
