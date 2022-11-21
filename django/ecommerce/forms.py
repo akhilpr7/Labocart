@@ -30,7 +30,7 @@ class Laboregisterform(forms.Form):
     super(Laboregisterform, self).__init__(*args,**kwargs)
     self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True),
                               widget=forms.Select(attrs={'class':'form-select'}))
-  phone = forms.CharField(max_length = 10 , widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control','type':'phone'}))
+  phone = forms.CharField(max_length = 10 , widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control','type':'phone','minlength':'10','maxlength':'10','required pattern':'\d*'}))
   image_link = forms.ImageField(widget=forms.FileInput(attrs={'class':'form-control'}))
   rate = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1','placeholder':'Rate'}))
   CHOICES = (('True','Half day'),('False','Full day'))
@@ -62,7 +62,7 @@ class UpdateStockForm( forms.ModelForm ):
 
 class PurchaseForm(forms.Form):
   
-  phone = forms.CharField(min_length=10,max_length = 10 , widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control','type':'phone','minlength':'10','maxlength':'10'}))
+  phone = forms.CharField(min_length=10,max_length = 10 , widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control','type':'phone','minlength':'10','maxlength':'10','required pattern':'\d*'}))
   
   first_name = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Firstname",'class': 'form-control','minlength':'3'}))
 
@@ -110,7 +110,7 @@ class HireNowForm( forms.Form ):
   CHOICES = (('True','Half day'),('False','Full day'))
   id = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Your Name"}))
   Place = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
-  Phone = forms.CharField(min_length=10,max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control ','placeholder':"Your Phone",'type':'phone'}))
+  Phone = forms.CharField(min_length=10,max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control ','placeholder':"Your Phone",'type':'phone','minlength':'10','maxlength':'10','required pattern':'\d*'}))
   Work_mode = forms.ChoiceField(choices = CHOICES,widget=forms.Select(attrs={'class':'form-select'}))  # worker_name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"worker name ", 'readonly':'readonly'}))
   def clean(self):
 
