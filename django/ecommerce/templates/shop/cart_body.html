@@ -1,0 +1,55 @@
+{% load widget_tweaks %}
+
+{% for product in products %}
+
+<tr class ="rows">
+    <td class=" align-middle d-flex justify-content-between align-items-center pe-5 ">
+        <div class="col-8">
+            
+            <img src="/static/media/{{product.Image}}" alt="" class="img-fluid rounded-circle borderborder-dark border-3" style="width: 100px; height: 100px;">
+        </div>
+        <div class="col-4">
+            <h6 class="">{{product.Product_name}}</h6>
+            
+        </div>
+    </td>
+    <!-- <td class="align-middle">${{product.Price}}</td> -->
+    <input type="hidden" id="id_Price"
+    class="form-control  quantity-field form-control-sm bg-secondary text-center"
+    value="{{product.Price}}">
+    <td class="align-middle" >${{product.Price}}</td>
+    <td class="align-middle">
+        <div class="input-group quantity mx-auto" >
+            <div class="input-group-btn">
+                <a href="{% url 'decrease-no' product.product_id %}"
+                class="btn btn-sm btn-primary btn-minus">
+                <i class="fa fa-minus"></i>
+            </a>
+        </div>
+        
+        {% render_field form.Quantity  readonly=true value=product.Quantity %} 
+        {% render_field form.total hidden=true value=product.Total %} 
+        <input type="hidden"  value={{product.product_id}} name='id'
+        >
+        <!-- value={{product.product_id}} name='id' -->
+
+            <div class="input-group-btn">
+                <a href='#'
+                class="btn btn-sm btn-primary btn-plus"
+                hx-post={% url 'increase-no' %}
+                hx-trigger='click'
+                hx-include='[name=id]'
+                hx-target="#cart-body" 
+                hx-swap='innerhtml'
+                >
+                <i class="fa fa-plus"></i>
+                
+            </a >
+        </div>
+    </div>
+</td>
+<td class="align-middle" >  <p id="total_price" > {{product.Total}}</p></td>
+<td class="align-middle"><a href="{% url 'del_from_cart' product.product_id%}"
+    class="btn btn-sm btn-primary"><i class="fa fa-times"></i></a></td>
+</tr>
+{% endfor %}

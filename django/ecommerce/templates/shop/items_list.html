@@ -105,26 +105,7 @@
             </div>
         </div>
     </div>
-    {% comment %} {% elif i.Product_name in cart %}
-    <div class=" col-sm-6 col-md-3  my-3">
 
-    <div class="shadow-lg p-3 mb-5 bg-white rounded-lg">
-            <div class="d-flex justify-content-center" >
-                <img src="{{i.Image.url}}" class="img-fluid " style="height: 200px;" alt="image of {{i.Product_name}}">
-            </div>
-            <div class="card-body ">
-                <h5 class="card-title">{{i.Product_name}} </h5>
-                <div class="">
-                    <h6>${{ i.Price }}</h6>
-
-                </div>
-            </div>
-            <div class="card-footer mb-2 d-flex justify-content-center bg-light ">
-                <a href="{% url 'cart' %}" class="btn btn-primary border rounded-lg "><i
-                        class="fas fa-shopping-cart text-primary mr-1"></i>Go to cart</a>
-            </div>
-        </div> 
-    </div> {% endcomment %}
     {% else %}
 
     <div class=" col-sm-6 col-md-3 my-3">

@@ -26,15 +26,11 @@ class HomeView(View):
 
         req_count = HireModel.objects.filter(Q(Hire_name=request.user)&(Q(status=4)|Q(status=5))).count()
         purchase = PurchaseModel.objects.filter(username=request.user).values_list("Total")
-        print(request.user.package,"packaaaaaaaa")
-        print(request.user.subscribed_at,"packaaaaaaaa")
         sub_at=request.user.subscribed_at
         a = datetime.datetime.now().date()
-        print(a,"current time issssss")
          
         if sub_at != None:
             diff = a-sub_at
-            print(diff.days,"differenceeeeeeeeeeee")
             validity = PackageModel.objects.filter(id=request.user.package).values_list("validity")[0][0]
 
             tot_purchase = 0

@@ -31,9 +31,8 @@ class Home(View):
 
 @method_decorator(login_required,name='dispatch')
 class Shop(View):
+	template_name='shop/shop.html'
 	def get(self, request, *args, **kwargs):
-		# print("aaaaaaaaaaaaaaaaaaaa",request)
-		# print("bbbbbbbbbbbbbbbbbbbbbbb",request.GET.get('orderby'))
 		sort=request.GET.get('orderby')
 		if request.GET.get('orderby') is not None and request.GET.get('orderby') != '':
 			if sort == 'atoz':
@@ -47,22 +46,19 @@ class Shop(View):
 		else:
 			product = ProductsModel.objects.all()
 		cart = CartModel.objects.all().filter(username=request.user.username).values_list("Product_name",flat=True)
-		print(settings.MEDIA_ROOT,"media roooooooooooot")
 		data = {
 		"product":product,
 		'form':PurchaseForm(),
 		'current_path':"Shop",
 		'cart' : cart,
-		
-
 		}
 
-		return render(request, 'shop.html', data)
+		return render(request,self.template_name, data)
 
 
 @method_decorator(login_required,name='dispatch')
 class CartView(View):
-	template = 'cart.html'
+	template_name = 'shop/cart.html'
 	
 	def get(self, request, *args, **kwargs):
 		products = list(CartModel.objects.filter(username=request.user.username).values())
@@ -77,7 +73,7 @@ class CartView(View):
 			'current_path':"Cart" ,
 			'totalPrice': totalPrice["Total__sum"],
 			}	
-			return render(request, self.template, context)
+			return render(request, self.template_name, context)
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
 			return redirect('checkout')
@@ -108,7 +104,10 @@ class AddtocartView(View):
 		return redirect('shop')
 @method_decorator(login_required,name='dispatch')
 class IncreaseNo(View):
-	def get(self, request, id, *args, **kwargs):
+	template_name = 'shop/cart_body.html'
+	def post(self, request, *args, **kwargs):
+		id=request.POST['id']
+		print('data',id)
 		price = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Price')[0][0]
 		quantity = CartModel.objects.filter(product_id=id,username= request.user.username).values_list('Quantity')[0][0]
 		product = CartModel.objects.filter(product_id=id,username=request.user.username).values_list("Product_name")[0][0]
@@ -118,11 +117,19 @@ class IncreaseNo(View):
 			print("toal product price",quantity)
 			print("toal product price",int(price))
 			print("toal product price",total)
+			products = list(CartModel.objects.filter(username=request.user.username).values())
 			CartModel.objects.filter(product_id=id,username= request.user.username).update(Quantity = quantity + 1 ,  Total= total)
-			return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
+			totalPrice = CartModel.objects.filter(username = request.user.username).aggregate(Sum('Total'))
+			context = {
+			"products":products,
+			'form':CheckoutForm(),
+			'current_path':"Cart" ,
+			'totalPrice': totalPrice["Total__sum"],
+			}	
+			return render(request, self.template_name, context)
 		else:
 			messages.error(request,"Not enough available stock !")
-			return redirect("cart")
+		return redirect("cart")
 
 @method_decorator(login_required,name='dispatch')
 class DecreaseNo(View):
@@ -157,7 +164,7 @@ class DelFromCartView(View):
 @method_decorator(login_required,name='dispatch')
 class CheckoutView(View):
 	
-	template = 'checkout.html'
+	template_name = 'shop/checkout.html'
 
 	def get(self, request, *args, **kwargs):
 		products = list(CartModel.objects.filter(username=request.user.username).values())
@@ -170,7 +177,7 @@ class CheckoutView(View):
 		'current_path':"Checkout" ,
 		'totalPrice': totalPrice["Total__sum"],
 		}	
-		return render(request, self.template, context)
+		return render(request, self.template_name, context)
 	@cache_control( no_cache=True, must_revalidate=True, no_store=True )
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
@@ -217,7 +224,7 @@ class CheckoutView(View):
 			
 
 class Invoice(View):
-	template_name = 'invoice.html'
+	template_name = 'shop/invoice.html'
 	def get(self, request):
 		products = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Product_name')[0]
 		prices = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Prices')[0]
@@ -293,7 +300,7 @@ class LaboShop(View):
 		is_sub = NewUserModel.objects.filter(username=request.user).values_list('is_sub')[0][0]
 		if is_sub == True or request.user.is_superuser:
 			if newdata:
-				return render(request, 'labo-shop.html', context)
+				return render(request, 'laboshop/labo-shop.html', context)
 			else:
 				return render(request,'home/emptylaboshop.html',{'current_path':"Laboshop"})
 		else:
@@ -454,13 +461,6 @@ class LaboRegister(View):
 			# else:
 			# 	print(form.errors)    
 			# 	return render(request, self.template, {'form': form})
-
-@method_decorator(login_required,name='dispatch')
-class Checkout(View):
-	template = 'checkout.html'
-
-	def get(self, request, *args, **kwargs):
-		return render(request, self.template, {})
 
 
 @method_decorator(login_required,name='dispatch')
@@ -708,8 +708,8 @@ class HomePage(View):
 		template = 'Homepage/Homepage.html'
 		return render(request,template,{})
 class Payment(View):
+	template_name= 'shop/payment.html'
 	def get(self, request, id, *args, **kwargs):
-		template= 'payment.html'
 		products= PurchaseModel.objects.filter(id=id).values_list('Product_name')[0]
 		prices = PurchaseModel.objects.filter(id=id).values_list('Prices')[0]
 		quantity = PurchaseModel.objects.filter(id=id).values_list('Quantity')[0]
@@ -722,7 +722,7 @@ class Payment(View):
 			"quantity":quantity,
 
 		}
-		return render(request,template,context)
+		return render(request,self.template_name,context)
 class ConfirmPay(View):
 	
 	@cache_control( no_cache=True, must_revalidate=True, no_store=True )
@@ -911,8 +911,9 @@ class LaboTransactions(View):
 			return render(request,"home/emptylaboshop.html",context)	
 
 class SearchProducts(View):
+	template_name='shop/items_list.html'
 	def post(self,request, *args, **kwargs):
 		search_tag = request.POST['search_keyword']
 		filterdData = ProductsModel.objects.filter(Product_name__icontains = search_tag)
 		context = {'search_result': filterdData}
-		return render(request ,'shop/items_list.html',context)
+		return render(request ,self.template_name,context)

@@ -1,103 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
 {%extends 'index.html'%}
+
+{% block title %}Shop{% endblock title%}
+
 {% block content%}
-
-<head>
-    <meta charset="utf-8">
-    {% block title %}{% endblock title%}
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
-
-    <!-- Favicon -->
-    <link href="../../../static/shop/img/favicon.ico" rel="icon">
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    {% comment %}
-    <link href="../../../static/shop/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet"> {% endcomment %}
-
-    <!-- Customized Bootstrap Stylesheet -->
-    {% comment %}
-    <link href="../../../static/shop/css/style.css" rel="stylesheet"> {% endcomment %}
-</head>
-
-<body style="background-color:#f5eee7">
+ 
     {% if messages %}
     {% for message in messages %}
     <p class="d-none" id="messagetag">{{message.tags}}</p>
     <p class="d-none " id="messagecontent">{{message}}</p>
     {% endfor %}
     {% endif %}
-    <div class="container-fluid">
-        <div class="row border-top pt-3 px-xl-5  d-flex justify-content-between">
-            <div class="col-lg-3 ">
-                <a class="btn shadow-none d-flex align-items-center justify-content-between rounded-2 w-100 bg-gray-800 text-white"
-                    data-toggle="collapse" href="#navbar-vertical"
-                    style="height: 65px; margin-top: -1px; padding: 0 30px;">
-                    <h5 class="m-0">Categories</h5>
-                    <i class="fa fa-angle-down text-white"></i>
-                </a>
-                <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light"
-                    id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
-                    {% comment %} <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link" data-toggle="dropdown">Dresses <i
-                                    class="fa fa-angle-down float-right mt-1"></i></a>
-                            <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                                <a href="" class="dropdown-item">Men's Dresses</a>
-                                <a href="" class="dropdown-item">Women's Dresses</a>
-                                <a href="" class="dropdown-item">Baby's Dresses</a>
-                            </div>
-                        </div>
-                        <a href="" class="nav-item nav-link">Shirts</a>
-                        <a href="" class="nav-item nav-link">Jeans</a>
-                        <a href="" class="nav-item nav-link">Swimwear</a>
-                        <a href="" class="nav-item nav-link">Sleepwear</a>
-                        <a href="" class="nav-item nav-link">Sportswear</a>
-                        <a href="" class="nav-item nav-link">Jumpsuits</a>
-                        <a href="" class="nav-item nav-link">Blazers</a>
-                        <a href="" class="nav-item nav-link">Jackets</a>
-                        <a href="" class="nav-item nav-link">Shoes</a>
-                    </div> {% endcomment %}
-                </nav>
-            </div>
-            <!-- <div class="col-lg-9">
-                <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                    <a href="" class="text-decoration-none d-block d-lg-none">
-                        <h1 class="m-0 display-5 font-weight-semi-bold"><span
-                                class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
-                    </a>
-                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                        <div class="navbar-nav mr-auto py-0">
-
-                        </div>
-                        <div class="navbar-nav ml-auto py-0">
-
-                        </div>
-                    </div>
-                </nav>
-            </div> -->
-            <div class="col-lg-2 d-flex align-items-center justify-content-center">
-                <a class="btn" href="{% url 'cart' %}">
-                    <i class='fas fa-cart-arrow-down' style='font-size:36px'></i>
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1200 1200"><rect x="0" y="0" width="1200" height="1200" fill="none" stroke="none" /><path fill="black" d="m1199.398 403.537l-50.323 288.696c-6.206 31.891-31.615 51.282-60.917 51.646H354.5l-14.566 82.106h699.226c36.818 2.798 61.793 28.88 62.242 62.24c-2.678 36.743-28.758 61.786-62.242 62.242H265.773c-41.827-3.762-66.768-37.103-62.242-74.16l33.107-180.104l-50.323-505.88L43.292 145.3C8.341 131.423-5.924 99.805 2.239 67.167c13.573-34.015 46.096-49.556 78.133-41.053l182.752 58.269c24.62 9.229 38.783 29.382 42.377 52.972l10.594 100.646l829.006 92.7c38.09 8.251 58.769 38.422 54.297 72.836zm-744.126 677.619c0 52.476-42.54 95.017-95.018 95.017c-52.477 0-95.017-42.541-95.017-95.017c0-52.478 42.541-95.019 95.017-95.019c52.477.001 95.018 42.543 95.018 95.019zm567.252 0c0 52.476-42.541 95.017-95.019 95.017c-52.477 0-95.017-42.541-95.017-95.017c0-52.478 42.54-95.019 95.017-95.019c52.478.001 95.019 42.543 95.019 95.019z"/></svg>                     -->
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- Navbar End -->
 
 
 
@@ -108,7 +20,7 @@
             <div class="col-lg-12 col-md-12">
                 <div class="row pb-3">
                     <div class="col-12 pb-1">
-                        <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div class="d-flex align-items-center justify-content-between mb-4" row>
                             <div class="dropdown ml-4">
                                 <button class="btn border dropdown-toggle" type="button" id="triggerId"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -122,6 +34,12 @@
                                 </div>
                             </div>
                             {% include 'search/shop_search.html' %}
+                            <div class="col-lg-2 d-flex align-items-center justify-content-center">
+                                <a class="btn" href="{% url 'cart' %}">
+                                    <i class='fas fa-cart-arrow-down' style='font-size:36px'></i>
+                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1200 1200"><rect x="0" y="0" width="1200" height="1200" fill="none" stroke="none" /><path fill="black" d="m1199.398 403.537l-50.323 288.696c-6.206 31.891-31.615 51.282-60.917 51.646H354.5l-14.566 82.106h699.226c36.818 2.798 61.793 28.88 62.242 62.24c-2.678 36.743-28.758 61.786-62.242 62.242H265.773c-41.827-3.762-66.768-37.103-62.242-74.16l33.107-180.104l-50.323-505.88L43.292 145.3C8.341 131.423-5.924 99.805 2.239 67.167c13.573-34.015 46.096-49.556 78.133-41.053l182.752 58.269c24.62 9.229 38.783 29.382 42.377 52.972l10.594 100.646l829.006 92.7c38.09 8.251 58.769 38.422 54.297 72.836zm-744.126 677.619c0 52.476-42.54 95.017-95.018 95.017c-52.477 0-95.017-42.541-95.017-95.017c0-52.478 42.541-95.019 95.017-95.019c52.477.001 95.018 42.543 95.018 95.019zm567.252 0c0 52.476-42.541 95.017-95.019 95.017c-52.477 0-95.017-42.541-95.017-95.017c0-52.478 42.54-95.019 95.017-95.019c52.478.001 95.019 42.543 95.019 95.019z"/></svg>                     -->
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -130,12 +48,6 @@
                     <div id="shop_list">
                         {% include 'shop/items_list.html' %}
                     </div>
-
-
-
-
-
-
 
 
                     <!-- end of Cards -->
