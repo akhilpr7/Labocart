@@ -267,14 +267,18 @@ class RatingView(View):
 @method_decorator(login_required, name='dispatch')
 class CategoryView(View):
     def get(self, request, *args, **kwargs):
-        tables = Category.objects.all()
-        jobs = jobmodel.objects.all()
-        context = {
-            'tables': tables,
-            'current_path': "Categories",
-            'data': jobs
-        }
-        return render(request, "home/category.html", context)
+        if request.user.is_superuser:
+
+            tables = Category.objects.all()
+            jobs = jobmodel.objects.all()
+            context = {
+                'tables': tables,
+                'current_path': "Categories",
+                'data': jobs
+            }
+            return render(request, "home/category.html", context)
+        else:
+            return render(request, "home/page-403.html")
 
 
 @method_decorator(login_required, name='dispatch')
@@ -372,12 +376,17 @@ class Access_denied(View):
 @method_decorator(login_required, name='dispatch')
 class ManageUser(View):
     def get(self, request, *args, **kwargs):
-        details = NewUserModel.objects.all().order_by('id').exclude(username='admin')
-        context = {
-            'details': details,
-            'current_path': "Manage User",
-        }
-        return render(request, "home/manage-user.html", context)
+        if request.user.is_superuser:
+
+            details = NewUserModel.objects.all().order_by('id').exclude(username='admin')
+            context = {
+                'details': details,
+                'current_path': "Manage User",
+            }
+            return render(request, "home/manage-user.html", context)
+        else:
+            return render(request, "home/page-403.html")
+
 
 @method_decorator(login_required, name='dispatch')
 class UpdateUser(View):
@@ -440,14 +449,18 @@ class JobPostingView(View):
 @method_decorator(login_required, name='dispatch')
 class ManageServices(View):
     def get(self, request, *args, **kwargs):
-        details = labourmodels.objects.all().exclude(status=2).order_by('id')
-        history = HireModel.objects.filter(status = 4).values()
-        context = {
-            'details': details,
-            'history': history,
-            'current_path': "Manage Services",
-        }
-        return render(request, "home/manage_services.html", context)
+        if request.user.is_superuser:
+
+            details = labourmodels.objects.all().exclude(status=2).order_by('id')
+            history = HireModel.objects.filter(status = 4).values()
+            context = {
+                'details': details,
+                'history': history,
+                'current_path': "Manage Services",
+            }
+            return render(request, "home/manage_services.html", context)
+        else:
+            return render(request, "home/page-403.html")
 
 @method_decorator(login_required, name='dispatch')
 class HireHistory(View):
@@ -510,34 +523,40 @@ class Labocategories2(View):
 @method_decorator(login_required, name='dispatch')
 class ServiceRequests(View):
     def get(self, request, *args, **kwargs):
-        details = labourmodels.objects.filter(status=2).order_by('id')
-        context = {
-            'details': details,
-            'current_path':'Service Requests'
-        }
-        if details:
-            return render(request, "home/service_requests.html", context)
+        if request.user.is_superuser:
+
+            details = labourmodels.objects.filter(status=2).order_by('id')
+            context = {
+                'details': details,
+                'current_path':'Service Requests'
+            }
+            if details:
+                return render(request, "home/service_requests.html", context)
+            else:
+                return render(request,'home/emptyKYC.html', context)
+
         else:
-            return render(request,'home/emptyKYC.html', context)
-
-
+            return render(request,'home/page-403.html')
 
 @method_decorator(login_required, name='dispatch')
 class PendingKYC(View):
     template_name = 'home/pending-registration-requests.html'
 
     def get(self, request, *args, **kwargs):
-        datas = NewUserModel.objects.filter(kyc_approved=0).order_by('id')
-        context = {
-            'media_url': settings.NEW_VAR,
-            'datas': datas,
-            'current_path': "Pending KYC  ",
-        }
-        if datas:
-            return render(request, self.template_name, context)
-        else:
-            return render(request,'home/emptyKYC.html', context)
+        if request.user.is_superuser:
 
+            datas = NewUserModel.objects.filter(kyc_approved=0).order_by('id')
+            context = {
+                'media_url': settings.NEW_VAR,
+                'datas': datas,
+                'current_path': "Pending KYC  ",
+            }
+            if datas:
+                return render(request, self.template_name, context)
+            else:
+                return render(request,'home/emptyKYC.html', context)
+        else:
+            return render(request,'home/page-403.html')
 
 @method_decorator(login_required, name='dispatch')
 class AcceptServices(View):
@@ -716,7 +735,7 @@ class JobRequestPay(View):
         }
         return render(request,self.template,context)
 
-
+@method_decorator(login_required, name='dispatch')
 class confirmpaymentjob(View):
     def get(self ,request,id, *arg, **kwargs):
         wallet_bal = NewUserModel.objects.filter(username=request.user).values_list("wallet")[0][0]
@@ -761,4 +780,7 @@ class ConfirmOTP(View):
 @method_decorator(login_required, name='dispatch')
 class AdminDashboard(View):
     def get(self, request,*args, **kwargs):
-        return render(request,'home/admindashboard.html',{"current_path":''})
+        if request.user.is_superuser:
+            return render(request,'home/admindashboard.html',{"current_path":''})
+        else:
+            return render(request,'home/page-403.html',{})
