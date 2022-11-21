@@ -32,7 +32,7 @@
     <link href="../../../static/css/style.css" rel="stylesheet">
 </head>
 
-<body style="background-color:#f5eee7" >
+<body>
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
     <div class="d-block mb-4 mb-md-0">
       <h5 class="h5"> <b>LABOSHOP HISTORY</b> </h5>
@@ -49,6 +49,7 @@
               <th class="border-gray-200">Hire Name</th>
               <th class="border-gray-200">Place</th>
               <th class="border-gray-200">Work Mode</th>
+              <th class="border-gray-200">Amount</th>
               <th class="border-gray-200">Phone</th>
               <th class="border-gray-200">Job</th>
               <th class="border-gray-200">Status</th>
@@ -66,7 +67,8 @@
               <td><p>{{data.id}}</p></td>
               <td>{{data.Hire_name}}</td>
               <td>{{data.Place}}</td>
-              <td>{{data.Work_mode}} day</td>
+              <td>{%if data.work_mode == 'true' %}Full Day{%else%}Half Day{%endif%}</td>
+              <td>{{data.rate}}</td>
               <td>{{data.Phone}}</td>
               <td>{{data.job_title}}</td>
               <td>

@@ -873,6 +873,7 @@ class Workerview(View):
 			a+=j[0]
 		tot_work = HireModel.objects.filter(Q(worker_name=request.user)&Q(status=4)).count()
 		context ={
+			"current_path":'',
             "req" :reqcount,
             "rev": a,
 			"tot" :tot_work,

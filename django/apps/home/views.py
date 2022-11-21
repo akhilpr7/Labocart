@@ -760,5 +760,5 @@ class ConfirmOTP(View):
 
 @method_decorator(login_required, name='dispatch')
 class AdminDashboard(View):
-    def get(self, request,args, *kwargs):
-        return render(request,'home/admindashboard.html')
+    def get(self, request,*args, **kwargs):
+        return render(request,'home/admindashboard.html',{"current_path":''})
