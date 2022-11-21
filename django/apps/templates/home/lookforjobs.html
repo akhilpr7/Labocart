@@ -1,4 +1,5 @@
 {% extends "index1.html" %}
+
 {% block title %} Requested Services {% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
@@ -12,7 +13,55 @@
     {% endfor %}
     {% endif %}
     <body>
-<!-- <div class="col-12 col-md-12"> -->
+        <!-- <div class="col-12 col-md-12"> -->
+            <div class="container-fluid">
+                <div class="row border-top px-xl-5">
+                    <div class="col-lg-3 d-none d-lg-block">
+        
+        
+        
+                        <div class="dropdown">
+                            <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary btn shadow-none d-flex align-items-center justify-content-between w-100 bg-gray-800 text-white" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;" data-target="#" href="/page.html">
+                                <h5>Categories </h5><span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu multi-level  w-100" role="menu" aria-labelledby="dropdownMenu">
+                
+                              {%for i in datacategory %}
+                              <li class="divider"></li>
+                              <li class="dropdown-submenu">
+                                <a tabindex="-1" href="#">{{i.category_name}}</a>
+                                <ul class="dropdown-menu">
+                                {% for j in datajob %}
+                                {% if i.category_name in j.category %}
+                                  {% comment %} <li><a href="{%url 'laboshop1'?filter=j.id%}">{{j.job_title}}</a></li> {% endcomment %}
+                                  <li><a href="/laboshop?filter={{j.id}}">{{j.job_title}}</a></li>
+                                {%endif%}
+                                {%endfor%}
+                                </ul>
+                                </li>
+                            {%endfor%}
+                            </ul>
+                            
+                        </div>
+        
+                    </div>
+        
+                    <div class="col-lg-2 p-3">
+                        <div class="dropdown ml-4">
+                            <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">Filter by</button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
+                                <a class="dropdown-item" href="#">Name</a>
+                                <a class="dropdown-item" href="#">category</a>
+                                <a class="dropdown-item" href="#">Rating</a>
+                                <a class="dropdown-item" href="#">Location</a>
+        
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
     <div class="row pb-3 flex-md">
     {%for look in jobs%} 
        
@@ -27,11 +76,11 @@
                             <h6 class="mb-4 text-uppercase">Job  : {{look.job_title}}</h6>
                             <h6 class="mb-4 text-capitalize">Hirer Name : {{look.name}}</h6>
                         <div class="d-flex align-items-start mb-4 " >
-                            <div class="flex-shrink-0 me-2">
+                            {% comment %} <div class="flex-shrink-0 me-2">
                                 <img src="{{media_url}}{{look.image}}"
                                 alt="" class="img-fluid rounded border border-dark border-3"
                                 style="width: 75px; height: 75px;">
-                            </div>
+                            </div> {% endcomment %}
                             <div class="flex-grow-1 ms-3">
                                 <div class="row">
                                     <h6 class="mb-4 ">Location 👇<br>{{look.place}}</h6><br>
@@ -64,6 +113,56 @@
 <!-- </div> -->
 </body>
 
+<style>
+
+    .dropdown-submenu {
+        position: relative;
+    }
+    
+    .dropdown-submenu>.dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-top: -6px;
+        margin-left: -1px;
+        -webkit-border-radius: 0 6px 6px 6px;
+        -moz-border-radius: 0 6px 6px;
+        border-radius: 0 6px 6px 6px;
+    }
+    
+    .dropdown-submenu:hover>.dropdown-menu {
+        display: block;
+    }
+    
+    .dropdown-submenu>a:after {
+        display: block;
+        content: " ";
+        float: right;
+        width: 0;
+        height: 0;
+        border-color: transparent;
+        border-style: solid;
+        border-width: 5px 0 5px 5px;
+        border-left-color: #ccc;
+        margin-top: 5px;
+        margin-right: -10px;
+    }
+    
+    .dropdown-submenu:hover>a:after {
+        border-left-color: #fff;
+    }
+    
+    .dropdown-submenu.pull-left {
+        float: none;
+    }
+    
+    .dropdown-submenu.pull-left>.dropdown-menu {
+        left: -100%;
+        margin-left: 10px;
+        -webkit-border-radius: 6px 0 6px 6px;
+        -moz-border-radius: 6px 0 6px 6px;
+        border-radius: 6px 0 6px 6px;
+    }
+    </style>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->

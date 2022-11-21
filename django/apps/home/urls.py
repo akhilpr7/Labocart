@@ -22,6 +22,7 @@ urlpatterns = [
     path('lookforjobs/', views.LookForJobs.as_view(),name="lookforjobs"),
     path('lookjobs/', views.LookJobs.as_view(),name="lookjobs"),
     path('cancelLook/<int:id>/', views.CancelLookJobs.as_view(),name="cancelLook"),
+    path('editlook/<int:id>/', views.EditLookJobs.as_view(),name="editlook"),
     path('completedservices/<int:id>/', views.CompletedService.as_view(), name="completedservices"),
     path('uncompletedservices/<int:id>/', views.UnCompletedService.as_view(), name="uncompletedservices"),
     path('usercompletedservices/<int:id>/', views.UserCompletedService.as_view(), name="usercompletedservices"),
