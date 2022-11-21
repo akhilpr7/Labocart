@@ -41,6 +41,7 @@ class HomeView(View):
                 "req" : req_count,
                 "tot" : tot_purchase,
                 "exp" : validity-diff.days, 
+                "current_path":"",
             }
         else:
             tot_purchase = 0
@@ -49,7 +50,7 @@ class HomeView(View):
             context ={
                 "req" : req_count,
                 "tot" : tot_purchase,
-                
+                "current_path":"",
             }
 
 
@@ -501,8 +502,11 @@ class Labocategories2(View):
 
     def get(self, request, *args, **kwargs):
         data = Category.objects.all()
+        job = jobmodel.objects.values_list('category', flat=True)
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",job)
         context = {
             "data": data,
+            "job": job,
             'current_path': "Provide Jobs",
             'MEDIA_ROOT':settings.NEW_VAR,
 
@@ -708,6 +712,7 @@ class CancelLookJobs(View):
 class  UpdateEnlistedJobStatus(View):
     def get(self, request,id, *args, **kwargs):
         job = JobPostingModel.objects.get(id=id)
+        print(job.is_active,"activityyyyyyyyyyyyyyyyyyyyyyyyy")
         if job.is_active:
             job.is_active = False
             job.save()

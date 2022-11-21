@@ -471,10 +471,13 @@ class Labocategories(View):
 	template = 'labo_categories.html'
 	def get(self, request, *args, **kwargs):
 		data = Category.objects.all()
+		job = jobmodel.objects.values_list("category",flat=True)
+		# print(job,"====================================================")
 		context = {	
 			"data" : data,
 			'current_path':"Register Services" ,
 			 'MEDIA_ROOT':settings.NEW_VAR,
+			 "job":job,
 
 		}
 		if data:
@@ -494,7 +497,7 @@ class Labocategories(View):
 @method_decorator(login_required,name='dispatch')
 class ActiveServices(View):
 	def get(self, request, *args, **kwargs):
-		data = labourmodels.objects.filter(Q(username = self.request.user.username) & (Q(status=0) | Q(status=1) | Q(status=2)))
+		data = labourmodels.objects.filter(Q(username = self.request.user.username) & (Q(status=0) | Q(status=1) | Q(status=2))).order_by("id")
 		user = NewUserModel.objects.all()
 		context = {
 			"data" : data,
