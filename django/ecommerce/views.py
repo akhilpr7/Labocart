@@ -471,10 +471,13 @@ class Labocategories(View):
 	template = 'labo_categories.html'
 	def get(self, request, *args, **kwargs):
 		data = Category.objects.all()
+		job = jobmodel.objects.values_list("category",flat=True)
+		# print(job,"====================================================")
 		context = {	
 			"data" : data,
 			'current_path':"Register Services" ,
 			 'MEDIA_ROOT':settings.NEW_VAR,
+			 "job":job,
 
 		}
 		if data:

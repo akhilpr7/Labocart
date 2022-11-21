@@ -26,6 +26,7 @@
    
   <div class="row ">
       {%for i in data%}
+      {%if i.category_name in job%}
       <div class="col-xl-3 col-md-6">
         <a href ="{% url 'laboregister' i.id %}">
           <div class="card l-bg-cherry " style="height: 17rem; background-image: url('{{MEDIA_ROOT}}{{i.image}}');background-position: cover;background-repeat: no-repeat;background-size: cover;">
@@ -38,6 +39,7 @@
           </div>
         </a>
       </div>
+      {%endif%}
       {% endfor %}
 
   </div>

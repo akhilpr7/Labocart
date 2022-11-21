@@ -708,6 +708,7 @@ class CancelLookJobs(View):
 class  UpdateEnlistedJobStatus(View):
     def get(self, request,id, *args, **kwargs):
         job = JobPostingModel.objects.get(id=id)
+        print(job.is_active,"activityyyyyyyyyyyyyyyyyyyyyyyyy")
         if job.is_active:
             job.is_active = False
             job.save()
