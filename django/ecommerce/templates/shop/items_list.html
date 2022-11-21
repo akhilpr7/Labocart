@@ -63,7 +63,7 @@
             
         {% if i.Product_name in cart %}
                 <div class="card-footer mb-2 d-flex justify-content-center bg-light ">
-                    <a href="{% url 'cart'  %}" class="btn btn-primary border rounded-lg  "><i
+                    <a href="{% url 'cart'  %}" class="btn btn-success border rounded-lg  " style="color:green; "><i
                             class="fas fa-shopping-cart mr-1"></i>Go to Cart</a>
                 </div>
             
@@ -126,7 +126,7 @@
         
     {% if i.Product_name in cart %}
             <div class="card-footer mb-2 d-flex justify-content-center bg-light ">
-                <a href="{% url 'cart'  %}" class="btn btn-primary border rounded-lg  "><i
+                <a href="{% url 'cart'  %}" class="btn btn-success border rounded-lg  "><i
                         class="fas fa-shopping-cart mr-1"></i>Go to Cart</a>
             </div>
         

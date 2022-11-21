@@ -112,7 +112,7 @@ class TransactionView(View):
                 if new_context:
                     return render(request , self.template_name , context)   
                 else:
-                    return render(request, "home/emptylaboshop.html",context)
+                    return render(request, "home/emptypage.html",context)
 @method_decorator(login_required, name='dispatch')
 class Userservices(View):
     def get(self, request, *args, **kwargs):
@@ -125,7 +125,7 @@ class Userservices(View):
         if details:
             return render(request, "home/user-services.html", context)
         else:
-            return render(request, "home/emptylaboshop.html",context)
+            return render(request, "home/emptyservices.html",context)
 
 @method_decorator(login_required, name='dispatch')
 class Workerservices(View):
@@ -139,7 +139,7 @@ class Workerservices(View):
         if work:
             return render(request, "home/worker-services.html", context)
         else:
-            return render(request, "home/emptylookforjobs.html",context)
+            return render(request, "home/emptyworkerservices.html",context)
 
 @method_decorator(login_required, name='dispatch')
 
@@ -239,7 +239,7 @@ class ServiceView(View):
         if data:
             return render(request, self.template_name, context)
         else:
-            return render(request, "home/emptylaboshop.html", context)
+            return render(request, "home/emptyservices.html", context)
 @method_decorator(login_required, name='dispatch')
 class RatingView(View):
     def get(self, request, *args, id, **kwargs):
@@ -342,9 +342,15 @@ class Addjobsview(View):
             job_name = request.POST['job_name']
             category = request.POST['category']
             form.fields['category'].choices = [(category, category)]
-            obj = jobmodel.objects.create(
-                job_title=job_name, category=category)
-            return redirect(reverse('category'))
+            data = jobmodel.objects.filter(job_title=job_name, category=category).first()
+            if data:
+                messages.error(request, "Job Already Exists")
+                return redirect(reverse('category'))
+            else:
+                obj = jobmodel.objects.create(
+                    job_title=job_name, category=category)
+                messages.success(request, "Job Added Successfully")
+                return redirect(reverse('category'))
         else:
             return render(request, self.template, {'form': form})
         # else:
@@ -451,7 +457,7 @@ class HireHistory(View):
         if details:
             return render(request, "home/hirehistory.html", context)
         else:
-            return render(request, "home/emptylaboshop.html", context)
+            return render(request, "home/emptypage.html", context)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -486,12 +492,15 @@ class Labocategories2(View):
         }
         # total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & Q(
         #     (Q(status=1) | Q(status=2) | Q(status=3)))).count()
-        total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & Q(status = 0)).count()
-        if total_work < 5:
-            return render(request, self.template, context)
+        if data:
+            total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & Q(status = 0)).count()
+            if total_work < 5:
+                return render(request, self.template, context)
+            else:
+                messages.error(request, "Job Applying Limit Reached !!")
+                return redirect("laboshop")
         else:
-            messages.error(request, "Job Applying Limit Reached !!")
-            return redirect("laboshop")
+            return render(request,'home/emptypage.html',{'current_path':"Provide Jobs"})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -505,7 +514,7 @@ class ServiceRequests(View):
         if details:
             return render(request, "home/service_requests.html", context)
         else:
-            return render(request,'home/emptyservicerequests.html', context)
+            return render(request,'home/emptyKYC.html', context)
 
 
 
@@ -566,8 +575,11 @@ class JobRequests(View):
             'requests': requests,
             'current_path': "Job requests",
             }
+        if requests:
+            return render(request, 'jobrequests.html', context)
+        else:
+            return render(request,'home/emptyservices.html',{'current_path':"Job requests"})
         
-        return render(request, "home/jobrequests.html", context)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -621,7 +633,7 @@ class ProvidedJobs(View):
         if jobs:
             return render(request,self.template_name , context)
         else:
-            return render(request,"home/emptylaboshop.html",context)
+            return render(request,"home/emptyservices.html",context)
 @method_decorator(login_required, name='dispatch')
 class LookForJobs(View):
     def get(self, request, *args, **kwargs):
@@ -639,7 +651,7 @@ class LookForJobs(View):
             if jobs:
                 return render(request, "home/lookforjobs.html", context)
             else:
-                return render(request,"home/emptylookforjobs.html",context)
+                return render(request,"home/emptyworkerpage.html",context)
         else:
             messages.error(request,"Subscription required !! ")
             return redirect("workerview")
@@ -657,7 +669,7 @@ class LookJobs(View):
             if data:
                 return render(request, "home/appliedjobs.html", context)
             else:
-                return render(request,"home/emptylookforjobs.html",context)
+                return render(request,"home/emptyworkerpage.html",context)
         else:
             messages.error(request,"Subscription required !! ")
             return redirect("workerview")
@@ -742,4 +754,7 @@ class ConfirmOTP(View):
             print("rejected......")
             return redirect("confirmotp",id)
 
-
+@method_decorator(login_required, name='dispatch')
+class AdminDashboard(View):
+    def get(self, request,*args, **kwargs):
+        return render(request,'home/admindashboard.html',{"current_path":''})

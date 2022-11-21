@@ -1,4 +1,5 @@
-{% comment %} <nav class="navbar navbar-dark navbar-theme-primary px-4 col-12 d-lg-none">
+
+<nav class="navbar navbar-dark navbar-theme-primary px-4 col-12 d-lg-none">
   <a class="navbar-brand me-lg-5" href="/">
       <img class="navbar-brand-dark" src="/static/assets/img/brand/light.svg" alt="Volt logo" /> <img class="navbar-brand-light" src="/static/assets/img/brand/dark.svg" alt="Volt logo" />
   </a>
@@ -9,7 +10,7 @@
   </div>
 </nav> {% endcomment %}
 
-<nav id="sidebarMenu" class="sidebar d-lg-block bg-gray-800 text-white collapse" data-simplebar>
+<nav id="sidebarMenu" class="sidebar d-lg-block bg-tertiary text-white collapse" data-simplebar>
 <div class="sidebar-inner px-4 pt-3">
   <div class="user-card d-flex d-md-none align-items-center justify-content-between justify-content-md-center pb-4">
     <div class="d-flex align-items-center">
@@ -34,7 +35,7 @@
     </div>
   </div>
   <ul class="nav flex-column pt-3 pt-md-0">
-    <li class="nav-item" id="something">
+    <li class="nav-item" id="something"style="padding:8px;">
       <a href="/" class="nav-link d-flex align-items-center">
         <span class="sidebar-icon">
           <img src="/static/assets/img/brand/laboCart.png" height="20" width="20" alt="Volt Logo">
@@ -43,7 +44,7 @@
       </a>
     </li>
  <ul class="flex-column nav">
-        <li class="nav-item"  >
+        {% comment %} <li class="nav-item"  >
           <a href="{% url 'workerview' %}" class="nav-link" >
             <span class="sidebar-icon ms-1">
               <span class="material-symbols-outlined">
@@ -52,8 +53,13 @@
             </span>             
                 <span class="sidebar-text">Dashboard</span>
           </a>
+        </li> {% endcomment %}
+        <li class="nav-item{% if '' == current_path %} active {% endif %}"style="padding:8px;">
+          <a class="nav-link" href="{% url 'workerview' %}">
+              <i class="fas fa-fw fa-tachometer-alt"></i>
+              <span>Dashboard</span></a>
         </li>
-        <li class="nav-item"  >
+        {% comment %} <li class="nav-item"  >
           <a href="{% url 'labocategory' %}" class="nav-link" >
             <span class="sidebar-icon ms-1">
               <span class="material-symbols-outlined">
@@ -61,9 +67,13 @@
                 </span></span>    
               <span class="sidebar-text">Register Services</span>
           </a>
+        </li> {% endcomment %}
+        <li class="nav-item{% if 'Register Services' in current_path %} active {% endif %}"style="padding:8px;">
+          <a class="nav-link" href="{% url 'labocategory' %}">
+              <i class="fas fa-fw fa-file-signature"></i>
+              <span>Register Services</span></a>
         </li>
-      
-        <li class="nav-item ">
+        {% comment %} <li class="nav-item ">
           <a href="{% url 'active_service' %}" class="nav-link" id="something">
                 <span class="sidebar-icon">
                   <span class="material-symbols-outlined">
@@ -74,8 +84,13 @@
               </span>
             </span>
           </a>
+        </li> {% endcomment %}
+        <li class="nav-item{% if 'ActiveServices' in current_path %} active {% endif %}"style="padding:8px;">
+          <a class="nav-link" href="{% url 'active_service' %}">
+              <i class="fas fa-fw fa-check-double"></i>
+              <span>Active Services</span></a>
         </li>
-        <li class="nav-item {% if 'transactions' in segment %} active {% endif %}"  >
+        {% comment %} <li class="nav-item {% if 'transactions' in segment %} active {% endif %}"  >
           <a href="{% url 'assigned' %}" class="nav-link" >
             <span class="sidebar-icon ms-1">
               <span class="material-symbols-outlined">
@@ -83,8 +98,13 @@
                 </span></span>
               <span class="sidebar-text">Assigned Services</span>
           </a>
+        </li> {% endcomment %}
+        <li class="nav-item{% if 'Assigned Services' in current_path %} active {% endif %}"style="padding:8px;">
+          <a class="nav-link" href="{% url 'assigned' %}">
+              <i class="fas fa-fw fa-handshake"></i>
+              <span>Assigned Services</span></a>
         </li>
-        <li class="nav-item"  >
+        {% comment %} <li class="nav-item"  >
           <a href="{% url 'workerservices' %}" class="nav-link" >
             <span class="sidebar-icon ms-1">
               <span class="material-symbols-outlined">
@@ -92,8 +112,13 @@
                 </span></span>              
               <span class="sidebar-text">Worker Services</span>
             </a>
+          </li> {% endcomment %}
+          <li class="nav-item{% if 'Worker Services' in current_path %} active {% endif %}"style="padding:8px;">
+            <a class="nav-link" href="{% url 'workerservices' %}">
+                <i class="fas fa-fw fa-money-check"></i>
+                <span>Worker Services</span></a>
           </li>
-          <li class="nav-item"  >
+          {% comment %} <li class="nav-item"  >
             <a href="{% url 'lookforjobs' %}" class="nav-link" >
               <span class="sidebar-icon ms-1">
                 <span class="material-symbols-outlined">
@@ -101,9 +126,13 @@
                   </span></span>          
                 <span class="sidebar-text">Look for jobs</span>
               </a>
+            </li> {% endcomment %}
+            <li class="nav-item{% if 'Available Jobs' in current_path %} active {% endif %}"style="padding:8px;">
+              <a class="nav-link" href="{% url 'lookforjobs' %}">
+                  <i class="fas fa-fw fa-eye"></i>
+                  <span>Look For Jobs</span></a>
             </li>
-
-            <li class="nav-item"  >
+            {% comment %} <li class="nav-item"  >
               <a href="{% url 'lookjobs' %}" class="nav-link" >
                 <span class="sidebar-icon ms-1">
                   <span class="material-symbols-outlined">
@@ -111,8 +140,13 @@
                     </span></span>          
                   <span class="sidebar-text">Applied Jobs</span>
                 </a>
+              </li> {% endcomment %}
+              <li class="nav-item{% if 'Applied Jobs' in current_path %} active {% endif %}"style="padding:8px;">
+                <a class="nav-link" href="{% url 'lookjobs' %}">
+                    <i class="fas fa-fw fa-headset"></i>
+                    <span>Applied Jobs</span></a>
               </li>
-          <li class="nav-item"  >
+          {% comment %} <li class="nav-item"  >
             <a href="{% url 'refundhistoryworker' %}" class="nav-link" >
               <span class="sidebar-icon ms-1">
                 <span class="material-symbols-outlined">
@@ -120,8 +154,14 @@
                   </span></span>          
                 <span class="sidebar-text">Refund history</span>
               </a>
+            </li> {% endcomment %}
+            <li class="nav-item{% if 'Refund history' in current_path %} active {% endif %}"style="padding:8px;">
+              <a class="nav-link" href="{% url 'refundhistoryworker' %}">
+                  <i class="fas fa-fw fa-file-invoice-dollar"></i>
+                  <span>Refund History</span></a>
             </li>
-            <li class="nav-item"  >
+
+            {% comment %} <li class="nav-item"  >
               <a href="{% url 'labotransactions' %}" class="nav-link" >
                 <span class="sidebar-icon ms-1">
                   <span class="material-symbols-outlined">
@@ -129,9 +169,14 @@
                     </span>  </span>          
                   <span class="sidebar-text">Laboshop History</span>
                 </a>
+              </li> {% endcomment %}
+              <li class="nav-item{% if 'Laboshop History' in current_path %} active {% endif %}"style="padding:8px;">
+                <a class="nav-link" href="{% url 'labotransactions' %}">
+                    <i class="fas fa-fw fa-clock"></i>
+                    <span>Laboshop History</span></a>
               </li>
             <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
-            <li class="nav-item">
+            <li class="nav-item"style="padding:8px;">
               <a href="{% url 'dashboard' %}" class="nav-link">
                 <span class="sidebar-icon ms-1 text-danger">
                   <span class="material-symbols-outlined">
@@ -142,7 +187,7 @@
               </a>
             </li>
             <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
-            <li class="nav-item">
+            <li class="nav-item"style="padding:8px;">
               <a href="{% url 'logout' %}" class="nav-link">
                 <span class="sidebar-icon text-danger">
                   <span class="material-symbols-outlined">

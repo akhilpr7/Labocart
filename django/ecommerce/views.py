@@ -46,14 +46,21 @@ class Shop(View):
 		else:
 			product = ProductsModel.objects.all()
 		cart = CartModel.objects.all().filter(username=request.user.username).values_list("Product_name",flat=True)
+		count = CartModel.objects.all().filter(username=request.user.username).count()
+		print(settings.MEDIA_ROOT,"media roooooooooooot")
 		data = {
 		"product":product,
 		'form':PurchaseForm(),
 		'current_path':"Shop",
 		'cart' : cart,
-		}
+		'count' : count,
+		
 
-		return render(request,self.template_name, data)
+		}
+		if product:
+			return render(request, 'shop.html', data)
+		else:
+			return render(request,'home/emptylaboshop.html',{'current_path':"Shop"})
 
 
 @method_decorator(login_required,name='dispatch')
@@ -474,16 +481,19 @@ class Labocategories(View):
 			 'MEDIA_ROOT':settings.NEW_VAR,
 
 		}
-		total_work = labourmodels.objects.filter(Q(username=request.user.username)&((Q(status=1)|Q(status=2)|Q(status=3)))).count()
-		if request.user.is_sub:
-			if total_work < 5 :
-				return render(request, self.template,context)
+		if data:
+			total_work = labourmodels.objects.filter(Q(username=request.user.username)&((Q(status=1)|Q(status=2)|Q(status=3)))).count()
+			if request.user.is_sub:
+				if total_work < 5 :
+					return render(request, self.template,context)
+				else:
+					messages.error(request,"Job Applying Limit Reached !!")
+					return redirect("laboshop")
 			else:
-				messages.error(request,"Job Applying Limit Reached !!")
-				return redirect("laboshop")
+				messages.error(request,"Subscription Required !!")
+				return redirect("workerview")
 		else:
-			messages.error(request,"Subscription Required !!")
-			return redirect("workerview")
+			return render(request, "home/emptyworkerpage.html", context)
 
 @method_decorator(login_required,name='dispatch')
 class ActiveServices(View):
@@ -495,11 +505,15 @@ class ActiveServices(View):
 			"user" : user,
 			'current_path':"ActiveServices"
 		}
-		if request.user.is_sub:
-			return render(request,'activeServices.html',context)
+		if data:
+			if request.user.is_sub:
+				return render(request,'activeServices.html',context)
+			else:
+				messages.error(request,"Subscription Required !!")
+				return redirect("workerview")
 		else:
-			messages.error(request,"Subscription Required !!")
-			return redirect("workerview")
+			return render(request,"home/emptyworkerservices.html",context)
+
 @method_decorator(login_required,name='dispatch')
 class HireNowView(View):
 	def get(self, request,id, *args, **kwargs):
@@ -556,8 +570,8 @@ class Userpayments(View):
 			messages.success(request,'Payment Successful')
 			return redirect('jobrequests')
 		else:
-			messages.error(request,'Payment Failed')
-			return redirect('laboshop')
+			messages.success(request,'Payment Failed')
+			return redirect('jobrequests')
 
 class HireNowPayments(View):
 	def get(self, request,id, *args, **kwargs):
@@ -594,7 +608,7 @@ class Assignedworks(View):
 			if services:
 				return render(request,self.template_name,context)
 			else:
-				return render(request,'home/emptylaboshop.html',context)
+				return render(request,'home/emptyworkerservices.html',context)
 		else:
 			messages.error(request,"Subscription Required !! ")
 			return redirect("workerview")
@@ -862,6 +876,7 @@ class Workerview(View):
 			a+=j[0]
 		tot_work = HireModel.objects.filter(Q(worker_name=request.user)&Q(status=4)).count()
 		context ={
+			"current_path":'',
             "req" :reqcount,
             "rev": a,
 			"tot" :tot_work,
@@ -883,7 +898,7 @@ class RefundHistoryUser(View):
 		if refund:
 			return render(request,template,context)
 		else:
-			return render(request,"home/emptylaboshop.html", context)
+			return render(request,"home/emptypage.html", context)
 class RefundHistoryWorker(View):
 	def get(self, request, *args, **kwargs):
 		template = 'refundhistoryworker.html'
@@ -895,7 +910,7 @@ class RefundHistoryWorker(View):
 		if refund:
 			return render(request,template,context)
 		else:
-			return render(request,"home/emptylaboshop.html",context)
+			return render(request,"home/emptyworkerpage.html",context)
 
 @method_decorator(login_required,name='dispatch')
 class LaboTransactions(View):
@@ -908,7 +923,7 @@ class LaboTransactions(View):
 		if work:
 			return render(request,'labotransaction.html',context)
 		else:
-			return render(request,"home/emptylaboshop.html",context)	
+			return render(request,"home/emptyworkerpage.html",context)	
 
 class SearchProducts(View):
 	template_name='shop/items_list.html'

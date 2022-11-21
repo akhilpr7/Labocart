@@ -2,7 +2,7 @@
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %} {% block content %}
-<body style="background-color:#f5eee7" >
+<body>
     {% if messages %}
     {% for message in messages %}
         <p class="d-none" id="messagetag">{{message.tags}}</p>
@@ -44,7 +44,7 @@
                     <td>{{data.hirer_refund|floatformat:4}}</td>
                     <td>{%if data.work_mode == 'true' %}Full Day{%else%}Half Day{%endif%}</td>
                     <td>{{data.job_title}}</td>
-                    <td>{{data.work_date}}</td>
+                    <td>{{data.work_date|date}}</td>
                     <td>{%if data.status == 2 %}Completed{%else%}Completed{%endif%}</td>
                    
 

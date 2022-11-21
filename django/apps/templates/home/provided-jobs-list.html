@@ -11,10 +11,10 @@
         <p class="d-none " id="messagecontent">{{message}}</p>
     {% endfor %}
     {% endif %}
-    <body style="background-color:#f5eee7" >
+    <body>
 <!-- <div class="col-12 col-md-12"> -->
     <div class="row pb-3 flex-md">
-    {%for look in jobs%} 
+    {% comment %} {%for look in jobs%} 
        
         <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
             
@@ -63,7 +63,137 @@
       
        
     </div>
-    {% endfor %}
+    {% endfor %} {% endcomment %}
+
+
+
+
+
+    <div class="col-12 col-md-12">
+        <div class="row pb-3">
+            {% for i in jobs %}
+            <div class="col-lg-4 col-md-6 col-sm-12 pb-1 p-3">
+                <div class="card product-item border-0 mb-4">
+                    <div class="card shadow-lg" style="border-radius: 15px; background-color: rgba(255, 255, 255, 0.993);">
+                        <div class="card-body p-4 text-black">
+                            <div class="d-flex align-items-center mb-4 " >
+                                <div class="flex-shrink-0 " >
+                                    <img src="{{request.user.image.url}}"
+                                    alt="" class="img-fluid rounded-circle border border-dark border-3"
+                                    style="width: 75px; height: 75px;">
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <div class="d-flex flex-row float-end mb-2">
+                                        <h6 class="mb-4">@{{i.hirer}}</h6>
+
+                                        <!-- <p class="mb-0 me-2">@{{i.username}}</p> -->
+                                    </div>
+                                    <div>
+                                        {% comment %} <button type="button" class="btn btn-outline-dark btn-rounded btn-sm"
+                                        data-mdb-ripple-color="dark">+ Follow</button> {% endcomment %}
+                                            {% comment %} <button type="button" class="btn btn-outline-dark btn-floating btn-sm"
+                                            data-mdb-ripple-color="dark"><i class="fas fa-comment"></i></button> {% endcomment %}
+                                    </div>             
+                                </div>
+                            </div>
+                            <div>
+                                <h6 class="mb-4">Job Title:{{i.job_title}}</h6>
+                                <h6 class="mb-4">Work Type:
+                                        {%if i.work_type == True%}
+                                        <span>Half Day</span>
+                                        {%else%}
+                                        <span>Full Day</span>
+                                        {%endif%}
+                                </h6>
+                                {% comment %} <h6 class="mb-4">Rate:${{i.rate}}</h6> {% endcomment %}
+
+
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            {% if i.status == 0 %}
+                                <a href="{%url 'togglestatus' i.id %}" class=" btn rounded-2 text-danger shadow-sm">Inactive</a>
+                            {% elif i.status == 1 %}
+                                <a href="{%url 'togglestatus' i.id %}" class="btn rounded-2 text-success shadow-sm">Active</a>                  
+                            {% endif %}
+                            <!-- <button type="button" class="btn-gray-800 btn-block btn-lg btn-rounded rounded-3 text-white"></i>Active</button>                                 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+             {% endfor %}
+        </div>
+    </div>
+    <!-- Back to Top -->
+    {% comment %} <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a> {% endcomment %}
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Template Javascript -->
+</body>
+<style>
+
+    .dropdown-submenu {
+        position: relative;
+    }
+    
+    .dropdown-submenu>.dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-top: -6px;
+        margin-left: -1px;
+        -webkit-border-radius: 0 6px 6px 6px;
+        -moz-border-radius: 0 6px 6px;
+        border-radius: 0 6px 6px 6px;
+    }
+    
+    .dropdown-submenu:hover>.dropdown-menu {
+        display: block;
+    }
+    
+    .dropdown-submenu>a:after {
+        display: block;
+        content: " ";
+        float: right;
+        width: 0;
+        height: 0;
+        border-color: transparent;
+        border-style: solid;
+        border-width: 5px 0 5px 5px;
+        border-left-color: #ccc;
+        margin-top: 5px;
+        margin-right: -10px;
+    }
+    
+    .dropdown-submenu:hover>a:after {
+        border-left-color: #fff;
+    }
+    
+    .dropdown-submenu.pull-left {
+        float: none;
+    }
+    
+    .dropdown-submenu.pull-left>.dropdown-menu {
+        left: -100%;
+        margin-left: 10px;
+        -webkit-border-radius: 6px 0 6px 6px;
+        -moz-border-radius: 6px 0 6px 6px;
+        border-radius: 6px 0 6px 6px;
+    }
+    </style>
+
+
+
+
+
+
+
+
+
+
 </div>
 <!-- </div> -->
 </body>

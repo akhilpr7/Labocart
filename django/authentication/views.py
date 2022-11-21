@@ -40,7 +40,10 @@ class LoginViews(LoginView):
         if user is not None:
             if user.kyc_approved:
                 login(request, user)
-                return HttpResponseRedirect(reverse('dashboard'))
+                if request.user.is_superuser:
+                    return HttpResponseRedirect(reverse('admindashboard'))
+                else:
+                    return HttpResponseRedirect(reverse('dashboard'))
             else:
                 messages.error(request, "Your KYC details haven't been approved yet!. Please try again later.")
                 return redirect(reverse('login'))

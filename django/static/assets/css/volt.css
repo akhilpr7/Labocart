@@ -14794,14 +14794,14 @@ textarea.form-control-lg {
   .sidebar .nav-item {
     margin-bottom: .2rem; }
     .sidebar .nav-item.active > .nav-link {
-      color: #F2F4F6;
-      background-color: #374151; }
+      color: #070707;
+       background-color: #eeebeb; }
     .sidebar .nav-item .nav-link {
       color: #ffffff;
       cursor: pointer; }
       .sidebar .nav-item .nav-link:hover {
-        color: #F2F4F6;
-        background-color: #374151; }
+        color: #070707;
+       background-color: #eeebeb; }
   .sidebar .nav-link + .multi-level {
     margin-top: .2rem; }
   .sidebar .nav-link {
