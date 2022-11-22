@@ -41,20 +41,12 @@
             <td>{{data.username}}</td>
             <td>{% for Product_name in data.Product_name %}
                 <p>{{Product_name}}</p>
-                {% comment %} {% if forloop.last %}
-                {{" "}}
-                {% else %}
-                
-                {% endif %} {% endcomment %}
+
                 {% endfor %}
             </td>
             <td>{% for price in data.Prices %}
                 <p>{{price}}</p>
-                {% comment %} {% if forloop.last %}
-                {{" "}}
-                {% else %}
-                
-                {% endif %} {% endcomment %}
+
                 {% endfor %}
             </td>
 
@@ -62,11 +54,7 @@
             <td>{{data.date}}</td>
             <td>{% for quantity in data.Quantity %}
                 <p>{{quantity}}</p>
-                {% comment %} {% if forloop.last %}
-                {{" "}}
-                {% else %}
-                ,
-                {% endif %} {% endcomment %}
+
                 {% endfor %}
             </td>
 
