@@ -678,6 +678,7 @@ class LookForJobs(View):
             jobs = JobPostingModel.objects.filter(is_active=1).exclude(hirer=request.user.username).values()
             # data = labourmodels.objects.filter(status=1).exclude(username=request.user.username)
         datacategory=Category.objects.values()
+        # print(jobs)
         context = {
             'media_url': settings.NEW_VAR,
 
@@ -687,7 +688,7 @@ class LookForJobs(View):
             "datajob":datajob,
         }
         if request.user.is_sub:
-            if jobs:
+            if jobs!=None:
                 return render(request, "home/lookforjobs.html", context)
             else:
                 return render(request,"home/emptyworkerpage.html",context)
