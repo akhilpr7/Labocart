@@ -40,7 +40,7 @@ class AddJobForm(forms.Form):
 
 class JobPostingForm( forms.Form ):
   name = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Name"}))
-  place = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
+  place = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
 #   image = forms.ImageField(widget=forms.FileInput(attrs={ 'class': 'form-control'}))
   phone = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Phone",'type':'phone','minlength':'10','maxlength':'10','required pattern':'\d*'}))
   CHOICES = (('True','Half day'),('False','Full day'))
@@ -48,10 +48,11 @@ class JobPostingForm( forms.Form ):
 
   def __init__(self,*args,**kwargs):
     self.category = kwargs.pop('initial',[])
+    self.job = kwargs.pop('jobs',[])
     self.user = kwargs.pop('user',[])
     print(self.user,"sdfaghsdhj")
     super(JobPostingForm, self).__init__(*args,**kwargs)
-    self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True),
+    self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True).exclude(job_title__in=[self.job]),
                               widget=forms.Select(attrs={'class':'form-select'}))
     self.fields['hirer']=forms.CharField(max_length=20, required=True, widget=forms.HiddenInput() , initial=self.user)
 
@@ -81,7 +82,7 @@ class ApplyForm(forms.ModelForm):
     name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Name",'readonly':'True'}))
     hirer = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Hirer",'readonly':'True'}))
     status = forms.IntegerField(required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Status" ,'readonly':'True'}))
-    place = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Place",'readonly':'True'}))
+    place = forms.CharField(max_length=50, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Place",'readonly':'True'}))
     work_type = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Work type",'readonly':'True'}))
     phone = forms.CharField( required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Phone number",'readonly':'True'}))
     job_title = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Job title",'readonly':'True'}))

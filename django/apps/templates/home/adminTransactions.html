@@ -49,7 +49,7 @@
                 {% endfor %}
             </td>
             <td>{% for price in data.Prices %}
-                <p>{{price}}</p>
+                <p>{{price|floatformat:2}}</p>
                 {% comment %} {% if forloop.last %}
                 {{" "}}
                 {% else %}
@@ -58,7 +58,7 @@
                 {% endfor %}
             </td>
 
-            <td>{{data.Total}}</td>
+            <td>{{data.Total|floatformat:2}}</td>
             <td>{{data.date}}</td>
             <td>{% for quantity in data.Quantity %}
                 <p>{{quantity}}</p>

@@ -33,7 +33,7 @@ class JobPostingModel(models.Model):
 class AppliedJobs(models.Model):
     hirer = models.TextField(max_length=25, blank=False)
     name = models.TextField(max_length=25, blank=False)
-    place = models.TextField(max_length=25, blank=False)
+    place = models.TextField(max_length=255, blank=False)
     work_type = models.BooleanField(default=False)
     phone = models.BigIntegerField()
     status =  models.IntegerField(default = 0)
@@ -51,3 +51,16 @@ class JobPaymentModel(models.Model):
     rate = models.FloatField(max_length=20, blank=False,null=False,default=0)
     status = models.IntegerField(blank=False,null=True,default=0)
     amount = models.FloatField(max_length=20, blank=False,null=False,default=0)
+
+
+
+
+class CitiesModel(models.Model):
+
+    name=models.CharField(max_length=100,null=True,blank=False)
+
+    country=models.CharField(max_length=100,null=True,blank=False)
+
+    subcountry=models.CharField(max_length=100,null=True,blank=False)
+
+    geonameid=models.IntegerField(default=1,null=True,blank=False)    

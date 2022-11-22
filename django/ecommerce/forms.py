@@ -26,9 +26,10 @@ class Laboregisterform(forms.Form):
   def __init__(self,*args,**kwargs):
     print(kwargs,"88888888888888888888888888")
     self.category = kwargs.pop('initial',[])
+    self.jobs = kwargs.pop('jobs',[])
     print(kwargs,"88888888888888888888888888",self.category)
     super(Laboregisterform, self).__init__(*args,**kwargs)
-    self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True),
+    self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True).exclude(job_title__in=[self.jobs  ]),
                               widget=forms.Select(attrs={'class':'form-select'}))
   phone = forms.CharField(max_length = 10 , widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control','type':'phone','minlength':'10','maxlength':'10','required pattern':'\d*'}))
   image_link = forms.ImageField(widget=forms.FileInput(attrs={'class':'form-control'}))
@@ -54,7 +55,7 @@ class UpdateStockForm( forms.ModelForm ):
   id = forms.IntegerField( widget=forms.NumberInput(attrs={'class': 'form-control', 'readonly':'true','maxlength':'10'}))
   Product_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border ps-2'}))
   Price = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1'}))
-  Quantity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control ','min':'1',}))
+  Quantity = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control ','min':'0',}))
   Image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control ' ,'min':'1'}),required=False)
   class Meta():
     model = ProductsModel
@@ -109,27 +110,9 @@ class PurchaseForm(forms.Form):
 class HireNowForm( forms.Form ):
   CHOICES = (('True','Half day'),('False','Full day'))
   id = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"Your Name"}))
-  Place = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
+  Place = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
   Phone = forms.CharField(min_length=10,max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control ','placeholder':"Your Phone",'type':'phone','minlength':'10','maxlength':'10','required pattern':'\d*'}))
   Work_mode = forms.ChoiceField(choices = CHOICES,widget=forms.Select(attrs={'class':'form-select'}))  # worker_name = forms.CharField(max_length=20, required=True, widget=forms.HiddenInput(attrs={'class': 'form-control','placeholder':"worker name ", 'readonly':'readonly'}))
-  def clean(self):
-
-            data = super().clean()
-            Phone = data['Phone'] 
-            print(Phone)
-            if int(Phone) <= 0:
-
-                print("ssssss")
-                self._errors['Phone'] = self.error_class([
-                    'Phone Number field cannnot be null',])
-            elif len(Phone)< 6:
-                    self._errors['Phone'] = self.error_class([
-                    'Phone Number should have minimum of 6 letters ',])
-            elif len(Phone)> 15:
-                    self._errors['Phone'] = self.error_class([
-                    'The length of Phone number should be less than 15 ',])
-
-            return self.cleaned_data
 
 
 

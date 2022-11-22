@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from ecommerce.models import HireModel, PurchaseModel,RequestsModel,RefundHistory,PackageModel
 from .forms import AddJobForm, CategoryForm, JobPostingForm, AddFundForm, ApplyForm,CommentForm
-from .models import Category, JobPostingModel, AppliedJobs,Category,JobPaymentModel
+from .models import Category, JobPostingModel, AppliedJobs,Category,JobPaymentModel,CitiesModel
 from django.contrib import messages
 from django.urls import reverse
 from authentication.models import jobmodel, NewUserModel, labourmodels
@@ -16,7 +16,7 @@ from django.db.models import Q
 import pdb
 import datetime
 from django.views.decorators.cache import cache_control
-
+from django.http import HttpResponse
 # Create your views here.
 
 
@@ -129,6 +129,10 @@ class Userservices(View):
             return render(request, "home/user-services.html", context)
         else:
             return render(request, "home/emptyservices.html",context)
+    # def post(self, request, *args,  **kwargs):
+        # if request.method == 'POST':
+
+        
 
 @method_decorator(login_required, name='dispatch')
 class Workerservices(View):
@@ -414,7 +418,10 @@ class JobPostingView(View):
         category = Category.objects.filter(
             id=id).values_list('category_name')[0][0]
         jobs = jobmodel.objects.filter(category=category).values()
-        form = JobPostingForm(initial=category, user=request.user.username)
+        userjobs = JobPostingModel.objects.filter(hirer=request.user).values_list("job_title",flat=True)
+        print(userjobs,"-----------------------")
+
+        form = JobPostingForm(initial=category, user=request.user.username,jobs=userjobs)
         context = {
             "form": form,
             "jobs": jobs,
@@ -518,7 +525,7 @@ class Labocategories2(View):
         # total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & Q(
         #     (Q(status=1) | Q(status=2) | Q(status=3)))).count()
         if data:
-            total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & Q(status = 0)).count()
+            total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & Q(is_active = 1)).count()
             if total_work < 5:
                 return render(request, self.template, context)
             else:
@@ -829,3 +836,39 @@ class AdminDashboard(View):
             return render(request,'home/admindashboard.html',{"current_path":''})
         else:
             return render(request,'home/page-403.html',{})
+
+
+
+class SearchCityView(View):
+
+    def get (self, request,*args, **kwargs):
+
+        return HttpResponse("Method Not Allowed")
+
+    def post(self, request, *args, **kwargs):
+
+        feildname = kwargs.pop('feildname')
+        print("pooee",feildname)
+        search_text = request.POST.get(feildname)
+
+        print("#########################INSIDE SearchCityView" ,search_text ,"##################")
+
+        if search_text:
+
+            if len(search_text)>=3:
+
+                results=CitiesModel.objects.filter(name__icontains=search_text)
+
+                print(results,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+
+                return render(request, 'search/cities-list.html',{"results":results})
+
+            else:
+
+                return render(request, 'search/cities-list.html',{})
+
+        else:
+
+        # return render(request, 'search/cities-list.html',{"results":results})
+
+            return render(request, 'search/cities-list.html',{})            

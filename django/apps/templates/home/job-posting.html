@@ -59,20 +59,14 @@
                                         <span class="input-group-text" id="basic-addon1">
                                             <span class="fas fa-user-circle"></span>
                                         </span>
-                                        {{ form.place }}
+                                        {% render_field form.place hx-post='/search_city/place'  hx-target='#results' hx-trigger="keyup changed delay:100ms" class="form-control"  placeholder="Select Your City ..."  %}
+                                        
+                                        
                                     </div>
+                                    <div id="results" class="suggestion " style="max-height:200px; overflow:scroll; "></div>
                                     <span class="text-danger">{{ form.place.errors }}</span>
                                 </div>
-                                {% comment %} <div class="form-group mb-4 col-md-12">
-                                    <label for="place">Verify </label>
-                                    <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon1">
-                                            <span class="fas fa-user-circle"></span>
-                                        </span>
-                                        {{ form.image }}
-                                    </div>
-                                    <span class="text-danger">{{ form.place.errors }}</span>
-                                </div> {% endcomment %}
+    
                                 <div class="form-group mb-4 col-md-12">
                                     <label for="phone">Phone</label>
                                     <div class="input-group">
@@ -129,7 +123,36 @@
     </section>
     <body>
 </main>
+<script>
 
+    function useSuggestion(e) {
+    
+    if(e.target.innerText!="No search results.Enter a valid name atleast 3 characters in length"){
+    
+    
+    console.log(e.target.innerText)
+    
+    id_place.value = e.target.innerText;
+    
+    id_place.focus();
+    
+    suggestions.innerHTML = '';
+    
+    // suggestions.classList.remove('has-suggestions');
+    
+    }
+    
+    
+    }
+    
+    const suggestions = document.querySelector('.suggestion');
+    
+    suggestions.addEventListener('click', useSuggestion);
+    
+    document.addEventListener('click', () =>suggestions.innerHTML = '' );
+    
+    
+    </script>   
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->

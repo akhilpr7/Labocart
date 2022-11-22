@@ -392,8 +392,9 @@ class LaboRegister(View):
 	def get(self, request,id, *args, **kwargs):
 		category = Category.objects.filter(id=id).values_list('category_name')[0][0]
 		jobs = jobmodel.objects.filter(category=category).values()
+		userjob= labourmodels.objects.filter(username=request.user).values_list('job_title',flat=True)
 		# print("----",jobs,"6666666666666666666666666666666")
-		form = Laboregisterform(initial=category)
+		form = Laboregisterform(initial=category,jobs=userjob)
 		request.session['category'] = category
 		context = {
 			"form" : form,

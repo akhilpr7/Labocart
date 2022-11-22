@@ -49,6 +49,7 @@ urlpatterns = [
     path('deleteenlisted/<int:id>/',views.deleteenlisted.as_view(),name='deleteenlisted'),
     path('confirmotp/<int:id>/',views.ConfirmOTP.as_view(),name='confirmotp'),
     path('admindashboard',views.AdminDashboard.as_view(),name='admindashboard'),
+    path('search_city/<str:feildname>',views.SearchCityView.as_view(),name='search-city'),
 
 
 ]
