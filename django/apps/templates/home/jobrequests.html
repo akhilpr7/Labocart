@@ -51,8 +51,8 @@
                         {%if request.status == 2%}
                         <a href="" type = "button" class="btn-slack text-center text-decoration-none btn-gray-800 btn-block btn-lg btn-rounded rounded-3 text-white"><i class="far fa-clock me-2 text-white"></i>Request accepted ✔</a>     
                         {%else%}
-                        <a href="{% url 'jobrequestpay' request.id %}" type = "button" class="text-center text-decoration-none btn-tertiary btn-block btn-lg btn-rounded rounded-3 text-white"><i class="far fa-clock me-2 text-white"></i>Accept Request</a> 
-                        <a href="{% url 'canceljobrequests' request.id %}" type = "button" class="btn-reddit text-center text-decoration-none btn-gray-800 btn-block btn-lg btn-rounded rounded-3 text-white"><i class="far fa-clock me-2 text-white"></i>Cancel</a> 
+                        <a href="{% url 'jobrequestpay' request.id %}" type = "button" class="text-center text-decoration-none btn-tertiary btn-block btn-lg btn-rounded rounded-3 text-white"><i class="far me-2 text-white"></i>Accept Request</a> 
+                        <a href="{% url 'canceljobrequests' request.id %}" type = "button" class="btn-reddit text-center text-decoration-none btn-gray-800 btn-block btn-lg btn-rounded rounded-3 text-white"><i class="far me-2 text-white"></i>Cancel</a> 
                         {% endif %}
                     </div>
                    
