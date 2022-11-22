@@ -10,8 +10,7 @@
     <p class="d-none" id="messagetag">{{message.tags}}</p>
     <p class="d-none " id="messagecontent">{{message}}</p>
 {% endfor %}
-{% endif %}
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+{% endif %}2<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
     <div class="d-block mb-4 mb-md-0">
       <h5 class="h5"> <b>Purchase History</b> </h5>
     </div>
@@ -19,11 +18,11 @@
 </div>
 
 
-<div class="card card-body border-0 shadow table-wrapper table-responsive">
+<div class="card card-body border-0 table-wrapper table-responsive"  style="box-shadow: 0 0px 10px rgba(202,194,247,0.59)">
     <table class="table table-hover">
         <thead>
           <tr>
-            <th >Product ID</th>
+            <th > Product ID</th>
             <th >username</th>
             <th >Product Name</th>
             <th >Price</th>
@@ -37,10 +36,10 @@
           {% for data in purchase %}
 
           <tr>
-            <td>{{data.order_id}}</td>
-            <td>{{data.username}}</td>
+            <td><p>{{data.order_id}}</p></td>
+            <td><p>{{data.username}}</p></td>
             <td>{% for Product_name in data.Product_name %}
-                <p>{{Product_name}}</p>
+              <p>{{Product_name}}</p>
 
                 {% endfor %}
             </td>
@@ -54,10 +53,10 @@
                 {% endfor %}
             </td>
 
-            <td>{{data.Total|floatformat:2}}</td>
-            <td>{{data.date}}</td>
+            <td><p>{{data.Total|floatformat:2}}</p></td>
+            <td><p>{{data.date}}</p></td>
             <td>{% for quantity in data.Quantity %}
-                <p>{{quantity}}</p>
+              <p>{{quantity}}</p>
 
                 {% endfor %}
             </td>
@@ -82,7 +81,7 @@
 </div>
 
 
-<div class="card card-body border-0 shadow table-wrapper table-responsive">
+<div class="card card-body border-0 table-wrapper table-responsive" style="box-shadow: 0 0px 10px rgba(202,194,247,0.59)">
     <table class="table table-hover">
         <thead>
           <tr>
@@ -105,14 +104,14 @@
             <td><p>{{hire.worker_name}}</p></td>
             <td><p>{{hire.Hire_name}}</p></td>
             <td><p>{{hire.Place}}</p></td>
-            <td><p>{{hire.Work_mode}}</p></td>
+            <td>{% if hire.Work_mode == "true" %} <p>Full day</p> {% else %} <p>Half Day</p> {% endif %}</td>
             <td><p>{{hire.Phone}}</p></td>
             <td><p>{{hire.job_title}}</p></td>
             <td><p>
                 {%if hire.status == 4%}
-                Completed
+                <p class="text-success">Completed</p> 
                 {%elif hire.status == 5%}
-                Cancelled
+                <p class="text-danger">Cancelled</p>
                 {%endif%}
             </p></td>
           </tr>
@@ -134,7 +133,7 @@
 
 
 
-<div class="card card-body border-0 shadow table-wrapper table-responsive">
+<div class="card card-body border-0 table-wrapper table-responsive" style="box-shadow: 0 0px 10px rgba(202,194,247,0.59)">
   <table class="table table-hover">
       <thead>
           <tr>
@@ -156,15 +155,15 @@
           <!-- Item -->
           {% for data in refund %}
           <tr>
-              <td>{{data.id}}</td>
-              <td>{{data.worker}}</td>
-              <td>{{data.rate}}</td>
-              <td>{{data.worker_refund|floatformat:2}}</td>
-              <td>{{data.hirer_refund|floatformat:2}}</td>
-              <td>{%if data.work_mode == 'true' %}Full Day{%else%}Half Day{%endif%}</td>
-              <td>{{data.job_title}}</td>
-              <td>{{data.work_date}}</td>
-              <td>{%if data.status == 2 %}Completed{%else%}Completed{%endif%}</td>
+              <td><p>{{data.id}}</p></td>
+              <td><p>{{data.worker}}</p></td>
+              <td><p>{{data.rate}}</p></td>
+              <td><p>{{data.worker_refund|floatformat:4}}</p></td>
+              <td><p>{{data.hirer_refund|floatformat:4}}</p></td>
+              <td><p>{%if data.work_mode == 'true' %}<p>Full Day</p>{%else%}<p>Half Day</p>{%endif%}</td>
+              <td><p>{{data.job_title}}</p></td>
+              <td><p>{{data.work_date}}</p></td>
+              <td><p>{%if data.status == 2 %}<p class="text-success">Completed</p>{%else%}<p class="text-success">Completed</p>{%endif%}</td>
              
 
           </tr>
