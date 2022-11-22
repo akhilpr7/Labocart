@@ -16,6 +16,7 @@ from django.db.models import Q
 import pdb
 import datetime
 from django.views.decorators.cache import cache_control
+from django.db.models import Sum
 
 # Create your views here.
 
@@ -823,6 +824,20 @@ class ConfirmOTP(View):
 class AdminDashboard(View):
     def get(self, request,*args, **kwargs):
         if request.user.is_superuser:
-            return render(request,'home/admindashboard.html',{"current_path":''})
+            shopPurchase = PurchaseModel.objects.filter(status=3).aggregate(Sum('Total'))
+            packageRevenue = PurchaseModel.objects.filter(status=0).aggregate(Sum('Total'))
+            totalMembers = NewUserModel.objects.filter(kyc_approved=1).exclude(is_superuser=1).count()
+            activeServices = labourmodels.objects.filter(status=1).count()
+            activeVacancies = JobPostingModel.objects.filter(status=1).count()
+            context ={
+			    'shopPurchase': shopPurchase["Total__sum"],
+			    'packageRevenue': packageRevenue["Total__sum"],
+			    'activeVacancies': activeVacancies,
+			    'activeServices': activeServices,
+			    'totalMembers': totalMembers,
+                "current_path":''
+                }
+
+            return render(request,'home/admindashboard.html',context)
         else:
             return render(request,'home/page-403.html',{})
