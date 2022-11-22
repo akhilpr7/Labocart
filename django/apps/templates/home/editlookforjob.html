@@ -47,13 +47,13 @@
                     <div class="col-lg-8 mt-3" > 
                         <label for="location">Location :</label>
                       
-                      <input class="form-control" type="text" name="location" placeholder="{{location}}"></input>
+                      <input class="form-control" type="text" name="location" value="{{location}}" required></input>
                   </div>
                 
                     <div class="col-lg-8 mt-3" > 
                       <label for="work_mode">Work Mode :</label><br>
                       <div >
-                      <select style="width:200px;" class="rounder-3 p-1 form-select"  name="work_mode" id="work_mode">
+                      <select style="width:200px;" class="rounder-3 p-1 form-select"  name="work_mode" id="work_mode" required>
                         <option value="0">Half Day</option>
                         <option value="1">Full Day</option>
                       </select>
@@ -61,7 +61,7 @@
                   </div>
                     <div class="col-lg-8 mt-3"> 
                       <label for="rate">Rate :</label>
-                      <input class="form-control" type="number" name="rate" placeholder="{{rate}}"></input>
+                      <input class="form-control" type="number" name="rate" value="{{rate}}" required></input>
                   </div>
                     
                     </div>

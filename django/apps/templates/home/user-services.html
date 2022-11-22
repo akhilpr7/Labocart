@@ -53,8 +53,7 @@
                 <th class="border-gray-200">Job</th>
                 <th class="border-gray-200">Option</th>
                 <th class="border-gray-200">One Time Code</th>
-                {% comment %} <th class="border-gray-200">Having Trouble?</th> {% endcomment %}
-
+                <th class="border-gray-200">Having Trouble?</th> 
 
                  
               </tr>
@@ -122,7 +121,9 @@
                       <form method="post" action="" class="mt-4" enctype="multipart/form-data">
                         {% csrf_token %}
 
-                        <div class="row">
+                        
+                            <input type="number" name="id" class="form-control"  required="" hidden readonly id="id_email_address" value="{{data.id}}">
+                                
                             <div class="form-group mb-4 col-md-12">
                                 <label for="Image">Email Address</label>
                                 <div class="input-group">
@@ -182,8 +183,7 @@
                   </div>
                 </div>
               </div>
-              {% comment %} <td><a href="" class=" btn border rounded-2" data-target="#reportModal{{data.id}}" data-toggle="modal"><span class="material-symbols-outlined text-danger">Report</span></a></td> {% endcomment %}
-            </tr>
+              <td><a href="" class=" btn border rounded-2" data-target="#reportModal{{data.id}}" data-toggle="modal"><span class="material-symbols-outlined text-danger">Report</span></a></td>
 
           {% endfor %}
 
