@@ -54,7 +54,7 @@ class HireModel(models.Model):
 class RequestsModel(models.Model):
     hirer = models.TextField(max_length=25, blank=False)
     name = models.TextField(max_length=25, blank=False)
-    place = models.TextField(max_length=25, blank=False)
+    place = models.TextField(max_length=255, blank=False)
     work_type = models.BooleanField(default=False)
     phone = models.BigIntegerField()
     status =  models.IntegerField(default = 0)

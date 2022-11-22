@@ -1,30 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
 {%extends 'index.html'%}
+
+{% load widget_tweaks %}
+
 {% block content%}
-<head>
-    <meta charset="utf-8">
-    <title>EShopper - Bootstrap Shop Template</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
-
-    <!-- Favicon -->
-    <link href="../../../static/shop/img/favicon.ico" rel="icon">
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="../../../static/shop/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="../../../static/shop/css/style.css" rel="stylesheet">
-</head>
 
 <body>
     {% if messages %}
@@ -47,15 +25,14 @@
                             {{form.id}}
                             <br>
                         </div>
-                        {% comment %} <div class="col-lg-8"> 
-                            <label for="Name">Name :</label>
-                            {{form.Name}}
-                            <br>
-                        </div> {% endcomment %}
+
                         <div class="col-lg-8"> 
                             <label for="Name">Place :</label>
-                            {{form.Place}}
+                            {% render_field form.Place hx-post='/search_city/Place' hx-target='#results' hx-trigger="keyup changed delay:100ms" class="form-control" placeholder="Select Your City ..." %}
                             <br>
+                            <div id="results" class="suggestion" style="max-height:200px; overflow-y:scroll; "></div>
+
+
                         </div>
                         <div class="col-lg-8"> 
                             <label for="Name">Phone No :</label>
@@ -67,23 +44,7 @@
                             {{form.Work_mode}}
                             <br>
                         </div>
-                        <div class="col-lg-8"> 
-                            {% comment %} <label for="Name">Worker Name :</label> {% endcomment %}
-                            {% comment %} {{form.worker_name}} {% endcomment %}
-                            <br>
-                        </div>
-                        <br>
-                        <div class="col-lg-8"> 
-                            {% comment %} <label for="Name">Hire name :</label> {% endcomment %}
-                            {% comment %} {{form.Hire_name}} {% endcomment %}
-                            <br>
-                        </div>
-                        <br>
-                        <div class="col-lg-8"> 
-                            {% comment %} <label for="Name">Hire name :</label> {% endcomment %}
-                            {% comment %} {{form.job_title}} {% endcomment %}
-                            <br>
-                        </div>
+        
                         <br>
                     </div>
                     <div class="float-left col-lg-4 pl-2">
@@ -99,7 +60,6 @@
 
 
     <!-- Back to Top -->
-    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
 
     <!-- JavaScript Libraries -->
@@ -114,7 +74,35 @@
 
     <!-- Template Javascript -->
     <script src="../../static/shop/js/main.js"></script>
-</body>
+    <script>
 
+
+        function useSuggestion(e) {
+
+        if(e.target.innerText!="No search results.Enter a valid name atleast 3 characters in length"){
+  
+        console.log(e.target.innerText)
+        
+        
+        id_Place.value = e.target.innerText;
+
+        id_Place.focus();
+        suggestions.innerHTML = '';
+
+        }
+
+        
+        }
+
+        const suggestions = document.querySelector('.suggestion');
+        
+        
+        suggestions.addEventListener('click', useSuggestion);
+        
+        
+        document.addEventListener('click', () =>suggestions.innerHTML = '' );
+        
+        
+        
+        </script>
 {% endblock content %}
-</html>

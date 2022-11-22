@@ -68,7 +68,7 @@
               <td>{{data.Hire_name}}</td>
               <td>{{data.Place}}</td>
               <td>{%if data.work_mode == 'true' %}Full Day{%else%}Half Day{%endif%}</td>
-              <td>{{data.rate}}</td>
+              <td>{{data.rate|floatformat:2}}</td>
               <td>{{data.Phone}}</td>
               <td>{{data.job_title}}</td>
               <td>

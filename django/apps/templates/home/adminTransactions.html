@@ -45,12 +45,21 @@
                 {% endfor %}
             </td>
             <td>{% for price in data.Prices %}
+<<<<<<< HEAD
+                <p>{{price|floatformat:2}}</p>
+                {% comment %} {% if forloop.last %}
+                {{" "}}
+                {% else %}
+                
+                {% endif %} {% endcomment %}
+=======
                 <p>{{price}}</p>
 
+>>>>>>> e2888401d52847fa6b5d5cdd9901b041a27a6400
                 {% endfor %}
             </td>
 
-            <td>{{data.Total}}</td>
+            <td>{{data.Total|floatformat:2}}</td>
             <td>{{data.date}}</td>
             <td>{% for quantity in data.Quantity %}
                 <p>{{quantity}}</p>
