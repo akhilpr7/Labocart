@@ -88,29 +88,42 @@
                         href="#!">
                         {%if j.rating == 0%}
                         {%elif j.rating == 1%}
-                        <span class="fa fa-star checked"></span>
-                        {%elif j.rating == 2%}
-                        <span class="fa fa-star checked"></span>
     
-                        <span class="fa fa-star checked"></span>
+    
+                        <span class="fa fa-star" style="color:orange;"></span>
+                        <span class="fa fa-star" style="color:#dddddd;"></span>
+                        <span class="fa fa-star" style="color:#dddddd;"></span>
+                        <span class="fa fa-star" style="color:#dddddd;"></span>
+                        <span class="fa fa-star" style="color:#dddddd;"></span>
+    
+                        {%elif j.rating == 2%}
+                        <span class="fa fa-star" style="color:orange;"></span>
+                        <span class="fa fa-star" style="color:orange;"></span>
+                        <span class="fa fa-star" style="color:#dddddd;"></span>
+                        <span class="fa fa-star" style="color:#dddddd;"></span>
+                        <span class="fa fa-star" style="color:#dddddd;"></span>
     
                         {%elif j.rating == 3%}
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-    
+                        <span class="fa fa-star" style="color:orange;"></span>
+                        <span class="fa fa-star" style="color:orange;"></span>
+                        <span class="fa fa-star" style="color:orange;"></span>
+                        <span class="fa fa-star" style="color:#dddddd;"></span>
+                        <span class="fa fa-star" style="color:#dddddd;"></span>
+              
                         {%elif j.rating == 4%}
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star" style="color:orange;"></span>
+                        <span class="fa fa-star" style="color:orange;"></span>
+                        <span class="fa fa-star" style="color:orange;"></span>
+                        <span class="fa fa-star" style="color:orange;"></span>
+                        <span class="fa fa-star" style="color:#dddddd;"></span>
+                        
     
                         {%elif j.rating == 5%}
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star" style="color:orange;"></span>
+                        <span class="fa fa-star" style="color:orange;"></span>
+                        <span class="fa fa-star" style="color:orange;"></span>
+                        <span class="fa fa-star" style="color:orange;"></span>
+                        <span class="fa fa-star" style="color:orange;"></span>
                         
                         {%endif%}
                     </a></p>
@@ -186,62 +199,50 @@
                                             <ul class="mb-0 list-unstyled d-flex flex-row" style="color: #e4a804;">
                                             {%for t in user%}
                                                 {%if i.username in t.username%}
-                                                {%if t.rating == 0%}
-    
+                                                {%if j.rating == 0%}
+                                                <span class="fa fa-star" style="color:#dddddd;"></span>
+                                                <span class="fa fa-star" style="color:#dddddd;"></span>
+                                                <span class="fa fa-star" style="color:#dddddd;"></span>
+                                                <span class="fa fa-star" style="color:#dddddd;"></span>
+                                                <span class="fa fa-star" style="color:#dddddd;"></span>
                                                 {%elif t.rating == 1%}
-                                                <li>
-                                                    <i class="fas fa-star fa-xs"></i>
-                                                </li> 
+                            
+                            
+                                                <span class="fa fa-star" style="color:orange;"></span>
+                                                <span class="fa fa-star" style="color:#dddddd;"></span>
+                                                <span class="fa fa-star" style="color:#dddddd;"></span>
+                                                <span class="fa fa-star" style="color:#dddddd;"></span>
+                                                <span class="fa fa-star" style="color:#dddddd;"></span>
+                            
                                                 {%elif t.rating == 2%}
-    
-                                                <li>
-                                                    <i class="fas fa-star fa-xs"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star fa-xs"></i>
-                                                </li> 
+                                                <span class="fa fa-star" style="color:orange;"></span>
+                                                <span class="fa fa-star" style="color:orange;"></span>
+                                                <span class="fa fa-star" style="color:#dddddd;"></span>
+                                                <span class="fa fa-star" style="color:#dddddd;"></span>
+                                                <span class="fa fa-star" style="color:#dddddd;"></span>
+                            
                                                 {%elif t.rating == 3%}
-    
-                                                <li>
-                                                    <i class="fas fa-star fa-xs"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star fa-xs"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star fa-xs"></i>
-                                                </li>
+                                                <span class="fa fa-star" style="color:orange;"></span>
+                                                <span class="fa fa-star" style="color:orange;"></span>
+                                                <span class="fa fa-star" style="color:orange;"></span>
+                                                <span class="fa fa-star" style="color:#dddddd;"></span>
+                                                <span class="fa fa-star" style="color:#dddddd;"></span>
+                                      
                                                 {%elif t.rating == 4%}
-                                                <li>
-                                                    <i class="fas fa-star fa-xs"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star fa-xs"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star fa-xs"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star fa-xs"></i>
-                                                </li>
+                                                <span class="fa fa-star" style="color:orange;"></span>
+                                                <span class="fa fa-star" style="color:orange;"></span>
+                                                <span class="fa fa-star" style="color:orange;"></span>
+                                                <span class="fa fa-star" style="color:orange;"></span>
+                                                <span class="fa fa-star" style="color:#dddddd;"></span>
+                                                
+                            
                                                 {%elif t.rating == 5%}
-    
-                                                <li>
-                                                    <i class="fas fa-star fa-xs"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star fa-xs"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star fa-xs"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star fa-xs"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star fa-xs"></i>
-                                                </li>
-                                               
+                                                <span class="fa fa-star" style="color:orange;"></span>
+                                                <span class="fa fa-star" style="color:orange;"></span>
+                                                <span class="fa fa-star" style="color:orange;"></span>
+                                                <span class="fa fa-star" style="color:orange;"></span>
+                                                <span class="fa fa-star" style="color:orange;"></span>
+                                                
                                                 {%endif%}
                                                 {%endif%}
                                                 

@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 
 class RegisterForm(UserCreationForm):
 
-    phone_no = forms.CharField( widget=forms.NumberInput(attrs={"placeholder": "Phone Number",'class': 'form-control','type':'phone'}))
+    phone_no = forms.CharField( widget=forms.NumberInput(attrs={"placeholder": "Phone Number",'class': 'form-control','type':'phone','minlength':'10','maxlength':'10','required pattern':'\d*'}))
 
     username = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Username",'class': 'form-control','minlength':'3'}))
     first_name = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Firstname",'class': 'form-control','minlength':'3'}))
@@ -54,7 +54,7 @@ class LoginForm(forms.Form):
 
 class UpdateProfileForm(UserCreationForm):
 
-    phone_no = forms.CharField(max_length = 10 , widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control','type':'phone'}))
+    phone_no = forms.CharField(max_length = 10 , widget=forms.NumberInput(attrs={"placeholder": "Phone",'class': 'form-control','type':'phone','minlength':'10','maxlength':'10','required pattern':'\d*'}))
     first_name = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Firstname",'class': 'form-control','minlength':'3'}))
     last_name = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Lastname",'class': 'form-control','minlength':'3','min':'0'}))
     email = forms.CharField(max_length = 30 , widget=forms.TextInput(attrs={"placeholder": "Email",'type':'email', 'class': 'form-control'}))

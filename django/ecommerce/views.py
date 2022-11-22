@@ -61,8 +61,9 @@ class Shop(View):
 			return render(request, self.template_name, data)
 		else:
 			return render(request,'home/emptylaboshop.html',{'current_path':"Shop"})
-
-
+	def post(self, request, *args, **kwargs):
+		print("redirected")
+		return redirect('shop')
 @method_decorator(login_required,name='dispatch')
 class CartView(View):
 	template_name = 'shop/cart.html'
@@ -730,6 +731,24 @@ class ConfirmPay(View):
 	
 	@cache_control( no_cache=True, must_revalidate=True, no_store=True )
 	def get(self, request,id, *args, **kwargs):
+		product_id = CartModel.objects.filter(username=request.user.username).values_list("product_id")
+		for j in product_id:
+				quantity = CartModel.objects.filter(product_id=j[0]).values_list("Quantity")[0][0]
+				quant = ProductsModel.objects.filter(id=j[0]).values_list("Quantity")[0][0]
+				a = ""
+				if quant>=quantity:
+					pass
+				else:
+					product = CartModel.objects.filter(product_id=j[0]).values_list("Product_name")[0][0]
+					a+=product
+
+
+					messages.error(request,"Sorry , "+ a +" are unavailable at the moment !!")
+					return redirect("cart")
+		for k in product_id:
+			quantity = CartModel.objects.filter(product_id=k[0]).values_list("Quantity")[0][0]
+			quant = ProductsModel.objects.filter(id=k[0]).values_list("Quantity")[0][0]			
+			ProductsModel.objects.filter(id=k[0]).update(Quantity=quant-quantity)
 		wallet_balance = NewUserModel.objects.filter(username=request.user.username).values_list("wallet")[0][0]
 		total_price=PurchaseModel.objects.filter(id=id).values_list("Total")[0][0]
 		if wallet_balance >= total_price:
@@ -741,11 +760,11 @@ class ConfirmPay(View):
 			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-total_price)
 			PurchaseModel.objects.filter(id=id).update(status=3)
 			obj = CartModel.objects.filter(username=request.user.username)
-			product_id = CartModel.objects.filter(username=request.user.username).values_list("product_id")
-			for i in product_id:
-				quantity = CartModel.objects.filter(product_id=i[0]).values_list("Quantity")[0][0]
-				quant = ProductsModel.objects.filter(id=i[0]).values_list("Quantity")[0][0]
-				ProductsModel.objects.filter(id=i[0]).update(Quantity=quant-quantity)
+			# product_id = CartModel.objects.filter(username=request.user.username).values_list("product_id")
+			# for i in product_id:
+			# 	quantity = CartModel.objects.filter(product_id=i[0]).values_list("Quantity")[0][0]
+			# 	quant = ProductsModel.objects.filter(id=i[0]).values_list("Quantity")[0][0]
+			# 	ProductsModel.objects.filter(id=i[0]).update(Quantity=quant-quantity)
 			obj.delete()
 			return redirect("invoice")
 		else:

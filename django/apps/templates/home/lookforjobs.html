@@ -1,4 +1,6 @@
 {% extends "index1.html" %}
+<script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
 
 {% block title %} Requested Services {% endblock %} 
 
@@ -28,13 +30,13 @@
                 
                               {%for i in datacategory %}
                               <li class="divider"></li>
-                              <li class="dropdown-submenu">
+                              <li class="dropdown-submenu p-3">
                                 <a tabindex="-1" href="#">{{i.category_name}}</a>
                                 <ul class="dropdown-menu">
                                 {% for j in datajob %}
                                 {% if i.category_name in j.category %}
                                   {% comment %} <li><a href="{%url 'laboshop1'?filter=j.id%}">{{j.job_title}}</a></li> {% endcomment %}
-                                  <li><a href="/laboshop?filter={{j.id}}">{{j.job_title}}</a></li>
+                                  <li class="px-4 py-2"><a href="/lookforjobs?filter={{j.id}}">{{j.job_title}}</a></li>
                                 {%endif%}
                                 {%endfor%}
                                 </ul>
