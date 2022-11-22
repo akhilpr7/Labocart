@@ -61,8 +61,9 @@ class Shop(View):
 			return render(request, self.template_name, data)
 		else:
 			return render(request,'home/emptylaboshop.html',{'current_path':"Shop"})
-
-
+	def post(self, request, *args, **kwargs):
+		print("redirected")
+		return redirect('shop')
 @method_decorator(login_required,name='dispatch')
 class CartView(View):
 	template_name = 'shop/cart.html'

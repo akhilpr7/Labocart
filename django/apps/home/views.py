@@ -398,9 +398,12 @@ class UpdateUser(View):
         if user.is_active:
             user.is_active = False
             user.save()
+            messages.success(request, "Successfully updated user status!")
         else:
             user.is_active = True
             user.save()
+            messages.success(request, "Successfully updated user status!")
+
         return redirect('manageuser')
 
 @method_decorator(login_required, name='dispatch')
@@ -421,32 +424,32 @@ class JobPostingView(View):
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
-            # applied = JobPostingModel.objects.filter
-            form = JobPostingForm(request.POST,request.FILES)
+            form = JobPostingForm(request.POST)
             try:
                 job = request.POST['job_title']
                 userjobs = JobPostingModel.objects.filter(hirer=request.user).values_list("job_title",flat=True)
                 if job in userjobs:
-                    messages.error(request,"Already Applied To This Job  !!")
+                    messages.error(request,"Already Enlsited This Job  !!")
                     return redirect('labocategory2')
                 else:
                     obj = JobPostingModel.objects.create(
                         hirer=request.user.username,
                         place=request.POST['place'],
-                        image=request.FILES['image'],
                         job_title=request.POST['job_title'],
                         work_type=request.POST['work_type'],
                         phone=request.POST['phone'],
                         name=request.POST['name'])
                     obj.save()
+                    messages.success(request, "Successfully enlisted the job!")
                     return redirect('enlistedjobs')
 
-            except Exception :
-                print(Exception)
+            except Exception as e:
+                print(e)
+                messages.error(request, "Failed to enlisted the job!")            
                 return redirect('labocategory2')
 
         else:
-            print("not valid")
+            messages.error(request, "GET method is not allowed!")            
             return redirect('labocategory')
 
 @method_decorator(login_required, name='dispatch')
@@ -486,15 +489,15 @@ class UpdateServices(View):
         status = labourmodels.objects.filter(id=id).values_list("status")[0][0]
         if status == 0:
             labourmodels.objects.filter(id=id).update(status=1)
-            messages.success(request, "Success !")
+            messages.success(request, "Updated Successfully!")
             return redirect("manageservices")
         elif status == 1:
             labourmodels.objects.filter(id=id).update(status=0)
-            messages.success(request, "Success !")
+            messages.success(request, "Updated Successfully!")
             return redirect("manageservices")
         else:
             labourmodels.objects.filter(id=id).update(status=0)
-            messages.success(request, "Success !")
+            messages.success(request, "Updated Successfully!")
             return redirect("manageservices")
 
 
@@ -505,7 +508,6 @@ class Labocategories2(View):
     def get(self, request, *args, **kwargs):
         data = Category.objects.all()
         job = jobmodel.objects.values_list('category', flat=True)
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",job)
         context = {
             "data": data,
             "job": job,
@@ -520,7 +522,7 @@ class Labocategories2(View):
             if total_work < 5:
                 return render(request, self.template, context)
             else:
-                messages.error(request, "Job Applying Limit Reached !!")
+                messages.error(request, "Job Posting Limit Reached !!")
                 return redirect("laboshop")
         else:
             return render(request,'home/emptypage.html',{'current_path':"Provide Jobs"})
