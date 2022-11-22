@@ -101,7 +101,7 @@
             <td><p>{{hire.worker_name}}</p></td>
             <td><p>{{hire.Hire_name}}</p></td>
             <td><p>{{hire.Place}}</p></td>
-            <td><p>{{hire.Work_mode}}</p></td>
+            <td>{% if hire.Work_mode == "true" %}Full day{% else %}Half Day{% endif %}</td>
             <td><p>{{hire.Phone}}</p></td>
             <td><p>{{hire.job_title}}</p></td>
             <td><p>
