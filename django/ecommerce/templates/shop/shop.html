@@ -21,7 +21,7 @@
                 <div class="row pb-3">
                     <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4" row>
-                            <div class="dropdown ml-4">
+                            {% comment %} <div class="dropdown ml-4">
                                 <button class="btn border dropdown-toggle" type="button" id="triggerId"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Sort by
@@ -32,7 +32,7 @@
                                     <a class="dropdown-item" href="/shop/?orderby=latest">Latest</a>
                                     <a class="dropdown-item" href="/shop/?orderby=oldest">Oldest</a>
                                 </div>
-                            </div>
+                            </div> {% endcomment %}
                             {% include 'search/shop_search.html' %}
                             <div class="col-lg-2 d-flex align-items-center justify-content-center">
                                 <a class="btn" href="{% url 'cart' %}">

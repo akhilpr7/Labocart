@@ -10,8 +10,7 @@
     <p class="d-none" id="messagetag">{{message.tags}}</p>
     <p class="d-none " id="messagecontent">{{message}}</p>
 {% endfor %}
-{% endif %}
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+{% endif %}2<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
     <div class="d-block mb-4 mb-md-0">
       <h5 class="h5"> <b>Purchase History</b> </h5>
     </div>
@@ -45,8 +44,12 @@
                 {% endfor %}
             </td>
             <td>{% for price in data.Prices %}
-              <p>{{price}}</p>
-
+                <p>{{price|floatformat:2}}</p>
+                {% comment %} {% if forloop.last %}
+                {{" "}}
+                {% else %}
+                
+                {% endif %} {% endcomment %}
                 {% endfor %}
             </td>
 
