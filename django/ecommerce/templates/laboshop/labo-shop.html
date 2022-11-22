@@ -13,11 +13,11 @@
     <!-- Navbar Start -->
     <div class="container-fluid">
         <div class="row border-top px-xl-5">
-            <div class="col-lg-3 d-none d-lg-block">
+            <div class="col-6 col-lg-3 mt-2">
 
 
 
-                <div class="dropdown">
+                <div class="dropdown ">
                     <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary btn shadow-none d-flex align-items-center justify-content-between w-100 bg-gray-800 text-white" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;" data-target="#" href="/page.html">
                         <h5>Categories </h5><span class="caret"></span>
                     </a>
@@ -25,13 +25,13 @@
         
                       {%for i in datacategory %}
                       <li class="divider"></li>
-                      <li class="dropdown-submenu">
+                      <li class="dropdown-submenu p-3">
                         <a tabindex="-1" href="#">{{i.category_name}}</a>
                         <ul class="dropdown-menu">
                         {% for j in datajob %}
                         {% if i.category_name in j.category %}
                           {% comment %} <li><a href="{%url 'laboshop1'?filter=j.id%}">{{j.job_title}}</a></li> {% endcomment %}
-                          <li><a href="/laboshop?filter={{j.id}}">{{j.job_title}}</a></li>
+                          <li class="px-3 py-2 "><a href="/laboshop?filter={{j.id}}">{{j.job_title}}</a></li>
                         {%endif%}
                         {%endfor%}
                         </ul>
@@ -43,7 +43,7 @@
 
             </div>
 
-            <div class="col-lg-2 p-3">
+            <div class="col-lg-2 p-3 mt-3   ">
                 <div class="dropdown ml-4">
                     <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">Filter by</button>

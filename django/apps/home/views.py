@@ -28,14 +28,14 @@ class HomeView(View):
         purchase = PurchaseModel.objects.filter(username=request.user).values_list("Total")
         sub_at=request.user.subscribed_at
         a = datetime.datetime.now().date()
+        tot_purchase = 0
+        for i in purchase:
+            tot_purchase += i[0]
          
         if sub_at != None:
             diff = a-sub_at
             validity = PackageModel.objects.filter(id=request.user.package).values_list("validity")[0][0]
 
-            tot_purchase = 0
-            for i in purchase:
-                tot_purchase += i[0]
 
             context ={
                 "req" : req_count,
@@ -44,9 +44,6 @@ class HomeView(View):
                 "current_path":"",
             }
         else:
-            tot_purchase = 0
-            for i in purchase:
-                tot_purchase += i[0]
             context ={
                 "req" : req_count,
                 "tot" : tot_purchase,
