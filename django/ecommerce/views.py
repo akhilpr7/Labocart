@@ -767,6 +767,7 @@ class ConfirmPay(View):
 			# 	quant = ProductsModel.objects.filter(id=i[0]).values_list("Quantity")[0][0]
 			# 	ProductsModel.objects.filter(id=i[0]).update(Quantity=quant-quantity)
 			obj.delete()
+			messages.success(request," Payment Successful!")
 			return redirect("invoice")
 		else:
 			messages.error(request,"Not enough balance in wallet!!")
