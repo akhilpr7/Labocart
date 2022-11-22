@@ -36,7 +36,7 @@
                 <div class="col-12 col-xl-7 px-xl-0">
                     <div class="d-none d-sm-block">
                         <h2 class="h6 text-gray-400 mb-0">Shop Revenue</h2>
-                        <h3 class="fw-extrabold mb-2">$513364
+                        <h3 class="fw-extrabold mb-2">$ {{shopPurchase}}
                             
                             </h3>
                     </div>
@@ -67,7 +67,7 @@
                 <div class="col-12 col-xl-7 px-xl-0">
                     <div class="d-none d-sm-block">
                         <h2 class="h6 text-gray-400 mb-0">Membership Revenue</h2>
-                        <h3 class="fw-extrabold mb-2">$246589</h3>
+                        <h3 class="fw-extrabold mb-2">$ {{packageRevenue}}</h3>
                     </div>
                     <!-- <small class="d-flex align-items-center text-gray-500">
                         Feb 1 - Apr 1,  
@@ -100,7 +100,7 @@
                 <div class="col-12 col-xl-7 px-xl-0">
                     <div class="d-none d-sm-block">
                         <h2 class="h6 text-gray-400 mb-0">Total Customers</h2>
-                        <h3 class="fw-extrabold mb-2">2682</h3>
+                        <h3 class="fw-extrabold mb-2">{{totalMembers}}</h3>
                     </div>
                     <!-- <small class="text-gray-500">
                         Feb 1 - Apr 1
@@ -108,6 +108,52 @@
                     <div class="small d-flex mt-1">                               
                         <div>Since last month <svg class="icon icon-xs text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg><span class="text-success fw-bolder">4%</span></div>
                     </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-12 col-sm-6 col-xl-4 mb-4">
+    <div class="card border-0 shadow">
+        <div class="card-body">
+            <div class="row d-block d-xl-flex align-items-center">
+                <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                    <div class="icon-shape icon-shape-tertiary rounded me-4 me-sm-0">
+                        <span class="material-symbols-outlined"style ="font-size: 30px;">
+                            rate_review
+                            </span>
+                        </div>
+
+                </div>
+                <div class="col-12 col-xl-7 px-xl-0">
+                    <div class="d-none d-sm-block">
+                        <h2 class="h6 text-gray-400 mb-0">Number of active Services</h2>
+                        <h3 class="fw-extrabold mb-2">{{activeServices}}</h3>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-12 col-sm-6 col-xl-4 mb-4">
+    <div class="card border-0 shadow">
+        <div class="card-body">
+            <div class="row d-block d-xl-flex align-items-center">
+                <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                    <div class="icon-shape icon-shape-tertiary rounded me-4 me-sm-0">
+                        <span class="material-symbols-outlined"style ="font-size: 30px;">
+                            rate_review
+                            </span>
+                        </div>
+
+                </div>
+                <div class="col-12 col-xl-7 px-xl-0">
+                    <div class="d-none d-sm-block">
+                        <h2 class="h6 text-gray-400 mb-0">Number of active Vacancies</h2>
+                        <h3 class="fw-extrabold mb-2">{{activeVacancies}}</h3>
+                    </div>
+
                 </div>
             </div>
         </div>
