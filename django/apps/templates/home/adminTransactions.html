@@ -10,8 +10,7 @@
     <p class="d-none" id="messagetag">{{message.tags}}</p>
     <p class="d-none " id="messagecontent">{{message}}</p>
 {% endfor %}
-{% endif %}
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+{% endif %}2<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
     <div class="d-block mb-4 mb-md-0">
       <h5 class="h5"> <b>Purchase History</b> </h5>
     </div>
@@ -45,17 +44,12 @@
                 {% endfor %}
             </td>
             <td>{% for price in data.Prices %}
-<<<<<<< HEAD
                 <p>{{price|floatformat:2}}</p>
                 {% comment %} {% if forloop.last %}
                 {{" "}}
                 {% else %}
                 
                 {% endif %} {% endcomment %}
-=======
-                <p>{{price}}</p>
-
->>>>>>> e2888401d52847fa6b5d5cdd9901b041a27a6400
                 {% endfor %}
             </td>
 
@@ -110,7 +104,7 @@
             <td><p>{{hire.worker_name}}</p></td>
             <td><p>{{hire.Hire_name}}</p></td>
             <td><p>{{hire.Place}}</p></td>
-            <td><p>{{hire.Work_mode}}</p></td>
+            <td><p>{%if hire.Work_mode%}Half Day{%else%}Full Day{%endif%}</p></td>
             <td><p>{{hire.Phone}}</p></td>
             <td><p>{{hire.job_title}}</p></td>
             <td><p>
@@ -164,11 +158,11 @@
               <td>{{data.id}}</td>
               <td>{{data.worker}}</td>
               <td>{{data.rate}}</td>
-              <td>{{data.worker_refund|floatformat:4}}</td>
-              <td>{{data.hirer_refund|floatformat:4}}</td>
+              <td>{{data.worker_refund|floatformat:2}}</td>
+              <td>{{data.hirer_refund|floatformat:2}}</td>
               <td>{%if data.work_mode == 'true' %}Full Day{%else%}Half Day{%endif%}</td>
               <td>{{data.job_title}}</td>
-              <td>{{data.work_date}}</td>
+              <td>{{data.work_date|date}}</td>
               <td>{%if data.status == 2 %}Completed{%else%}Completed{%endif%}</td>
              
 

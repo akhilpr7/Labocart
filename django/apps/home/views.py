@@ -442,7 +442,7 @@ class JobPostingView(View):
                     obj = JobPostingModel.objects.create(
                         hirer=request.user.username,
                         place=request.POST['place'],
-                        image=request.FILES['image'],
+                        # image=request.FILES['image'],
                         job_title=request.POST['job_title'],
                         work_type=request.POST['work_type'],
                         phone=request.POST['phone'],
@@ -593,7 +593,7 @@ class RejectServices(View):
 class JobRequests(View):
     template_name = 'home/jobrequests.html'
     def get(self, request, *args, **kwargs):
-        hire = HireModel.objects.filter(status=3)
+        hire = HireModel.objects.filter(status=3,Hire_name=request.user)
         print(hire,"hiiiiiiiiiiiiiiii")
         if hire!= None:
             # requests = AppliedJobs.objects.filter(hirer=request.user.username).exclude(status=3)
