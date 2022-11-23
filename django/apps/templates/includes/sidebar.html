@@ -130,21 +130,14 @@
       </li>
       <li class="nav-item {% if 'Service Requests' in current_path %} active {% endif %}" style="padding:8px;" >
         <a href="{% url 'servicerequests' %}" class="nav-link" id="something">
-          <!-- <span class="sidebar-icon ">
-            <span class="material-symbols-outlined">
-              engineering
-              </span>       </span> -->
+    
               <i class="fas fa-fw fa-user-clock"></i>
           <span class="sidebar-text">Service Requests</span>
         </a>
       </li>      
       <li class="nav-item {% if 'Pending KYC' in current_path %} active {% endif %}" style="padding:8px;" >
         <a href="{% url 'pendingkyc' %}" class="nav-link" id="something">
-          <!-- <span class="sidebar-icon ">
-            <span class="material-symbols-outlined">
-              settings_account_box
-              </span>
-            </span> -->
+
             <i class="fas fa-fw fa-hourglass-half"></i>
 
               <span class="sidebar-text">Registration Requests</span>
@@ -152,33 +145,21 @@
       </li>
       <li class="nav-item {% if 'Manage User' in current_path %} active {% endif %}" style="padding:8px;" >
         <a href="{% url 'manageuser' %}" class="nav-link" id="something">
-          <!-- <span class="sidebar-icon ">
-            <span class="material-symbols-outlined">
-              manage_accounts
-              </span>       
-          </span> -->
+     
           <i class="fas fa-fw fa-users"></i>
           <span class="sidebar-text">Manage Users</span>
         </a>
       </li>
       <li class="nav-item {% if 'registerstaff' in current_path %} active {% endif %}" style="padding:8px;" >
         <a href="{% url 'registerstaff' %}" class="nav-link" id="something">
-          <!-- <span class="sidebar-icon ">
-            <span class="material-symbols-outlined">
-              manage_accounts
-              </span>       
-          </span> -->
+    
           <i class="fas fa-fw fa-user-plus"></i>
           <span class="sidebar-text">Register a Staff</span>
         </a>
       </li>
       <li class="nav-item {% if 'Manage Services' in current_path %} active {% endif %}" style="padding:8px;" >
         <a href="{% url 'manageservices' %}" class="nav-link" id="something">
-          <!-- <span class="sidebar-icon ">
-            <span class="material-symbols-outlined">
-              manage_history
-              </span>        
-            </span> -->
+   
             <i class="fas fa-fw fa-stopwatch"></i>
           <span class="sidebar-text">Manage Services</span>
         </a>
@@ -188,11 +169,7 @@
           class="nav-link  collapsed  d-flex justify-content-between align-items-center"
           data-bs-toggle="collapse" data-bs-target="#submenu-components2">
           <span>
-            <!-- <span class="sidebar-icon">
-              <span class="material-symbols-outlined">
-                package
-                </span>          
-            </span>  -->
+    
             <i class="fas fa-fw fa-handshake"></i>
             <span class="sidebar-text">Packages</span>
           </span>
@@ -205,20 +182,14 @@
           <ul class="flex-column nav">
             <li class="nav-item {% if 'Add Package' in current_path %} active {% endif %}"style="padding:8px;">
               <a class="nav-link" href="{%url 'addpackage'%}">
-                <!-- <span class="sidebar-icon">
-                  <span class="material-symbols-outlined">
-                    add
-                    </span>                  </span>            -->
+
                     <i class="fas fa-fw fa-plus"></i>
                   <span class="sidebar-text">Add Package</span>
               </a>
             </li>
             <li class="nav-item {% if 'Packages List' in current_path %} active {% endif %}"style="padding:8px;">
               <a class="nav-link" href="{%url 'packages'%}">
-                <!-- <span class="sidebar-icon ms-1">
-                  <span class="material-symbols-outlined">
-                    table
-                    </span> </span>              -->
+
                     <i class="fas fa-fw fa-table"></i>
                   <span class="sidebar-text">Manage Package</span>
               </a>
@@ -227,21 +198,13 @@
         </li>
         <li class="nav-item {% if 'Reported Issues' in current_path %} active {% endif %}"style="padding:8px;">
           <a class="nav-link" href="{%url 'issues'%}">
-            <!-- <span class="sidebar-icon ms-1">
-              <span class="material-symbols-outlined">
-                table
-                </span> </span>              -->
+     
                 <i class="fas fa-fw fa-table"></i>
               <span class="sidebar-text">Reported Isuues</span>
           </a>
         </li>
         
-      {% comment %} {% endif %} {% endcomment %}
 
-<!-- End of Admin View -->
-
-
-<!-- User View -->
 
 {% elif request.user.is_staff %}
 
@@ -255,63 +218,7 @@
   </a>
 </li>
 
-{% comment %} <li class="nav-item{% if '' == current_path %} active {% endif %}" style="padding:8px;">
-  <a class="nav-link" href="{% url 'dashboard' %}">
-      <i class="fas fa-fw fa-tachometer-alt"></i>
-      <span>Dashboard</span></a>
-</li> {% endcomment %}
 
-    <!-- <li class="nav-item  {% if 'transactions' in current_path  %} active {% endif %} "  data='dashboard'  >
-      <a href="{% url 'funds' %}" class="nav-link" >
-        <span class="sidebar-icon ">
-          <span class="material-symbols-outlined">
-            add_card
-            </span>  
-          </span>
-        <span class="sidebar-text">Fund Deposit</span>
-      </a>
-    </li> -->
-   
-      <!-- <li class="nav-item {% if 'transactions' in current_path %} active {% endif %}"  >
-        <a href="{% url 'shop' %}" class="nav-link" id="something">
-          <span class="sidebar-icon ">
-            <span class="material-symbols-outlined">
-              storefront
-              </span>
-          </span>
-          <span class="sidebar-text">Shop</span>
-        </a>
-      </li> -->
-     
-
-   
-    
-
-            <!-- <li class="nav-item {% if 'transactions' in current_path %} active {% endif %}"  >
-              <a href="{% url 'transaction' %}" class="nav-link opacity-75" id="something">
-                <span class="sidebar-icon ">
-                  <span class="material-symbols-outlined">
-                    paid
-                    </span>
-                </span>
-                <span class="sidebar-text">Transactions</span>
-              </a>
-            </li> -->
-            {% comment %} <li class="nav-item {% if 'Transactions' in current_path %} active {% endif %}"style="padding:8px;">
-              <a class="nav-link" href="{% url 'transaction' %}">
-                  <i class="fas fa-fw fa-dollar-sign"></i>
-                  <span>Transactions</span></a>
-            </li> {% endcomment %}
-            <!-- <li class="nav-item {% if 'transactions' in current_path %} active {% endif %}"  >
-              <a href="{% url 'refundhistory' %}" class="nav-link" id="something">
-                <span class="sidebar-icon ">
-                  <span class="material-symbols-outlined">
-                    paid
-                    </span>
-                </span>
-                <span class="sidebar-text">Refund history</span>
-              </a>
-            </li> -->
             <li class="nav-item {% if 'Transactions' in current_path %} active {% endif %}"style="padding:8px;">
               <a class="nav-link" href="{% url 'adminTransactions' %}">
                   <i class="fas fa-fw fa-credit-card"></i>
@@ -320,18 +227,7 @@
       </li>
 
 
-{% comment %}       
-    <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
-        <li class="nav-item"style="padding:8px;">
-          <a href="{% url 'workerview' %}" class="nav-link">
-            <span class="sidebar-icon text-danger">
-              <span class="material-symbols-outlined">
-                exit_to_app
-                </span></span>
-            <span class="sidebar-text">Worker View</span>
-          </a>
-        </li>    
- {% endcomment %}
+
 
 
 {% elif not request.user.is_superuser %}
