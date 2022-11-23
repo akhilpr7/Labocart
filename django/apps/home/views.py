@@ -121,16 +121,21 @@ class TransactionView(View):
 @method_decorator(login_required, name='dispatch')
 class Userservices(View):
     def get(self, request, *args, **kwargs):
+        sub = NewUserModel.objects.filter(username=request.user).values('is_sub').first()
+        is_sub = sub['is_sub']
         details = HireModel.objects.filter(
             Hire_name=request.user).order_by('id').exclude(status__in=[4,5])
         context = {
             'details': details,
             'current_path': "User Services"
         }
-        if details:
-            return render(request, "home/user-services.html", context)
+        if is_sub:
+            if details:
+                return render(request, "home/user-services.html", context)
+            else:
+                return render(request, "home/emptyservices.html",context)
         else:
-            return render(request, "home/emptyservices.html",context)
+            return redirect('membership')
     def post(self, request, *args,  **kwargs):
         if request.method == 'POST':
             # print(hireid,"hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
@@ -165,10 +170,14 @@ class Workerservices(View):
             'work': work,
             'current_path': "Worker Services"
         }
-        if work:
-            return render(request, "home/worker-services.html", context)
+        if request.user.is_sub:
+            if work:
+                return render(request, "home/worker-services.html", context)
+            else:
+                return render(request, "home/emptyworkerservices.html",context)
         else:
-            return render(request, "home/emptyworkerservices.html",context)
+            messages.error(request,"Subscription Required !! ")
+            return redirect("workerview")
     def post(self, request, *args,  **kwargs):
         if request.method == 'POST':
             # print(hireid,"hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
@@ -283,13 +292,19 @@ class UserCompletedService(View):
 class ServiceView(View):
     template_name = "home/requested-services.html"
     def get(self, request, *args, **kwargs):
+        sub = NewUserModel.objects.filter(username = request.user).values('is_sub').first()
+        is_sub = sub['is_sub']
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",is_sub)
         data = RequestsModel.objects.filter(
             hirer   =request.user).exclude(status__in=[0,2,5])
         context = {'data': data, 'current_path': "Requested Services"}
-        if data:
-            return render(request, self.template_name, context)
+        if is_sub:
+            if data:
+                return render(request, self.template_name, context)
+            else:
+                return render(request, "home/emptyservices.html", context)
         else:
-            return render(request, "home/emptyservices.html", context)
+            return redirect('membership')
 @method_decorator(login_required, name='dispatch')
 class RatingView(View):
     def get(self, request, *args, id, **kwargs):
@@ -553,9 +568,10 @@ class Labocategories2(View):
     template = 'home/labo-category2.html'
 
     def get(self, request, *args, **kwargs):
+        sub = NewUserModel.objects.filter(username=request.user).values('is_sub').first()
+        is_sub = sub['is_sub']
         data = Category.objects.all()
         job = jobmodel.objects.values_list('category', flat=True)
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",job)
         context = {
             "data": data,
             "job": job,
@@ -563,17 +579,18 @@ class Labocategories2(View):
             'MEDIA_ROOT':settings.NEW_VAR,
 
         }
-        # total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & Q(
-        #     (Q(status=1) | Q(status=2) | Q(status=3)))).count()
-        if data:
-            total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & Q(is_active = 1)).count()
-            if total_work < 5:
-                return render(request, self.template, context)
+        if is_sub:
+            if data:
+                total_work = JobPostingModel.objects.filter(Q(hirer=request.user.username) & Q(is_active = 1)).count()
+                if total_work < 5:
+                    return render(request, self.template, context)
+                else:
+                    messages.error(request, "Job Applying Limit Reached !!")
+                    return redirect("laboshop")
             else:
-                messages.error(request, "Job Applying Limit Reached !!")
-                return redirect("laboshop")
+                return render(request,'home/emptypage.html',{'current_path':"Provide Jobs"})
         else:
-            return render(request,'home/emptypage.html',{'current_path':"Provide Jobs"})
+            return redirect('membership')
 
 
 @method_decorator(login_required, name='dispatch')
@@ -634,6 +651,8 @@ class RejectServices(View):
 class JobRequests(View):
     template_name = 'home/jobrequests.html'
     def get(self, request, *args, **kwargs):
+        sub = NewUserModel.objects.filter(username=request.user).values('is_sub').first()
+        is_sub = sub['is_sub']
         hire = HireModel.objects.filter(status=3,Hire_name=request.user)
         print(hire,"hiiiiiiiiiiiiiiii")
         if hire!= None:
@@ -641,23 +660,19 @@ class JobRequests(View):
             requests = AppliedJobs.objects.filter(Q(hirer=request.user.username)&Q(status=0))
             for data in requests:
                 for hirer in hire:
-                    print(data.worker_uname,hirer.worker_name,"whatttttttttttttttttttttttttttttt")
                     if data.worker_uname == hirer.worker_name:
-                        requests = requests.exclude(worker_uname=data.worker_uname)
-                        print(requests,"reqqqqqqqqqqqqqqqqqqqq")
-        print(requests,"--------------------------")
-        # requetn = HireModel.objects.filter(status=3)
-
-
-        
+                        requests = requests.exclude(worker_uname=data.worker_uname)       
         context = {
             'requests': requests,
             'current_path': "Job requests",
             }
-        if requests:
-            return render(request, 'home/jobrequests.html', context)
+        if is_sub:
+            if requests:
+                return render(request, 'home/jobrequests.html', context)
+            else:
+                return render(request,'home/emptyservices.html',{'current_path':"Job requests"})
         else:
-            return render(request,'home/emptyservices.html',{'current_path':"Job requests"})
+            return redirect('membership')
         
 
 
@@ -705,14 +720,19 @@ class JobRequestUpdate(View):
 class ProvidedJobs(View):
     template_name = "home/provided-jobs-list.html"
     def get(self, request, *args, **kwargs):
+        sub = NewUserModel.objects.filter(username=request.user).values('is_sub').first()
+        is_sub= sub['is_sub']
         jobs = JobPostingModel.objects.filter(
             hirer=request.user.username)
         context = {'jobs': jobs,
                     'current_path': "Enlisted Jobs"}
-        if jobs:
-            return render(request,self.template_name , context)
+        if is_sub:
+            if jobs:
+                return render(request,self.template_name , context)
+            else:
+                return render(request,"home/emptyservices.html",context)
         else:
-            return render(request,"home/emptyservices.html",context)
+            return redirect('membership')
 @method_decorator(login_required, name='dispatch')
 class LookForJobs(View):
     def get(self, request, *args, **kwargs):
