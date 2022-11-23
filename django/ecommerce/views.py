@@ -54,13 +54,17 @@ class Shop(View):
 		'current_path':"Shop",
 		'cart' : cart,
 		'count' : count,
-		
 
 		}
 		if product:
 			return render(request, self.template_name, data)
 		else:
-			return render(request,'home/emptylaboshop.html',{'current_path':"Shop"})
+			errormessage = "Shop is Empty"
+			context ={
+				'current_path':"Shop",
+				'errors':errormessage
+				}
+			return render(request,'home/emptylaboshop.html',context)
 	def post(self, request, *args, **kwargs):
 		print("redirected")
 		return redirect('shop')
@@ -262,7 +266,12 @@ class LaboShop(View):
 			if newdata:
 				return render(request, 'laboshop/labo-shop.html', context)
 			else:
-				return render(request,'home/emptylaboshop.html',{'current_path':"Laboshop"})
+				errormessage = "Laboshop is Empty"
+				context ={
+				'current_path':"Laboshop",
+				'errors':errormessage}
+				
+				return render(request,'home/emptylaboshop.html',context)
 		else:
 			messages.error(request,"Membership Required !")
 			return redirect("membership")
@@ -407,7 +416,6 @@ class LaboRegister(View):
 		x =jobs.exclude(job_title__in=[userjob])
 		print(x,"--===--===--===----========")
 		if not x:
-			print("empty1111111111111111111")
 			messages.error(request,"No Remaining Jobs Found In This Category  !!!!")
 			return redirect("labocategory")
 		else:
@@ -490,6 +498,11 @@ class Labocategories(View):
 				messages.error(request,"Subscription Required !!")
 				return redirect("workerview")
 		else:
+			errormessage = "No Service Available"
+			context ={
+				'current_path':"Register Services",
+				'errors':errormessage
+				}
 			return render(request, "home/emptyworkerpage.html", context)
 
 @method_decorator(login_required,name='dispatch')
@@ -500,12 +513,17 @@ class ActiveServices(View):
 		context = {
 			"data" : data,
 			"user" : user,
-			'current_path':"ActiveServices"
+			'current_path':"Active Services"
 		}
 		if request.user.is_sub:
 			if data:
 					return render(request,'activeServices.html',context)
 			else:
+				errormessage = "No Services Found"
+				context ={
+				'current_path':"Active Services",
+				'errors':errormessage
+				}
 				return render(request,"home/emptyworkerservices.html",context)
 		else:
 			messages.error(request,"Subscription Required !!")
@@ -613,6 +631,11 @@ class Assignedworks(View):
 			if services:
 				return render(request,self.template_name,context)
 			else:
+				errormessage = "No Service Found"
+				context ={
+				'current_path':"Assigned Services",
+				'errors':errormessage
+				}
 				return render(request,'home/emptyworkerservices.html',context)
 		else:
 			messages.error(request,"Subscription Required !! ")
@@ -900,7 +923,12 @@ class membership(View):
 			}
 			return render(request,template,context)
 		else:
-			return render(request,"home/emptypackage.html")
+			errormessage = "Package not Found"
+			context ={
+				'current_path':"Membership Subscription",
+				'errors':errormessage
+				}
+			return render(request,"home/emptypackage.html",context)
 @method_decorator(login_required, name='dispatch')
 class Workerview(View):
 	def get(self, request, *args, **kwargs):
@@ -938,6 +966,11 @@ class RefundHistoryUser(View):
 		if refund:
 			return render(request,template,context)
 		else:
+			errormessage = "Refund history is Empty"
+			context ={
+				'current_path':"Refund history",
+				'errors':errormessage
+				}
 			return render(request,"home/emptypage.html", context)
 @method_decorator(login_required, name='dispatch')
 class RefundHistoryWorker(View):
@@ -951,6 +984,11 @@ class RefundHistoryWorker(View):
 		if refund:
 			return render(request,template,context)
 		else:
+			errormessage = "Refund history is Empty"
+			context ={
+				'current_path':"Refund history",
+				'errors':errormessage
+				}
 			return render(request,"home/emptyworkerpage.html",context)
 
 @method_decorator(login_required,name='dispatch')
@@ -964,6 +1002,11 @@ class LaboTransactions(View):
 		if work:
 			return render(request,'labotransaction.html',context)
 		else:
+			errormessage = "Laboshop History is Empty"
+			context ={
+				'current_path':"Laboshop history",
+				'errors':errormessage
+				}
 			return render(request,"home/emptyworkerpage.html",context)	
 
 @method_decorator(login_required,name='dispatch')
