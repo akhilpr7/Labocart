@@ -43,35 +43,48 @@ class JobPostingForm( forms.Form ):
   place = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
 #   image = forms.ImageField(widget=forms.FileInput(attrs={ 'class': 'form-control'}))
   phone = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Phone",'type':'phone','minlength':'10','maxlength':'10','required pattern':'\d*'}))
-  CHOICES = (('True','Half day'),('False','Full day'))
+  CHOICES = (('True','FUll Day'),('False','Half day'))
   work_type = forms.ChoiceField(choices = CHOICES,widget=forms.Select(attrs={'class':'form-select'}))
-
+ 
   def __init__(self,*args,**kwargs):
     self.category = kwargs.pop('initial',[])
+    print(self.category,"selllllllllllllllllllllllllffffffffff")
     self.job = kwargs.pop('jobs',[])
     self.user = kwargs.pop('user',[])
     print(self.user,"sdfaghsdhj")
     super(JobPostingForm, self).__init__(*args,**kwargs)
     self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True).exclude(job_title__in=[self.job]),
                               widget=forms.Select(attrs={'class':'form-select'}))
+    print(self.fields['job_title'].__dict__,"joobbbbbb totititititilllleeee")
     self.fields['hirer']=forms.CharField(max_length=20, required=True, widget=forms.HiddenInput() , initial=self.user)
 
-#   def clean(self):
+  def clean__job_title(self):
+    return self.cleaned_data['job_title']
+  def clean(self):
 
-#             self.cleaned_data = super().clean()
-#             place=self.cleaned_data.get('place')
-#             if place :
-#                 list=place.split(", ")
-#                 if len(list) ==3:
-#                     check_place=CitiesModel.objects.filter(name=list[0],subcountry=list[1],country=list[2])
-#                     if len(check_place) == 0:
-#                          self._errors['place']=self.error_class(['Please Select a place from the provided list'])
-#                 else:
-#                     self._errors['place']=self.error_class(['Please Select a place from the provided list'])
+            self.cleaned_data = super().clean()
+            place=self.cleaned_data.get('place')
+            if place :
+                print("enterd  >>>>>>>>>>>>>>>>>>> 1")
+                list=place.split(", ")
+                print("enterd  >>>>>>>>>>>>>>>>>>> list",list )
 
+                if len(list) ==3:
+                    print("enterd  >>>>>>>>>>>>>>>>>>> listhagh;dghd;ghad" )
 
+                    check_place=CitiesModel.objects.filter(name=list[0],subcountry=list[1],country=list[2])
+                    print(check_place)
+                    if len(check_place) == 0:
+                        self._errors['place']=self.error_class(['Please Select a place from the provided list'])
+                        print("enterd  >>>>>>>>>>>>>>>>>>> 2")
+                    else:
+                        return self.cleaned_data
+                else:
+                    self._errors['place']=self.error_class(['Please Select a place from the provided list'])
 
-#             return self.cleaned_data
+                    print("enterd  >>>>>>>>>>>>>>>>>>> 3")
+
+            return self.cleaned_data
 
 
 

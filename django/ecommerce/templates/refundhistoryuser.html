@@ -37,15 +37,15 @@
                 <!-- Item -->
                 {% for data in refund %}
                 <tr>
-                    <td><p>{{data.id}}</p></td>
-                    <td><p>{{data.worker}}</p></td>
-                    <td><p>{{data.rate}}</p></td>
-                    <td><p>{{data.worker_refund|floatformat:2}}</p></td>
-                    <td><p>{{data.hirer_refund|floatformat:2}}</p></td>
-                    <td>{%if data.work_mode == 'true' %}<p>Full Day</p>{%else%}<p>Half Day</p>{%endif%}</td>
-                    <td><p>{{data.job_title}}</p></td>
-                    <td><p>{{data.work_date|date}}</p></td>
-                    <td>{%if data.status == 2 %}<p class="text-success">Completed</p >{%else%}<p class="text-success">Completed</p>{%endif%}</td>
+                    <td>{{data.id}}</td>
+                    <td>{{data.worker}}</td>
+                    <td>{{data.rate}}</td>
+                    <td>{{data.worker_refund|floatformat:2}}</td>
+                    <td>{{data.hirer_refund|floatformat:2}}</td>
+                    <td>{%if data.work_mode == 'true' %}Full Day{%else%}Half Day{%endif%}</td>
+                    <td>{{data.job_title}}</td>
+                    <td>{{data.work_date|date}}</td>
+                    <td>{%if data.status == 2 %}<span class="text-success">Completed</span >{%else%}<span class="text-success">Completed</span>{%endif%}</td>
                    
 
                 </tr>

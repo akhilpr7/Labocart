@@ -106,6 +106,7 @@ class TransactionView(View):
                 if new_context: 
                     return render(request , self.template_name , context)
                 else:
+                    messages.success(request,"No Transactions Found")
                     return render(request, "home/emptyadmin.html",context)
             else:
                 new_context = PurchaseModel.objects.filter(
@@ -117,6 +118,7 @@ class TransactionView(View):
                 if new_context:
                     return render(request , self.template_name , context)   
                 else:
+                    messages.success(request,"No Transactions Found")
                     return render(request, "home/emptypage.html",context)
 @method_decorator(login_required, name='dispatch')
 class Userservices(View):
@@ -237,7 +239,7 @@ class ApplyFormView(View):
                 if form.is_valid():
                     obj = form.save()
                     pay = JobPaymentModel.objects.create(work_id=obj,rate=rate,status=0,amount=0)				
-                    messages.success(request, "Success")
+                    messages.success(request, "Job Applied Successfully")
                     return redirect('lookforjobs')
                 else:
                     messages.error(request, "error")
@@ -326,6 +328,7 @@ class RatingView(View):
         data.user_status = 1
         print(data)
         data.save()
+        messages.success(request,"Service Completed Successfully") 
         return redirect('userservices')
 
 
@@ -475,44 +478,50 @@ class JobPostingView(View):
         jobs = jobmodel.objects.filter(category=category).values()
         userjobs = JobPostingModel.objects.filter(hirer=request.user).values_list("job_title",flat=True)
         print(userjobs,"-----------------------")
+        x =jobs.exclude(job_title__in=[userjobs])
+        print(x,"--===--===--===----========")
+        if not x:
+            print("empty !!!!!!!!!!!!!!!!")
+            messages.error(request,"No Remaining Jobs Found In This Caegory  !!!!")
+            return redirect("labocategory2")
+        else:
+            
+            form = JobPostingForm(initial=category, user=request.user.username,jobs=userjobs)
+            context = {
+                "form": form,
+                "jobs": jobs,
+                'current_path': "Apply Services"
+            }
+            return render(request, self.template_name, context)
 
-        form = JobPostingForm(initial=category, user=request.user.username,jobs=userjobs)
-        context = {
-            "form": form,
-            "jobs": jobs,
-            'current_path': "Apply Services"
-        }
-        return render(request, self.template_name, context)
-
-    def post(self, request, *args, **kwargs):
+    def post(self, request,id, *args, **kwargs):
         if request.method == 'POST':
             # applied = JobPostingModel.objects.filter
-            form = JobPostingForm(request.POST,request.FILES)
-            try:
-                job = request.POST['job_title']
-                userjobs = JobPostingModel.objects.filter(hirer=request.user).values_list("job_title",flat=True)
-                if job in userjobs:
-                    messages.error(request,"Already Applied To This Job  !!")
-                    return redirect('labocategory2')
-                else:
-                    obj = JobPostingModel.objects.create(
-                        hirer=request.user.username,
-                        place=request.POST['place'],
-                        # image=request.FILES['image'],
-                        job_title=request.POST['job_title'],
-                        work_type=request.POST['work_type'],
-                        phone=request.POST['phone'],
-                        name=request.POST['name'])
-                    obj.save()
-                    return redirect('enlistedjobs')
-
-            except Exception :
-                print(Exception)
+            
+            form = JobPostingForm(request.POST)
+            job = request.POST['job_title']
+            userjobs = JobPostingModel.objects.filter(hirer=request.user).values_list("job_title",flat=True)
+            if job in userjobs:
+                messages.error(request,"Already Applied To This Job  !!")
                 return redirect('labocategory2')
+            else:
+                obj = JobPostingModel.objects.create(
+                    hirer=request.user.username,
+                    place=request.POST['place'],
+                    # image=request.FILES['image'],
+                    job_title=request.POST['job_title'],
+                    work_type=request.POST['work_type'],
+                    phone=request.POST['phone'],
+                    name=request.POST['name'])
+                obj.save()
+                messages.success(request,"Successfully Applied!!")
+                return redirect('enlistedjobs')
+
+ 
 
         else:
-            print("not valid")
-            return redirect('labocategory')
+            print("Method not allowed")
+            return redirect('labocategory2')
 
 @method_decorator(login_required, name='dispatch')
 class ManageServices(View):
@@ -542,6 +551,7 @@ class HireHistory(View):
         if details:
             return render(request, "home/hirehistory.html", context)
         else:
+            messages.error(request,"Page is Empty")
             return render(request, "home/emptypage.html", context)
 
 
@@ -681,6 +691,7 @@ class CancelJobRequests(View):
     def get(self, request,id, *args, **kwargs):
         id = id
         cancel = AppliedJobs.objects.filter(id=id).update(status=3)
+        messages.success(request, " Request Cancelled")
         return redirect('jobrequests')
 
 
@@ -701,7 +712,7 @@ class RejectUser(View):
     def get(self, request, id):
         user = NewUserModel.objects.get(id=id)
         user.delete()
-        messages.success(request, "Rejected User")
+        messages.success(request, "Rejected User successfully")
         return redirect('pendingkyc')
 
 @method_decorator(login_required, name='dispatch')
@@ -713,6 +724,7 @@ class JobRequestUpdate(View):
         req.update(status=1)
         reject = AppliedJobs.objects.filter(job_title = job).exclude(status=1)
         reject.update(status=2)
+        messages.success(request, "Updated successfully")
         return redirect('jobrequests')
 
 
@@ -730,6 +742,7 @@ class ProvidedJobs(View):
             if jobs:
                 return render(request,self.template_name , context)
             else:
+                messages.error(request, "No Services Found")
                 return render(request,"home/emptyservices.html",context)
         else:
             return redirect('membership')
@@ -823,10 +836,11 @@ class  UpdateEnlistedJobStatus(View):
         if job.is_active:
             job.is_active = False
             job.save()
+            messages.success(request,"Inactivated Successfully! ")
         else:
             job.is_active = True
             job.save()
-        messages.success(request,"Success! ")
+        messages.success(request," Activated Successfully! ")
         return redirect('enlistedjobs')
 @method_decorator(login_required, name='dispatch')
 class  deleteenlisted(View):
@@ -952,4 +966,7 @@ class SearchCityView(View):
 class Reported(View):
     def get(self, request):
         report= ReeportModel.objects.all()
-        return render(request, 'home/reported.html',{"current_path":"Reported Issues","report":report,})
+        if request.user.is_superuser:
+            return render(request, 'home/reported.html',{"current_path":"Reported Issues","report":report,})
+        else:
+            return render(request, 'home/page-403.html')

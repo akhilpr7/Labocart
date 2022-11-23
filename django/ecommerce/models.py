@@ -104,7 +104,7 @@ class PackageModel(models.Model):
     package_name = models.CharField(max_length=50,blank=False,null=False)
     validity = models.IntegerField(blank=False,null=False)
     cost = models.FloatField(max_length=20, blank=False,null=False,default=0)
-    image = models.ImageField(blank=False,null=False)
+    image = models.ImageField(upload_to='package/', blank=False,null=False)
 class LabopaymentModel(models.Model):
     work_id = models.ForeignKey(RequestsModel, on_delete=models.CASCADE, default=None)
     rate = models.FloatField(max_length=20, blank=False,null=False,default=0)

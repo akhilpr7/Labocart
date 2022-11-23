@@ -2,7 +2,7 @@
 
 {% load widget_tweaks %} 
 
-{% block title %} Sign UP {%endblock title %}
+{% block title %} Enlist Jobs {%endblock title %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -63,7 +63,7 @@
                                         
                                         
                                     </div>
-                                    <div id="results" class="suggestion " style="max-height:200px; overflow:scroll; "></div>
+                                    <div id="results" class="suggestion " style="max-height:200px; overflow-y:scroll; "></div>
                                     <span class="text-danger">{{ form.place.errors }}</span>
                                 </div>
     
@@ -96,6 +96,7 @@
                                         </span>
                                         {{ form.work_type }}
                                     </div>
+                                    <span class="text-danger">{{ form.work_type.errors }}</span>
                                     <span class="text-danger">{{ form.work_type.errors }}</span>
                                 </div>
 

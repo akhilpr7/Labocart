@@ -16,21 +16,24 @@
 <nav id="sidebarMenu" class="sidebar d-lg-block bg-tertiary text-white collapse" data-simplebar>
 <div class="sidebar-inner px-4 pt-3">
   <ul class="nav flex-column pt-3 pt-md-0">
-    <li class="nav-item d-flex justify-content-between " id="something">
-      <a href="/" class="nav-link d-flex align-items-center col-md-8 ">
-        <span class="sidebar-icon">
-          <img src="/static/assets/img/brand/laboCart.png" height="20" width="20" alt="Volt Logo">
-        </span>
-        <span class="mt-1 ms-1 sidebar-text">LABOCART</span>
-      </a>
-      <button class="btn text-white navbar-toggler d-lg-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-        X</span>
-      </button>
-    </li>
     <!-- Admin View -->
   
     
     {% if request.user.is_superuser %}
+
+    <li class="nav-item d-flex justify-content-between " id="something">
+       <!-- <a href="" class="nav-link d-flex align-items-center col-md-8 "> -->
+        <div class="nav-link d-flex align-items-center col-md-8 ">
+        <span class="sidebar-icon">
+          <img src="/static/assets/img/brand/laboCart.png" height="20" width="20" alt="Volt Logo">
+        </span>
+        <span class="mt-1 ms-1 sidebar-text">LABOCART</span>
+      <!-- </a> -->
+     <!-- <button class="btn text-white navbar-toggler d-lg-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      </span>
+      </button> -->
+    </div>
+    </li>
     <li class="nav-item{% if '' == current_path %} active {% endif %}" style="padding:8px;">
       <a class="nav-link" href="{% url 'admindashboard' %}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
@@ -209,19 +212,19 @@
                   <span class="sidebar-text">Manage Package</span>
               </a>
             </li>
-            <li class="nav-item {% if 'Reported Isuues' in current_path %} active {% endif %}"style="padding:8px;">
-              <a class="nav-link" href="{%url 'issues'%}">
-                <!-- <span class="sidebar-icon ms-1">
-                  <span class="material-symbols-outlined">
-                    table
-                    </span> </span>              -->
-                    <i class="fas fa-fw fa-table"></i>
-                  <span class="sidebar-text">Reported Isuues</span>
-              </a>
-            </li>
           </div>
         </li>
-
+        <li class="nav-item {% if 'Reported Issues' in current_path %} active {% endif %}"style="padding:8px;">
+          <a class="nav-link" href="{%url 'issues'%}">
+            <!-- <span class="sidebar-icon ms-1">
+              <span class="material-symbols-outlined">
+                table
+                </span> </span>              -->
+                <i class="fas fa-fw fa-table"></i>
+              <span class="sidebar-text">Reported Isuues</span>
+          </a>
+        </li>
+        
       {% endif %}
 
 <!-- End of Admin View -->
@@ -230,6 +233,15 @@
 <!-- User View -->
 
 {% if not request.user.is_superuser %}
+
+<li class="nav-item" id="something"style="padding:8px;">
+  <a href="/" class="nav-link d-flex align-items-center">
+    <span class="sidebar-icon">
+      <img src="/static/assets/img/brand/laboCart.png" height="20" width="20" alt="Volt Logo">
+    </span>
+    <span class="mt-1 ms-1 sidebar-text">LABOCART</span>
+  </a>
+</li>
 
 <li class="nav-item{% if '' == current_path %} active {% endif %}" style="padding:8px;">
   <a class="nav-link" href="{% url 'dashboard' %}">
