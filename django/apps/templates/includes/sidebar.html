@@ -209,19 +209,19 @@
                   <span class="sidebar-text">Manage Package</span>
               </a>
             </li>
-            <li class="nav-item {% if 'Reported Isuues' in current_path %} active {% endif %}"style="padding:8px;">
-              <a class="nav-link" href="{%url 'issues'%}">
-                <!-- <span class="sidebar-icon ms-1">
-                  <span class="material-symbols-outlined">
-                    table
-                    </span> </span>              -->
-                    <i class="fas fa-fw fa-table"></i>
-                  <span class="sidebar-text">Reported Isuues</span>
-              </a>
-            </li>
           </div>
         </li>
-
+        <li class="nav-item {% if 'Reported Issues' in current_path %} active {% endif %}"style="padding:8px;">
+          <a class="nav-link" href="{%url 'issues'%}">
+            <!-- <span class="sidebar-icon ms-1">
+              <span class="material-symbols-outlined">
+                table
+                </span> </span>              -->
+                <i class="fas fa-fw fa-table"></i>
+              <span class="sidebar-text">Reported Isuues</span>
+          </a>
+        </li>
+        
       {% endif %}
 
 <!-- End of Admin View -->

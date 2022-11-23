@@ -106,6 +106,7 @@ class TransactionView(View):
                 if new_context: 
                     return render(request , self.template_name , context)
                 else:
+                    messages.error(request,"Sorry transactions are empty")
                     return render(request, "home/emptyadmin.html",context)
             else:
                 new_context = PurchaseModel.objects.filter(
@@ -460,41 +461,66 @@ class JobPostingView(View):
         jobs = jobmodel.objects.filter(category=category).values()
         userjobs = JobPostingModel.objects.filter(hirer=request.user).values_list("job_title",flat=True)
         print(userjobs,"-----------------------")
+        x =jobs.exclude(job_title__in=[userjobs])
+        print(x,"--===--===--===----========")
+        if not x:
+            print("empty !!!!!!!!!!!!!!!!")
+            messages.error(request,"No Remaining Jobs Found In This Caegory  !!!!")
+            return redirect("labocategory2")
+        else:
+            
+            form = JobPostingForm(initial=category, user=request.user.username,jobs=userjobs)
+            context = {
+                "form": form,
+                "jobs": jobs,
+                'current_path': "Apply Services"
+            }
+            return render(request, self.template_name, context)
 
-        form = JobPostingForm(initial=category, user=request.user.username,jobs=userjobs)
-        context = {
-            "form": form,
-            "jobs": jobs,
-            'current_path': "Apply Services"
-        }
-        return render(request, self.template_name, context)
-
-    def post(self, request, *args, **kwargs):
+    def post(self, request,id, *args, **kwargs):
         if request.method == 'POST':
             # applied = JobPostingModel.objects.filter
-            form = JobPostingForm(request.POST,request.FILES)
-            try:
-                job = request.POST['job_title']
-                userjobs = JobPostingModel.objects.filter(hirer=request.user).values_list("job_title",flat=True)
-                if job in userjobs:
-                    messages.error(request,"Already Applied To This Job  !!")
-                    return redirect('labocategory2')
-                else:
-                    obj = JobPostingModel.objects.create(
-                        hirer=request.user.username,
-                        place=request.POST['place'],
-                        # image=request.FILES['image'],
-                        job_title=request.POST['job_title'],
-                        work_type=request.POST['work_type'],
-                        phone=request.POST['phone'],
-                        name=request.POST['name'])
-                    obj.save()
-                    return redirect('enlistedjobs')
-
-            except Exception :
-                print(Exception)
+            form = JobPostingForm(request.POST)
+            job_title=request.POST.get('job_title')
+            print(form.fields['job_title'].choices,"joooooooooooooljkgfkgkfjgkfkgkfkgjk`")
+            print(form,"asdfgggg")
+            form.fields['job_title'].choices = [(job_title, job_title)]
+            print(form.fields['job_title'].choices,"jooooooooooooooooooob`")
+           
+              
+            job = request.POST['job_title']
+            userjobs = JobPostingModel.objects.filter(hirer=request.user).values_list("job_title",flat=True)
+            if job in userjobs:
+                messages.error(request,"Already Applied To This Job  !!")
                 return redirect('labocategory2')
+            else:
+                obj = JobPostingModel.objects.create(
+                    hirer=request.user.username,
+                    place=request.POST['place'],
+                    # image=request.FILES['image'],
+                    job_title=request.POST['job_title'],
+                    work_type=request.POST['work_type'],
+                    phone=request.POST['phone'],
+                    name=request.POST['name'])
+                obj.save()
+                return redirect('enlistedjobs')
 
+            # else:
+            #     category = Category.objects.filter(id=id).values_list('category_name')[0][0]
+            #     print(form.errors,"errrrrrrrrrrrrrrrrrrrrrrrrrrrr")
+            #     print(request.POST['place'])
+            #     print(request.POST['work_type'])
+            #     print(request.POST['name'])
+            #     print(request.POST['job_title'],"-----------------------------  ")
+            #     print(request.POST['name'])
+            #     print("exited")
+            #     jobs = jobmodel.objects.filter(category=category).values()
+
+            #     userjobs = JobPostingModel.objects.filter(hirer=request.user).values_list("job_title",flat=True)
+
+            #     form = JobPostingForm(initial=category, user=request.user.username,jobs=userjobs)
+
+            #     return render(request,self.template_name,{'form':form})
         else:
             print("not valid")
             return redirect('labocategory')
@@ -932,4 +958,7 @@ class SearchCityView(View):
 class Reported(View):
     def get(self, request):
         report= ReeportModel.objects.all()
-        return render(request, 'home/reported.html',{"current_path":"Reported Issues","report":report,})
+        if request.user.is_superuser:
+            return render(request, 'home/reported.html',{"current_path":"Reported Issues","report":report,})
+        else:
+            return render(request, 'home/page-403.html')

@@ -25,7 +25,7 @@ class JobPostingModel(models.Model):
     # image = models.FileField(upload_to='jobImages/')
     phone = models.BigIntegerField()
     status =  models.IntegerField(blank=False,null=True,default=0)
-    job_title = models.CharField(max_length=20, blank=False,default='none')
+    job_title = models.CharField(max_length=20, blank=True,default='none')
 
     class Meta:
         ordering = ['id']
