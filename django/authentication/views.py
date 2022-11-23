@@ -53,15 +53,20 @@ class LoginViews(LoginView):
 
 class RegisterStaff(View):
     template="accounts/registerstaff.html"
+  
     def get(self, request, *args, **kwargs):
-        context = {}
-        context['form'] = RegisterForm()
-        return render(request, self.template, context)
+        if request.user.is_superuser:
+
+            context = {}
+            context['form'] = RegisterForm()
+            return render(request, self.template, context)
+        else:
+            return render(request, 'home/page-403.html')
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             form = RegisterForm(request.POST,request.FILES)
-            print(request.POST['username'])
+            print(request.POST['username'],"------------")
             if form.is_valid():
                 print("valid")
 
@@ -69,13 +74,12 @@ class RegisterStaff(View):
                     obj = form.save(commit=False)
                     obj.is_staff=True
                     obj.kyc_approved=True
-                    obj.save
+                    obj.save()
+                    messages.success(request, 'Successfully Registered Staff  ')
                 except Exception as e:
                     print("error", e)
                     return render(request, 'accounts/registerstaff.html', {'form': RegisterForm(request.POST)})
 
-                messages.success(
-                    request, 'Successfully Registered Staff  ')
                 return redirect("registerstaff")
             else:
                 print("not valid")
