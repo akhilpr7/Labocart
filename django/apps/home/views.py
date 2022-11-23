@@ -1052,23 +1052,25 @@ class Delivery(View):
 
         messages.success(request,"Out for delivery !!!.")
 
-        return redirect("adminTransactions")
+        return redirect("products_history")
 
 class Deliverd(View):
 
     def get(self, request,id):
 
         obj = PurchaseModel.objects.get(id=id)
-
+       
+        
         obj.status=5
 
         wallet = NewUserModel.objects.get(username = obj.username)
+
 
         obj.save()
 
         messages.success(request,"Successfully Delivered !!!.")
 
-        return redirect("adminTransactions")
+        return redirect("products_history")
 
 class OrderCancelView(View):
 
@@ -1083,9 +1085,12 @@ class OrderCancelView(View):
         admin = NewUserModel.objects.get(username = 'admin')
 
 
-        for product_name in obj.Product_name:
+        for product_name,quant in zip(obj.Product_name,obj.Quantity):
 
-            product = ProductsModel.objects.get(Product_name = product_name)
+            
+            quantity = ProductsModel.objects.filter(Product_name = product_name).values_list("Quantity")[0][0]
+            ProductsModel.objects.filter(Product_name = product_name).update(Quantity=quantity+quant)
+            
 
 
 
@@ -1101,4 +1106,4 @@ class OrderCancelView(View):
 
         messages.success(request,"Cancelled The Purchase and refund initiated.")
 
-        return redirect("adminTransactions")
+        return redirect("products_history")
