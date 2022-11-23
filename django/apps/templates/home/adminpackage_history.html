@@ -13,11 +13,9 @@
 {% endif %}
 
 
-
-
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
     <div class="d-block mb-4 mb-md-0">
-      <h5 class="h5"> <b>Product Purchase History</b> </h5>
+      <h5 class="h5"> <b>Package Purchase History</b> </h5>
     </div>
 
 </div>
@@ -27,20 +25,16 @@
     <table class="table table-hover">
         <thead>
           <tr>
-            <th > Purchase ID</th>
+            <th >Purchase ID</th>
             <th >username</th>
-            <th >Product Name</th>
+            <th >Package</th>
             <th >Price</th>
-            <th >Total Price</th>
             <th >Date</th>
-            <th >Quantity</th>
-            {% comment %} <th >Shipped</th> {% endcomment %}
-            <th >Delivered</th>
           </tr>
         </thead>
         <tbody>
 
-          {% for data in purchase %}
+          {% for data in package %}
 
           <tr>
             <td><p>{{data.order_id}}</p></td>
@@ -60,23 +54,9 @@
                 {% endfor %}
             </td>
 
-            <td><p>{{data.Total|floatformat:2}}</p></td>
+           
             <td><p>{{data.date}}</p></td>
-            <td>{% for quantity in data.Quantity %}
-              <p>{{quantity}}</p>
-
-                {% endfor %}
-            </td>
-            {%if data.status == 3%}
-            {% comment %} <td><a href="" class=" btn border rounded-2"><span class="material-symbols-outlined text-dark">done</span></a></td> {% endcomment %}
-            <td><a href="{%url 'delivered' data.id%}" class=" btn border rounded-2"><span class="material-symbols-outlined text-dark">done</span></a></td>
           
-            {%elif data.status == 4%}
-            <td><a href="" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a></td>
-            {%elif data.status == 0%}
-            <td><a href="" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a></td>
-
-            {%endif%}
         </tr> 
 
         {% endfor %}
@@ -85,7 +65,6 @@
     </table>
    
 </div> 
-
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->

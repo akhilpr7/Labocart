@@ -1,0 +1,64 @@
+{% extends "layouts/base.html" %}
+{% block title %}  {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+    <p class="d-none" id="messagetag">{{message.tags}}</p>
+    <p class="d-none " id="messagecontent">{{message}}</p>
+{% endfor %}
+{% endif %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <div class="d-block mb-4 mb-md-0">
+      <h5 class="h5"> <b>Refund History</b> </h5>
+    </div>
+  
+  </div>
+  
+  
+  
+  <div class="card card-body border-0 table-wrapper table-responsive" style="box-shadow: 0 0px 10px rgba(202,194,247,0.59)">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th >ID</th>
+                <th >Worker</th>
+                <th >Rate</th>
+                <th >Worker Refund</th>
+                <th >hirer Refund</th>
+                <th >Work Mode</th>
+                <th >Job Title</th>
+                <th >Date</th>
+                <th >Status</th>
+                {% comment %}
+                <th >Status</th>
+                {% endcomment %}
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Item -->
+            {% for data in refund %}
+            <tr>
+                <td><p>{{data.id}}</p></td>
+                <td><p>{{data.worker}}</p></td>
+                <td><p>{{data.rate}}</p></td>
+                <td><p>{{data.worker_refund|floatformat:4}}</p></td>
+                <td><p>{{data.hirer_refund|floatformat:4}}</p></td>
+                <td><p>{%if data.work_mode == 'true' %}<p>Full Day</p>{%else%}<p>Half Day</p>{%endif%}</td>
+                <td><p>{{data.job_title}}</p></td>
+                <td><p>{{data.work_date}}</p></td>
+                <td><p>{%if data.status == 2 %}<p class="text-success">Completed</p>{%else%}<p class="text-success">Completed</p>{%endif%}</td>
+               
+  
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  </div>
+  {% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
