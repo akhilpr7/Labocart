@@ -106,6 +106,7 @@ class TransactionView(View):
                 if new_context: 
                     return render(request , self.template_name , context)
                 else:
+                    messages.success(request,"No Transactions Found")
                     return render(request, "home/emptyadmin.html",context)
             else:
                 new_context = PurchaseModel.objects.filter(
@@ -117,6 +118,7 @@ class TransactionView(View):
                 if new_context:
                     return render(request , self.template_name , context)   
                 else:
+                    messages.success(request,"No Transactions Found")
                     return render(request, "home/emptypage.html",context)
 @method_decorator(login_required, name='dispatch')
 class Userservices(View):
@@ -228,7 +230,7 @@ class ApplyFormView(View):
                 if form.is_valid():
                     obj = form.save()
                     pay = JobPaymentModel.objects.create(work_id=obj,rate=rate,status=0,amount=0)				
-                    messages.success(request, "Success")
+                    messages.success(request, "Job Applied Successfully")
                     return redirect('lookforjobs')
                 else:
                     messages.error(request, "error")
@@ -311,6 +313,7 @@ class RatingView(View):
         data.user_status = 1
         print(data)
         data.save()
+        messages.success(request,"Service Completed Successfully") 
         return redirect('userservices')
 
 
@@ -472,32 +475,34 @@ class JobPostingView(View):
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             # applied = JobPostingModel.objects.filter
-            form = JobPostingForm(request.POST,request.FILES)
-            try:
-                job = request.POST['job_title']
-                userjobs = JobPostingModel.objects.filter(hirer=request.user).values_list("job_title",flat=True)
-                if job in userjobs:
-                    messages.error(request,"Already Applied To This Job  !!")
-                    return redirect('labocategory2')
-                else:
-                    obj = JobPostingModel.objects.create(
-                        hirer=request.user.username,
-                        place=request.POST['place'],
-                        # image=request.FILES['image'],
-                        job_title=request.POST['job_title'],
-                        work_type=request.POST['work_type'],
-                        phone=request.POST['phone'],
-                        name=request.POST['name'])
-                    obj.save()
-                    return redirect('enlistedjobs')
-
-            except Exception :
-                print(Exception)
+            
+            form = JobPostingForm(request.POST)
+            job = request.POST['job_title']
+            userjobs = JobPostingModel.objects.filter(hirer=request.user).values_list("job_title",flat=True)
+            if job in userjobs:
+                messages.error(request,"Already Applied To This Job  !!")
                 return redirect('labocategory2')
+            else:
+                print("sdgggggggggggggggggggggggggggggggggggggggggg")
+                print("sdgggggggggggggggggggggggggggggggggggggggggg")
+                print("sdgggggggggggggggggggggggggggggggggggggggggg")
+                obj = JobPostingModel.objects.create(
+                    hirer=request.user.username,
+                    place=request.POST['place'],
+                    # image=request.FILES['image'],
+                    job_title=request.POST['job_title'],
+                    work_type=request.POST['work_type'],
+                    phone=request.POST['phone'],
+                    name=request.POST['name'])
+                obj.save()
+                messages.success(request,"Successfully Applied!!")
+                return redirect('enlistedjobs')
+
+ 
 
         else:
-            print("not valid")
-            return redirect('labocategory')
+            print("Method not allowed")
+            return redirect('labocategory2')
 
 @method_decorator(login_required, name='dispatch')
 class ManageServices(View):
@@ -527,6 +532,7 @@ class HireHistory(View):
         if details:
             return render(request, "home/hirehistory.html", context)
         else:
+            messages.error(request,"Page is Empty")
             return render(request, "home/emptypage.html", context)
 
 
@@ -666,6 +672,7 @@ class CancelJobRequests(View):
     def get(self, request,id, *args, **kwargs):
         id = id
         cancel = AppliedJobs.objects.filter(id=id).update(status=3)
+        messages.success(request, " Request Cancelled")
         return redirect('jobrequests')
 
 
@@ -686,7 +693,7 @@ class RejectUser(View):
     def get(self, request, id):
         user = NewUserModel.objects.get(id=id)
         user.delete()
-        messages.success(request, "Rejected User")
+        messages.success(request, "Rejected User successfully")
         return redirect('pendingkyc')
 
 @method_decorator(login_required, name='dispatch')
@@ -698,6 +705,7 @@ class JobRequestUpdate(View):
         req.update(status=1)
         reject = AppliedJobs.objects.filter(job_title = job).exclude(status=1)
         reject.update(status=2)
+        messages.success(request, "Updated successfully")
         return redirect('jobrequests')
 
 
@@ -712,6 +720,7 @@ class ProvidedJobs(View):
         if jobs:
             return render(request,self.template_name , context)
         else:
+            messages.error(request, "No Services Found")
             return render(request,"home/emptyservices.html",context)
 @method_decorator(login_required, name='dispatch')
 class LookForJobs(View):
@@ -803,10 +812,11 @@ class  UpdateEnlistedJobStatus(View):
         if job.is_active:
             job.is_active = False
             job.save()
+            messages.success(request,"Inactivated Successfully! ")
         else:
             job.is_active = True
             job.save()
-        messages.success(request,"Success! ")
+        messages.success(request," Activated Successfully! ")
         return redirect('enlistedjobs')
 @method_decorator(login_required, name='dispatch')
 class  deleteenlisted(View):
