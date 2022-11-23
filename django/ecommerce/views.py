@@ -351,8 +351,19 @@ class UpdateProduct(View):
 
 
 			updatedRecord. Product_name = request.POST['Product_name']
+			product_names = CartModel.objects.filter(product_id=id)
+			for Product_name in product_names:
+				Product_name.Product_name = request.POST['Product_name']
+				Product_name.save()
+
 			updatedRecord. Price = request.POST['Price']
+			Prices = CartModel.objects.filter(product_id=id)
+			for Price in Prices:
+				Price.Price = request.POST['Price']
+				Price.save()
+
 			updatedRecord. Quantity = request.POST['Quantity']
+
 			try:
 				cart_image = CartModel.objects.filter(product_id=id)
 				for image in cart_image:
@@ -369,7 +380,7 @@ class UpdateProduct(View):
 			return redirect('stocklist')
 		else:
 			form = UpdateStockForm()
-		return redirect(request, 'updatestock')
+		return redirect(request, 'stocklist')
 
 @method_decorator(login_required,name='dispatch')
 class ProductTable(View):
@@ -491,14 +502,14 @@ class ActiveServices(View):
 			"user" : user,
 			'current_path':"ActiveServices"
 		}
-		if data:
-			if request.user.is_sub:
-				return render(request,'activeServices.html',context)
+		if request.user.is_sub:
+			if data:
+					return render(request,'activeServices.html',context)
 			else:
-				messages.error(request,"Subscription Required !!")
-				return redirect("workerview")
+				return render(request,"home/emptyworkerservices.html",context)
 		else:
-			return render(request,"home/emptyworkerservices.html",context)
+			messages.error(request,"Subscription Required !!")
+			return redirect('workerview')
 
 @method_decorator(login_required,name='dispatch')
 class HireNowView(View):
@@ -771,7 +782,6 @@ class ConfirmPay(View):
 			# 	quant = ProductsModel.objects.filter(id=i[0]).values_list("Quantity")[0][0]
 			# 	ProductsModel.objects.filter(id=i[0]).update(Quantity=quant-quantity)
 			obj.delete()
-			messages.success(request," Payment Successful!")
 			return redirect("invoice")
 		else:
 			messages.error(request,"Not enough balance in wallet!!")
@@ -833,7 +843,7 @@ class UpdatePackage(View):
 			updatedRecord. package_name = request.POST['package_name']
 			updatedRecord. validity = request.POST['validity']
 			updatedRecord. cost = request.POST['cost']
-			updatedRecord. image = request.POST['image']
+			updatedRecord. image = request.FILES['image']
 			updatedRecord.save()
 			messages.success(request,"Package Updated Successfully!")
 			return redirect('packages')
@@ -960,7 +970,8 @@ class LaboTransactions(View):
 class AdminTransactions(View):
 	def get(self, request, *args, **kwargs):
 		if request.user.is_superuser:
-			purchase = PurchaseModel.objects.all().values()
+			purchase = PurchaseModel.objects.all().values().exclude(status__in=[2,1,0])
+			packages = PurchaseModel.objects.filter(status=0).values()
 			hire = HireModel.objects.filter(status__in = [4,5])
 			refund = RefundHistory.objects.all().values()
 			print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",purchase)
@@ -970,6 +981,7 @@ class AdminTransactions(View):
 				'hire':hire,
 				'refund':refund,
 				'current_path':'Transactions',
+				'package':packages
 			}
 			return render(request,'home/adminTransactions.html',context)
 		else:

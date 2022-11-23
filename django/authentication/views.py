@@ -51,6 +51,46 @@ class LoginViews(LoginView):
             messages.error(request, 'Incorrect username or password')
             return redirect(reverse('login'))
 
+class RegisterStaff(View):
+    template="accounts/registerstaff.html"
+  
+    def get(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+
+            context = {}
+            context['form'] = RegisterForm()
+            return render(request, self.template, context)
+        else:
+            return render(request, 'home/page-403.html')
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            form = RegisterForm(request.POST,request.FILES)
+            print(request.POST['username'],"------------")
+            if form.is_valid():
+                print("valid")
+
+                try:
+                    obj = form.save(commit=False)
+                    obj.is_staff=True
+                    obj.kyc_approved=True
+                    obj.save()
+                    messages.success(request, 'Successfully Registered Staff  ')
+                except Exception as e:
+                    print("error", e)
+                    return render(request, 'accounts/registerstaff.html', {'form': RegisterForm(request.POST)})
+
+                return redirect("registerstaff")
+            else:
+                print("not valid")
+                messages.error(request, 'Registration failed')
+                return render(request, 'accounts/registerstaff.html', {'form': form})
+
+        return render(request, self.template, {'form': form})
+
+
+
+
 
 class RegisterViews(View):
     template = 'accounts/register.html'
