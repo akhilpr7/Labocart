@@ -35,10 +35,12 @@ class LoginViews(LoginView):
     def post(self, request, *args, **kwargs):
         print(request.POST['username'])
         print(request.POST['password'])
+
         user = authenticate(
             request, username=request.POST['username'], password=request.POST['password'])
         if user is not None:
             if user.kyc_approved:
+                print(user.is_staff,"staaaaaaaaaaaffffff")
                 login(request, user)
                 if request.user.is_superuser:
                     return HttpResponseRedirect(reverse('admindashboard'))

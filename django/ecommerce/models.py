@@ -99,7 +99,8 @@ class PurchaseModel(models.Model):
     def __str__(self):
         return self.username
     class Meta:
-        ordering = ['-date',]   
+        ordering = ['status',]   
+
 class PackageModel(models.Model):
     package_name = models.CharField(max_length=50,blank=False,null=False)
     validity = models.IntegerField(blank=False,null=False)

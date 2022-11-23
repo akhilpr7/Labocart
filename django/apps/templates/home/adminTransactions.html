@@ -35,7 +35,7 @@
             <th >Date</th>
             <th >Quantity</th>
             {% comment %} <th >Shipped</th> {% endcomment %}
-            <th >Delivered</th>
+            <th >Status</th>
           </tr>
         </thead>
         <tbody>
@@ -67,15 +67,49 @@
 
                 {% endfor %}
             </td>
-            {%if data.status == 3%}
-            {% comment %} <td><a href="" class=" btn border rounded-2"><span class="material-symbols-outlined text-dark">done</span></a></td> {% endcomment %}
-            <td><a href="{%url 'delivered' data.id%}" class=" btn border rounded-2"><span class="material-symbols-outlined text-dark">done</span></a></td>
-          
-            {%elif data.status == 4%}
-            <td><a href="" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a></td>
-            {%elif data.status == 0%}
-            <td><a href="" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a></td>
-
+            {%if data.status == 5%}
+            <td><a class="btn btn-light dropdown-toggle text-success" href="#" role="button" >
+              <i class="fa fa-check text-dark"></i> Delivered   
+                
+            </a></td>
+            {%elif data.status == 6%}
+              <td><a class="btn btn-light dropdown-toggle text-danger" href="#" role="button" >
+                <span class="text-black " style="font-size: 1.3rem;">x</span>  Cancelled   
+                
+              </a></td>
+            {%else%}
+            <td>
+              
+              
+              {%if data.status == 3%}
+              <div class="dropdown">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Order Confirmed 
+                </a>
+              
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item " href="#">Order Confirmed   <i class="fa fa-check text-success"></i></a></li>
+                  <li><a class="dropdown-item " href="{%url 'delivery' data.id%}">Out For Delivery <i class="fa fa-check "></i> </a></li>
+                  <li><a class="dropdown-item " href="#">Delivered         </a></li>
+                  <li><a class="dropdown-item text-danger" href="{%url 'cancel-order' data.id%}">Cancel         </a></li>
+                </ul>
+              </div>
+              {%elif data.status == 4%}
+              <div class="dropdown">
+                <a class="btn btn-success dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Out For Delivery
+                </a>
+              
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item " href="#">Order Confirmed   <i class="fa fa-check text-success"></i></a></li>
+                  <li><a class="dropdown-item " href="#">Out For Delivery  <i class="fa fa-check text-success"></i></a></li>
+                  <li><a class="dropdown-item " href="{%url 'deliverd' data.id%}">Delivered<i class="fa fa-check "></i></a></li>
+                  <li><a class="dropdown-item text-danger" href="{%url 'cancel-order' data.id%}"> >Cancel         </a></li>
+                </ul>
+              </div>
+             
+             
+            {%endif%}
             {%endif%}
         </tr> 
 

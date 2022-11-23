@@ -962,7 +962,7 @@ class LaboTransactions(View):
 @method_decorator(login_required,name='dispatch')
 class AdminTransactions(View):
 	def get(self, request, *args, **kwargs):
-		if request.user.is_superuser:
+		if request.user.is_superuser or request.user.is_staff:
 			purchase = PurchaseModel.objects.all().values().exclude(status__in=[2,1,0])
 			packages = PurchaseModel.objects.filter(status=0).values()
 			hire = HireModel.objects.filter(status__in = [4,5])

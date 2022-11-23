@@ -5,7 +5,7 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from ecommerce.models import HireModel, PurchaseModel,RequestsModel,RefundHistory,PackageModel
+from ecommerce.models import HireModel, PurchaseModel,RequestsModel,RefundHistory,PackageModel,ProductsModel
 from .forms import AddJobForm, CategoryForm, JobPostingForm, AddFundForm, ApplyForm,CommentForm
 from .models import Category, JobPostingModel, AppliedJobs,Category,JobPaymentModel,CitiesModel,ReeportModel
 from django.contrib import messages
@@ -976,10 +976,66 @@ class Reported(View):
         else:
             return render(request, 'home/page-403.html')
 
-class Delivered(View):
+
+class Delivery(View):
+
     def get(self, request,id):
+
         obj = PurchaseModel.objects.get(id=id)
+
         obj.status=4
+
         obj.save()
-        messages.success(request,"Successfully Delivered !!!")
+
+        messages.success(request,"Out for delivery !!!.")
+
+        return redirect("adminTransactions")
+
+class Deliverd(View):
+
+    def get(self, request,id):
+
+        obj = PurchaseModel.objects.get(id=id)
+
+        obj.status=5
+
+        wallet = NewUserModel.objects.get(username = obj.username)
+
+        obj.save()
+
+        messages.success(request,"Successfully Delivered !!!.")
+
+        return redirect("adminTransactions")
+
+class OrderCancelView(View):
+
+    def get(self, request,id):
+
+        obj = PurchaseModel.objects.get(id=id)
+
+        obj.status=6
+
+        wallet = NewUserModel.objects.get(username = obj.username)
+
+        admin = NewUserModel.objects.get(username = 'admin')
+
+
+        for product_name in obj.Product_name:
+
+            product = ProductsModel.objects.get(Product_name = product_name)
+
+
+
+        admin.wallet = admin.wallet - obj.Total
+
+        wallet.wallet = wallet.wallet + obj.Total
+
+        wallet.save()
+
+        admin.save()
+
+        obj.save()
+
+        messages.success(request,"Cancelled The Purchase and refund initiated.")
+
         return redirect("adminTransactions")

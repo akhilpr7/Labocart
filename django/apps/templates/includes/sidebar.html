@@ -236,14 +236,105 @@
           </a>
         </li>
         
-      {% endif %}
+      {% comment %} {% endif %} {% endcomment %}
 
 <!-- End of Admin View -->
 
 
 <!-- User View -->
 
-{% if not request.user.is_superuser %}
+{% elif request.user.is_staff %}
+
+
+<li class="nav-item" id="something"style="padding:8px;">
+  <a href="/" class="nav-link d-flex align-items-center">
+    <span class="sidebar-icon">
+      <img src="/static/assets/img/brand/laboCart.png" height="20" width="20" alt="Volt Logo">
+    </span>
+    <span class="mt-1 ms-1 sidebar-text">LABOCART</span>
+  </a>
+</li>
+
+{% comment %} <li class="nav-item{% if '' == current_path %} active {% endif %}" style="padding:8px;">
+  <a class="nav-link" href="{% url 'dashboard' %}">
+      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <span>Dashboard</span></a>
+</li> {% endcomment %}
+
+    <!-- <li class="nav-item  {% if 'transactions' in current_path  %} active {% endif %} "  data='dashboard'  >
+      <a href="{% url 'funds' %}" class="nav-link" >
+        <span class="sidebar-icon ">
+          <span class="material-symbols-outlined">
+            add_card
+            </span>  
+          </span>
+        <span class="sidebar-text">Fund Deposit</span>
+      </a>
+    </li> -->
+   
+      <!-- <li class="nav-item {% if 'transactions' in current_path %} active {% endif %}"  >
+        <a href="{% url 'shop' %}" class="nav-link" id="something">
+          <span class="sidebar-icon ">
+            <span class="material-symbols-outlined">
+              storefront
+              </span>
+          </span>
+          <span class="sidebar-text">Shop</span>
+        </a>
+      </li> -->
+     
+
+   
+    
+
+            <!-- <li class="nav-item {% if 'transactions' in current_path %} active {% endif %}"  >
+              <a href="{% url 'transaction' %}" class="nav-link opacity-75" id="something">
+                <span class="sidebar-icon ">
+                  <span class="material-symbols-outlined">
+                    paid
+                    </span>
+                </span>
+                <span class="sidebar-text">Transactions</span>
+              </a>
+            </li> -->
+            {% comment %} <li class="nav-item {% if 'Transactions' in current_path %} active {% endif %}"style="padding:8px;">
+              <a class="nav-link" href="{% url 'transaction' %}">
+                  <i class="fas fa-fw fa-dollar-sign"></i>
+                  <span>Transactions</span></a>
+            </li> {% endcomment %}
+            <!-- <li class="nav-item {% if 'transactions' in current_path %} active {% endif %}"  >
+              <a href="{% url 'refundhistory' %}" class="nav-link" id="something">
+                <span class="sidebar-icon ">
+                  <span class="material-symbols-outlined">
+                    paid
+                    </span>
+                </span>
+                <span class="sidebar-text">Refund history</span>
+              </a>
+            </li> -->
+            <li class="nav-item {% if 'Transactions' in current_path %} active {% endif %}"style="padding:8px;">
+              <a class="nav-link" href="{% url 'adminTransactions' %}">
+                  <i class="fas fa-fw fa-credit-card"></i>
+                  <span>Manage Delivery</span></a>
+            </li>
+      </li>
+
+
+{% comment %}       
+    <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
+        <li class="nav-item"style="padding:8px;">
+          <a href="{% url 'workerview' %}" class="nav-link">
+            <span class="sidebar-icon text-danger">
+              <span class="material-symbols-outlined">
+                exit_to_app
+                </span></span>
+            <span class="sidebar-text">Worker View</span>
+          </a>
+        </li>    
+ {% endcomment %}
+
+
+{% elif not request.user.is_superuser %}
 
 <li class="nav-item" id="something"style="padding:8px;">
   <a href="/" class="nav-link d-flex align-items-center">

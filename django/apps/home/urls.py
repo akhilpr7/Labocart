@@ -50,8 +50,9 @@ urlpatterns = [
     path('admindashboard',views.AdminDashboard.as_view(),name='admindashboard'),
     path('search_city/<str:feildname>',views.SearchCityView.as_view(),name='search-city'),
     path('issues/',views.Reported.as_view(),name='issues'),
-    path('delivered/<int:id>/',views.Delivered.as_view(),name='delivered'),
-    
+    path('delivery/<int:id>/',views.Delivery.as_view(),name='delivery'),
+    path('deliverd/<int:id>/',views.Deliverd.as_view(),name='deliverd'),
+    path('cancel-order/<int:id>/',views.OrderCancelView.as_view(),name='cancel-order'),
 
 
 ]
