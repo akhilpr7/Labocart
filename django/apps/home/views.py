@@ -843,7 +843,7 @@ class  UpdateEnlistedJobStatus(View):
                 messages.success(request," Activated")
                 return redirect('enlistedjobs')
             else:
-                messages.error(request," Limit Reached ")
+                messages.error(request," Activation Limit Reached ")
                 return redirect('enlistedjobs')
         messages.success(request," Activated Successfully! ")
         return redirect('enlistedjobs')
