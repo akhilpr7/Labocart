@@ -822,7 +822,6 @@ class EditLookJobs(View):
         work_mode=request.POST.get("work_mode")
         location=request.POST.get("location")
         rate=request.POST.get("rate")
-        print(id,work_mode,location,rate,"Yepppudraaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         AppliedJobs.objects.filter(id=id).update(work_type=work_mode,place=location,rate=rate)
 
         return redirect('lookjobs')
@@ -832,14 +831,20 @@ class EditLookJobs(View):
 class  UpdateEnlistedJobStatus(View):
     def get(self, request,id, *args, **kwargs):
         job = JobPostingModel.objects.get(id=id)
-        print(job.is_active,"activityyyyyyyyyyyyyyyyyyyyyyyyy")
+        active = JobPostingModel.objects.filter(hirer=request.user,is_active = True).count()
         if job.is_active:
             job.is_active = False
             job.save()
             messages.success(request,"Inactivated Successfully! ")
-        else:
-            job.is_active = True
-            job.save()
+        else: 
+            if active < 5:
+                job.is_active = True
+                job.save()
+                messages.success(request," Activated")
+                return redirect('enlistedjobs')
+            else:
+                messages.error(request," Limit Reached ")
+                return redirect('enlistedjobs')
         messages.success(request," Activated Successfully! ")
         return redirect('enlistedjobs')
 @method_decorator(login_required, name='dispatch')
