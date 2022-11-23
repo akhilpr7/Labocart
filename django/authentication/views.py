@@ -146,8 +146,10 @@ class UpdateProfileView(View):
             updateprofile.email = request.POST['email']
             updateprofile.image = request.FILES['image']
             updateprofile.save()
-            return redirect('profile')
+            messages.success(request,' Profile updated Successfully')
+            return redirect('profile') 
         else:
             form = UpdateProfileForm()
+            messages.error(request,'Profile updation failed')
         return redirect('update_profile')
 

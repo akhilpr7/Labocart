@@ -107,7 +107,7 @@ class AddtocartView(View):
 			product_id=product["id"],
 			cartnumber = request.user.id,
 		)
-		messages.success(request,"Success !")
+		messages.success(request,"Product Added Successfully !")
 		data.save()
 		return redirect('shop')
 
@@ -320,7 +320,7 @@ class Deleteproduct(View):
 		cartDta = CartModel.objects.filter(Product_name = productData)
 		if cartDta:
 			cartDta.delete()
-		messages.success(request,"Success !")
+		messages.success(request,"Deleted Successfully!")
 		return redirect('stocklist')
 @method_decorator(login_required,name='dispatch')
 class UpdateProduct(View): 
@@ -365,7 +365,7 @@ class UpdateProduct(View):
 			except Exception:	
 				print("no image found")
 			updatedRecord.save()
-			messages.success(request,"Success!")
+			messages.success(request,"Updated Successfully!")
 			return redirect('stocklist')
 		else:
 			form = UpdateStockForm()
@@ -393,15 +393,20 @@ class LaboRegister(View):
 		category = Category.objects.filter(id=id).values_list('category_name')[0][0]
 		jobs = jobmodel.objects.filter(category=category).values()
 		userjob= labourmodels.objects.filter(username=request.user).values_list('job_title',flat=True)
-		# print("----",jobs,"6666666666666666666666666666666")
-		form = Laboregisterform(initial=category,jobs=userjob)
-		request.session['category'] = category
-		context = {
-			"form" : form,
-			"jobs" : jobs,
-			'current_path':"Apply Services" 
-		}
-		# if not request.user.is_superuser:
+		x =jobs.exclude(job_title__in=[userjob])
+		print(x,"--===--===--===----========")
+		if not x:
+			print("empty1111111111111111111")
+			messages.error(request,"No Remaining Jobs Found In This Category  !!!!")
+			return redirect("labocategory")
+		else:
+			form = Laboregisterform(initial=category,jobs=userjob)
+			request.session['category'] = category
+			context = {
+				"form" : form,
+				"jobs" : jobs,
+				'current_path':"Register Services" 
+			}
 		return render(request, self.template,context)
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
@@ -440,7 +445,7 @@ class LaboRegister(View):
 
 				obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential,phone=phone)
 				# obj.save()
-				messages.success(request,"Success !")
+				messages.success(request,"Applied Successfully !")
 			# print(obj,"55555555555555")
 				return redirect('active_service')
 			# else:
@@ -633,7 +638,7 @@ class Togglestatus(View):
 				hire = HireModel.objects.filter(Q(worker_name=request.user)&Q(status=3)).values()
 				if not hire.exists():
 					labourmodels.objects.filter(id=id).update(status=1)
-					messages.success(request,"Success !")
+					messages.success(request,"Activated Successfully !")
 					# print("hireeeeeeeeeeeeeeeeee")
 					return redirect("active_service")
 				else:
@@ -647,11 +652,11 @@ class Togglestatus(View):
 				return redirect("active_service")
 		elif status ==1:
 			labourmodels.objects.filter(id=id).update(status=0)
-			messages.success(request,"Success !")
+			messages.success(request,"Inactivated Successfully !")
 			return redirect("active_service")
 		elif status ==2:
 			labourmodels.objects.filter(id=id).delete()
-			messages.success(request,"Success !")
+			messages.success(request,"Deleted successfully !")
 			return redirect("active_service")
 		
 		else:
@@ -799,7 +804,7 @@ class Deletepackage(View):
 			return redirect('packages')
 		else:
 			packageData.delete()
-			messages.success(request,"Success !")
+			messages.success(request,"Package Deleted Successfully!")
 			return redirect('packages')
 
 @method_decorator(login_required,name='dispatch')
@@ -816,6 +821,7 @@ class UpdatePackage(View):
 			context ={'current_path':"Update Package" }
 			form    = UpdatePackageForm(data)
 			context['form'] = form
+
 			return render(request, 'updatepackage.html', context)
 	
 	def post(self, request, *args, **kwargs):
@@ -829,10 +835,11 @@ class UpdatePackage(View):
 			updatedRecord. cost = request.POST['cost']
 			updatedRecord. image = request.POST['image']
 			updatedRecord.save()
-			messages.success(request,"Success!")
+			messages.success(request,"Package Updated Successfully!")
 			return redirect('packages')
 		else:
 			form = UpdatePackageForm()
+			messages.success(request,"Package Updated Failed!")
 		return redirect(request, 'updatepackage')
 
 
@@ -863,7 +870,7 @@ class Addpackage(View):
 			print(request.POST.get('image'))
 			if form.is_valid():
 				form.save()
-				messages.success(request,"Successfully Added !")
+				messages.success(request,"Package Added Successfully!")
 				return redirect('packages')
 			else:
 				return redirect('addpackage')

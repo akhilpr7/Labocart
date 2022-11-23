@@ -233,7 +233,7 @@ class ApplyFormView(View):
                     messages.success(request, "Job Applied Successfully")
                     return redirect('lookforjobs')
                 else:
-                    messages.error(request, "error")
+                    messages.error(request, "Application Failed")
                     return redirect('lookforjobs')
         else:
             messages.error(request, "error")
@@ -448,9 +448,11 @@ class UpdateUser(View):
         if user.is_active:
             user.is_active = False
             user.save()
+            messages.success(request,"Inactivated Successfully")
         else:
             user.is_active = True
             user.save()
+            messages.success(request,"Activated Successfully")
         return redirect('manageuser')
 
 @method_decorator(login_required, name='dispatch')
@@ -467,7 +469,7 @@ class JobPostingView(View):
         print(x,"--===--===--===----========")
         if not x:
             print("empty !!!!!!!!!!!!!!!!")
-            messages.error(request,"No Remaining Jobs Found In This Caegory  !!!!")
+            messages.error(request,"No Remaining Jobs Found In This Category  !!!!")
             return redirect("labocategory2")
         else:
             
@@ -546,11 +548,11 @@ class UpdateServices(View):
         status = labourmodels.objects.filter(id=id).values_list("status")[0][0]
         if status == 0:
             labourmodels.objects.filter(id=id).update(status=1)
-            messages.success(request, "Success !")
+            messages.success(request, "Activated Successfully !")
             return redirect("manageservices")
         elif status == 1:
             labourmodels.objects.filter(id=id).update(status=0)
-            messages.success(request, "Success !")
+            messages.success(request, "Inactivated Successfully!")
             return redirect("manageservices")
         else:
             labourmodels.objects.filter(id=id).update(status=0)
@@ -629,7 +631,7 @@ class AcceptServices(View):
     def get(self, request, id, *args, **kwargs):
         status = labourmodels.objects.filter(id=id).values_list("status")[0][0]
         labourmodels.objects.filter(id=id).update(status=1)
-        messages.success(request, "Success !")
+        messages.success(request, "Request Accepted successfully !")
         return redirect("servicerequests")
 
 @method_decorator(login_required, name='dispatch')
@@ -637,7 +639,7 @@ class RejectServices(View):
     def get(self, request, id):
         data = labourmodels.objects.get(id=id)
         data.delete()
-        messages.success(request, "Cancelled")
+        messages.success(request, "Request Rejected Successfully")
         return redirect('servicerequests')
 
 @method_decorator(login_required, name='dispatch')
@@ -687,7 +689,7 @@ class ApproveUser(View):
             user = NewUserModel.objects.get(id=id)
             user.kyc_approved = True
             user.save()
-            messages.success(request, "Approved User.")
+            messages.success(request, "Approved User successfully")
             return redirect('pendingkyc')
         except Exception as e:
             messages.error(request, "An error occured during the approval.")
@@ -780,6 +782,7 @@ class CancelLookJobs(View):
     def get(self, request,id, *args, **kwargs):
         delete = AppliedJobs.objects.filter(id=id)
         delete.delete()
+        messages.success(request,"Deleted Successfully")
         return redirect('lookjobs')
 @method_decorator(login_required, name='dispatch')
 class EditLookJobs(View):
@@ -802,9 +805,8 @@ class EditLookJobs(View):
         work_mode=request.POST.get("work_mode")
         location=request.POST.get("location")
         rate=request.POST.get("rate")
-        print(id,work_mode,location,rate,"Yepppudraaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         AppliedJobs.objects.filter(id=id).update(work_type=work_mode,place=location,rate=rate)
-
+        messages.success(request, "Updated successfully")
         return redirect('lookjobs')
 
 
