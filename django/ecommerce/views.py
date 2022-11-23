@@ -54,13 +54,17 @@ class Shop(View):
 		'current_path':"Shop",
 		'cart' : cart,
 		'count' : count,
-		
 
 		}
 		if product:
 			return render(request, self.template_name, data)
 		else:
-			return render(request,'home/emptylaboshop.html',{'current_path':"Shop"})
+			errormessage = "Shop is Empty"
+			context ={
+				'current_path':"Shop",
+				'errors':errormessage
+				}
+			return render(request,'home/emptylaboshop.html',context)
 	def post(self, request, *args, **kwargs):
 		print("redirected")
 		return redirect('shop')
@@ -107,7 +111,7 @@ class AddtocartView(View):
 			product_id=product["id"],
 			cartnumber = request.user.id,
 		)
-		messages.success(request,"Success !")
+		messages.success(request,"Product Added Successfully !")
 		data.save()
 		return redirect('shop')
 
@@ -262,7 +266,12 @@ class LaboShop(View):
 			if newdata:
 				return render(request, 'laboshop/labo-shop.html', context)
 			else:
-				return render(request,'home/emptylaboshop.html',{'current_path':"Laboshop"})
+				errormessage = "Laboshop is Empty"
+				context ={
+				'current_path':"Laboshop",
+				'errors':errormessage}
+				
+				return render(request,'home/emptylaboshop.html',context)
 		else:
 			messages.error(request,"Membership Required !")
 			return redirect("membership")
@@ -320,7 +329,7 @@ class Deleteproduct(View):
 		cartDta = CartModel.objects.filter(Product_name = productData)
 		if cartDta:
 			cartDta.delete()
-		messages.success(request,"Success !")
+		messages.success(request,"Deleted Successfully!")
 		return redirect('stocklist')
 @method_decorator(login_required,name='dispatch')
 class UpdateProduct(View): 
@@ -376,7 +385,7 @@ class UpdateProduct(View):
 			except Exception:	
 				print("no image found")
 			updatedRecord.save()
-			messages.success(request,"Success!")
+			messages.success(request,"Updated Successfully!")
 			return redirect('stocklist')
 		else:
 			form = UpdateStockForm()
@@ -404,15 +413,19 @@ class LaboRegister(View):
 		category = Category.objects.filter(id=id).values_list('category_name')[0][0]
 		jobs = jobmodel.objects.filter(category=category).values()
 		userjob= labourmodels.objects.filter(username=request.user).values_list('job_title',flat=True)
-		# print("----",jobs,"6666666666666666666666666666666")
-		form = Laboregisterform(initial=category,jobs=userjob)
-		request.session['category'] = category
-		context = {
-			"form" : form,
-			"jobs" : jobs,
-			'current_path':"Apply Services" 
-		}
-		# if not request.user.is_superuser:
+		x =jobs.exclude(job_title__in=[userjob])
+		print(x,"--===--===--===----========")
+		if not x:
+			messages.error(request,"No Remaining Jobs Found In This Category  !!!!")
+			return redirect("labocategory")
+		else:
+			form = Laboregisterform(initial=category,jobs=userjob)
+			request.session['category'] = category
+			context = {
+				"form" : form,
+				"jobs" : jobs,
+				'current_path':"Register Services" 
+			}
 		return render(request, self.template,context)
 	def post(self, request, *args, **kwargs):
 		if request.method == 'POST':
@@ -451,7 +464,7 @@ class LaboRegister(View):
 
 				obj = labourmodels.objects.create(username=request.user,image_link=image_link,job_title=job_title,rate=rate,work_type=work_type,status = 2,job_certificate=credential,phone=phone)
 				# obj.save()
-				messages.success(request,"Success !")
+				messages.success(request,"Applied Successfully !")
 			# print(obj,"55555555555555")
 				return redirect('active_service')
 			# else:
@@ -485,6 +498,11 @@ class Labocategories(View):
 				messages.error(request,"Subscription Required !!")
 				return redirect("workerview")
 		else:
+			errormessage = "No Service Available"
+			context ={
+				'current_path':"Register Services",
+				'errors':errormessage
+				}
 			return render(request, "home/emptyworkerpage.html", context)
 
 @method_decorator(login_required,name='dispatch')
@@ -495,12 +513,17 @@ class ActiveServices(View):
 		context = {
 			"data" : data,
 			"user" : user,
-			'current_path':"ActiveServices"
+			'current_path':"Active Services"
 		}
 		if request.user.is_sub:
 			if data:
 					return render(request,'activeServices.html',context)
 			else:
+				errormessage = "No Services Found"
+				context ={
+				'current_path':"Active Services",
+				'errors':errormessage
+				}
 				return render(request,"home/emptyworkerservices.html",context)
 		else:
 			messages.error(request,"Subscription Required !!")
@@ -608,6 +631,11 @@ class Assignedworks(View):
 			if services:
 				return render(request,self.template_name,context)
 			else:
+				errormessage = "No Service Found"
+				context ={
+				'current_path':"Assigned Services",
+				'errors':errormessage
+				}
 				return render(request,'home/emptyworkerservices.html',context)
 		else:
 			messages.error(request,"Subscription Required !! ")
@@ -644,7 +672,7 @@ class Togglestatus(View):
 				hire = HireModel.objects.filter(Q(worker_name=request.user)&Q(status=3)).values()
 				if not hire.exists():
 					labourmodels.objects.filter(id=id).update(status=1)
-					messages.success(request,"Success !")
+					messages.success(request,"Activated Successfully !")
 					# print("hireeeeeeeeeeeeeeeeee")
 					return redirect("active_service")
 				else:
@@ -658,11 +686,11 @@ class Togglestatus(View):
 				return redirect("active_service")
 		elif status ==1:
 			labourmodels.objects.filter(id=id).update(status=0)
-			messages.success(request,"Success !")
+			messages.success(request,"Inactivated Successfully !")
 			return redirect("active_service")
 		elif status ==2:
 			labourmodels.objects.filter(id=id).delete()
-			messages.success(request,"Success !")
+			messages.success(request,"Deleted successfully !")
 			return redirect("active_service")
 		
 		else:
@@ -809,7 +837,7 @@ class Deletepackage(View):
 			return redirect('packages')
 		else:
 			packageData.delete()
-			messages.success(request,"Success !")
+			messages.success(request,"Package Deleted Successfully!")
 			return redirect('packages')
 
 @method_decorator(login_required,name='dispatch')
@@ -826,6 +854,7 @@ class UpdatePackage(View):
 			context ={'current_path':"Update Package" }
 			form    = UpdatePackageForm(data)
 			context['form'] = form
+
 			return render(request, 'updatepackage.html', context)
 	
 	def post(self, request, *args, **kwargs):
@@ -839,10 +868,11 @@ class UpdatePackage(View):
 			updatedRecord. cost = request.POST['cost']
 			updatedRecord. image = request.FILES['image']
 			updatedRecord.save()
-			messages.success(request,"Success!")
+			messages.success(request,"Package Updated Successfully!")
 			return redirect('packages')
 		else:
 			form = UpdatePackageForm()
+			messages.success(request,"Package Updated Failed!")
 		return redirect(request, 'updatepackage')
 
 
@@ -873,7 +903,7 @@ class Addpackage(View):
 			print(request.POST.get('image'))
 			if form.is_valid():
 				form.save()
-				messages.success(request,"Successfully Added !")
+				messages.success(request,"Package Added Successfully!")
 				return redirect('packages')
 			else:
 				return redirect('addpackage')
@@ -893,7 +923,12 @@ class membership(View):
 			}
 			return render(request,template,context)
 		else:
-			return render(request,"home/emptypackage.html")
+			errormessage = "Package not Found"
+			context ={
+				'current_path':"Membership Subscription",
+				'errors':errormessage
+				}
+			return render(request,"home/emptypackage.html",context)
 @method_decorator(login_required, name='dispatch')
 class Workerview(View):
 	def get(self, request, *args, **kwargs):
@@ -931,6 +966,11 @@ class RefundHistoryUser(View):
 		if refund:
 			return render(request,template,context)
 		else:
+			errormessage = "Refund history is Empty"
+			context ={
+				'current_path':"Refund history",
+				'errors':errormessage
+				}
 			return render(request,"home/emptypage.html", context)
 @method_decorator(login_required, name='dispatch')
 class RefundHistoryWorker(View):
@@ -944,6 +984,11 @@ class RefundHistoryWorker(View):
 		if refund:
 			return render(request,template,context)
 		else:
+			errormessage = "Refund history is Empty"
+			context ={
+				'current_path':"Refund history",
+				'errors':errormessage
+				}
 			return render(request,"home/emptyworkerpage.html",context)
 
 @method_decorator(login_required,name='dispatch')
@@ -957,6 +1002,11 @@ class LaboTransactions(View):
 		if work:
 			return render(request,'labotransaction.html',context)
 		else:
+			errormessage = "Laboshop History is Empty"
+			context ={
+				'current_path':"Laboshop history",
+				'errors':errormessage
+				}
 			return render(request,"home/emptyworkerpage.html",context)	
 
 @method_decorator(login_required,name='dispatch')
