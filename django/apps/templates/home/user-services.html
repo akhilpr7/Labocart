@@ -24,6 +24,12 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../../../static/css/style.css" rel="stylesheet">
+    <style>
+      td {
+      white-space:pre-wrap; 
+      word-wrap:break-word
+      }
+    </style>
 </head>
 
 <body>
@@ -65,7 +71,7 @@
             <tr>
               <td><p>{{data.id}}</p></td>
               <td>{{data.worker_name}}</td>
-              <td>{{data.Place}}</td>
+              <td style="white-space:pre-wrap; word-wrap:break-word">{{data.Place}}</td>
               <td>{% if data.Work_mode == "true" %}Full day{% else %}Half Day{% endif %}</td>
               <td>{{data.Phone}}</td>
               <td>{{data.job_title}}</td>

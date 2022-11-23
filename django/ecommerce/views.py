@@ -582,7 +582,7 @@ class CancelRequest(View):
 		
 
 		requests.delete()
-		messages.success(request,"Success !")
+		messages.success(request,"Request Cancelled Successfully !")
 		return redirect('requested')
 @method_decorator(login_required,name='dispatch')
 class Assignedworks(View):
@@ -615,8 +615,7 @@ class Acceptservice(View):
 		print(labo_job)
 		labo_job.update(status=0)
 		RequestsModel.objects.filter(id=id).update(status=1)
-		
-		
+		messages.success(request, "Accepted Successfully!!")
 		return redirect('assigned')
 		# elif status ==2:
 		# 	return redirect('laboshop')

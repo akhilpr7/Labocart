@@ -113,6 +113,7 @@
                         <div class="card-footer">
                             {% if i.is_active == False %}
                                 <a href="{%url 'enlistedjobstatus' i.id %}" class=" btn rounded-2 text-danger shadow-sm">Inactive</a>
+                                <a href="{%url 'deleteenlisted' i.id %}" class=" btn rounded-2 text-danger shadow-sm">Delete</a>
                             {% elif i.is_active == True %}
                                 <a href="{%url 'enlistedjobstatus' i.id %}" class="btn rounded-2 text-success shadow-sm">Active</a>                  
                             {% endif %}

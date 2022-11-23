@@ -106,7 +106,7 @@ class TransactionView(View):
                 if new_context: 
                     return render(request , self.template_name , context)
                 else:
-                    messages.error(request,"Sorry transactions are empty")
+                    messages.success(request,"No Transactions Found")
                     return render(request, "home/emptyadmin.html",context)
             else:
                 new_context = PurchaseModel.objects.filter(
@@ -118,6 +118,7 @@ class TransactionView(View):
                 if new_context:
                     return render(request , self.template_name , context)   
                 else:
+                    messages.success(request,"No Transactions Found")
                     return render(request, "home/emptypage.html",context)
 @method_decorator(login_required, name='dispatch')
 class Userservices(View):
@@ -229,7 +230,7 @@ class ApplyFormView(View):
                 if form.is_valid():
                     obj = form.save()
                     pay = JobPaymentModel.objects.create(work_id=obj,rate=rate,status=0,amount=0)				
-                    messages.success(request, "Success")
+                    messages.success(request, "Job Applied Successfully")
                     return redirect('lookforjobs')
                 else:
                     messages.error(request, "error")
@@ -312,6 +313,7 @@ class RatingView(View):
         data.user_status = 1
         print(data)
         data.save()
+        messages.success(request,"Service Completed Successfully") 
         return redirect('userservices')
 
 
@@ -480,14 +482,8 @@ class JobPostingView(View):
     def post(self, request,id, *args, **kwargs):
         if request.method == 'POST':
             # applied = JobPostingModel.objects.filter
+            
             form = JobPostingForm(request.POST)
-            job_title=request.POST.get('job_title')
-            print(form.fields['job_title'].choices,"joooooooooooooljkgfkgkfjgkfkgkfkgjk`")
-            print(form,"asdfgggg")
-            form.fields['job_title'].choices = [(job_title, job_title)]
-            print(form.fields['job_title'].choices,"jooooooooooooooooooob`")
-           
-              
             job = request.POST['job_title']
             userjobs = JobPostingModel.objects.filter(hirer=request.user).values_list("job_title",flat=True)
             if job in userjobs:
@@ -503,27 +499,14 @@ class JobPostingView(View):
                     phone=request.POST['phone'],
                     name=request.POST['name'])
                 obj.save()
+                messages.success(request,"Successfully Applied!!")
                 return redirect('enlistedjobs')
 
-            # else:
-            #     category = Category.objects.filter(id=id).values_list('category_name')[0][0]
-            #     print(form.errors,"errrrrrrrrrrrrrrrrrrrrrrrrrrrr")
-            #     print(request.POST['place'])
-            #     print(request.POST['work_type'])
-            #     print(request.POST['name'])
-            #     print(request.POST['job_title'],"-----------------------------  ")
-            #     print(request.POST['name'])
-            #     print("exited")
-            #     jobs = jobmodel.objects.filter(category=category).values()
+ 
 
-            #     userjobs = JobPostingModel.objects.filter(hirer=request.user).values_list("job_title",flat=True)
-
-            #     form = JobPostingForm(initial=category, user=request.user.username,jobs=userjobs)
-
-            #     return render(request,self.template_name,{'form':form})
         else:
-            print("not valid")
-            return redirect('labocategory')
+            print("Method not allowed")
+            return redirect('labocategory2')
 
 @method_decorator(login_required, name='dispatch')
 class ManageServices(View):
@@ -553,6 +536,7 @@ class HireHistory(View):
         if details:
             return render(request, "home/hirehistory.html", context)
         else:
+            messages.error(request,"Page is Empty")
             return render(request, "home/emptypage.html", context)
 
 
@@ -692,6 +676,7 @@ class CancelJobRequests(View):
     def get(self, request,id, *args, **kwargs):
         id = id
         cancel = AppliedJobs.objects.filter(id=id).update(status=3)
+        messages.success(request, " Request Cancelled")
         return redirect('jobrequests')
 
 
@@ -712,7 +697,7 @@ class RejectUser(View):
     def get(self, request, id):
         user = NewUserModel.objects.get(id=id)
         user.delete()
-        messages.success(request, "Rejected User")
+        messages.success(request, "Rejected User successfully")
         return redirect('pendingkyc')
 
 @method_decorator(login_required, name='dispatch')
@@ -724,6 +709,7 @@ class JobRequestUpdate(View):
         req.update(status=1)
         reject = AppliedJobs.objects.filter(job_title = job).exclude(status=1)
         reject.update(status=2)
+        messages.success(request, "Updated successfully")
         return redirect('jobrequests')
 
 
@@ -738,6 +724,7 @@ class ProvidedJobs(View):
         if jobs:
             return render(request,self.template_name , context)
         else:
+            messages.error(request, "No Services Found")
             return render(request,"home/emptyservices.html",context)
 @method_decorator(login_required, name='dispatch')
 class LookForJobs(View):
@@ -829,10 +816,11 @@ class  UpdateEnlistedJobStatus(View):
         if job.is_active:
             job.is_active = False
             job.save()
+            messages.success(request,"Inactivated Successfully! ")
         else:
             job.is_active = True
             job.save()
-        messages.success(request,"Success! ")
+        messages.success(request," Activated Successfully! ")
         return redirect('enlistedjobs')
 @method_decorator(login_required, name='dispatch')
 class  deleteenlisted(View):
