@@ -94,7 +94,7 @@ class TransactionView(View):
     template_name = 'home/transactions.html'
     def get(self, request,  *args, **kwargs):
             new_context = PurchaseModel.objects.filter(
-            status=3, username=request.user.username)
+            status__in=[3,4], username=request.user.username)
             context={'datas' : new_context} 
             if request.user.is_superuser:
                 new_context = PurchaseModel.objects.filter(
@@ -950,3 +950,11 @@ class Reported(View):
             return render(request, 'home/reported.html',{"current_path":"Reported Issues","report":report,})
         else:
             return render(request, 'home/page-403.html')
+
+class Delivered(View):
+    def get(self, request,id):
+        obj = PurchaseModel.objects.get(id=id)
+        obj.status=4
+        obj.save()
+        messages.success(request,"Successfully Delivered !!!")
+        return redirect("adminTransactions")

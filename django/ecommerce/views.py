@@ -953,7 +953,8 @@ class LaboTransactions(View):
 class AdminTransactions(View):
 	def get(self, request, *args, **kwargs):
 		if request.user.is_superuser:
-			purchase = PurchaseModel.objects.all().values()
+			purchase = PurchaseModel.objects.all().values().exclude(status__in=[2,1,0])
+			packages = PurchaseModel.objects.filter(status=0).values()
 			hire = HireModel.objects.filter(status__in = [4,5])
 			refund = RefundHistory.objects.all().values()
 			print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",purchase)
@@ -963,6 +964,7 @@ class AdminTransactions(View):
 				'hire':hire,
 				'refund':refund,
 				'current_path':'Transactions',
+				'package':packages
 			}
 			return render(request,'home/adminTransactions.html',context)
 		else:

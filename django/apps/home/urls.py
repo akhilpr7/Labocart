@@ -1,6 +1,5 @@
 from django.urls import path, include
 from . import views
-
 urlpatterns = [
 
     path('dashboard/', views.HomeView.as_view(), name="dashboard"),
@@ -51,6 +50,8 @@ urlpatterns = [
     path('admindashboard',views.AdminDashboard.as_view(),name='admindashboard'),
     path('search_city/<str:feildname>',views.SearchCityView.as_view(),name='search-city'),
     path('issues/',views.Reported.as_view(),name='issues'),
+    path('delivered/<int:id>/',views.Delivered.as_view(),name='delivered'),
+    
 
 
 ]
