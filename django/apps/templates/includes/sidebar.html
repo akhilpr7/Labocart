@@ -161,6 +161,17 @@
           <span class="sidebar-text">Manage Users</span>
         </a>
       </li>
+      <li class="nav-item {% if 'registerstaff' in current_path %} active {% endif %}" style="padding:8px;" >
+        <a href="{% url 'registerstaff' %}" class="nav-link" id="something">
+          <!-- <span class="sidebar-icon ">
+            <span class="material-symbols-outlined">
+              manage_accounts
+              </span>       
+          </span> -->
+          <i class="fas fa-fw fa-user-plus"></i>
+          <span class="sidebar-text">Register a Staff</span>
+        </a>
+      </li>
       <li class="nav-item {% if 'Manage Services' in current_path %} active {% endif %}" style="padding:8px;" >
         <a href="{% url 'manageservices' %}" class="nav-link" id="something">
           <!-- <span class="sidebar-icon ">
