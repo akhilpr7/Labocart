@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from ecommerce.models import HireModel, PurchaseModel,RequestsModel,RefundHistory,PackageModel
 from .forms import AddJobForm, CategoryForm, JobPostingForm, AddFundForm, ApplyForm,CommentForm
-from .models import Category, JobPostingModel, AppliedJobs,Category,JobPaymentModel,CitiesModel
+from .models import Category, JobPostingModel, AppliedJobs,Category,JobPaymentModel,CitiesModel,ReeportModel
 from django.contrib import messages
 from django.urls import reverse
 from authentication.models import jobmodel, NewUserModel, labourmodels
@@ -131,8 +131,28 @@ class Userservices(View):
             return render(request, "home/user-services.html", context)
         else:
             return render(request, "home/emptyservices.html",context)
-    # def post(self, request, *args,  **kwargs):
-        # if request.method == 'POST':
+    def post(self, request, *args,  **kwargs):
+        if request.method == 'POST':
+            # print(hireid,"hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
+            print(request.POST.get('id'))
+            id=request.POST.get('id')
+            
+            if ReeportModel.objects.filter(username=request.user,hireid=id).exists():
+                messages.error(request,"Sorry Already Reported The Issue, Wait For it To Process  !")
+                return redirect("userservices")
+            print(request.POST.get('email_address'))
+            email=request.POST.get('email_address')
+            print(request.POST.get('phone_number'))
+            ph=request.POST.get('phone_number')
+            print(request.FILES.get('image_proof'))
+            img=request.FILES.get('image_proof')
+            print(request.POST.get('issue_reported'))
+            issue=request.POST.get('issue_reported')
+            obj=ReeportModel.objects.create(username=request.user.username,woh=0,hireid=id,email=email,phone=ph,issue=issue,proof=img)
+            obj.save()
+            messages.success(request,"Successfully Reported The Issue ")
+            return redirect("userservices")
+
 
         
 
@@ -149,6 +169,27 @@ class Workerservices(View):
             return render(request, "home/worker-services.html", context)
         else:
             return render(request, "home/emptyworkerservices.html",context)
+    def post(self, request, *args,  **kwargs):
+        if request.method == 'POST':
+            # print(hireid,"hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
+            print(request.POST.get('id'))
+            id=request.POST.get('id')
+            
+            if ReeportModel.objects.filter(username=request.user,hireid=id).exists():
+                messages.error(request,"Sorry Already Reported The Issue, Wait For it To Process  !")
+                return redirect("workerservices")
+            print(request.POST.get('email_address'))
+            email=request.POST.get('email_address')
+            print(request.POST.get('phone_number'))
+            ph=request.POST.get('phone_number')
+            print(request.FILES.get('image_proof'))
+            img=request.FILES.get('image_proof')
+            print(request.POST.get('issue_reported'))
+            issue=request.POST.get('issue_reported')
+            obj=ReeportModel.objects.create(username=request.user.username,woh=1,hireid=id,email=email,phone=ph,issue=issue,proof=img)
+            obj.save()
+            messages.success(request,"Successfully Reported The Issue ")
+            return redirect("workerservices")
 
 @method_decorator(login_required, name='dispatch')
 
@@ -885,3 +926,10 @@ class SearchCityView(View):
         # return render(request, 'search/cities-list.html',{"results":results})
 
             return render(request, 'search/cities-list.html',{})            
+
+
+
+class Reported(View):
+    def get(self, request):
+        report= ReeportModel.objects.all()
+        return render(request, 'home/reported.html',{"current_path":"Reported Issues","report":report,})

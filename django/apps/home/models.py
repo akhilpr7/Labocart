@@ -64,3 +64,12 @@ class CitiesModel(models.Model):
     subcountry=models.CharField(max_length=100,null=True,blank=False)
 
     geonameid=models.IntegerField(default=1,null=True,blank=False)    
+
+class ReeportModel(models.Model):
+    username=models.CharField(max_length=100,null=False,blank=False)
+    woh=models.BooleanField(null=False,blank=False)
+    hireid=models.IntegerField(null=False,blank=False)
+    email=models.CharField(max_length=30,null=False,blank=False)
+    phone=models.CharField(max_length=10, blank=False,null=False)
+    issue=models.CharField(max_length=255, blank=False,null=False)
+    proof=models.ImageField(upload_to='issues',blank=False)

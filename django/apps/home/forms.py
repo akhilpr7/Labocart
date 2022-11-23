@@ -1,5 +1,5 @@
 from django import forms
-from .models import AppliedJobs, Category, JobPostingModel
+from .models import AppliedJobs, Category, JobPostingModel,CitiesModel
 from authentication.models import NewUserModel,jobmodel
 
 class AddFundForm(forms.Form):
@@ -56,24 +56,22 @@ class JobPostingForm( forms.Form ):
                               widget=forms.Select(attrs={'class':'form-select'}))
     self.fields['hirer']=forms.CharField(max_length=20, required=True, widget=forms.HiddenInput() , initial=self.user)
 
-  def clean(self):
+#   def clean(self):
 
-            data = super().clean()
-            phone = data['phone'] 
-            print(phone)
-            if int(phone) <= 0:
+#             self.cleaned_data = super().clean()
+#             place=self.cleaned_data.get('place')
+#             if place :
+#                 list=place.split(", ")
+#                 if len(list) ==3:
+#                     check_place=CitiesModel.objects.filter(name=list[0],subcountry=list[1],country=list[2])
+#                     if len(check_place) == 0:
+#                          self._errors['place']=self.error_class(['Please Select a place from the provided list'])
+#                 else:
+#                     self._errors['place']=self.error_class(['Please Select a place from the provided list'])
 
-                print("ssssss")
-                self._errors['phone'] = self.error_class([
-                    'Phone Number field cannnot be null',])
-            elif len(phone)< 6:
-                    self._errors['phone'] = self.error_class([
-                    'Phone Number should have minimum of 6 letters ',])
-            elif len(phone)> 15:
-                    self._errors['phone'] = self.error_class([
-                    'The length of phone number should be less than 15 ',])
 
-            return self.cleaned_data
+
+#             return self.cleaned_data
 
 
 
