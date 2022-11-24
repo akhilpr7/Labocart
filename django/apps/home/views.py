@@ -624,7 +624,7 @@ class Labocategories2(View):
                     return render(request, self.template, context)
                 else:
                     messages.error(request, "Job Applying Limit Reached !!")
-                    return redirect("laboshop")
+                    return redirect("enlistedjobs")
             else:
                 errormessage = "Page is Empty"
                 context = {
