@@ -1173,11 +1173,20 @@ class IncreaseNo(View):
 class MyOrders(View):
 	def get(self, request, *args, **kwargs):
 		data=PurchaseModel.objects.filter(username=request.user.username).values().exclude(status__in=[0,1,2])
-		context={
-			"purchase":data,
-			"current_path":"My Orders",
-		}
-		return render(request,'shop/myorders.html',context)
+		if data:
+			context={
+				"purchase":data,
+				"current_path":"My Orders",
+			}
+			return render(request,'shop/myorders.html',context)
+		else:
+			errormessage = "No Orders Found"
+			context ={
+				'current_path':"My Orders",
+				'errors':errormessage
+				}
+			return render(request,"home/emptypage.html",context)
+
 class TrackMyorderView(View):
 	def get(self, request,id, *args, **kwargs):
 		data=PurchaseModel.objects.filter(username=request.user.username,order_id = id ).first()

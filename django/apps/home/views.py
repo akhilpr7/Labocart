@@ -1037,7 +1037,15 @@ class Reported(View):
     def get(self, request):
         report= ReeportModel.objects.all()
         if request.user.is_superuser:
-            return render(request, 'home/reported.html',{"current_path":"Reported Issues","report":report,})
+            if report:
+                return render(request, 'home/reported.html',{"current_path":"Reported Issues","report":report,})
+            else:
+                errormessage = "No Issues Found"
+                context = {
+			    'current_path': "Reported Issues",
+			    'errors':errormessage
+			    }   
+                return render(request,"home/emptyadmin.html",context) 
         else:
             return render(request, 'home/page-403.html')
 
