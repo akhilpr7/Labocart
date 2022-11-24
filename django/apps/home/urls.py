@@ -54,6 +54,9 @@ urlpatterns = [
     path('deliverd/<int:id>/',views.Deliverd.as_view(),name='delivered'),
     path('cancel-order/<int:id>/',views.OrderCancelView.as_view(),name='cancel-order'),
     path('confirmproductotp/<int:id>/',views.ConfirmProductOtp.as_view(),name='confirmproductotp'),
+    path('refundworkerfull/<int:id>/',views.RefundWorkerFull.as_view(),name='refundworkerfull'),
+    path('refundhirerfull/<int:id>/',views.RefundHirerFull.as_view(),name='refundhirerfull'),
+    path('refundsplit/<int:id>/',views.RefundSplit.as_view(),name='refundsplit'),
 
 
 ]
