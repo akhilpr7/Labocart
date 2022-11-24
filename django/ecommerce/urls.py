@@ -46,7 +46,7 @@ urlpatterns = [
 	path('products_history/',views.producthistory.as_view(), name="products_history"),
 	path('search_products/',views.SearchProducts.as_view(), name="search_products"),
 	path('packagehistory/',views.PurchaseHistory.as_view(), name="packagehistory"),
-	path('hirehistory/',views.HireHistory.as_view(), name="hirehistory"),
+	path('adminhirehistory/',views.AdminHireHistory.as_view(), name="adminhirehistory"),
 	path('refundhistory/',views.RefundHistoryView.as_view(), name="refundhistory"),
 
 

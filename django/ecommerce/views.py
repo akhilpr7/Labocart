@@ -1054,7 +1054,7 @@ class PurchaseHistory(View):
 
 
 @method_decorator(login_required,name='dispatch')
-class HireHistory(View):
+class AdminHireHistory(View):
 	def get(self, request, *args, **kwargs):
 		if request.user.is_superuser:
 			hire = HireModel.objects.filter(status__in = [4,5])
