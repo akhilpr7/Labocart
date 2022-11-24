@@ -624,7 +624,7 @@ class Labocategories2(View):
                     return render(request, self.template, context)
                 else:
                     messages.error(request, "Job Applying Limit Reached !!")
-                    return redirect("laboshop")
+                    return redirect("enlistedjobs")
             else:
                 errormessage = "Page is Empty"
                 context = {
@@ -801,8 +801,8 @@ class ProvidedJobs(View):
 @method_decorator(login_required, name='dispatch')
 class LookForJobs(View):
     def get(self, request, *args, **kwargs):
-        
         appliedones = AppliedJobs.objects.filter(worker_uname=request.user.username)
+        # job_title=''
         filter=request.GET.get('filter')
         datajob = jobmodel.objects.all()
         if request.GET.get('filter') is not None and request.GET.get('filter') != '':
