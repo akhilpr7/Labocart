@@ -846,11 +846,12 @@ class UpdatePackage(View):
 			packageData = PackageModel.objects.get(id=id)
 			data = {
 			"id":packageData.id,
-			"Package_name": packageData.package_name,
-			"Validity" : packageData.validity,
-			"Cost" : packageData.cost,
-			"Image" : packageData.image,              
+			"package_name": packageData.package_name,
+			"validity" : packageData.validity,
+			"cost" : packageData.cost,
+			"image" : packageData.image,              
 			}
+			print()
 			context ={'current_path':"Update Package" }
 			form    = UpdatePackageForm(data)
 			context['form'] = form

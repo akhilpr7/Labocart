@@ -94,7 +94,7 @@ class TransactionView(View):
     template_name = 'home/transactions.html'
     def get(self, request,  *args, **kwargs):
             new_context = PurchaseModel.objects.filter(
-            status__in=[3,4], username=request.user.username)
+            status__in=[3,5], username=request.user.username)
             context={'datas' : new_context} 
             if request.user.is_superuser:
                 new_context = PurchaseModel.objects.filter(
@@ -114,7 +114,7 @@ class TransactionView(View):
                     return render(request, "home/emptyadmin.html",context)
             else:
                 new_context = PurchaseModel.objects.filter(
-                status=3,username=request.user.username)  
+                status__in=[3,5],username=request.user.username)  
                 context={
                     'datas' : new_context,
                     'current_path': "Transactions"
@@ -1035,7 +1035,8 @@ class SearchCityView(View):
 
 class Reported(View):
     def get(self, request):
-        report= ReeportModel.objects.all()
+        completed = HireModel.objects.filter(status__in=[4,5]).values_list("id")
+        report= ReeportModel.objects.all().exclude(hireid__in=completed)
         if request.user.is_superuser:
             if report:
                 return render(request, 'home/reported.html',{"current_path":"Reported Issues","report":report,})
@@ -1148,3 +1149,70 @@ class OrderCancelView(View):
         messages.success(request,"Cancelled The Purchase and refund initiated.")
 
         return redirect("products_history")
+
+
+
+
+class RefundWorkerFull(View):
+    def get(self, request,id, *args, **kwargs):
+        obj = ReeportModel.objects.get(id=id)
+        hireid = obj.hireid
+        obj1=HireModel.objects.get(id=hireid)
+        if obj1.status == 4 or obj1.status == 5 :
+            messages.error(request,"Already Completed Or Cancelled !!")
+            return redirect("issues")
+        else:
+            walletworker = NewUserModel.objects.filter(username=obj1.worker_name).values_list("wallet")[0][0]
+            # obj1.worker_name
+            NewUserModel.objects.filter(username=obj1.worker_name).update(wallet=walletworker+obj1.rate)
+            obj1.status = 5
+            obj1.save()
+            messages.success(request,"Successfully refunded !!")
+            return redirect("issues")
+
+        
+
+        return redirect("issues")
+
+class RefundHirerFull(View):
+    def get(self, request,id, *args, **kwargs):
+        obj = ReeportModel.objects.get(id=id)
+        hireid = obj.hireid
+        obj1=HireModel.objects.get(id=hireid)
+        if obj1.status == 4 or obj1.status == 5 :
+            messages.error(request,"Already Completed Or Cancelled !!")
+            return redirect("issues")
+        else:
+            wallethirer = NewUserModel.objects.filter(username=obj1.Hire_name).values_list("wallet")[0][0]
+            # obj1.worker_name
+            NewUserModel.objects.filter(username=obj1.Hire_name).update(wallet=wallethirer+obj1.rate)
+            obj1.status = 5
+            obj1.save()
+            messages.success(request,"Successfully refunded !!")
+            return redirect("issues")
+        
+
+
+class RefundSplit(View):
+    def get(self, request,id, *args, **kwargs):
+        obj = ReeportModel.objects.get(id=id)
+        hireid = obj.hireid
+        obj1=HireModel.objects.get(id=hireid)
+        splitamount= obj1.rate/2
+        if obj1.status == 4 or obj1.status == 5 :
+            messages.error(request,"Already Completed Or Cancelled !!")
+            return redirect("issues")
+        else:
+            walletworker = NewUserModel.objects.filter(username=obj1.worker_name).values_list("wallet")[0][0]
+            # obj1.worker_name
+            NewUserModel.objects.filter(username=obj1.worker_name).update(wallet=walletworker+splitamount)
+            wallethirer = NewUserModel.objects.filter(username=obj1.Hire_name).values_list("wallet")[0][0]
+            # obj1.worker_name
+            NewUserModel.objects.filter(username=obj1.Hire_name).update(wallet=wallethirer+splitamount)
+            obj1.status = 5
+            obj1.save()
+            messages.success(request,"Successfully refunded !!")
+            return redirect("issues")
+        
+
+
