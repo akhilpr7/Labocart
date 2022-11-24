@@ -1014,13 +1014,20 @@ class producthistory(View):
 	def get(self, request, *args, **kwargs):
 		if request.user.is_superuser or request.user.is_staff:
 			purchase = PurchaseModel.objects.all().values().exclude(status__in=[2,1,0])
-			print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",purchase)
-			# print("ppppppppppppppppppppppppppppppppppppppppppppppppppppppppp",purchase.username)
-			context = {
+			if purchase:
+				context = {
 				'purchase': purchase,
 				'current_path':'Product Purchase History',
 			}
-			return render(request,'home/adminTransactions.html',context)
+				return render(request,'home/adminTransactions.html',context)
+			else:
+				errormessage = "Product Purchase history is Empty"
+			context ={
+				'current_path':'Product Purchase History',
+				'errors':errormessage
+				}
+			return render(request,"home/emptyadmin.html",context)
+
 		else:
 			return render(request,'home/page-403.html')
 
@@ -1029,32 +1036,65 @@ class PurchaseHistory(View):
 	def get(self, request, *args, **kwargs):
 		if request.user.is_superuser:
 			packages = PurchaseModel.objects.filter(status=0).values()
-			context ={
+			if packages:
+				context ={
 				'package':packages,
 				'current_path':'Package Purchase History'
-		}
-		return render(request,'home/adminpackage_history.html',context)
+			}
+				return render(request,'home/adminpackage_history.html',context)
+			else:
+				errormessage = "Package Purchase history is Empty"
+			context ={
+				'current_path':'Package Purchase History',
+				'errors':errormessage
+				}
+			return render(request,"home/emptyadmin.html",context)
+		else:
+			return render(request,'home/page-403.html')
+
 
 @method_decorator(login_required,name='dispatch')
 class HireHistory(View):
 	def get(self, request, *args, **kwargs):
 		if request.user.is_superuser:
 			hire = HireModel.objects.filter(status__in = [4,5])
-			context = {
+			if hire:
+				context = {
 				'hire':hire,
 				'current_path':'Hire History'
 			}
-		return render(request,'home/adminhirehistory.html',context)
+				return render(request,'home/adminhirehistory.html',context)
+			else:
+				errormessage = "Hire history is Empty"
+			context ={
+				'current_path':'Hire History',
+				'errors':errormessage
+				}
+			return render(request,"home/emptyadmin.html",context)
+		else:
+			return render(request,'home/page-403.html')
+
 @method_decorator(login_required,name='dispatch')
 class RefundHistoryView(View):
 	def get(self, request, *args, **kwargs):
 		if request.user.is_superuser:
 			refund = RefundHistory.objects.all().values()
-			context = {
+			if refund:
+				context = {
 				'refund':refund,
 				'current_path':'Refund History'
 			}
-		return render(request,'home/adminrefundhistory.html',context)
+				return render(request,'home/adminrefundhistory.html',context)
+			else:
+				errormessage = "Refund history is Empty"
+			context ={
+				'current_path':'Refund History',
+				'errors':errormessage
+				}
+			return render(request,"home/emptyadmin.html",context)
+
+		else:
+			return render(request,'home/page-403.html')
 
 
 
