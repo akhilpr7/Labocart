@@ -48,6 +48,8 @@ urlpatterns = [
 	path('packagehistory/',views.PurchaseHistory.as_view(), name="packagehistory"),
 	path('hirehistory/',views.HireHistory.as_view(), name="hirehistory"),
 	path('refundhistory/',views.RefundHistoryView.as_view(), name="refundhistory"),
+	path('myorders/',views.MyOrders.as_view(), name="myorders"),
+	path('trackorder/<int:id>',views.TrackMyorderView.as_view(), name="trackorder"),
 
 
 

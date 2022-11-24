@@ -1167,3 +1167,30 @@ class IncreaseNo(View):
 		else:
 			messages.error(request,"Not enough available stock !")
 			return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
+
+
+@method_decorator(login_required,name='dispatch')
+class MyOrders(View):
+	def get(self, request, *args, **kwargs):
+		data=PurchaseModel.objects.filter(username=request.user.username).values().exclude(status__in=[0,1,2])
+		context={
+			"purchase":data,
+			"current_path":"My Orders",
+		}
+		return render(request,'shop/myorders.html',context)
+class TrackMyorderView(View):
+	def get(self, request,id, *args, **kwargs):
+		data=PurchaseModel.objects.filter(username=request.user.username,order_id = id ).first()
+		data1=PurchaseModel.objects.get(username=request.user.username,order_id = id )
+		# prod=ProductsModel.objects.all()
+		product=data.Product_name
+		quantity=data.Quantity
+		rate=data.Prices
+		zipped = zip(product,quantity,rate)
+
+		context={
+			"zipped":zipped,
+			"purchase":data1,
+			"current_path":"My Orders",
+		}
+		return render(request,'shop/order-tracking.html',context)

@@ -1,0 +1,114 @@
+{% extends "index.html" %}
+{% block title %} My Orders {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+    <p class="d-none" id="messagetag">{{message.tags}}</p>
+    <p class="d-none " id="messagecontent">{{message}}</p>
+{% endfor %}
+{% endif %}
+
+
+
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
+    <div class="d-block mb-4 mb-md-0">
+      <h5 class="h5"> <b>Product Purchase History</b> </h5>
+    </div>
+
+</div>
+
+
+<div class="card card-body border-0 table-wrapper table-responsive"  style="box-shadow: 0 0px 10px rgba(202,194,247,0.59)">
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th > Purchase ID</th>
+            <th >username</th>
+            <th >Product Name</th>
+            <th >Price</th>
+            <th >Total Price</th>
+            <th >Date</th>
+            <th >Quantity</th>
+            {% comment %} <th >Shipped</th> {% endcomment %}
+            <th >Status</th>
+            <th >One Time Code</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for data in purchase %}
+
+          <tr>
+            <td><p>{{data.order_id}}</p></td>
+            <td><p>{{data.username}}</p></td>
+            <td>{% for Product_name in data.Product_name %}
+              <p>{{Product_name}}</p>
+
+                {% endfor %}
+            </td>
+            <td>{% for price in data.Prices %}
+                <p>{{price|floatformat:2}}</p>
+                {% comment %} {% if forloop.last %}
+                {{" "}}
+                {% else %}
+                
+                {% endif %} {% endcomment %}
+                {% endfor %}
+            </td>
+
+            <td><p>{{data.Total|floatformat:2}}</p></td>
+            <td><p>{{data.date}}</p></td>
+            <td>{% for quantity in data.Quantity %}
+              <p>{{quantity}}</p>
+
+                {% endfor %}
+            </td>
+            {%if data.status == 5%}
+            <td><a class="btn btn-light dropdown-toggle text-success" href="#" role="button" >
+              <i class="fa fa-check text-dark"></i> Delivered   
+                
+            </a></td>
+            {%elif data.status == 6%}
+              <td><a class="btn btn-light dropdown-toggle text-danger" href="#" role="button" >
+                <span class="text-black " style="font-size: 1.3rem;">x</span>  Cancelled   
+                
+              </a></td>
+            {%else%}
+            <td>{%if data.status == 3%}
+                <a href="{%url 'trackorder' data.order_id %}"><button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Track Your Order
+                   </button></a>
+                {%elif data.status == 4%}
+                <a href="{%url 'trackorder' data.order_id %}"><button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Track Your Order
+                   </button></a>                
+                   {%endif%}
+             
+              
+            
+            </td>
+              
+
+ 
+            {%endif%}
+            {%if data.status == 4%}
+            <td><b>{{data.otp}}</b></td>
+            {%endif%}
+        </tr> 
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+   
+</div> 
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
