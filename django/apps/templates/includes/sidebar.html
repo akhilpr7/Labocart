@@ -59,11 +59,75 @@
         <span class="sidebar-text">Transactions</span>
       </a>
     </li> -->
-    <li class="nav-item {% if 'Transactions' in current_path %} active {% endif %}"style="padding:8px;">
-      <a class="nav-link" href="{% url 'adminTransactions' %}">
-          <i class="fas fa-fw fa-credit-card"></i>
-          <span>Transactions</span></a>
-    </li>
+    <li class="nav-item "style="padding:8px;">
+      <span
+        class="nav-link  collapsed  d-flex justify-content-between align-items-center "
+        data-bs-toggle="collapse" data-bs-target="#submenu-components2">
+        <span>
+          <!-- <span class="sidebar-icon">
+            <span class="material-symbols-outlined">
+              store
+              </span> 
+             </span>  -->
+             <i class="fas fa-fw fa-credit-card"></i>
+
+          <span class="sidebar-text">Transactions</span>
+        </span>
+        <span class="link-arrow">
+          <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+        </span>
+      </span>
+      <div class="multi-level collapse {% if 'Product Purchase History' in current_path or 'Package Purchase History' in current_path or 'Hire History' in current_path or 'Refund History' in current_path %} show {% endif %}" role="list"
+        id="submenu-components2" aria-expanded="false">
+        <ul class="flex-column nav">
+          <li class="nav-item {% if 'Product Purchase History' in current_path %} active {% endif %}"style="padding:8px;">
+            <a class="nav-link" href="{% url 'products_history' %}">
+              <!-- <span class="sidebar-icon">
+                <span class="material-symbols-outlined">
+                  add
+                  </span>               
+                 </span>            -->
+                 <i class="fas fa-fw fa-table"></i>
+                 <span class="sidebar-text">Purchase History</span>
+            </a>
+          </li>
+          <li class="nav-item {% if 'Package Purchase History' in current_path %} active {% endif %}"style="padding:8px;">
+            <a class="nav-link" href=" {% url 'packagehistory' %}">
+              <!-- <span class="sidebar-icon ms-1">
+                <span class="material-symbols-outlined">
+                  table
+                  </span>
+              </span>           -->
+              <i class="fas fa-fw fa-table"></i>
+                  <span class="sidebar-text">Package History</span>
+            </a>
+          </li>
+          <li class="nav-item {% if 'Hire History' in current_path %} active {% endif %}"style="padding:8px;">
+            <a class="nav-link" href="{% url 'adminhirehistory' %}">
+              <!-- <span class="sidebar-icon ms-1">
+                <span class="material-symbols-outlined">
+                  table
+                  </span>
+              </span>           -->
+              <i class="fas fa-fw fa-table"></i>
+                  <span class="sidebar-text">Hire History</span>
+            </a>
+          </li>
+          <li class="nav-item {% if 'Refund History' in current_path %} active {% endif %}"style="padding:8px;">
+            <a class="nav-link" href="{% url 'refundhistory' %}">
+              <!-- <span class="sidebar-icon ms-1">
+                <span class="material-symbols-outlined">
+                  table
+                  </span>
+              </span>           -->
+              <i class="fas fa-fw fa-table"></i>
+                  <span class="sidebar-text">Refund History</span>
+            </a>
+          </li>
+        </ul>
+        </div>
+      </li>
+   
     <!-- <li class="nav-item "style="padding:8px;">
       <a href="{% url 'category' %}" class="nav-link" id="something">
             <span class="sidebar-icon">
@@ -130,21 +194,14 @@
       </li>
       <li class="nav-item {% if 'Service Requests' in current_path %} active {% endif %}" style="padding:8px;" >
         <a href="{% url 'servicerequests' %}" class="nav-link" id="something">
-          <!-- <span class="sidebar-icon ">
-            <span class="material-symbols-outlined">
-              engineering
-              </span>       </span> -->
+    
               <i class="fas fa-fw fa-user-clock"></i>
           <span class="sidebar-text">Service Requests</span>
         </a>
       </li>      
       <li class="nav-item {% if 'Pending KYC' in current_path %} active {% endif %}" style="padding:8px;" >
         <a href="{% url 'pendingkyc' %}" class="nav-link" id="something">
-          <!-- <span class="sidebar-icon ">
-            <span class="material-symbols-outlined">
-              settings_account_box
-              </span>
-            </span> -->
+
             <i class="fas fa-fw fa-hourglass-half"></i>
 
               <span class="sidebar-text">Registration Requests</span>
@@ -152,33 +209,21 @@
       </li>
       <li class="nav-item {% if 'Manage User' in current_path %} active {% endif %}" style="padding:8px;" >
         <a href="{% url 'manageuser' %}" class="nav-link" id="something">
-          <!-- <span class="sidebar-icon ">
-            <span class="material-symbols-outlined">
-              manage_accounts
-              </span>       
-          </span> -->
+     
           <i class="fas fa-fw fa-users"></i>
           <span class="sidebar-text">Manage Users</span>
         </a>
       </li>
       <li class="nav-item {% if 'registerstaff' in current_path %} active {% endif %}" style="padding:8px;" >
         <a href="{% url 'registerstaff' %}" class="nav-link" id="something">
-          <!-- <span class="sidebar-icon ">
-            <span class="material-symbols-outlined">
-              manage_accounts
-              </span>       
-          </span> -->
+    
           <i class="fas fa-fw fa-user-plus"></i>
           <span class="sidebar-text">Register a Staff</span>
         </a>
       </li>
       <li class="nav-item {% if 'Manage Services' in current_path %} active {% endif %}" style="padding:8px;" >
         <a href="{% url 'manageservices' %}" class="nav-link" id="something">
-          <!-- <span class="sidebar-icon ">
-            <span class="material-symbols-outlined">
-              manage_history
-              </span>        
-            </span> -->
+   
             <i class="fas fa-fw fa-stopwatch"></i>
           <span class="sidebar-text">Manage Services</span>
         </a>
@@ -186,13 +231,9 @@
       <li class="nav-item {% if 'components-' in current_path %} active {% endif %}"style="padding:8px;">
         <span
           class="nav-link  collapsed  d-flex justify-content-between align-items-center"
-          data-bs-toggle="collapse" data-bs-target="#submenu-components2">
+          data-bs-toggle="collapse" data-bs-target="#submenu-components9">
           <span>
-            <!-- <span class="sidebar-icon">
-              <span class="material-symbols-outlined">
-                package
-                </span>          
-            </span>  -->
+    
             <i class="fas fa-fw fa-handshake"></i>
             <span class="sidebar-text">Packages</span>
           </span>
@@ -201,24 +242,18 @@
           </span>
         </span>
         <div class="multi-level collapse {% if 'Add Package' in current_path or 'Packages List' in current_path %} show {% endif %}" role="list"
-          id="submenu-components2" aria-expanded="false">
+          id="submenu-components9" aria-expanded="false">
           <ul class="flex-column nav">
             <li class="nav-item {% if 'Add Package' in current_path %} active {% endif %}"style="padding:8px;">
               <a class="nav-link" href="{%url 'addpackage'%}">
-                <!-- <span class="sidebar-icon">
-                  <span class="material-symbols-outlined">
-                    add
-                    </span>                  </span>            -->
+
                     <i class="fas fa-fw fa-plus"></i>
                   <span class="sidebar-text">Add Package</span>
               </a>
             </li>
             <li class="nav-item {% if 'Packages List' in current_path %} active {% endif %}"style="padding:8px;">
               <a class="nav-link" href="{%url 'packages'%}">
-                <!-- <span class="sidebar-icon ms-1">
-                  <span class="material-symbols-outlined">
-                    table
-                    </span> </span>              -->
+
                     <i class="fas fa-fw fa-table"></i>
                   <span class="sidebar-text">Manage Package</span>
               </a>
@@ -227,23 +262,39 @@
         </li>
         <li class="nav-item {% if 'Reported Issues' in current_path %} active {% endif %}"style="padding:8px;">
           <a class="nav-link" href="{%url 'issues'%}">
-            <!-- <span class="sidebar-icon ms-1">
-              <span class="material-symbols-outlined">
-                table
-                </span> </span>              -->
+     
                 <i class="fas fa-fw fa-table"></i>
               <span class="sidebar-text">Reported Isuues</span>
           </a>
         </li>
         
-      {% endif %}
-
-<!-- End of Admin View -->
 
 
-<!-- User View -->
+{% elif request.user.is_staff %}
 
-{% if not request.user.is_superuser %}
+
+<li class="nav-item" id="something"style="padding:8px;">
+  <a href="" class="nav-link d-flex align-items-center">
+    <span class="sidebar-icon">
+      <img src="/static/assets/img/brand/laboCart.png" height="20" width="20" alt="Volt Logo">
+    </span>
+    <span class="mt-1 ms-1 sidebar-text">LABOCART</span>
+  </a>
+</li>
+
+
+            <li class="nav-item {% if 'Transactions' in current_path %} active {% endif %}"style="padding:8px;">
+              <a class="nav-link" href="{% url 'products_history' %}">
+                  <i class="fas fa-fw fa-credit-card"></i>
+                  <span>Manage Delivery</span></a>
+            </li>
+      </li>
+
+
+
+
+
+{% elif not request.user.is_superuser %}
 
 <li class="nav-item" id="something"style="padding:8px;">
   <a href="/" class="nav-link d-flex align-items-center">
@@ -289,6 +340,11 @@
         <a class="nav-link" href="{% url 'shop' %}">
             <i class="fas fa-fw fa-store"></i>
             <span>Shop</span></a>
+      </li>
+      <li class="nav-item{% if 'My Orders' in current_path %} active {% endif %}"style="padding:8px;">
+        <a class="nav-link" href="{% url 'shop' %}">
+            <i class="fas fa-fw fa-store"></i>
+            <span>My Orders</span></a>
       </li>
 
       <li class="nav-item {% if 'components-' in current_path %} active {% endif %}"style="padding:8px;">

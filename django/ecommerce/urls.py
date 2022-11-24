@@ -43,7 +43,13 @@ urlpatterns = [
 	path('refundhistory/',views.RefundHistoryUser.as_view(), name="refundhistory"),
 	path('refundhistoryworker/',views.RefundHistoryWorker.as_view(), name="refundhistoryworker"),
 	path('labotransactions/',views.LaboTransactions.as_view(), name="labotransactions"),
-	path('adminTransactions/',views.AdminTransactions.as_view(), name="adminTransactions"),
+	path('products_history/',views.producthistory.as_view(), name="products_history"),
 	path('search_products/',views.SearchProducts.as_view(), name="search_products"),
+	path('packagehistory/',views.PurchaseHistory.as_view(), name="packagehistory"),
+	path('adminhirehistory/',views.AdminHireHistory.as_view(), name="adminhirehistory"),
+	path('refundhistory/',views.RefundHistoryView.as_view(), name="refundhistory"),
+
+
+
 ]
 

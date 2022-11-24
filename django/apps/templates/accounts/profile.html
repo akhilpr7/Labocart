@@ -10,6 +10,12 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> {% endcomment %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+{% if messages %}
+{% for message in messages %}
+    <p class="d-none" id="messagetag">{{message.tags}}</p>
+    <p class="d-none " id="messagecontent">{{message}}</p>
+{% endfor %}
+{% endif %}
 <section class="pb-6 pt-5">
   <p id="comments" data-comment="{{comment}}"></p>
   <div class="container-fluid pt-5 row">

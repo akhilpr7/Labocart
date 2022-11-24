@@ -5,7 +5,7 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from ecommerce.models import HireModel, PurchaseModel,RequestsModel,RefundHistory,PackageModel
+from ecommerce.models import HireModel, PurchaseModel,RequestsModel,RefundHistory,PackageModel,ProductsModel
 from .forms import AddJobForm, CategoryForm, JobPostingForm, AddFundForm, ApplyForm,CommentForm
 from .models import Category, JobPostingModel, AppliedJobs,Category,JobPaymentModel,CitiesModel,ReeportModel
 from django.contrib import messages
@@ -18,7 +18,7 @@ import datetime
 from django.views.decorators.cache import cache_control
 from django.http import HttpResponse
 from django.db.models import Sum
-
+import random
 # Create your views here.
 
 
@@ -106,7 +106,11 @@ class TransactionView(View):
                 if new_context: 
                     return render(request , self.template_name , context)
                 else:
-                    messages.success(request,"No Transactions Found")
+                    errormessage = " Transactions is Empty"
+                    context = {
+				    'current_path':"Transactions",
+				    'errors':errormessage
+				}
                     return render(request, "home/emptyadmin.html",context)
             else:
                 new_context = PurchaseModel.objects.filter(
@@ -118,7 +122,11 @@ class TransactionView(View):
                 if new_context:
                     return render(request , self.template_name , context)   
                 else:
-                    messages.success(request,"No Transactions Found")
+                    errormessage = " Transactions is Empty"
+                    context = {
+				    'current_path':"Transactions",
+				    'errors':errormessage
+				}
                     return render(request, "home/emptypage.html",context)
 @method_decorator(login_required, name='dispatch')
 class Userservices(View):
@@ -135,7 +143,12 @@ class Userservices(View):
             if details:
                 return render(request, "home/user-services.html", context)
             else:
-                return render(request, "home/emptyservices.html",context)
+                errormessage = "No Services Found"
+                context = {
+				'current_path':"User Services",
+				'errors':errormessage
+				}
+            return render(request, "home/emptyservices.html",context)
         else:
             return redirect('membership')
     def post(self, request, *args,  **kwargs):
@@ -176,6 +189,11 @@ class Workerservices(View):
             if work:
                 return render(request, "home/worker-services.html", context)
             else:
+                errormessage = "No Services Found"
+                context = {
+				'current_path':"Worker Services",
+				'errors':errormessage
+				}
                 return render(request, "home/emptyworkerservices.html",context)
         else:
             messages.error(request,"Subscription Required !! ")
@@ -242,7 +260,7 @@ class ApplyFormView(View):
                     messages.success(request, "Job Applied Successfully")
                     return redirect('lookforjobs')
                 else:
-                    messages.error(request, "error")
+                    messages.error(request, "Application Failed")
                     return redirect('lookforjobs')
         else:
             messages.error(request, "error")
@@ -304,6 +322,11 @@ class ServiceView(View):
             if data:
                 return render(request, self.template_name, context)
             else:
+                errormessage = "No Requests Found"
+                context = {
+				'current_path': "Requested Services",
+				'errors':errormessage
+				}
                 return render(request, "home/emptyservices.html", context)
         else:
             return redirect('membership')
@@ -463,9 +486,11 @@ class UpdateUser(View):
         if user.is_active:
             user.is_active = False
             user.save()
+            messages.success(request,"Inactivated Successfully")
         else:
             user.is_active = True
             user.save()
+            messages.success(request,"Activated Successfully")
         return redirect('manageuser')
 
 @method_decorator(login_required, name='dispatch')
@@ -481,8 +506,7 @@ class JobPostingView(View):
         x =jobs.exclude(job_title__in=[userjobs])
         print(x,"--===--===--===----========")
         if not x:
-            print("empty !!!!!!!!!!!!!!!!")
-            messages.error(request,"No Remaining Jobs Found In This Caegory  !!!!")
+            messages.error(request,"No Remaining Jobs Found In This Category  !!!!")
             return redirect("labocategory2")
         else:
             
@@ -551,7 +575,11 @@ class HireHistory(View):
         if details:
             return render(request, "home/hirehistory.html", context)
         else:
-            messages.error(request,"Page is Empty")
+            errormessage = "Laboshop History is Empty"
+            context = {
+			'current_path': "Laboshop History",
+			'errors':errormessage
+			}            
             return render(request, "home/emptypage.html", context)
 
 
@@ -561,11 +589,11 @@ class UpdateServices(View):
         status = labourmodels.objects.filter(id=id).values_list("status")[0][0]
         if status == 0:
             labourmodels.objects.filter(id=id).update(status=1)
-            messages.success(request, "Success !")
+            messages.success(request, "Activated Successfully !")
             return redirect("manageservices")
         elif status == 1:
             labourmodels.objects.filter(id=id).update(status=0)
-            messages.success(request, "Success !")
+            messages.success(request, "Inactivated Successfully!")
             return redirect("manageservices")
         else:
             labourmodels.objects.filter(id=id).update(status=0)
@@ -598,7 +626,12 @@ class Labocategories2(View):
                     messages.error(request, "Job Applying Limit Reached !!")
                     return redirect("laboshop")
             else:
-                return render(request,'home/emptypage.html',{'current_path':"Provide Jobs"})
+                errormessage = "Page is Empty"
+                context = {
+			    'current_path': "Provide Jobs",
+			    'errors':errormessage
+			    }     
+                return render(request,'home/emptypage.html',context)
         else:
             return redirect('membership')
 
@@ -616,6 +649,11 @@ class ServiceRequests(View):
             if details:
                 return render(request, "home/service_requests.html", context)
             else:
+                errormessage = "No Requests Found"
+                context = {
+			    'current_path': "Service Requests",
+			    'errors':errormessage
+			    }    
                 return render(request,'home/emptyKYC.html', context)
 
         else:
@@ -632,11 +670,16 @@ class PendingKYC(View):
             context = {
                 'media_url': settings.NEW_VAR,
                 'datas': datas,
-                'current_path': "Pending KYC  ",
+                'current_path': "Registration Requests",
             }
             if datas:
                 return render(request, self.template_name, context)
             else:
+                errormessage = "No Requests Found"
+                context = {
+			    'current_path': "Registration Requests",
+			    'errors':errormessage
+			    }    
                 return render(request,'home/emptyKYC.html', context)
         else:
             return render(request,'home/page-403.html')
@@ -646,7 +689,7 @@ class AcceptServices(View):
     def get(self, request, id, *args, **kwargs):
         status = labourmodels.objects.filter(id=id).values_list("status")[0][0]
         labourmodels.objects.filter(id=id).update(status=1)
-        messages.success(request, "Success !")
+        messages.success(request, "Request Accepted successfully !")
         return redirect("servicerequests")
 
 @method_decorator(login_required, name='dispatch')
@@ -654,7 +697,7 @@ class RejectServices(View):
     def get(self, request, id):
         data = labourmodels.objects.get(id=id)
         data.delete()
-        messages.success(request, "Cancelled")
+        messages.success(request, "Request Rejected Successfully")
         return redirect('servicerequests')
 
 @method_decorator(login_required, name='dispatch')
@@ -680,7 +723,12 @@ class JobRequests(View):
             if requests:
                 return render(request, 'home/jobrequests.html', context)
             else:
-                return render(request,'home/emptyservices.html',{'current_path':"Job requests"})
+                errormessage = "No Requests Found"
+                context = {
+			    'current_path': "Job requests",
+			    'errors':errormessage
+			    }    
+                return render(request,'home/emptyservices.html',context)
         else:
             return redirect('membership')
         
@@ -702,7 +750,7 @@ class ApproveUser(View):
             user = NewUserModel.objects.get(id=id)
             user.kyc_approved = True
             user.save()
-            messages.success(request, "Approved User.")
+            messages.success(request, "Approved User successfully")
             return redirect('pendingkyc')
         except Exception as e:
             messages.error(request, "An error occured during the approval.")
@@ -742,7 +790,11 @@ class ProvidedJobs(View):
             if jobs:
                 return render(request,self.template_name , context)
             else:
-                messages.error(request, "No Services Found")
+                errormessage = "Page is Empty"
+                context = {
+			    'current_path': "Enlisted Jobs",
+			    'errors':errormessage
+			    }   
                 return render(request,"home/emptyservices.html",context)
         else:
             return redirect('membership')
@@ -765,7 +817,7 @@ class LookForJobs(View):
             'media_url': settings.NEW_VAR,
 
             'jobs': jobs,
-            'current_path': "Available Jobs",
+            'current_path': "Look for Jobs",
             'datacategory':datacategory,
             "datajob":datajob,
         }
@@ -773,6 +825,11 @@ class LookForJobs(View):
             if jobs:
                 return render(request, "home/lookforjobs.html", context)
             else:
+                errormessage = "No Services Found"
+                context = {
+			    'current_path': "Look for Jobs",
+			    'errors':errormessage
+			    }   
                 return render(request,"home/emptyworkerpage.html",context)
         else:
             messages.error(request,"Subscription required !! ")
@@ -791,6 +848,11 @@ class LookJobs(View):
             if data:
                 return render(request, "home/appliedjobs.html", context)
             else:
+                errormessage = "No Services Found"
+                context = {
+			    'current_path': "Applied Jobs",
+			    'errors':errormessage
+			    }  
                 return render(request,"home/emptyworkerpage.html",context)
         else:
             messages.error(request,"Subscription required !! ")
@@ -800,6 +862,7 @@ class CancelLookJobs(View):
     def get(self, request,id, *args, **kwargs):
         delete = AppliedJobs.objects.filter(id=id)
         delete.delete()
+        messages.success(request,"Deleted Successfully")
         return redirect('lookjobs')
 @method_decorator(login_required, name='dispatch')
 class EditLookJobs(View):
@@ -823,7 +886,7 @@ class EditLookJobs(View):
         location=request.POST.get("location")
         rate=request.POST.get("rate")
         AppliedJobs.objects.filter(id=id).update(work_type=work_mode,place=location,rate=rate)
-
+        messages.success(request, "Updated successfully")
         return redirect('lookjobs')
 
 
@@ -976,10 +1039,102 @@ class Reported(View):
         else:
             return render(request, 'home/page-403.html')
 
-class Delivered(View):
+
+class Delivery(View):
+
     def get(self, request,id):
+
         obj = PurchaseModel.objects.get(id=id)
+
         obj.status=4
+        obj.otp=random.randint(100000,999999)
+
         obj.save()
-        messages.success(request,"Successfully Delivered !!!")
-        return redirect("adminTransactions")
+
+        messages.success(request,"Out for delivery !!!.")
+
+        return redirect("products_history")
+
+
+
+
+class ConfirmProductOtp(View):
+    def get(self, request,id, *args, **kwargs):
+        
+        return render(request,"home/productotp.html",{"id":id})
+    def post(self,request,*args, **kwargs):
+        id=request.POST.get("id")
+        n1=request.POST.get("first")
+        n2=request.POST.get("second")
+        n3=request.POST.get("third")
+        n4=request.POST.get("fourth")
+        n5=request.POST.get("fifth")
+        n6=request.POST.get("sixth")
+        # otp = ''
+        otp =n1 + n2+n3+n4+n5+n6
+        print(otp,"oooooooooooooooootttttttttppppppp")
+        userotp= PurchaseModel.objects.filter(id=id).first()
+        if userotp.otp == int(otp):
+            print("Verifieeeeeeeeeeeeeeeeeeeeeeeedddddddddeeee")
+            return redirect("deliverd",id)
+        else:
+            print(userotp.otp,"this is otp dummmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
+            print("otp invalidddddddddddddddddddddddddddddddddddddddddd")
+            messages.error(request,"otp invalid !!")
+            return redirect("confirmproductotp",id)
+
+
+
+class Deliverd(View):
+
+    def get(self, request,id):
+
+        obj = PurchaseModel.objects.get(id=id)
+       
+        
+        obj.status=5
+
+        wallet = NewUserModel.objects.get(username = obj.username)
+
+
+        obj.save()
+
+        messages.success(request,"Successfully Delivered !!!.")
+
+        return redirect("products_history")
+
+class OrderCancelView(View):
+
+    def get(self, request,id):
+
+        obj = PurchaseModel.objects.get(id=id)
+
+        obj.status=6
+
+        wallet = NewUserModel.objects.get(username = obj.username)
+
+        admin = NewUserModel.objects.get(username = 'admin')
+
+
+        for product_name,quant in zip(obj.Product_name,obj.Quantity):
+
+            
+            quantity = ProductsModel.objects.filter(Product_name = product_name).values_list("Quantity")[0][0]
+            ProductsModel.objects.filter(Product_name = product_name).update(Quantity=quantity+quant)
+            
+
+
+
+        admin.wallet = admin.wallet - obj.Total
+
+        wallet.wallet = wallet.wallet + obj.Total
+
+        wallet.save()
+
+        admin.save()
+
+        obj.save()
+
+        messages.success(request,"Cancelled The Purchase and refund initiated.")
+
+        return redirect("products_history")

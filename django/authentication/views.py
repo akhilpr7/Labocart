@@ -35,10 +35,12 @@ class LoginViews(LoginView):
     def post(self, request, *args, **kwargs):
         print(request.POST['username'])
         print(request.POST['password'])
+
         user = authenticate(
             request, username=request.POST['username'], password=request.POST['password'])
         if user is not None:
             if user.kyc_approved:
+                print(user.is_staff,"staaaaaaaaaaaffffff")
                 login(request, user)
                 if request.user.is_superuser:
                     return HttpResponseRedirect(reverse('admindashboard'))
@@ -186,8 +188,10 @@ class UpdateProfileView(View):
             updateprofile.email = request.POST['email']
             updateprofile.image = request.FILES['image']
             updateprofile.save()
-            return redirect('profile')
+            messages.success(request,' Profile updated Successfully')
+            return redirect('profile') 
         else:
             form = UpdateProfileForm()
+            messages.error(request,'Profile updation failed')
         return redirect('update_profile')
 

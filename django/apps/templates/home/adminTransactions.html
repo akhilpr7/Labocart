@@ -35,7 +35,7 @@
             <th >Date</th>
             <th >Quantity</th>
             {% comment %} <th >Shipped</th> {% endcomment %}
-            <th >Delivered</th>
+            <th >Status</th>
           </tr>
         </thead>
         <tbody>
@@ -67,15 +67,50 @@
 
                 {% endfor %}
             </td>
-            {%if data.status == 3%}
-            {% comment %} <td><a href="" class=" btn border rounded-2"><span class="material-symbols-outlined text-dark">done</span></a></td> {% endcomment %}
-            <td><a href="{%url 'delivered' data.id%}" class=" btn border rounded-2"><span class="material-symbols-outlined text-dark">done</span></a></td>
-          
-            {%elif data.status == 4%}
-            <td><a href="" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a></td>
-            {%elif data.status == 0%}
-            <td><a href="" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a></td>
-
+            {%if data.status == 5%}
+            <td><a class="btn btn-light dropdown-toggle text-success" href="#" role="button" >
+              <i class="fa fa-check text-dark"></i> Delivered   
+                
+            </a></td>
+            {%elif data.status == 6%}
+              <td><a class="btn btn-light dropdown-toggle text-danger" href="#" role="button" >
+                <span class="text-black " style="font-size: 1.3rem;">x</span>  Cancelled   
+                
+              </a></td>
+            {%else%}
+            <td>
+              
+              
+              {%if data.status == 3%}
+              <div class="dropdown">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Order Confirmed 
+                </a>
+              
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item " href="#">Order Confirmed   <i class="fa fa-check text-success"></i></a></li>
+                  <li><a class="dropdown-item " href="{%url 'delivery' data.id%}">Out For Delivery <i class="fa fa-check "></i> </a></li>
+                  <li><a class="dropdown-item " href="#">Delivered         </a></li>
+                  <li><a class="dropdown-item text-danger" href="{%url 'cancel-order' data.id%}">Cancel         </a></li>
+                </ul>
+              </div>
+              {%elif data.status == 4%}
+              <div class="dropdown">
+                <a class="btn btn-success dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Out For Delivery
+                </a>
+              
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item " href="#">Order Confirmed   <i class="fa fa-check text-success"></i></a></li>
+                  <li><a class="dropdown-item " href="#">Out For Delivery  <i class="fa fa-check text-success"></i></a></li>
+                  <!-- <li><a class="dropdown-item " href="{%url 'deliverd' data.id%}">Delivered<i class="fa fa-check "></i></a></li> -->
+                  <li><a class="dropdown-item " href="{%url 'confirmproductotp' data.id%}">Delivered<i class="fa fa-check "></i></a></li>
+                  <li><a class="dropdown-item text-danger" href="{%url 'cancel-order' data.id%}"> >Cancel         </a></li>
+                </ul>
+              </div>
+             
+             
+            {%endif%}
             {%endif%}
         </tr> 
 
@@ -86,162 +121,6 @@
    
 </div> 
 
-
-
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
-    <div class="d-block mb-4 mb-md-0">
-      <h5 class="h5"> <b>Package Purchase History</b> </h5>
-    </div>
-
-</div>
-
-
-<div class="card card-body border-0 table-wrapper table-responsive"  style="box-shadow: 0 0px 10px rgba(202,194,247,0.59)">
-    <table class="table table-hover">
-        <thead>
-          <tr>
-            <th >Purchase ID</th>
-            <th >username</th>
-            <th >Package</th>
-            <th >Price</th>
-            <th >Date</th>
-          </tr>
-        </thead>
-        <tbody>
-
-          {% for data in package %}
-
-          <tr>
-            <td><p>{{data.order_id}}</p></td>
-            <td><p>{{data.username}}</p></td>
-            <td>{% for Product_name in data.Product_name %}
-              <p>{{Product_name}}</p>
-
-                {% endfor %}
-            </td>
-            <td>{% for price in data.Prices %}
-                <p>{{price|floatformat:2}}</p>
-                {% comment %} {% if forloop.last %}
-                {{" "}}
-                {% else %}
-                
-                {% endif %} {% endcomment %}
-                {% endfor %}
-            </td>
-
-           
-            <td><p>{{data.date}}</p></td>
-          
-        </tr> 
-
-        {% endfor %}
-
-        </tbody>
-    </table>
-   
-</div> 
-
-
-
-
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-    <div class="d-block mb-4 mb-md-0">
-      <h5 class="h5"> <b>Hire History</b> </h5>
-    </div>
-
-</div>
-
-
-<div class="card card-body border-0 table-wrapper table-responsive" style="box-shadow: 0 0px 10px rgba(202,194,247,0.59)">
-    <table class="table table-hover">
-        <thead>
-          <tr>
-            <th >ID</th>
-            <th >Worker Name</th>
-            <th >Hirer Name</th>
-            <th >Place</th>
-            <th >Work Mode</th>
-            <th >Phone</th>
-            <th >Job</th>
-            <th >Status</th>
-          </tr>
-        </thead>
-        <tbody>
-
-          {% for hire in hire %}
-
-          <tr>
-            <td><p>{{hire.id}}</p></td>
-            <td><p>{{hire.worker_name}}</p></td>
-            <td><p>{{hire.Hire_name}}</p></td>
-            <td><p>{{hire.Place}}</p></td>
-            <td>{% if hire.Work_mode == "true" %} <p>Full day</p> {% else %} <p>Half Day</p> {% endif %}</td>
-            <td><p>{{hire.Phone}}</p></td>
-            <td><p>{{hire.job_title}}</p></td>
-            <td><p>
-                {%if hire.status == 4%}
-                <p class="text-success">Completed</p> 
-                {%elif hire.status == 5%}
-                <p class="text-danger">Cancelled</p>
-                {%endif%}
-            </p></td>
-          </tr>
-
-        {% endfor %}
-
-        </tbody>
-    </table>
-   
-</div> 
-
-
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-  <div class="d-block mb-4 mb-md-0">
-    <h5 class="h5"> <b>Refund History</b> </h5>
-  </div>
-
-</div>
-
-
-
-<div class="card card-body border-0 table-wrapper table-responsive" style="box-shadow: 0 0px 10px rgba(202,194,247,0.59)">
-  <table class="table table-hover">
-      <thead>
-          <tr>
-              <th >ID</th>
-              <th >Worker</th>
-              <th >Rate</th>
-              <th >Worker Refund</th>
-              <th >hirer Refund</th>
-              <th >Work Mode</th>
-              <th >Job Title</th>
-              <th >Date</th>
-              <th >Status</th>
-              {% comment %}
-              <th >Status</th>
-              {% endcomment %}
-          </tr>
-      </thead>
-      <tbody>
-          <!-- Item -->
-          {% for data in refund %}
-          <tr>
-              <td><p>{{data.id}}</p></td>
-              <td><p>{{data.worker}}</p></td>
-              <td><p>{{data.rate}}</p></td>
-              <td><p>{{data.worker_refund|floatformat:4}}</p></td>
-              <td><p>{{data.hirer_refund|floatformat:4}}</p></td>
-              <td><p>{%if data.work_mode == 'true' %}<p>Full Day</p>{%else%}<p>Half Day</p>{%endif%}</td>
-              <td><p>{{data.job_title}}</p></td>
-              <td><p>{{data.work_date}}</p></td>
-              <td><p>{%if data.status == 2 %}<p class="text-success">Completed</p>{%else%}<p class="text-success">Completed</p>{%endif%}</td>
-             
-
-          </tr>
-          {% endfor %}
-      </tbody>
-  </table>
-</div>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
