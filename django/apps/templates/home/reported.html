@@ -70,8 +70,7 @@
 
 
 
-
-            <div class="modal fade" id="selectModal{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            {% comment %} <div class="modal fade" id="selectModal{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -80,22 +79,53 @@
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div class="row">
+                  <div class="row modal-footer">
+                    <div class="d-flex mw-60">
                    
-                    <button type="button" class="btn btn-outline-success " style="width:20%:">Worker Reund (100%)</button>
-                    <button type="button" class="btn btn-outline-success " style="width:20%:">Hirer Refund(100%)</button>
-                    <button type="button" class="btn btn-outline-warning " style="width:20%:">Split Amount (50%)</button>
-                    
+                    <a href="{%url 'refundworkerfull' data.id %}"><button type="button" class="btn btn-success mx-auto" style="width:50%:">Worker Reund (100%)</button></a>
+                    <a href="{%url 'refundhirerfull' data.id %}"><button type="button" class="btn btn-success mx-auto" style="width:50%:">Hirer Refund(100%)</button></a>
+                    <a href="{%url 'refundsplit' data.id %}"><button type="button" class="btn btn-warning mx-auto" style="width:50%:">Split Amount (50%)</button></a>
+                    </div>
                     
                   </div>
                 </div>
               </div>
+            </div>  {% endcomment %}
+
+            
+            
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal{{data.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Choose one</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <a href="{%url 'refundhirerfull' data.id %}"><button type="button" class="btn btn-success mx-auto" style="width:50%:">Hirer Refund(100%)</button></a>
+                    <a href="{%url 'refundworkerfull' data.id %}"><button type="button" class="btn btn-success mx-auto " style="width:50%:">Worker Reund (100%)</button></a>
+                  </div>
+                  <div class="modal-footer">
+                    <a href="{%url 'refundsplit' data.id %}"><button type="button" class="btn btn-warning mx-auto" style="width:50%:">Split Amount (50%)</button></a>
+                    
+                    {% comment %} <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button> {% endcomment %}
+                  </div>
+                </div>
+              </div>
             </div>
+            
 
 
 
             {% comment %} <td><a class="btn btn-success">Refund</a></td> {% endcomment %}
-            <td><a class="btn rounded-3 text-success border" style="box-shadow: 0 0px 10px rgba(202,194,247,0.59)" data-target="#selectModal{{data.id}}" data-toggle="modal" class=" btn border rounded-3">Refund</a>
+            {% comment %} <td><a class="btn rounded-3 text-success border" style="box-shadow: 0 0px 10px rgba(202,194,247,0.59)" data-target="#selectModal{{data.id}}" data-toggle="modal" class=" btn border rounded-3">Refund</a>
+            <a class="btn text-danger rounded-3 border shadow-sm" style="box-shadow: 0 0px 10px rgba(202,194,247,0.59)">Cancel</a></td>
+             {% endcomment %}
+            <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{data.id}}">
+              Refund
+            </button>
             <a class="btn text-danger rounded-3 border shadow-sm" style="box-shadow: 0 0px 10px rgba(202,194,247,0.59)">Cancel</a></td>
             
 
