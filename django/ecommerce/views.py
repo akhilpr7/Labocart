@@ -1054,7 +1054,7 @@ class PurchaseHistory(View):
 
 
 @method_decorator(login_required,name='dispatch')
-class AdminHireHistory(View):
+class HireHistory(View):
 	def get(self, request, *args, **kwargs):
 		if request.user.is_superuser:
 			hire = HireModel.objects.filter(status__in = [4,5])
@@ -1182,7 +1182,7 @@ class TrackMyorderView(View):
 	def get(self, request,id, *args, **kwargs):
 		data=PurchaseModel.objects.filter(username=request.user.username,order_id = id ).first()
 		data1=PurchaseModel.objects.get(username=request.user.username,order_id = id )
-		# prod=ProductsModel.objects.all()
+		prod=ProductsModel.objects.all()
 		product=data.Product_name
 		quantity=data.Quantity
 		rate=data.Prices
@@ -1192,5 +1192,6 @@ class TrackMyorderView(View):
 			"zipped":zipped,
 			"purchase":data1,
 			"current_path":"My Orders",
+			"product_img":prod,
 		}
 		return render(request,'shop/order-tracking.html',context)
