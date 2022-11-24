@@ -53,6 +53,7 @@ urlpatterns = [
     path('delivery/<int:id>/',views.Delivery.as_view(),name='delivery'),
     path('deliverd/<int:id>/',views.Deliverd.as_view(),name='deliverd'),
     path('cancel-order/<int:id>/',views.OrderCancelView.as_view(),name='cancel-order'),
+    path('confirmproductotp/<int:id>/',views.ConfirmProductOtp.as_view(),name='confirmproductotp'),
 
 
 ]

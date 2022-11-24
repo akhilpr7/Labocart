@@ -18,7 +18,7 @@ import datetime
 from django.views.decorators.cache import cache_control
 from django.http import HttpResponse
 from django.db.models import Sum
-
+import random
 # Create your views here.
 
 
@@ -1047,12 +1047,43 @@ class Delivery(View):
         obj = PurchaseModel.objects.get(id=id)
 
         obj.status=4
+        obj.otp=random.randint(100000,999999)
 
         obj.save()
 
         messages.success(request,"Out for delivery !!!.")
 
         return redirect("products_history")
+
+
+
+
+class ConfirmProductOtp(View):
+    def get(self, request,id, *args, **kwargs):
+        
+        return render(request,"home/productotp.html",{"id":id})
+    def post(self,request,*args, **kwargs):
+        id=request.POST.get("id")
+        n1=request.POST.get("first")
+        n2=request.POST.get("second")
+        n3=request.POST.get("third")
+        n4=request.POST.get("fourth")
+        n5=request.POST.get("fifth")
+        n6=request.POST.get("sixth")
+        # otp = ''
+        otp =n1 + n2+n3+n4+n5+n6
+        print(otp,"oooooooooooooooootttttttttppppppp")
+        userotp= PurchaseModel.objects.filter(id=id).first()
+        if userotp.otp == int(otp):
+            print("Verifieeeeeeeeeeeeeeeeeeeeeeeedddddddddeeee")
+            return redirect("deliverd",id)
+        else:
+            print(userotp.otp,"this is otp dummmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
+            print("otp invalidddddddddddddddddddddddddddddddddddddddddd")
+            messages.error(request,"otp invalid !!")
+            return redirect("confirmproductotp",id)
+
+
 
 class Deliverd(View):
 
