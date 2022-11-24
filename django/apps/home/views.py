@@ -94,7 +94,7 @@ class TransactionView(View):
     template_name = 'home/transactions.html'
     def get(self, request,  *args, **kwargs):
             new_context = PurchaseModel.objects.filter(
-            status__in=[3,4], username=request.user.username)
+            status__in=[3,5], username=request.user.username)
             context={'datas' : new_context} 
             if request.user.is_superuser:
                 new_context = PurchaseModel.objects.filter(
@@ -114,7 +114,7 @@ class TransactionView(View):
                     return render(request, "home/emptyadmin.html",context)
             else:
                 new_context = PurchaseModel.objects.filter(
-                status=3,username=request.user.username)  
+                status__in=[3,5],username=request.user.username)  
                 context={
                     'datas' : new_context,
                     'current_path': "Transactions"

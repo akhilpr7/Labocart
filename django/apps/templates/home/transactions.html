@@ -25,7 +25,7 @@
                     <th class="border-gray-200">Total Price</th>
                     <th class="border-gray-200">Date</th>
                     <th class="border-gray-200">Quantity</th>
-                    <th class="border-gray-200">Status</th>
+                  
                 </tr>
             </thead>
             <tbody>
@@ -64,14 +64,7 @@
                         {% endif %} {% endcomment %}
                         {% endfor %}
                     </td>
-                    {%if data.status == 3%}
-                    <td><a href="{%url 'delivered' data.id%}" class=" btn border rounded-2">Pending</a></td>
-                  
-                    {%elif data.status == 4%}
-                    <td><a href="" class=" btn border rounded-2">Deliverd</a></td>
-                
-        
-                    {%endif%}                </tr>
+                                 </tr>
                 {% endfor %}
             </tbody>
         </table>
