@@ -31,6 +31,7 @@
                   <th class="border-gray-200">Status</th>
                   <th class="border-gray-200">Package</th>
                   <th class="border-gray-200">Subscription date</th>
+                  <th class="border-gray-200">Role</th>
                   <th class="border-gray-200">Option</th>
               </tr>
           </thead>
@@ -52,6 +53,7 @@
 
                 <td><span>{{data.package}}</span></td>
                 <td><span>{{data.subscribed_at}}</span></td>
+                <td><span>{%if data.is_staff%}Staff{%else%}User{%endif%}</span></td>
                 <td>
                 {% if data.is_active %}
                     <a href="{% url 'updateuser' data.id %}"class=" btn shadow-sm text-success">Active</a>
