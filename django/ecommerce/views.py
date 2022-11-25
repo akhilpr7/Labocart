@@ -2,7 +2,7 @@ from django.contrib import messages
 from authentication.models import NewUserModel, jobmodel
 from django.shortcuts import render, redirect
 from django.views import View
-from authentication.models import NewUserModel, labourmodels
+from authentication.models import NewUserModel, labourmodels,Wallethistory
 from django.db.models import Q
 from django.urls import reverse
 from ecommerce.models import HireModel, ProductsModel, CartModel,RequestsModel
@@ -22,6 +22,7 @@ from django.conf import settings
 from django.views.decorators.cache import cache_control
 from django.conf.urls.static import static
 from django.views.decorators.cache import never_cache
+from datetime import datetime
 
 @method_decorator(login_required,name='dispatch')
 class Home(View):
@@ -178,7 +179,7 @@ class CheckoutView(View):
 						locality=request.POST['locality'],
 						postal=request.POST['postal'],
 						order_id=n,
-						date = datetime.datetime.now().date()
+						date = datetime.now().date()
 					)
 					data.save()
 					id = PurchaseModel.objects.filter(order_id=n).values_list("id")[0][0]
@@ -565,7 +566,7 @@ class HireNowView(View):
 					rate=rate,
 					worker_name=worker_name,
 					worker_phone=worker_phone,
-					created_at=datetime.datetime.now().date())
+					created_at=datetime.now().date())
 				# k = request.POST.get("id")
 				print(obj)
 				pay = LabopaymentModel.objects.create(work_id=obj,rate=rate,status=0,amount=0)				
@@ -581,7 +582,9 @@ class Userpayments(View):
 		rate = AppliedJobs.objects.filter(id=id).values_list("rate")[0][0]
 		print(rate,"rateeeeeeeeeeeeeeeeeeeeeeeeeeeee")
 		if wallet_balance >= rate:
-			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)	
+			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)
+			date =datetime.now()
+			Wallethistory.objects.create(user_id=request.user,amount=rate,date=date,name=request.user.username,transactiontype="Labocart Payment")	
 			AppliedJobs.objects.filter(id=id).update(status=1)
 			JobPaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
 			messages.success(request,'Payment Successful')
@@ -596,6 +599,9 @@ class HireNowPayments(View):
 		rate = LabopaymentModel.objects.filter(work_id=id).values_list("rate")[0][0]
 		if wallet_balance >= rate:
 			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)
+			name =request.user.username
+			date = datetime.now()
+			Wallethistory.objects.create(user_id=request.user,amount=rate,date=date,name=name,transactiontype="Labocart Payment")	
 			RequestsModel.objects.filter(id=id).update(status=3)
 			LabopaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
 			messages.success(request,'Payment Successful')
@@ -728,10 +734,12 @@ class Subscribe(View):
 					postal=676122,
 					order_id=n,
 					status=0,
-					date = datetime.datetime.now().date()
+					date = datetime.now().date()
 				)
 				data.save()
-				NewUserModel.objects.filter(username=request.user.username).update(is_sub=True,wallet=wallet_balance-packagecost,subscribed_at=datetime.datetime.now().date(),package=id)	
+				NewUserModel.objects.filter(username=request.user.username).update(is_sub=True,wallet=wallet_balance-packagecost,subscribed_at=datetime.now().date(),package=id)	
+				date = datetime.now()
+				Wallethistory.objects.create(user_id=request.user,amount=packagecost,date=date,name=request.user.username,transactiontype="Package Payment")	
 				walletadmin =NewUserModel.objects.filter(username="admin").first()
 				NewUserModel.objects.filter(username="admin").update(wallet=walletadmin.wallet+packagecost)	
 				
@@ -797,6 +805,9 @@ class ConfirmPay(View):
 			adminwallet.wallet = adminbalance + total_price
 			adminwallet.save()
 			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-total_price)
+			name=request.user.username
+			date = datetime.now()
+			Wallethistory.objects.create(user_id=request.user,amount=total_price,date=date,name=name,transactiontype="Product Purchased")	
 			PurchaseModel.objects.filter(id=id).update(status=3)
 			obj = CartModel.objects.filter(username=request.user.username)
 			# product_id = CartModel.objects.filter(username=request.user.username).values_list("product_id")
