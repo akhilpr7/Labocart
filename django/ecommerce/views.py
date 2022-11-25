@@ -1013,8 +1013,24 @@ class LaboTransactions(View):
 @method_decorator(login_required,name='dispatch')
 class producthistory(View):
 	def get(self, request, *args, **kwargs):
+		purchase=''
+		filter=request.GET.get('filter')
+		print(filter,"0--------0000-------0000")
 		if request.user.is_superuser or request.user.is_staff:
-			purchase = PurchaseModel.objects.all().values().exclude(status__in=[2,1,0])
+			if request.GET.get('filter') != None and request.GET.get('filter') != '':
+				if filter == '1':
+					purchase = PurchaseModel.objects.all().filter(status=3).values().exclude(status__in=[2,1,0])
+				elif filter == '2':
+					purchase = PurchaseModel.objects.all().filter(status=4).values().exclude(status__in=[2,1,0])
+
+				elif filter == '3':
+					purchase = PurchaseModel.objects.all().filter(status=5).values().exclude(status__in=[2,1,0])
+					
+				elif filter == '4':
+					purchase = PurchaseModel.objects.all().filter(status=6).values().exclude(status__in=[2,1,0])
+
+			else:
+				purchase = PurchaseModel.objects.all().values().exclude(status__in=[2,1,0])
 			if purchase:
 				context = {
 				'purchase': purchase,
