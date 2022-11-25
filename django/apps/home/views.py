@@ -1038,7 +1038,15 @@ class Reported(View):
         completed = HireModel.objects.filter(status__in=[4,5]).values_list("id")
         report= ReeportModel.objects.all().exclude(hireid__in=completed)
         if request.user.is_superuser:
-            return render(request, 'home/reported.html',{"current_path":"Reported Issues","report":report,})
+            if report:
+                return render(request, 'home/reported.html',{"current_path":"Reported Issues","report":report,})
+            else:
+                errormessage = "No Issues Found"
+                context = {
+			    'current_path': "Reported Issues",
+			    'errors':errormessage
+			    }   
+                return render(request,"home/emptyadmin.html",context) 
         else:
             return render(request, 'home/page-403.html')
 
