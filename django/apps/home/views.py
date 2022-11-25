@@ -10,7 +10,7 @@ from .forms import AddJobForm, CategoryForm, JobPostingForm, AddFundForm, ApplyF
 from .models import Category, JobPostingModel, AppliedJobs,Category,JobPaymentModel,CitiesModel,ReeportModel
 from django.contrib import messages
 from django.urls import reverse
-from authentication.models import jobmodel, NewUserModel, labourmodels
+from authentication.models import jobmodel, NewUserModel, labourmodels,Wallethistory
 from django.views.generic import ListView
 from django.db.models import Q
 import pdb
@@ -19,6 +19,7 @@ from django.views.decorators.cache import cache_control
 from django.http import HttpResponse
 from django.db.models import Sum
 import random
+from datetime import date, datetime
 # Create your views here.
 
 
@@ -29,7 +30,7 @@ class HomeView(View):
         req_count = HireModel.objects.filter(Q(Hire_name=request.user)&(Q(status=4)|Q(status=5))).count()
         purchase = PurchaseModel.objects.filter(username=request.user).values_list("Total")
         sub_at=request.user.subscribed_at
-        a = datetime.datetime.now().date()
+        a = datetime.now().date()
          
         if sub_at != None:
             diff = a-sub_at
@@ -75,9 +76,14 @@ class FundView(View):
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
+            date = datetime.now()
+            name=request.user.username
+            amount = request.POST['amount']
+            print(date,name,amount,"fffffffffffffffffffffffffffffffffff")
             form = AddFundForm(request.POST, request=request)
             if form.is_valid():
                 form.save()
+                Wallethistory.objects.create(user_id=request.user,amount=amount,date=date,name=name,transactiontype="Credited")	
                 messages.success(request,"Added fund successfully!!!")
                 return redirect(reverse('funds'))
             else:

@@ -500,6 +500,7 @@ func refund(db *sql.DB){
     var wallet_hirer float64
     var wallet_worker float64
     var work_mode string
+    var user_id_id int
     // fmt.Println(diff,"difference......")
     if diff >= 0.5{
 
@@ -520,6 +521,17 @@ func refund(db *sql.DB){
       // fmt.Println(worker_name,"worker is ")
       row2 := db.QueryRow(`SELECT wallet FROM authentication_newusermodel WHERE username=$1`,worker_name)
       row2.Scan(&wallet_worker)
+
+      row4 := db.QueryRow(`SELECT id FROM authentication_newusermodel WHERE username=$2`,worker_name)
+      row4.Scan(&user_id_id)
+
+      sqlStatement03 :=`INSERT INTO authentication_wallethistory(amount,date,name,transactiontype,user_id_id) VALUES ($1, $2, $3, $4, $5)`
+      _, err03 := db.Exec(sqlStatement03,refundworker,created_at,worker_name,"Refund Credited",user_id_id)
+      if err03 != nil {
+        fmt.Println("------2")
+        panic(err03)
+      }
+
       sqlStatement1 :=`
       UPDATE authentication_newusermodel
       SET wallet = $1
@@ -533,6 +545,16 @@ func refund(db *sql.DB){
       row1 := db.QueryRow(`SELECT wallet FROM authentication_newusermodel WHERE username=$1`,hirer_name)
       row1.Scan(&wallet_hirer)
       
+      row5 := db.QueryRow(`SELECT id FROM authentication_newusermodel WHERE username=$2`,hirer_name)
+      row5.Scan(&user_id_id)
+
+      sqlStatement04 :=`INSERT INTO authentication_wallethistory(amount,date,name,transactiontype,user_id_id) VALUES ($1, $2, $3, $4, $5)`
+      _, err04 := db.Exec(sqlStatement04,refundworker,created_at,hirer_name,"Refund Credited",user_id_id)
+      if err04!= nil {
+        fmt.Println("------2")
+        panic(err04)
+      }
+
       sqlStatement2 :=`
       UPDATE authentication_newusermodel
       SET wallet = $1
@@ -588,9 +610,19 @@ func refund(db *sql.DB){
       fetch02.Scan(&job_title)
       fetch03 := db.QueryRow(`SELECT "Work_mode" FROM ecommerce_hiremodel WHERE "id" = $1`,id)
       fetch03.Scan(&work_mode)
-      fmt.Println(work_mode,"---------")
+      fetch04 := db.QueryRow(`SELECT "id" FROM authentication_newusermodel WHERE username=$1`,hirer_name)
+      fetch04.Scan(&user_id_id)
+      created_at := time.Now()
       row5 := db.QueryRow(`SELECT wallet FROM authentication_newusermodel WHERE username=$1`,hirer_name)
       row5.Scan(&wallet_hirer)
+
+      sqlStatement11 := ` INSERT INTO authentication_wallethistory(amount,date,name,transactiontype,user_id_id) VALUES ($1,$2,$3,$4,$5)`
+      _,err11:= db.Exec(sqlStatement11,rate,created_at,hirer_name,"Refund Credited",user_id_id)
+      if err11 != nil {
+        fmt.Println("------2")
+        panic(err11)
+      }
+
 
       sqlStatement10 :=`
       UPDATE authentication_newusermodel
