@@ -43,7 +43,7 @@ class JobPostingForm( forms.Form ):
   place = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Place"}))
 #   image = forms.ImageField(widget=forms.FileInput(attrs={ 'class': 'form-control'}))
   phone = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Your Phone",'type':'phone','minlength':'10','maxlength':'10','required pattern':'\d*'}))
-  CHOICES = (('True','FUll Day'),('False','Half day'))
+  CHOICES = (('True','Full Day'),('False','Half day'))
   work_type = forms.ChoiceField(choices = CHOICES,widget=forms.Select(attrs={'class':'form-select'}))
  
   def __init__(self,*args,**kwargs):
