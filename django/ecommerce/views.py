@@ -193,11 +193,11 @@ class CheckoutView(View):
 @method_decorator(login_required, name='dispatch')
 class Invoice(View):
 	template_name = 'shop/invoice.html'
-	def get(self, request):
-		products = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Product_name')[0]
-		prices = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Prices')[0]
-		quantity = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Quantity')[0]
-		total = PurchaseModel.objects.filter(username=request.user.username, status = 3).values_list('Total')[0][0]
+	def get(self, request,id, *args, **kwargs):
+		products = PurchaseModel.objects.filter(id=id).values_list('Product_name')[0]
+		prices = PurchaseModel.objects.filter(id=id).values_list('Prices')[0]
+		quantity = PurchaseModel.objects.filter(id=id).values_list('Quantity')[0]
+		total = PurchaseModel.objects.filter(id=id).values_list('Total')[0][0]
 		context = {
 
 		"total": total,
@@ -816,7 +816,7 @@ class ConfirmPay(View):
 			# 	quant = ProductsModel.objects.filter(id=i[0]).values_list("Quantity")[0][0]
 			# 	ProductsModel.objects.filter(id=i[0]).update(Quantity=quant-quantity)
 			obj.delete()
-			return redirect("invoice")
+			return redirect("invoice",id)
 		else:
 			messages.error(request,"Not enough balance in wallet!!")
 			PurchaseModel.objects.filter(id=id).update(status=2)
