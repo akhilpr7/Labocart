@@ -68,7 +68,7 @@ class FundView(View):
 
     def get(self, request, *args, **kwargs):
         if not request.user.is_superuser:
-            wallethistory=Wallethistory.objects.filter(user_id_id=request.user.id)
+            wallethistory=Wallethistory.objects.filter(user_id_id=request.user.id).order_by('id').reverse()
             context = {'current_path': "Fund Deposit",
                         'wallethistory': wallethistory,
             }
