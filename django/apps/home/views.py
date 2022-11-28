@@ -758,7 +758,8 @@ class JobRequests(View):
 class CancelJobRequests(View):
     def get(self, request,id, *args, **kwargs):
         id = id
-        cancel = AppliedJobs.objects.filter(id=id).update(status=3)
+        # cancel = AppliedJobs.objects.filter(id=id).update(status=3)
+        cancel = AppliedJobs.objects.filter(id=id).delete()
         messages.success(request, " Request Cancelled")
         return redirect('jobrequests')
 
@@ -907,10 +908,10 @@ class EditLookJobs(View):
         return render(request,template,context)
     def post(self, request, *args, **kwargs):
         id=request.POST.get("id")
-        work_mode=request.POST.get("work_mode")
-        location=request.POST.get("location")
+        # work_mode=request.POST.get("work_mode")
+        # location=request.POST.get("location")
         rate=request.POST.get("rate")
-        AppliedJobs.objects.filter(id=id).update(work_type=work_mode,place=location,rate=rate)
+        AppliedJobs.objects.filter(id=id).update(rate=rate)
         messages.success(request, "Updated successfully")
         return redirect('lookjobs')
 

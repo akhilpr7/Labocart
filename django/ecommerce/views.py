@@ -588,7 +588,7 @@ class Userpayments(View):
 			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)
 			date =datetime.now()
 			Wallethistory.objects.create(user_id=request.user,amount=rate,date=date,name=request.user.username,transactiontype="Labocart Payment")	
-			AppliedJobs.objects.filter(id=id).update(status=1)
+			AppliedJobs.objects.filter(id=id).delete()
 			JobPaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
 			messages.success(request,'Payment Successful')
 			return redirect('jobrequests')
