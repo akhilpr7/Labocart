@@ -27,9 +27,9 @@
   <div class="row ">
       {%for i in data%}
       {%if i.category_name in job%}
-      <div class="col-xl-3 col-md-6">
+      <div class="col-xl-3 col-md-6" id="zoomBOut">
         <a href ="{% url 'job-posting' i.id %}">
-          <div class="card l-bg-cherry " style="height: 17rem; background-image: url('{{MEDIA_ROOT}}{{i.image}}');background-position: cover;background-repeat: no-repeat;background-size: cover;">
+          <div class="card l-bg-cherry " style="height: 17rem; background-image: url('{{MEDIA_ROOT}}{{i.image}}');background-position: cover;background-repeat: no-repeat;background-size: cover;" id="zoomBIn">
               <div class="card-statistic-3 my-auto p-4">
                   <div class="bg-light-grey-blue" style="border-radius: 1rem;">
                       <h2  class="card-title mb-0 text-white text-center p-2 text-capitalize" >{{i.category_name}}</h2>
@@ -66,7 +66,40 @@
   top: 20px;
   opacity: 0.1;
 
-}</style>
+}
+/* (A) OUTER WRAPPER */
+#zoomBOut {
+  /* (A1) DIMENSIONS */
+  height: 17rem;
+  background-position: cover;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* (A2) HIDE SCROLLBARS */
+  overflow: hidden;
+  border-radius: 20px;
+}
+ 
+/* (B) INNER WRAPPER */
+#zoomBIn {
+  /* (B1) FIT OUTER WRAPPER */
+  width: 100%;
+  height: 100%;
+ 
+  /* (B2) BACKGROUND IMAGE */
+  background-image: url("music.jpg");
+  background-position: center;
+  background-size: cover;
+
+ 
+  /* (B3) ANIMATE ZOOM */
+  transition: transform ease 0.3s;
+}
+ 
+/* (C) ZOOM ON HOVER */
+#zoomBIn:hover { transform: scale(1.2); }
+
+
+</style>
     {% comment %} </div> {% endcomment %}
 </div>
 </body>

@@ -2,7 +2,20 @@
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %} {% block content %}
+<link href="../../../static/img/favicon.ico" rel="icon">
 
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+<!-- Libraries Stylesheet -->
+<link href="../../../static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="../../../static/css/style.css" rel="stylesheet">
 <body>
     {% if messages %}
     {% for message in messages %}
@@ -42,8 +55,8 @@
                     <td class="align-middle" >{{data.last_name}}</td>
                     <td class="align-middle" >{{data.email}}</td>
                     <td class="align-middle">{{data.phone_no}}</td>
-                    <td class="align-middle"><img  class="rounded" style="width:200px ; height:100px;" src="{{media_url}}{{data.image}}" alt="{{data.username}}'s Image"></td>
-                    <td class="align-middle"><img id="myImg{{data.id}}" data="{{data.id}}" class="rounded" style="width:200px ; height:100px;" src="{{media_url}}{{data.kyc}}" alt="{{data.username}}'s Aadhar"></td>
+                    <td class="align-middle"><img  class="rounded" style="width:200px ; height:100px;object-fit:cover;" src="{{media_url}}{{data.image}}" alt="{{data.username}}'s Image"></td>
+                    <td class="align-middle"><img id="myImg{{data.id}}" data="{{data.id}}" class="rounded" style="width:200px ; height:100px;object-fit:cover;" src="{{media_url}}{{data.kyc}}" alt="{{data.username}}'s Aadhar"></td>
                     <td class="align-middle"><a href="{% url 'approveuser' data.id %}"
                         
                        class="btn text-success"  style="box-shadow: 0 0px 10px rgba(202,194,247,0.59)">Approve</a>
@@ -73,16 +86,27 @@
                 {% endfor %}
             </tbody>
         </table>
-
-            <div id="myModal" class="modal">
-                <span class="close">&times;</span>
-                <img class="modal-content" id="img01">
-                <div id="caption"></div>
-            </div>
-
-    </div>
-</body>
-<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+        
+        
+        <div id="myModal" class="modal">
+            <span class="close">&times;</span>
+            <img class="modal-content" id="img01">
+            <div id="caption"></div>
+        </div>
+      </div>
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+      <script src="lib/easing/easing.min.js"></script>
+      <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+      
+      <!-- Contact Javascript File -->
+      <script src="mail/jqBootstrapValidation.min.js"></script>
+      <script src="mail/contact.js"></script>
+      
+      <!-- Template Javascript -->
+      <script src="js/main.js"></script>
+      </body>
+      <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 <script>
 
     
@@ -111,8 +135,6 @@
         }
         </script>
         
-        {% endblock content %}
+  {% endblock content %}
         
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
-        
