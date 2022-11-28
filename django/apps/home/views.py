@@ -758,7 +758,8 @@ class JobRequests(View):
 class CancelJobRequests(View):
     def get(self, request,id, *args, **kwargs):
         id = id
-        cancel = AppliedJobs.objects.filter(id=id).update(status=3)
+        # cancel = AppliedJobs.objects.filter(id=id).update(status=3)
+        cancel = AppliedJobs.objects.filter(id=id).delete()
         messages.success(request, " Request Cancelled")
         return redirect('jobrequests')
 
