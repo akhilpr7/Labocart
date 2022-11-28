@@ -907,10 +907,10 @@ class EditLookJobs(View):
         return render(request,template,context)
     def post(self, request, *args, **kwargs):
         id=request.POST.get("id")
-        work_mode=request.POST.get("work_mode")
-        location=request.POST.get("location")
+        # work_mode=request.POST.get("work_mode")
+        # location=request.POST.get("location")
         rate=request.POST.get("rate")
-        AppliedJobs.objects.filter(id=id).update(work_type=work_mode,place=location,rate=rate)
+        AppliedJobs.objects.filter(id=id).update(rate=rate)
         messages.success(request, "Updated successfully")
         return redirect('lookjobs')
 
