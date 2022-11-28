@@ -115,6 +115,7 @@ class TransactionView(View):
                 if new_context: 
                     return render(request , self.template_name , context)
                 else:
+                    messages.error(request,"We are having trouble here, please try again later !")
                     errormessage = " Transactions is Empty"
                     context = {
 				    'current_path':"Transactions",
@@ -131,6 +132,7 @@ class TransactionView(View):
                 if new_context:
                     return render(request , self.template_name , context)   
                 else:
+                    messages.error(request,"We are having trouble here, please try again later !")
                     errormessage = " Transactions is Empty"
                     context = {
 				    'current_path':"Transactions",
@@ -152,6 +154,7 @@ class Userservices(View):
             if details:
                 return render(request, "home/user-services.html", context)
             else:
+                messages.error(request,"We are having trouble here, please try again later !")
                 errormessage = "No Services Found"
                 context = {
 				'current_path':"User Services",
@@ -198,6 +201,7 @@ class Workerservices(View):
             if work:
                 return render(request, "home/worker-services.html", context)
             else:
+                messages.error(request,"We are having trouble here, please try again later !")
                 errormessage = "No Services Found"
                 context = {
 				'current_path':"Worker Services",
@@ -332,6 +336,7 @@ class ServiceView(View):
             if data:
                 return render(request, self.template_name, context)
             else:
+                messages.error(request,"We are having trouble here, please try again later !")
                 errormessage = "No Requests Found"
                 context = {
 				'current_path': "Requested Services",
@@ -585,6 +590,7 @@ class HireHistory(View):
         if details:
             return render(request, "home/hirehistory.html", context)
         else:
+            messages.error(request,"We are having trouble here, please try again later !")
             errormessage = "Laboshop History is Empty"
             context = {
 			'current_path': "Laboshop History",
@@ -636,6 +642,7 @@ class Labocategories2(View):
                     messages.error(request, "Job Applying Limit Reached !!")
                     return redirect("enlistedjobs")
             else:
+                messages.error(request,"We are having trouble here, please try again later !")
                 errormessage = "Page is Empty"
                 context = {
 			    'current_path': "Provide Jobs",
@@ -659,6 +666,7 @@ class ServiceRequests(View):
             if details:
                 return render(request, "home/service_requests.html", context)
             else:
+                messages.error(request,"We are having trouble here, please try again later !")
                 errormessage = "No Requests Found"
                 context = {
 			    'current_path': "Service Requests",
@@ -685,6 +693,7 @@ class PendingKYC(View):
             if datas:
                 return render(request, self.template_name, context)
             else:
+                messages.error(request,"We are having trouble here, please try again later !")
                 errormessage = "No Requests Found"
                 context = {
 			    'current_path': "Registration Requests",
@@ -733,6 +742,7 @@ class JobRequests(View):
             if requests:
                 return render(request, 'home/jobrequests.html', context)
             else:
+                messages.error(request,"We are having trouble here, please try again later !")
                 errormessage = "No Requests Found"
                 context = {
 			    'current_path': "Job requests",
@@ -800,6 +810,7 @@ class ProvidedJobs(View):
             if jobs:
                 return render(request,self.template_name , context)
             else:
+                messages.error(request,"We are having trouble here, please try again later !")
                 errormessage = "Page is Empty"
                 context = {
 			    'current_path': "Enlisted Jobs",
@@ -837,6 +848,7 @@ class LookForJobs(View):
             if jobs:
                 return render(request, "home/lookforjobs.html", context)
             else:
+                messages.error(request,"We are having trouble here, please try again later !")
                 errormessage = "No Services Found"
                 context = {
 			    'current_path': "Look for Jobs",
@@ -850,7 +862,7 @@ class LookForJobs(View):
 @method_decorator(login_required, name='dispatch')
 class LookJobs(View):
     def get(self, request, *args, **kwargs):
-        data = AppliedJobs.objects.filter(worker_uname=request.user).values()
+        data = AppliedJobs.objects.filter(worker_uname=request.user).values().exclude(status=3)
         context = {
             'media_url': settings.NEW_VAR,
             'data': data,
@@ -860,6 +872,7 @@ class LookJobs(View):
             if data:
                 return render(request, "home/appliedjobs.html", context)
             else:
+                messages.error(request,"We are having trouble here, please try again later !")
                 errormessage = "No Services Found"
                 context = {
 			    'current_path': "Applied Jobs",
@@ -1051,6 +1064,7 @@ class Reported(View):
             if report:
                 return render(request, 'home/reported.html',{"current_path":"Reported Issues","report":report,})
             else:
+                messages.error(request,"We are having trouble here, please try again later !")
                 errormessage = "No Issues Found"
                 context = {
 			    'current_path': "Reported Issues",

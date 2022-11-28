@@ -60,6 +60,7 @@ class Shop(View):
 		if product:
 			return render(request, self.template_name, data)
 		else:
+			messages.error(request,"We are having trouble here, please try again later !")
 			errormessage = "Shop is Empty"
 			context ={
 				'current_path':"Shop",
@@ -267,6 +268,7 @@ class LaboShop(View):
 			if newdata:
 				return render(request, 'laboshop/labo-shop.html', context)
 			else:
+				messages.error(request,"We are having trouble here, please try again later !")
 				errormessage = "Laboshop is Empty"
 				context ={
 				'current_path':"Laboshop",
@@ -520,6 +522,7 @@ class ActiveServices(View):
 			if data:
 					return render(request,'activeServices.html',context)
 			else:
+				messages.error(request,"We are having trouble here, please try again later !")
 				errormessage = "No Services Found"
 				context ={
 				'current_path':"Active Services",
@@ -637,6 +640,7 @@ class Assignedworks(View):
 			if services:
 				return render(request,self.template_name,context)
 			else:
+				messages.error(request,"We are having trouble here, please try again later !")
 				errormessage = "No Service Found"
 				context ={
 				'current_path':"Assigned Services",
@@ -816,6 +820,7 @@ class ConfirmPay(View):
 			# 	quant = ProductsModel.objects.filter(id=i[0]).values_list("Quantity")[0][0]
 			# 	ProductsModel.objects.filter(id=i[0]).update(Quantity=quant-quantity)
 			obj.delete()
+			messages.success(request,"Order placed successfully")
 			return redirect("invoice",id)
 		else:
 			messages.error(request,"Not enough balance in wallet!!")
@@ -935,6 +940,7 @@ class membership(View):
 			}
 			return render(request,template,context)
 		else:
+			messages.error(request,"We are having trouble here, please try again later !")
 			errormessage = "Package not Found"
 			context ={
 				'current_path':"Membership Subscription",
@@ -978,6 +984,7 @@ class RefundHistoryUser(View):
 		if refund:
 			return render(request,template,context)
 		else:
+			messages.error(request,"We are having trouble here, please try again later !")
 			errormessage = "Refund history is Empty"
 			context ={
 				'current_path':"Refund history",
@@ -996,6 +1003,7 @@ class RefundHistoryWorker(View):
 		if refund:
 			return render(request,template,context)
 		else:
+			messages.error(request,"We are having trouble here, please try again later !")
 			errormessage = "Refund history is Empty"
 			context ={
 				'current_path':"Refund history",
@@ -1014,6 +1022,7 @@ class LaboTransactions(View):
 		if work:
 			return render(request,'labotransaction.html',context)
 		else:
+			messages.error(request,"We are having trouble here, please try again later !")
 			errormessage = "Laboshop History is Empty"
 			context ={
 				'current_path':"Laboshop history",
@@ -1049,6 +1058,7 @@ class producthistory(View):
 			}
 				return render(request,'home/adminTransactions.html',context)
 			else:
+				messages.error(request,"We are having trouble here, please try again later !")
 				errormessage = "Product Purchase history is Empty"
 			context ={
 				'current_path':'Product Purchase History',
@@ -1071,6 +1081,7 @@ class PurchaseHistory(View):
 			}
 				return render(request,'home/adminpackage_history.html',context)
 			else:
+				messages.error(request,"We are having trouble here, please try again later !")
 				errormessage = "Package Purchase history is Empty"
 			context ={
 				'current_path':'Package Purchase History',
@@ -1093,6 +1104,7 @@ class HireHistory(View):
 			}
 				return render(request,'home/adminhirehistory.html',context)
 			else:
+				messages.error(request,"We are having trouble here, please try again later !")
 				errormessage = "Hire history is Empty"
 			context ={
 				'current_path':'Hire History',
@@ -1114,6 +1126,7 @@ class RefundHistoryView(View):
 			}
 				return render(request,'home/adminrefundhistory.html',context)
 			else:
+				messages.error(request,"We are having trouble here, please try again later !")
 				errormessage = "Refund history is Empty"
 			context ={
 				'current_path':'Refund History',
@@ -1208,6 +1221,7 @@ class MyOrders(View):
 			}
 			return render(request,'shop/myorders.html',context)
 		else:
+			messages.error(request,"We are having trouble here, please try again later !")
 			errormessage = "No Orders Found"
 			context ={
 				'current_path':"My Orders",
