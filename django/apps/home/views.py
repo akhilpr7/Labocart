@@ -68,7 +68,10 @@ class FundView(View):
 
     def get(self, request, *args, **kwargs):
         if not request.user.is_superuser:
-            context = {'current_path': "Fund Deposit"}
+            wallethistory=Wallethistory.objects.filter(user_id_id=request.user.id)
+            context = {'current_path': "Fund Deposit",
+                        'wallethistory': wallethistory,
+            }
             context['form'] = AddFundForm(request=request)
             return render(request, self.template, context)
         else:

@@ -77,12 +77,14 @@
                     <th >Transaction Type</th>
             </thead>
             <tbody>
+                {%for i in wallethistory %}
                 <!-- Item -->
                 <tr>
-                    <td><p></p></td>
-                    <td><p></p></td>
-                    <td><p></p></td>
+                    <td><p>{{i.date}}</p></td>
+                    <td><p>{{i.amount}}</p></td>
+                    <td><p>{{i.transactiontype}}</p></td>
                 </tr>
+                {%endfor%}
             </tbody>
         </table>
       </div>
