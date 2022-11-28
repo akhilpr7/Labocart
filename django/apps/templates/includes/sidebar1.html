@@ -85,7 +85,7 @@
             </span>
           </a>
         </li> {% endcomment %}
-        <li class="nav-item{% if 'ActiveServices' in current_path %} active {% endif %}"style="padding:8px;">
+        <li class="nav-item{% if 'Active Services' in current_path %} active {% endif %}"style="padding:8px;">
           <a class="nav-link" href="{% url 'active_service' %}">
               <i class="fas fa-fw fa-check-double"></i>
               <span>Active Services</span></a>
@@ -127,7 +127,7 @@
                 <span class="sidebar-text">Look for jobs</span>
               </a>
             </li> {% endcomment %}
-            <li class="nav-item{% if 'Available Jobs' in current_path %} active {% endif %}"style="padding:8px;">
+            <li class="nav-item{% if 'Look for Jobs' in current_path %} active {% endif %}"style="padding:8px;">
               <a class="nav-link" href="{% url 'lookforjobs' %}">
                   <i class="fas fa-fw fa-eye"></i>
                   <span>Look For Jobs</span></a>

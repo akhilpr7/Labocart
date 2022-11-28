@@ -72,7 +72,7 @@
               <td><p>{{data.id}}</p></td>
               <td>{{data.worker_name}}</td>
               <td style="white-space:pre-wrap; word-wrap:break-word">{{data.Place}}</td>
-              <td>{% if data.Work_mode == "true" %}Full day{% else %}Half Day{% endif %}</td>
+              <td>{% if data.Work_mode == "true" %}Half Day{% else %}Full day{% endif %}</td>
               <td>{{data.Phone}}</td>
               <td>{{data.job_title}}</td>
               <td>
@@ -84,9 +84,37 @@
                 <a href="{% url 'completedservices' data.id %}" class=" btn border rounded-2"><span class="material-symbols-outlined text-success">done</span></a>
                 {% else %}
                 <a data-target="#selectModal{{data.id}}" data-toggle="modal" class=" btn border rounded-2"><span class="material-symbols-outlined text-black">keyboard_double_arrow_right </span></a>
-              
+                
+
+
+                <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                  Launch static backdrop modal
+                </button> -->
+                
                 <!-- Modal -->
-                <div class="modal fade" id="selectModal{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal fade modal2" id="staticBackdrop{{data.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Are You Sure ?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <p class="text-danger">only <b>60%</b> refund will be given if cancelled after 30 minutes. </p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <a href="{% url 'uncompletedservices' data.id %}"><button type="button" class="btn btn-danger rounded">Cancel Anyway</button></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+
+
+
+                <!-- Modal -->
+                <div class="modal fade modal1" id="selectModal{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -97,7 +125,7 @@
                       </div>
                       <div class="modal-footer">
                         {% if not data.worker_status %}
-                        <a href="{% url 'uncompletedservices' data.id %}" class=" btn border rounded-2"><span class="text-black">Cancel</span></a> 
+                        <a href="" class=" btn border rounded-2" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop{{data.id}}" data-bs-dismiss="modal"><span class="text-black">Cancel work</span></a> 
                         {%endif%}
                         {% if data.worker_status == True %}
                  
@@ -113,7 +141,7 @@
               </td>
               <td><b>{{data.otp}}</b></td>
 
-              <div class="modal fade" id="reportModal{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal fade" id="reportModal{{data.id}}" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -200,7 +228,15 @@
 
 <!-- Back to Top -->
 <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
+<style>
+.modal1{
+    z-index: 1051 !important;
+}
+.modal2 {
+    z-index: 1052 !important;
+}
+    
+</style>
 
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

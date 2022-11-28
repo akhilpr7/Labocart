@@ -17,7 +17,7 @@
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
     <div class="d-block mb-4 mb-md-0">
-      <h5 class="h5"> <b>Product Purchase History</b> </h5>
+      <h5 class="h5"> <b>PRODUCT PURCHASE HISTORY</b> </h5>
     </div>
 
 </div>
@@ -33,11 +33,11 @@
               <p class="text-muted"> Place On <span class="font-weight-bold text-dark">{{purchase.date}}</span> </p></div>
      
         </div>
-          <div class="accordion" id="accordionExample">
+          <div class="accordion p-2" id="accordionExample">
             {% for product,quant,rate in zipped %}
  
                     <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingOne">
+                      <h2 class="accordion-header p-2" id="headingOne">
                         <button class="accordion-button collapsed text-white mt-1" style="background-color:#31316a;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{forloop.counter}}" aria-expanded="true" aria-controls="collapseOne">
                           {{product}}
                         </button>
@@ -45,7 +45,7 @@
 
 
 
-                      <div class="card-body collapse" id="collapseOne{{forloop.counter}}">
+                      <div class="card-body  collapse" id="collapseOne{{forloop.counter}}">
                         <div class="media flex-column flex-sm-row">
                             <div class="media-body ">
                                 <h5 class="bold">    {{product}}
@@ -57,7 +57,7 @@
                             </div>
                             {%for i in product_img %}
                             {%if product == i.Product_name %}
-                             <img class="align-self-center" src="{{i.Image.url}}" width="180 " height="180" style="object-fit:cover;">
+                             <img class="align-self-center rounded" src="{{i.Image.url}}" width="180 " height="180" style="object-fit:cover;">
                             {%endif%}
                             {%endfor%}
                         </div>
@@ -78,12 +78,18 @@
                             <li class="step0  text-center" id="step2">Out for Delivery</li>
                             <li class="step0   text-muted text-end" id="step3">Delivered</li>
                         </ul>
+                        <div class="progress" style="height: 13px;">
+                            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" aria-label="Example 20px high" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
                         {% elif purchase.status == 4 %}
                         <ul id="progressbar" >
                             <li class="step1 active " id="step1">Placed</li>
                             <li class="step2 active text-center" id="step2">Out for Delivery</li>
                             <li class="step0   text-muted text-end" id="step3">Delivered</li>
                         </ul>
+                        <div class="progress" style="height: 13px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-label="Example 20px high" style="width: 75%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
                         {% endif %}
   
 

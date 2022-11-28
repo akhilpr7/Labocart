@@ -59,7 +59,9 @@ class RegisterStaff(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_superuser:
 
-            context = {}
+            context = {
+                "current_path":"register staff"
+            }
             context['form'] = RegisterForm()
             return render(request, self.template, context)
         else:

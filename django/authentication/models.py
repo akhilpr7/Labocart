@@ -41,3 +41,11 @@ class requests(models.Model):
     username = models.CharField(max_length=255, blank=False)
     worker_username = models.CharField(max_length=255, blank=False)
     status = models.BooleanField(default=False)
+
+class Wallethistory(models.Model):
+    user_id = models.ForeignKey(NewUserModel, on_delete=models.CASCADE)
+    amount = models.FloatField(null=False)
+    date = models.DateField(null=False)
+    name =models.CharField(max_length=255, blank=False)
+    transactiontype = models.CharField(max_length=255, blank=False)
+

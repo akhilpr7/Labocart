@@ -123,6 +123,8 @@
 							<p>We Provide On-Demand Industry Specific Trained Manpower For Your Requirements.</p>
 							{%if request.user.is_superuser %}
 							<a href="{%url 'dashboard' %}"><button class="btn btnBanner">Laboshop<span class="material-symbols-outlined">
+							{%elif request.user.is_staff %}
+							<a href="{%url 'products_history' %}"><button class="btn btnBanner">Laboshop<span class="material-symbols-outlined">
 							{%else%}
 							<a href="{%url 'laboshop' %}"><button class="btn btnBanner">Laboshop<span class="material-symbols-outlined">
 								call_made
