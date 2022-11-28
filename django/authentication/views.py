@@ -44,6 +44,8 @@ class LoginViews(LoginView):
                 login(request, user)
                 if request.user.is_superuser:
                     return HttpResponseRedirect(reverse('admindashboard'))
+                elif request.user.is_staff:
+                    return HttpResponseRedirect(reverse('products_history'))
                 else:
                     return HttpResponseRedirect(reverse('dashboard'))
             else:
