@@ -287,6 +287,7 @@ class UnCompletedService(View):
         else:
             user.user_status = 2
             user.save()
+            messages.success(request,"Successfully Canceled Work !")
             return redirect('userservices')
 
 @method_decorator(login_required, name='dispatch')
