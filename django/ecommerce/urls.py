@@ -6,6 +6,7 @@ from .views import UpdateProduct
 urlpatterns = [
 	path("user/",views.Home.as_view(),name="home"),
 	path("shop/",views.Shop.as_view(),name="shop"),
+	path("shop/<slug:orderby>",views.Shop.as_view(),name="shop"),
 	path("laboshopcategory/",views.LaboShopCategory.as_view(),name="laboshopcategory"),
 	path("laboshop/",views.LaboShop.as_view(),name="laboshop"),
 	path("addstock/",views.Addproduct.as_view(),name="addproduct"),

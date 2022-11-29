@@ -112,7 +112,6 @@
                 
 
 
-
                 <!-- Modal -->
                 <div class="modal fade modal1" id="selectModal{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -125,7 +124,7 @@
                       </div>
                       <div class="modal-footer">
                         {% if not data.worker_status %}
-                        <a href="" class=" btn border rounded-2" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop{{data.id}}" data-bs-dismiss="modal"><span class="text-black">Cancel work</span></a> 
+                        <a href="" class=" btn border rounded-2 button1"  class="btn btn-primary close"  data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{data.id}}" data-bs-dismiss="modal"><span class="text-black">Cancel work</span></a> 
                         {%endif%}
                         {% if data.worker_status == True %}
                  
