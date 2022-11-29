@@ -36,7 +36,7 @@ class Laboregisterform(forms.Form):
   rate = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control border ps-2','min':'1','placeholder':'Rate'}))
   CHOICES = (('True','Half day'),('False','Full day'))
   work_type = forms.ChoiceField(choices = CHOICES,widget=forms.Select(attrs={'class':'form-select'}))
-  credential = forms.ImageField(widget=forms.FileInput(attrs={'class':'form-control'}))
+  credential = forms.ImageField(widget=forms.FileInput(attrs={'class':'form-control required'}))
 
 
 class AddToCartForm( forms.ModelForm ):

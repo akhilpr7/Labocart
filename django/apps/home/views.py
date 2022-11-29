@@ -706,8 +706,13 @@ class PendingKYC(View):
 @method_decorator(login_required, name='dispatch')
 class AcceptServices(View):
     def get(self, request, id, *args, **kwargs):
-        status = labourmodels.objects.filter(id=id).values_list("status")[0][0]
-        labourmodels.objects.filter(id=id).update(status=1)
+        
+        usern = labourmodels.objects.filter(id=id).values_list("username")[0][0]
+        active = labourmodels.objects.filter(username=usern).count()
+        if active >= 5:
+            labourmodels.objects.filter(id=id).update(status=0)
+        else:
+            labourmodels.objects.filter(id=id).update(status=1)
         messages.success(request, "Request Accepted successfully !")
         return redirect("servicerequests")
 
@@ -826,15 +831,16 @@ class LookForJobs(View):
         appliedones = AppliedJobs.objects.filter(worker_uname=request.user.username)
         # job_title=''
         filter=request.GET.get('filter')
+        qualifiedjobs=labourmodels.objects.filter(Q(username=request.user.username)&Q(status__in=[0,1])).values_list("job_title")
         datajob = jobmodel.objects.all()
         if request.GET.get('filter') is not None and request.GET.get('filter') != '':
             job_title = jobmodel.objects.filter(id=filter).values_list("job_title")[0][0]
-            jobs = JobPostingModel.objects.filter(Q(is_active=1)&Q(job_title=job_title)).exclude(hirer=request.user.username).values()
+            jobs = JobPostingModel.objects.filter(Q(is_active=1)&Q(job_title=job_title)&Q(job_title__in=[qualifiedjobs])).exclude(hirer=request.user.username).values()
             # jobs = JobPostingModel.objects.filter(Q(is_active=1)&Q(job_title=job_title)).exclude(hirer=request.user.username).values()
             print(jobs,"----++++++++++++++++++++++++++++++++")
             # data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1)).exclude(username=request.user.username)		
         else:
-            jobs = JobPostingModel.objects.filter(is_active=1).exclude(hirer=request.user.username).values()
+            jobs = JobPostingModel.objects.filter(Q(is_active=1)&Q(job_title__in=[qualifiedjobs])).exclude(hirer=request.user.username).values()
             # data = labourmodels.objects.filter(status=1).exclude(username=request.user.username)
         datacategory=Category.objects.values()
         context = {
