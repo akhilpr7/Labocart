@@ -173,7 +173,7 @@
                     <div>
                       <div class="img-container align-middle">
                         {%for i in user%}
-                        {%if comment.Hire_name in i.username%}
+                        {%if comment.Hire_name == i.username%}
                         <img src="../../../static/media/{{i.image}}" alt="" id="img">
                         {%endif%}
                         {%endfor%}
