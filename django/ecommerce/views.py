@@ -532,7 +532,29 @@ class ActiveServices(View):
 		else:
 			messages.error(request,"Subscription Required !!")
 			return redirect('workerview')
+	def post(self, request, *args,  **kwargs):
+		id= request.POST.get('id')
+		usern=labourmodels.objects.filter(id=id).values_list("username")[0][0]
+		if request.user.username == usern:
 
+			work_mode= request.POST.get('work_mode')
+			rate= request.POST.get('rate')
+			# print(work_mode)
+			# print(rate)
+			obj=labourmodels.objects.get(id=id)
+			# obj.update(work_type=work_mode,rate=rate)
+			obj.work_type=work_mode
+
+			obj.rate=rate
+			obj.save()
+			messages.success(request,"Successfully updated ..")
+			return redirect("active_service")
+		else:
+			messages.error(request,"Permission Denied !")
+			return redirect("active_service")
+
+
+	
 @method_decorator(login_required,name='dispatch')
 class HireNowView(View):
 	def get(self, request,id, *args, **kwargs):
@@ -588,7 +610,7 @@ class Userpayments(View):
 			NewUserModel.objects.filter(username=request.user.username).update(wallet=wallet_balance-rate)
 			date =datetime.now()
 			Wallethistory.objects.create(user_id=request.user,amount=rate,date=date,name=request.user.username,transactiontype="Labocart Payment")	
-			AppliedJobs.objects.filter(id=id).delete()
+			AppliedJobs.objects.filter(id=id).update(status=1)
 			JobPaymentModel.objects.filter(work_id=id).update(status=1,amount=rate)
 			messages.success(request,'Payment Successful')
 			return redirect('jobrequests')
@@ -1249,3 +1271,18 @@ class TrackMyorderView(View):
 			"product_img":prod,
 		}
 		return render(request,'shop/order-tracking.html',context)
+
+
+class DeleteLabour(View):
+	def get(self, request,id, *args, **kwargs):
+
+		obj=labourmodels.objects.get(id=id)
+		objowner=labourmodels.objects.filter(id=id).values_list("username")[0][0]
+		if request.user.username == objowner:
+				
+			obj.delete()
+			messages.success(request,"Successfully deleted .")
+			return redirect('active_service')
+		else:
+			messages.error(request,"Permission Denied .")
+			return redirect('active_service')

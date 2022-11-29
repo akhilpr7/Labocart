@@ -242,7 +242,7 @@ func copytohire(db *sql.DB){
   var otp string
   otp=EncodeToString(6)
   for {
-  if len([]rune(otp)) != 6{
+  if len(otp) != 6{
     otp=EncodeToString(6)
   }else{
     break
@@ -250,7 +250,18 @@ func copytohire(db *sql.DB){
   }
     // fmt.Println(len([]rune(otp)),"lengthhhhhhhhhhhhhhhhhhh")
 
-  
+  fmt.Println(worker_name)
+  fmt.Println(hirer)
+  fmt.Println(name)
+  fmt.Println(place)
+  fmt.Println(work_type)
+  fmt.Println(phone)
+  fmt.Println(job_title)
+  fmt.Println(created_at)
+  fmt.Println(rate)
+  fmt.Println(worker_phone)
+  fmt.Println(work_date)
+  fmt.Println(otp)
   sqlStatement := `
   INSERT INTO ecommerce_hiremodel("worker_name","Hire_name","Name","Place","Work_mode","Phone","status","job_title","user_status","worker_status","rating","created_at","rate","worker_phone","work_date","comment","otp")  VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17);`
   _, err := db.Exec(sqlStatement,worker_name,hirer,name,place,work_type,phone,3,job_title,"0","false","0",created_at,rate,worker_phone,work_date,"",otp)

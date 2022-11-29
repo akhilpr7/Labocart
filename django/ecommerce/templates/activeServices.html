@@ -116,6 +116,41 @@
                         <div class="card-footer">
                             {% if i.status == 0 %}
                                 <a href="{%url 'togglestatus' i.id %}" class=" btn rounded-2 text-danger shadow-sm">Inactive</a>
+                                <a href="{%url 'deletelabour' i.id %}" class=" btn rounded-2 text-danger shadow-sm">Delete</a>
+                                {% comment %} <a href="{%url 'togglestatus' i.id %}" class=" btn rounded-2 text-success shadow-sm">Edit</a> {% endcomment %}
+                                {% comment %} <span class="btn rounded-2 text-dark shadow-sm">Pending</span> {% endcomment %}
+                                <button type="button" class="btn text-success rounded-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    Edit
+                                  </button>
+                                  <form method="post">
+                                    {% csrf_token %}
+                                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h1 class="modal-title fs-5" id="exampleModalLabel">Edit job</h1>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="number" class="form-control" value="{{i.id}}" name="id" hidden readonly></input>
+                                            <select name="work_mode" class="form-control" id="cars">
+                                                <option value="1">half day</option>
+                                                <option value="0">Full Day</option>
+                                                <!-- <option value="opel">Opel</option>
+                                                <option value="audi">Audi</option> -->
+                                              </select>
+                                              <input type="number"  required pattern="\d*" class="form-control" value="{{i.rate}}" name="rate"></input>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                          <button type="submit" class="btn btn-dark">Save changes</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </form>
+                                  
+                                  
                             {% elif i.status == 1 %}
                                 <a href="{%url 'togglestatus' i.id %}" class="btn rounded-2 text-success shadow-sm">Active</a>
                             {% elif i.status == 2 %}

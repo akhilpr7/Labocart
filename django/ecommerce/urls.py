@@ -51,6 +51,7 @@ urlpatterns = [
 	path('refundhistory/',views.RefundHistoryView.as_view(), name="refundhistory"),
 	path('myorders/',views.MyOrders.as_view(), name="myorders"),
 	path('trackorder/<int:id>',views.TrackMyorderView.as_view(), name="trackorder"),
+	path('deletelabour/<int:id>',views.DeleteLabour.as_view(), name="deletelabour"),
 
 
 
