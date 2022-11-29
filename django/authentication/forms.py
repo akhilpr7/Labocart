@@ -28,10 +28,10 @@ class RegisterForm(UserCreationForm):
 
             data = super().clean()
             phone = data['phone_no'] 
-            print(phone)
+            # print(phone)
             if int(phone) <= 0:
 
-                print("ssssss")
+                # print("ssssss")
                 self._errors['phone_no'] = self.error_class([
                     'Phone Number field cannnot be null',])
             elif len(phone)< 6:
@@ -68,10 +68,10 @@ class UpdateProfileForm(UserCreationForm):
 
             data = super().clean()
             phone = data['phone_no'] 
-            print(phone)
+            # print(phone)
             if int(phone) <= 0:
 
-                print("ssssss")
+                # print("ssssss")
                 self._errors['phone_no'] = self.error_class([
                     'Phone Number field cannnot be null',])
             elif len(phone)< 6:

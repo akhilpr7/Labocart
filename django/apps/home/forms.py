@@ -8,7 +8,7 @@ class AddFundForm(forms.Form):
         self.request = kwargs.pop('request', None)
         super(AddFundForm, self).__init__(*args, **kwargs)
         self.fields['amount'] = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control','min':'1','max':'9999'}))
-        print(self.request.user.username)
+        # print(self.request.user.username)
 
     def clean(self):
         super(AddFundForm,self).clean()
@@ -24,7 +24,7 @@ class AddFundForm(forms.Form):
     def save(self,*args,**kwargs):
         wallet = NewUserModel.objects.filter(username=self.request.user.username).last()
         temp=wallet.wallet +  float(self.cleaned_data['amount'])
-        print(temp)
+        # print(temp)
         wallet.wallet = temp
         wallet.save()
 
@@ -48,14 +48,14 @@ class JobPostingForm( forms.Form ):
  
   def __init__(self,*args,**kwargs):
     self.category = kwargs.pop('initial',[])
-    print(self.category,"selllllllllllllllllllllllllffffffffff")
+    # print(self.category,"selllllllllllllllllllllllllffffffffff")
     self.job = kwargs.pop('jobs',[])
     self.user = kwargs.pop('user',[])
-    print(self.user,"sdfaghsdhj")
+    # print(self.user,"sdfaghsdhj")
     super(JobPostingForm, self).__init__(*args,**kwargs)
     self.fields['job_title']=forms.ModelChoiceField(queryset=jobmodel.objects.filter(category=self.category).values_list("job_title",flat=True).exclude(job_title__in=[self.job]),
                               widget=forms.Select(attrs={'class':'form-select'}))
-    print(self.fields['job_title'].__dict__,"joobbbbbb totititititilllleeee")
+    # print(self.fields['job_title'].__dict__,"joobbbbbb totititititilllleeee")
     self.fields['hirer']=forms.CharField(max_length=20, required=True, widget=forms.HiddenInput() , initial=self.user)
 
   def clean__job_title(self):
@@ -65,24 +65,24 @@ class JobPostingForm( forms.Form ):
             self.cleaned_data = super().clean()
             place=self.cleaned_data.get('place')
             if place :
-                print("enterd  >>>>>>>>>>>>>>>>>>> 1")
+                # print("enterd  >>>>>>>>>>>>>>>>>>> 1")
                 list=place.split(", ")
-                print("enterd  >>>>>>>>>>>>>>>>>>> list",list )
+                # print("enterd  >>>>>>>>>>>>>>>>>>> list",list )
 
                 if len(list) ==3:
-                    print("enterd  >>>>>>>>>>>>>>>>>>> listhagh;dghd;ghad" )
+                    # print("enterd  >>>>>>>>>>>>>>>>>>> listhagh;dghd;ghad" )
 
                     check_place=CitiesModel.objects.filter(name=list[0],subcountry=list[1],country=list[2])
-                    print(check_place)
+                    # print(check_place)
                     if len(check_place) == 0:
                         self._errors['place']=self.error_class(['Please Select a place from the provided list'])
-                        print("enterd  >>>>>>>>>>>>>>>>>>> 2")
+                        # print("enterd  >>>>>>>>>>>>>>>>>>> 2")
                     else:
                         return self.cleaned_data
                 else:
                     self._errors['place']=self.error_class(['Please Select a place from the provided list'])
 
-                    print("enterd  >>>>>>>>>>>>>>>>>>> 3")
+                    # print("enterd  >>>>>>>>>>>>>>>>>>> 3")
 
             return self.cleaned_data
 
@@ -108,10 +108,10 @@ class ApplyForm(forms.ModelForm):
 
             data = super().clean()
             phone = data['phone'] 
-            print(phone)
+            # print(phone)
             if int(phone) <= 0:
 
-                print("ssssss")
+                # print("ssssss")
                 self._errors['phone'] = self.error_class([
                     'Phone Number field cannnot be null',])
             elif len(phone)< 6:

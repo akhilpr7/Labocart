@@ -57,6 +57,7 @@ urlpatterns = [
     path('refundworkerfull/<int:id>/',views.RefundWorkerFull.as_view(),name='refundworkerfull'),
     path('refundhirerfull/<int:id>/',views.RefundHirerFull.as_view(),name='refundhirerfull'),
     path('refundsplit/<int:id>/',views.RefundSplit.as_view(),name='refundsplit'),
+    path('deleteissue/<int:id>/',views.DeleteIssue.as_view(),name='deleteissue'),
 
 
 ]

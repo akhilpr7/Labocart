@@ -82,7 +82,7 @@ class FundView(View):
             date = datetime.now()
             name=request.user.username
             amount = request.POST['amount']
-            print(date,name,amount,"fffffffffffffffffffffffffffffffffff")
+            # print(date,name,amount,"fffffffffffffffffffffffffffffffffff")
             form = AddFundForm(request.POST, request=request)
             if form.is_valid():
                 form.save()
@@ -166,19 +166,19 @@ class Userservices(View):
     def post(self, request, *args,  **kwargs):
         if request.method == 'POST':
             # print(hireid,"hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
-            print(request.POST.get('id'))
+            # print(request.POST.get('id'))
             id=request.POST.get('id')
             
             if ReeportModel.objects.filter(username=request.user,hireid=id).exists():
                 messages.error(request,"Sorry Already Reported The Issue, Wait For it To Process  !")
                 return redirect("userservices")
-            print(request.POST.get('email_address'))
+            # print(request.POST.get('email_address'))
             email=request.POST.get('email_address')
-            print(request.POST.get('phone_number'))
+            # print(request.POST.get('phone_number'))
             ph=request.POST.get('phone_number')
-            print(request.FILES.get('image_proof'))
+            # print(request.FILES.get('image_proof'))
             img=request.FILES.get('image_proof')
-            print(request.POST.get('issue_reported'))
+            # print(request.POST.get('issue_reported'))
             issue=request.POST.get('issue_reported')
             obj=ReeportModel.objects.create(username=request.user.username,woh=0,hireid=id,email=email,phone=ph,issue=issue,proof=img)
             obj.save()
@@ -214,19 +214,19 @@ class Workerservices(View):
     def post(self, request, *args,  **kwargs):
         if request.method == 'POST':
             # print(hireid,"hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
-            print(request.POST.get('id'))
+            # print(request.POST.get('id'))
             id=request.POST.get('id')
             
             if ReeportModel.objects.filter(username=request.user,hireid=id).exists():
                 messages.error(request,"Sorry Already Reported The Issue, Wait For it To Process  !")
                 return redirect("workerservices")
-            print(request.POST.get('email_address'))
+            # print(request.POST.get('email_address'))
             email=request.POST.get('email_address')
-            print(request.POST.get('phone_number'))
+            # print(request.POST.get('phone_number'))
             ph=request.POST.get('phone_number')
-            print(request.FILES.get('image_proof'))
+            # print(request.FILES.get('image_proof'))
             img=request.FILES.get('image_proof')
-            print(request.POST.get('issue_reported'))
+            # print(request.POST.get('issue_reported'))
             issue=request.POST.get('issue_reported')
             obj=ReeportModel.objects.create(username=request.user.username,woh=1,hireid=id,email=email,phone=ph,issue=issue,proof=img)
             obj.save()
@@ -328,7 +328,7 @@ class ServiceView(View):
     def get(self, request, *args, **kwargs):
         sub = NewUserModel.objects.filter(username = request.user).values('is_sub').first()
         is_sub = sub['is_sub']
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",is_sub)
+        # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",is_sub)
         data = RequestsModel.objects.filter(
             hirer   =request.user).exclude(status__in=[0,2,5])
         context = {'data': data, 'current_path': "Requested Services"}
@@ -357,14 +357,14 @@ class RatingView(View):
         }
         return render(request, "home/comment.html", context)
     def post(self, request, *args,  **kwargs):
-        print(request.POST)
+        # print(request.POST)
         star = request.POST['rating']
         data = HireModel.objects.get(id=request.POST['id'])
         data.rating = star
         data.comment = request.POST['comment']
         # data.worker_status = True
         data.user_status = 1
-        print(data)
+        # print(data)
         data.save()
         messages.success(request,"Service Completed Successfully") 
         return redirect('userservices')
@@ -405,7 +405,7 @@ class AddCategoryView(View):
                 messages.success(request, "Category added successfully")
                 return redirect('category')
              except Exception as e : 
-                print('error',e)
+                # print('error',e)
                 messages.error(request, "error")
                 return redirect( 'add_category')
 
@@ -415,18 +415,18 @@ class DeleteCategoryView(View):
     def get(self, request, id):
 
         category_name = Category.objects.filter(id=id).values_list("category_name")[0][0]
-        print(category_name)
+        # print(category_name)
         job_name = jobmodel.objects.filter(category=category_name).values_list("job_title")
-        print(job_name,"jooooooooooooooooooob")
+        # print(job_name,"jooooooooooooooooooob")
         jobs = jobmodel.objects.filter(category=category_name)
         jobs.delete()
         for i in job_name:
-            print(i[0],"1111111")
+            # print(i[0],"1111111")
             labours = labourmodels.objects.filter(job_title=i[0])
             labours.delete()
-            print("Deleted.......................")
-            print(labours,"user")
-        print(jobs)
+            # print("Deleted.......................")
+            # print(labours,"user")
+        # print(jobs)
 
         category = Category.objects.get(id=id)
         category.delete()
@@ -517,9 +517,9 @@ class JobPostingView(View):
             id=id).values_list('category_name')[0][0]
         jobs = jobmodel.objects.filter(category=category).values()
         userjobs = JobPostingModel.objects.filter(hirer=request.user).values_list("job_title",flat=True)
-        print(userjobs,"-----------------------")
+        # print(userjobs,"-----------------------")
         x =jobs.exclude(job_title__in=[userjobs])
-        print(x,"--===--===--===----========")
+        # print(x,"--===--===--===----========")
         if not x:
             messages.error(request,"No Remaining Jobs Found In This Category  !!!!")
             return redirect("labocategory2")
@@ -559,7 +559,7 @@ class JobPostingView(View):
  
 
         else:
-            print("Method not allowed")
+            # print("Method not allowed")
             return redirect('labocategory2')
 
 @method_decorator(login_required, name='dispatch')
@@ -731,7 +731,7 @@ class JobRequests(View):
         sub = NewUserModel.objects.filter(username=request.user).values('is_sub').first()
         is_sub = sub['is_sub']
         hire = HireModel.objects.filter(status=3,Hire_name=request.user)
-        print(hire,"hiiiiiiiiiiiiiiii")
+        # print(hire,"hiiiiiiiiiiiiiiii")
         if hire!= None:
             # requests = AppliedJobs.objects.filter(hirer=request.user.username).exclude(status=3)
             requests = AppliedJobs.objects.filter(Q(hirer=request.user.username)&Q(status=0))
@@ -837,7 +837,7 @@ class LookForJobs(View):
             job_title = jobmodel.objects.filter(id=filter).values_list("job_title")[0][0]
             jobs = JobPostingModel.objects.filter(Q(is_active=1)&Q(job_title=job_title)&Q(job_title__in=[qualifiedjobs])).exclude(hirer=request.user.username).values()
             # jobs = JobPostingModel.objects.filter(Q(is_active=1)&Q(job_title=job_title)).exclude(hirer=request.user.username).values()
-            print(jobs,"----++++++++++++++++++++++++++++++++")
+            # print(jobs,"----++++++++++++++++++++++++++++++++")
             # data = labourmodels.objects.filter(Q(job_title=job)&Q(status=1)).exclude(username=request.user.username)		
         else:
             jobs = JobPostingModel.objects.filter(Q(is_active=1)&Q(job_title__in=[qualifiedjobs])).exclude(hirer=request.user.username).values()
@@ -991,16 +991,16 @@ class ConfirmOTP(View):
         # print(id,"------",n1,"------",n2,"------",n3,"------",n4,"------",n5,"------",n6)
         # a=[]
         a= n1+n2+n3+n4+n5+n6
-        print(a,"--==========--")
+        # print(a,"--==========--")
         otp = HireModel.objects.filter(id=id).values_list("otp")[0][0]
-        print(otp,"oooooooooooooooootttttttttppppppp")
+        # print(otp,"oooooooooooooooootttttttttppppppp")
         if otp==int(a):
-            print("accepted......")
+            # print("accepted......")
             return redirect("completedservices",id)
 
         else:
             messages.error(request,"OTP is not valid !!")
-            print("rejected......")
+            # print("rejected......")
             return redirect("confirmotp",id)
 
 @method_decorator(login_required, name='dispatch')
@@ -1036,10 +1036,10 @@ class SearchCityView(View):
     def post(self, request, *args, **kwargs):
 
         feildname = kwargs.pop('feildname')
-        print("pooee",feildname)
+        # print("pooee",feildname)
         search_text = request.POST.get(feildname)
 
-        print("#########################INSIDE SearchCityView" ,search_text ,"##################")
+        # print("#########################INSIDE SearchCityView" ,search_text ,"##################")
 
         if search_text:
 
@@ -1047,7 +1047,7 @@ class SearchCityView(View):
 
                 results=CitiesModel.objects.filter(name__icontains=search_text)
 
-                print(results,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+                # print(results,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
                 return render(request, 'search/cities-list.html',{"results":results})
 
@@ -1114,14 +1114,14 @@ class ConfirmProductOtp(View):
         n6=request.POST.get("sixth")
         # otp = ''
         otp =n1 + n2+n3+n4+n5+n6
-        print(otp,"oooooooooooooooootttttttttppppppp")
+        # print(otp,"oooooooooooooooootttttttttppppppp")
         userotp= PurchaseModel.objects.filter(id=id).first()
         if userotp.otp == int(otp):
-            print("Verifieeeeeeeeeeeeeeeeeeeeeeeedddddddddeeee")
+            # print("Verifieeeeeeeeeeeeeeeeeeeeeeeedddddddddeeee")
             return redirect("deliverd",id)
         else:
-            print(userotp.otp,"this is otp dummmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
-            print("otp invalidddddddddddddddddddddddddddddddddddddddddd")
+            # print(userotp.otp,"this is otp dummmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
+            # print("otp invalidddddddddddddddddddddddddddddddddddddddddd")
             messages.error(request,"otp invalid !!")
             return redirect("confirmproductotp",id)
 
@@ -1247,3 +1247,9 @@ class RefundSplit(View):
         
 
 
+class DeleteIssue(View):
+    def get(self, request,id, *args, **kwargs):
+        obj = ReeportModel.objects.get(id=id)
+        obj.delete()
+        messages.success(request,"Successfully deleted .")
+        return redirect("issues")

@@ -33,14 +33,14 @@ class LoginViews(LoginView):
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        print(request.POST['username'])
-        print(request.POST['password'])
+        # print(request.POST['username'])
+        # print(request.POST['password'])
 
         user = authenticate(
             request, username=request.POST['username'], password=request.POST['password'])
         if user is not None:
             if user.kyc_approved:
-                print(user.is_staff,"staaaaaaaaaaaffffff")
+                # print(user.is_staff,"staaaaaaaaaaaffffff")
                 login(request, user)
                 if request.user.is_superuser:
                     return HttpResponseRedirect(reverse('admindashboard'))
@@ -72,9 +72,9 @@ class RegisterStaff(View):
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             form = RegisterForm(request.POST,request.FILES)
-            print(request.POST['username'],"------------")
+            # print(request.POST['username'],"------------")
             if form.is_valid():
-                print("valid")
+                # print("valid")
 
                 try:
                     obj = form.save(commit=False)
@@ -83,12 +83,12 @@ class RegisterStaff(View):
                     obj.save()
                     messages.success(request, 'Successfully Registered Staff  ')
                 except Exception as e:
-                    print("error", e)
+                    # print("error", e)
                     return render(request, 'accounts/registerstaff.html', {'form': RegisterForm(request.POST)})
 
                 return redirect("registerstaff")
             else:
-                print("not valid")
+                # print("not valid")
                 messages.error(request, 'Registration failed')
                 return render(request, 'accounts/registerstaff.html', {'form': form})
 
@@ -109,14 +109,14 @@ class RegisterViews(View):
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             form = RegisterForm(request.POST,request.FILES)
-            print(request.POST['username'])
+            # print(request.POST['username'])
             if form.is_valid():
-                print("valid")
+                # print("valid")
 
                 try:
                     form.save()
                 except Exception as e:
-                    print("error", e)
+                    # print("error", e)
                     return render(request, 'accounts/register.html', {'form': RegisterForm(request.POST)})
 
                 messages.success(
