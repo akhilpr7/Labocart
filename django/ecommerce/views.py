@@ -658,14 +658,17 @@ class Acceptservice(View):
 		# print(status,"----sbsjdsdsldsldshdshldhsdh-----") 
 		# if status == 3:
 		job = RequestsModel.objects.filter(id=id).values_list("job_title")[0][0]
-
-
-		labo_job = labourmodels.objects.filter(Q(username=request.user)&Q(job_title=job))
-		print(labo_job)
-		labo_job.update(status=0)
-		RequestsModel.objects.filter(id=id).update(status=1)
-		messages.success(request, "Accepted Successfully!!")
-		return redirect('assigned')
+		accepted=HireModel.objects.filter(Q(worker_name=request.user.username)&Q(status=3)).count()
+		if accepted == 0:
+			labo_job = labourmodels.objects.filter(Q(username=request.user)&Q(job_title=job))
+			print(labo_job)
+			labo_job.update(status=0)
+			RequestsModel.objects.filter(id=id).update(status=1)
+			messages.success(request, "Accepted Successfully!!")
+			return redirect('assigned')
+		else:
+			messages.error(request,"Pending Job Found !!!")
+			return redirect("assigned")
 		# elif status ==2:
 		# 	return redirect('laboshop')
 		# else:
