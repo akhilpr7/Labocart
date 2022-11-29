@@ -24,10 +24,10 @@
     Filter By
   </button>
   <ul class="dropdown-menu dropdown-menu-light">
-    <li><a class="dropdown-item" href="/products_history/?filter=1">Confirmed Orders</a></li>
-    <li><a class="dropdown-item" href="/products_history/?filter=2">Out For Delivery</a></li>
-    <li><a class="dropdown-item" href="/products_history/?filter=3">Delivered</a></li>
-    <li><a class="dropdown-item" href="/products_history/?filter=4">Cancelled</a></li>
+    <li><a class="dropdown-item" href="{%url 'products_history'%}?filter=1">Confirmed Orders</a></li>
+    <li><a class="dropdown-item" href="{%url 'products_history'%}?filter=2">Out For Delivery</a></li>
+    <li><a class="dropdown-item" href="{%url 'products_history'%}?filter=3">Delivered</a></li>
+    <li><a class="dropdown-item" href="{%url 'products_history'%}?filter=4">Cancelled</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="{%url 'products_history'%}">All</a></li>
   </ul>
