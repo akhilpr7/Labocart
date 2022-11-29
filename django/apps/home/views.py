@@ -1011,7 +1011,7 @@ class AdminDashboard(View):
             packageRevenue = PurchaseModel.objects.filter(status=0).aggregate(Sum('Total'))
             totalMembers = NewUserModel.objects.filter(kyc_approved=1).exclude(is_superuser=1).count()
             activeServices = labourmodels.objects.filter(status=1).count()
-            activeVacancies = JobPostingModel.objects.filter(status=1).count()
+            activeVacancies = JobPostingModel.objects.filter(is_active=1).count()
             context ={
 			    'shopPurchase': shopPurchase["Total__sum"],
 			    'packageRevenue': packageRevenue["Total__sum"],
